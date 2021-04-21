@@ -1,0 +1,17 @@
+Outer Label,Outer Value,Category,Category Label,Category Sums,ID
+Total Bond Market,34.59,US Fixed Income,U.S. Fixed Income,71.91,1
+Mortgage Backed Securities,8.25,US Fixed Income,U.S. Equity,18.64,2
+Actively Managed,8.26,US Fixed Income,U.S. Blend,1.09,3
+High Yield Corporate,6.68,US Fixed Income,U.S. Alternative,8.37,4
+IG Corporate,5.77,US Fixed Income,,,5
+Preferreds,4.96,US Fixed Income,,,6
+Taxable Muni,3.40,US Fixed Income,,,7
+Large-Cap Equities,15.51,US Equity,,,8
+Utilities,1.60,US Equity,,,9
+REIT,0.25,US Equity,,,10
+Dividend,1.28,US Equity,,,11
+90% Equity / 60% Bonds,1.09,US Blend,,,12
+Covered Call,7.84,US Alternative,,,13
+MLP,0.52,US Alternative,,,14
+REIT,0.25,US Equity,,,
+Dividend,1.28,US Equity,,,

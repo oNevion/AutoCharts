@@ -1,0 +1,13 @@
+{
+    "name": "amcharts",
+    "description": "Automate chart export",
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "devDependencies": {
+        "selenium-webdriver": "4.0.0-alpha.1",
+        "geckodriver": "1.15.1",
+        "hapi": "18.1.0",
+        "inert": "5.1.2"
+    }
+}

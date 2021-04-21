@@ -1,0 +1,36 @@
+1.61    June 2012       Fixed a bug cancelling a progress bar dialog
+1.6     May 2012        Fixed a bug starting a new instance
+                        Use WM_COPYDATA instead of custom message
+                        Allow updating text and appearance of progress bar 
+                            dialogs and splash screens
+1.5     June 2005       Fixed a bug in arbitrary-length environment
+                            variable values
+                        Added numbered environment variables
+                        Fixed a buggy error message
+                        Added SPLASH
+                        Made PB OPEN and SPLASH OPEN always go to the
+                            background
+                        Added NOCANCEL global option
+1.4     November 2003   (Unreleased)
+                        Added Windows version info
+                        Added PB
+                        Added waassign
+                        Changed manual to describe other programming languages
+1.3     April 2003      Allow arbitrary-length environment variable values
+                        Added file filter for FB FILE
+                        Removed read-only checkbox from FB FILE browse dialog
+                        Fixed a bug in waeol
+1.21    April 2003      (Unreleased)
+                        Increased environment variable value size
+1.2     January 2003    Added wasound 
+                        Made parameter to FB and LB optional
+                        Made all parameters case insensitive
+                        Added HIDDEN (and PLAIN) option to EB
+                        Added a Makefile for MinGW
+                        Some code cleanup
+                        Replaced packaged documentation with HTML Help file
+                        Added automatic environment increasing to manual
+                        Added installation instructions to manual
+1.11    November 2002   Changed URL to http://wizapp.sf.net
+1.10    May 2002        Added wasig and waico
+1.00    March 2002      Initial version

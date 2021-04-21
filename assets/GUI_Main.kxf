@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<object type="TAForm" name="MainGUI">
+	<properties>
+		<property name="Left" vt="Int16">192</property>
+		<property name="Top" vt="Int8">124</property>
+		<property name="Width" vt="Int16">641</property>
+		<property name="Height" vt="Int16">676</property>
+		<property name="Caption" vt="String">AutoCharts 2.0</property>
+		<property name="Color" vt="Ident">clBtnFace</property>
+		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+		<property name="Font.Color" vt="Ident">clWindowText</property>
+		<property name="Font.Height" vt="Int8">-11</property>
+		<property name="Font.Name" vt="String">MS Sans Serif</property>
+		<property name="Font.Style" vt="Set"/>
+		<property name="Menu" vt="Ident">Menu1</property>
+		<property name="OldCreateOrder" vt="False">False</property>
+		<property name="Position" vt="Ident">poDesktopCenter</property>
+		<property name="Visible" vt="True">True</property>
+		<property name="Style" vt="Int32">-1798701056</property>
+		<property name="ExStyle" vt="Int16">256</property>
+		<property name="Version" vt="String">1.04</property>
+		<property name="FormOptOnEvent" vt="False">False</property>
+		<property name="FormOptExpVars" vt="False">False</property>
+		<property name="FormOptPopulate" vt="False">False</property>
+		<property name="FormOptVarsForSet" vt="False">False</property>
+		<property name="FormOptIndentChar" vt="Int8">0</property>
+		<property name="FormOptIndentCount" vt="Int8">1</property>
+		<property name="FormOptIndentInit" vt="Int8">0</property>
+		<property name="FormOptVarScope" vt="Int8">0</property>
+		<property name="Resizing" vt="Set"/>
+		<property name="PixelsPerInch" vt="Int8">96</property>
+		<property name="TextHeight" vt="Int8">13</property>
+	</properties>
+	<components>
+		<object type="TAMenu" name="Menu1">
+			<properties>
+				<property name="Left" vt="Int16">576</property>
+				<property name="Top" vt="Int16">560</property>
+				<property name="Width" vt="Int8">28</property>
+				<property name="Height" vt="Int8">28</property>
+				<property name="Associate" vt="Ident">Owner</property>
+				<property name="WrappedName" vt="String">MainMenu2</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAPic" name="Pic1">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int8">8</property>
+				<property name="Width" vt="Int16">593</property>
+				<property name="Height" vt="Int16">158</property>
+				<property name="CtrlStyle" vt="Int32">1342309134</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="PicturePath" vt="String">C:\Users\mrjak\Documents\SublimeProjects\AutoCharts\assets\Wizard\main-img.jpg</property>
+				<property name="TabOrder" vt="Int8">1</property>
+				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+				<property name="Stretch" vt="Ident">sProportional</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TATab" name="TAB_Main">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">176</property>
+				<property name="Width" vt="Int16">601</property>
+				<property name="Height" vt="Int16">353</property>
+				<property name="ActivePage" vt="Ident">TAB_StrategyShares</property>
+				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+				<property name="Font.Color" vt="Ident">clWindowText</property>
+				<property name="Font.Height" vt="Int8">-13</property>
+				<property name="Font.Name" vt="String">Arial</property>
+				<property name="Font.Style" vt="Set"/>
+				<property name="ParentFont" vt="False">False</property>
+				<property name="TabOrder" vt="Int8">0</property>
+				<property name="CtrlStyle" vt="Int32">1409482752</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+			</properties>
+			<components>
+				<object type="TTabSheet" name="TAB_Catalyst">
+					<properties>
+						<property name="Caption" vt="String">Catalyst Fact Sheets</property>
+						<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+						<property name="Font.Color" vt="Ident">clWindowText</property>
+						<property name="Font.Height" vt="Int8">-11</property>
+						<property name="Font.Name" vt="String">MS Sans Serif</property>
+						<property name="Font.Style" vt="Set"/>
+						<property name="ImageIndex" vt="Int8">-1</property>
+						<property name="ParentFont" vt="False">False</property>
+					</properties>
+					<components>
+						<object type="TAButton" name="BTN_RunCatalyst">
+							<properties>
+								<property name="Left" vt="Int16">148</property>
+								<property name="Top" vt="Int16">280</property>
+								<property name="Width" vt="Int8">115</property>
+								<property name="Height" vt="Int8">33</property>
+								<property name="Caption" vt="String">Process Updates</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-11</property>
+								<property name="Font.Name" vt="String">MS Sans Serif</property>
+								<property name="Font.Style" vt="Set">fsBold</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">0</property>
+								<property name="Color" vt="Ident">clMoneyGreen</property>
+								<property name="CtrlStyle" vt="Int32">1342373888</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAButton" name="BTN_SelectAllCatalyst">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">280</property>
+								<property name="Width" vt="Int8">115</property>
+								<property name="Height" vt="Int8">33</property>
+								<property name="Caption" vt="String">Select All</property>
+								<property name="TabOrder" vt="Int8">1</property>
+								<property name="Color" vt="Ident">clMoneyGreen</property>
+								<property name="CtrlStyle" vt="Int32">1342373888</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="ACX">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">ACX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">2</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="ATR">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">74</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">ATR</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">3</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="BUY">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">124</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">BUY</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">4</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CAX">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">174</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CAX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">5</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CFH">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">224</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CFH</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">6</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CPE">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int16">224</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CPE</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">7</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CLT">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int16">174</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CLT</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">8</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CLP">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int8">124</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CLP</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">9</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CGG">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int8">74</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CGG</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">10</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CFR">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CFR</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">11</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="IIX">
+							<properties>
+								<property name="Left" vt="Int16">224</property>
+								<property name="Top" vt="Int16">224</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">IIX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">12</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="HII">
+							<properties>
+								<property name="Left" vt="Int16">224</property>
+								<property name="Top" vt="Int16">174</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">HII</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">13</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="EIX">
+							<properties>
+								<property name="Left" vt="Int16">224</property>
+								<property name="Top" vt="Int8">124</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">EIX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">14</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CWX">
+							<properties>
+								<property name="Left" vt="Int16">224</property>
+								<property name="Top" vt="Int8">74</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CWX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">15</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="CTV">
+							<properties>
+								<property name="Left" vt="Int16">224</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">CTV</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">16</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="INS">
+							<properties>
+								<property name="Left" vt="Int16">328</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">INS</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">17</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="IOX">
+							<properties>
+								<property name="Left" vt="Int16">328</property>
+								<property name="Top" vt="Int8">74</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">IOX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">18</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="MBX">
+							<properties>
+								<property name="Left" vt="Int16">328</property>
+								<property name="Top" vt="Int8">124</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">MBX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">19</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="MLX">
+							<properties>
+								<property name="Left" vt="Int16">328</property>
+								<property name="Top" vt="Int16">174</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">MLX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">20</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="OIP">
+							<properties>
+								<property name="Left" vt="Int16">328</property>
+								<property name="Top" vt="Int16">224</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">OIP</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">21</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="SHI">
+							<properties>
+								<property name="Left" vt="Int16">432</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">SHI</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">22</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="TEZ">
+							<properties>
+								<property name="Left" vt="Int16">432</property>
+								<property name="Top" vt="Int8">74</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">TEZ</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">23</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="TRI">
+							<properties>
+								<property name="Left" vt="Int16">432</property>
+								<property name="Top" vt="Int8">124</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">TRI</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">24</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="TRX">
+							<properties>
+								<property name="Left" vt="Int16">432</property>
+								<property name="Top" vt="Int16">174</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">TRX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">25</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
+				<object type="TTabSheet" name="TAB_Rational">
+					<properties>
+						<property name="Caption" vt="String">Rational Fact Sheets</property>
+						<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+						<property name="Font.Color" vt="Ident">clWindowText</property>
+						<property name="Font.Height" vt="Int8">-11</property>
+						<property name="Font.Name" vt="String">MS Sans Serif</property>
+						<property name="Font.Style" vt="Set"/>
+						<property name="ImageIndex" vt="Int8">-1</property>
+						<property name="ParentFont" vt="False">False</property>
+					</properties>
+					<components>
+						<object type="TACheckbox" name="HBA">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">HBA</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">0</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="HDC">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">74</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">HDC</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">1</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="HRS">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">124</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">HRS</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">2</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="HSU">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">174</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">HSU</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">3</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="NUX">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">224</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">NUX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">4</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="PBX">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">PBX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">5</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="RDM">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int8">74</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">RDM</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">6</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="RFX">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int8">124</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">RFX</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">7</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="RTAVF">
+							<properties>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int16">174</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">RTAVF</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">8</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAButton" name="BTN_RunRational">
+							<properties>
+								<property name="Left" vt="Int8">15</property>
+								<property name="Top" vt="Int16">274</property>
+								<property name="Width" vt="Int8">115</property>
+								<property name="Height" vt="Int8">33</property>
+								<property name="Caption" vt="String">Process Updates</property>
+								<property name="TabOrder" vt="Int8">9</property>
+								<property name="Color" vt="Ident">clMoneyGreen</property>
+								<property name="CtrlStyle" vt="Int32">1342373888</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
+				<object type="TTabSheet" name="TAB_StrategyShares">
+					<properties>
+						<property name="Caption" vt="String">Strategy Shares Fact Sheets</property>
+						<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+						<property name="Font.Color" vt="Ident">clWindowText</property>
+						<property name="Font.Height" vt="Int8">-11</property>
+						<property name="Font.Name" vt="String">MS Sans Serif</property>
+						<property name="Font.Style" vt="Set"/>
+						<property name="ImageIndex" vt="Int8">-1</property>
+						<property name="ParentFont" vt="False">False</property>
+					</properties>
+					<components>
+						<object type="TACheckbox" name="GLDB">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">24</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">GLDB</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">0</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="HNDL">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">74</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">HNDL</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">1</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TACheckbox" name="ROMO">
+							<properties>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int8">124</property>
+								<property name="Width" vt="Int8">90</property>
+								<property name="Height" vt="Int8">30</property>
+								<property name="Caption" vt="String">ROMO</property>
+								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+								<property name="Font.Color" vt="Ident">clWindowText</property>
+								<property name="Font.Height" vt="Int8">-16</property>
+								<property name="Font.Name" vt="String">Montserrat Black</property>
+								<property name="Font.Style" vt="Set"/>
+								<property name="ParentColor" vt="False">False</property>
+								<property name="ParentFont" vt="False">False</property>
+								<property name="TabOrder" vt="Int8">2</property>
+								<property name="OnClick" vt="String">ACXClick</property>
+								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAButton" name="BTN_RunStrategyShares">
+							<properties>
+								<property name="Left" vt="Int8">17</property>
+								<property name="Top" vt="Int16">277</property>
+								<property name="Width" vt="Int8">115</property>
+								<property name="Height" vt="Int8">33</property>
+								<property name="Caption" vt="String">Process Updates</property>
+								<property name="TabOrder" vt="Int8">3</property>
+								<property name="Color" vt="Ident">clMoneyGreen</property>
+								<property name="CtrlStyle" vt="Int32">1342373888</property>
+								<property name="CtrlExStyle" vt="Int8">0</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
+			</components>
+		</object>
+		<object type="TAProgress" name="ProgressBar">
+			<properties>
+				<property name="Left" vt="Int8">8</property>
+				<property name="Top" vt="Int16">536</property>
+				<property name="Width" vt="Int16">598</property>
+				<property name="Height" vt="Int8">17</property>
+				<property name="TabOrder" vt="Int8">2</property>
+				<property name="CtrlStyle" vt="Int32">1342308352</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set"/>
+			</properties>
+			<components/>
+		</object>
+		<object type="TMainMenu" name="MainMenu2">
+			<properties/>
+			<components>
+				<object type="TAMenuItem" name="mFile">
+					<properties>
+						<property name="Caption" vt="String">&amp;File</property>
+					</properties>
+					<components>
+						<object type="TAMenuItem" name="mSyncFiles">
+							<properties>
+								<property name="Caption" vt="String">&amp;Sync Files</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mUploadFactsheets">
+							<properties>
+								<property name="Caption" vt="String">Upload Factsheets to Website</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mExit">
+							<properties>
+								<property name="Caption" vt="String">&amp;Exit</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
+				<object type="TAMenuItem" name="mSettings">
+					<properties>
+						<property name="Caption" vt="String">&amp;Settings</property>
+					</properties>
+					<components>
+						<object type="TAMenuItem" name="mEditSettings">
+							<properties>
+								<property name="Caption" vt="String">&amp;Edit</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mImportSettings">
+							<properties>
+								<property name="Caption" vt="String">&amp;Import</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mExportSettings">
+							<properties>
+								<property name="Caption" vt="String">&amp;Export</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
+				<object type="TAMenuItem" name="mHelp">
+					<properties>
+						<property name="Caption" vt="String">&amp;Help</property>
+					</properties>
+					<components>
+						<object type="TAMenuItem" name="mAbout">
+							<properties>
+								<property name="Caption" vt="String">&amp;About</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mLogFile">
+							<properties>
+								<property name="Caption" vt="String">&amp;Open Log File</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
+			</components>
+		</object>
+	</components>
+</object>

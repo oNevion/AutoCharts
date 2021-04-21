@@ -1,0 +1,810 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"set",
+				"setChromeOptions"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "assets/ChartBuilder/server.js",
+			"settings":
+			{
+				"buffer_size": 877,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/ChartBuilder/internal.js",
+			"settings":
+			{
+				"buffer_size": 2422,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/ChartBuilder/public/scripts/acx.js",
+			"settings":
+			{
+				"buffer_size": 8367,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "assets/ChartBuilder/public/index.html",
+			"settings":
+			{
+				"buffer_size": 458,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 185.0,
+		"history":
+		[
+			"node -v"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/Data",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/Data/Backups",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/Data/Backups/Catalyst",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/Data/Backups/Catalyst/ACX",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/Data/Charts",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/scripts",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/styles"
+	],
+	"file_history":
+	[
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/Data/Backups/Catalyst/ACX/ACX_EXPORT_10kChart.csv",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/scripts/chart2.js",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/styles/app2.css",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/acx.html",
+		"/C/Users/mrjak/Documents/SublimeProjects/AutoCharts/assets/ChartBuilder/public/scripts/chart.js",
+		"/C/Users/mrjak/Desktop/decrypt/ffmpeg cmds.txt",
+		"/C/Program Files (x86)/AutoCharts/DownloadEngine_Node/package.json",
+		"/C/Users/mrjak/AppData/Roaming/Sublime Text 3/Packages/Terminal/Terminal.sublime-settings",
+		"/C/Users/mrjak/AppData/Roaming/Sublime Text 3/Packages/User/Terminal (Windows).sublime-settings",
+		"/X/Marketing Team Files/Marketing Materials/AutoCharts&Tables/Engine/Fund Engines/GLDB/GLDB.bat",
+		"/X/Marketing Team Files/Marketing Materials/AutoCharts&Tables/Engine/Fund Engines/ACX/ACX.bat",
+		"/X/Marketing Team Files/Marketing Materials/AutoCharts&Tables/Engine/Wizard/wizapp.xml",
+		"/C/Users/mrjak/Desktop/FileZilla.xml",
+		"/C/Users/mrjak/Desktop/custom2-comskip.ini",
+		"/C/Users/mrjak/Downloads/Preferences.xml",
+		"/C/Users/mrjak/Videos/Captures/Cut Commercials/Encode/Final/Idiotest - 3x23 - Brothers vs. Dating Couple.xml",
+		"/Y/Media/TV/Get a Clue/Season 2/Get a Clue - 2x8.edl",
+		"/C/Users/mrjak/Desktop/test.svg",
+		"/C/Users/mrjak/Desktop/REAF_Batch.bat",
+		"/X/Marketing Team Files/Marketing Materials/AutoCharts&Tables/Engine/AutoCharts&Tables.bat",
+		"/C/Users/mrjak/Desktop/xf00.tg8townk.tg00.csv",
+		"/Y/Media/TV/Celebrity Wheel of Fortune/Season 1/Celebrity Wheel of Fortune - 1x6.edl",
+		"/Y/Media/TV/Celebrity Wheel of Fortune/Season 1/Celebrity Wheel of Fortune - 1x4.xml",
+		"/Y/Media/TV/Wheel of Fortune/WheelOfFortune-3.1.2021.edl",
+		"/Y/Media/TV/Wheel of Fortune/WheelOfFortune-3.1.2021.xml",
+		"/C/Users/mrjak/Desktop/test.m3u8",
+		"/C/Users/mrjak/Desktop/test.ts",
+		"/C/Users/mrjak/Downloads/10454862634912.ismv",
+		"/C/Users/mrjak/Desktop/custom-comskip.ini",
+		"/C/Users/mrjak/Downloads/ca2d3483a7004d168b37cca59cc7512b.mpd",
+		"/Y/Media/TV/Lingo/Season 1/Lingo-S01E01.edl",
+		"/C/Users/mrjak/Desktop/Tidal-Media-Downloader-master/TIDALDL-PY/exe/.tidal-dl.token.json",
+		"/C/Users/mrjak/Desktop/snahp-discogs.js",
+		"/C/Users/mrjak/Downloads/master (5).mpd",
+		"/C/Users/mrjak/Downloads/playlist.m3u",
+		"/C/Users/mrjak/Downloads/b4572affc3c5425e97f72ccb99769d7a.mpd",
+		"/C/Users/mrjak/Downloads/master (3).mpd",
+		"/C/Users/mrjak/Downloads/master (4).mpd",
+		"/C/Users/mrjak/Downloads/ddae04b8e9e7469691b6468d549de5d1.mpd",
+		"/C/Users/mrjak/Downloads/61570007.mpd",
+		"/C/Users/mrjak/Downloads/376a3c477b614933ac6b3a7aa9e28b2f.mpd",
+		"/C/Users/mrjak/Downloads/master (1).mpd",
+		"/C/Users/mrjak/Downloads/master (2).mpd",
+		"/C/Users/mrjak/Downloads/4837f58a31e348748679f11a024a671b.mpd",
+		"/C/Users/mrjak/Downloads/61570007 (1).mpd",
+		"/C/Users/mrjak/Downloads/manifest.mpd",
+		"/C/Users/mrjak/Downloads/playlist (5).m3u8",
+		"/X/Marketing Team Files/Marketing Materials/AutoCharts&Tables/Engine/Fund Engines/MBX/DownloadEngine/Files/MBX/MBX_BRO_1kChart.js",
+		"/X/Marketing Team Files/Marketing Materials/AutoCharts&Tables/Engine/Fund Engines/MBX/MBX.bat",
+		"/C/Users/mrjak/Downloads/media.m3u8",
+		"/C/Users/mrjak/Downloads/master.mpd",
+		"/C/Users/mrjak/Desktop/Extractor Testing/extract.py",
+		"/C/Users/mrjak/Desktop/youtube-dl-master/youtube_dl/extractor/common.py",
+		"/C/Users/mrjak/Downloads/finite.m3u8",
+		"/C/Users/mrjak/Downloads/master (4).m3u8",
+		"/C/Users/mrjak/Downloads/playlist (3).m3u8",
+		"/C/Users/mrjak/Downloads/master (3).m3u8",
+		"/C/Users/mrjak/Desktop/DataLinker.xml",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/default-constants.php",
+		"/C/Users/mrjak/Downloads/deluge_blocklist.dat",
+		"/C/Users/mrjak/Desktop/downtify-premium-master/README.md",
+		"/C/Users/mrjak/Desktop/downtify-premium-master/Downtify/config.xml",
+		"/C/Users/mrjak/AppData/Local/Temp/AnyStream_1.0.9.0_Dump_20210125202954.astdmp",
+		"/X/Marketing Team Files/Marketing Materials/AutoCharts&Tables/Backup Files/Update_FactSheetDates.csv",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/Users/mrjak/Desktop/testing.txt",
+		"/C/Users/mrjak/Desktop/Update_FactSheetDates.csv",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/my_functions_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/tasks.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/general_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/func_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/core_hooks_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/admin_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/user_data.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/Dashboard 2.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/Tasks 2.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/user_meta_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/tasks_relations.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/Tasks_model.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/Dashboard_model.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/datatables_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/tasks_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/tasks_filter.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/dashboard_js.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/dashboard.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/widgets_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/milestone.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/_mark_tasks_finished.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/Projects_model.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/projects_helper.php",
+		"/C/Users/mrjak/Desktop/my_functions_helper.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/Projects.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/app-config.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/hooks.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/milestones_kan_ban.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/kan_ban.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/task.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/index.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/_milestone_kanban_card.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/project_tasks.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/Tasks.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/Admin_controller.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/_kan_ban_card.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/layout-styles.css",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/constants.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/articles.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/config.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/project_files.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/_file.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/view.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/projects 2.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/table_html.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/project_tabs.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/project_overview.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/project.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/top_stats.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/projects_activity.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/login_admin.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/index.html",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/flat_admin_theme.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/EloquentHook.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/InitHook.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/App_Autoloader.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/AdminController.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/datatables.min.js",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/datatables.js",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/App_items_table_template.php",
+		"/C/Users/mrjak/AppData/Local/Temp/fz3temp-2/database.php"
+	],
+	"find":
+	{
+		"height": 31.0
+	},
+	"find_in_files":
+	{
+		"height": 116.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"]",
+			"[",
+			"HNDL",
+			"height",
+			"Y:\\Marketing Team Files\\Marketing Materials\\",
+			"cenc:default_KID=",
+			"seed",
+			"home",
+			"project_mark_all_tasks_as_completed",
+			"small",
+			"height",
+			"render_dashboard_widgets",
+			"status",
+			"project_status_5",
+			"status",
+			"view_tasks",
+			"task-single-related",
+			"task-single",
+			"tasks-table",
+			"Add N",
+			"login_admin",
+			"#2d7abf",
+			"#26003d",
+			"#9274c3",
+			"Y:\\Marketing Team Files\\Marketing Materials\\",
+			"http://obtlaw.com",
+			"http://www.obtlaw.com",
+			"http://www.umhomeloan.com",
+			"http://www.athenassisters.us",
+			"http://www.jakobbradshaw.com",
+			"http://clementinecater.com",
+			"http://umhomeloan.com",
+			"http://umhomeloan.us",
+			"http://athenassisters.us",
+			"http://jbproductions.wpengine.com",
+			"http://jakobbradshaw.com",
+			"http://obtlaw.com",
+			"obt.jakobbradshaw.com",
+			"http://obtlaw.com",
+			"obtlaw.wpengine.com",
+			"/wp-content/uploads/mk_templates/",
+			"/wp-content/uploads/mk_assets/",
+			"/wp-content/uploads/js_composer/",
+			"/wp-content/uploads/bfi_thumb/",
+			"/wp-content/uploads/2020/",
+			"/wp-content/uploads/2019/",
+			"/wp-content/uploads/2018/",
+			"/wp-content/uploads/2017/",
+			"/wp-content/uploads/2016/",
+			"/wp-content/uploads/2015/",
+			"/wp-content/uploads/2014/",
+			"/wp-content/uploads/2013/",
+			"/wp-content/uploads/2012/",
+			"/wp-content/uploads/2011/",
+			"/wp-content/uploads/2010/",
+			"/wp-content/uploads/2008/",
+			"/wp-content/uploads/1998/",
+			"/wp-content/uploads/sites/11/sites/11/2020/",
+			"/wp-content/uploads/sites/11/sites/11/2019/",
+			"/wp-content/uploads/sites/11/sites/11/2018/",
+			"/wp-content/uploads/sites/11/sites/11/2017/",
+			"/wp-content/uploads/sites/11/sites/11/2016/",
+			"/wp-content/uploads/sites/11/sites/11/2015/",
+			"/wp-content/uploads/sites/11/sites/11/2014/",
+			"/wp-content/uploads/sites/11/sites/11/2013/",
+			"/wp-content/uploads/sites/11/sites/11/2012/",
+			"/wp-content/uploads/sites/11/sites/11/2011/",
+			"/wp-content/uploads/sites/11/sites/11/2010/",
+			"/wp-content/uploads/sites/11/sites/11/2008/",
+			"/wp-content/uploads/sites/11/sites/11/1998/",
+			"/wp-content/uploads/sites/11/sites/11/2009/",
+			"/wp-content/uploads/sites/11/sites/11/2008/",
+			"/wp-content/uploads/sites/11/sites/11/1998/",
+			"wp_",
+			"http%3A%2F%2F/wp-content/uploads/2017%2F",
+			"http://obtlaw.com",
+			"obtlaw.com",
+			"/wp-content/uploads/2017/",
+			"http://obtlaw.wpengine.com",
+			"/wp-content/uploads/2020/",
+			"/wp-content/uploads/2019/",
+			"/wp-content/uploads/2018/",
+			"/wp-content/uploads/2017/",
+			"/wp-content/uploads/2016/",
+			"/wp-content/uploads/2015/",
+			"/wp-content/uploads/2014/",
+			"/wp-content/uploads/2013/",
+			"/wp-content/uploads/2012/",
+			"/wp-content/uploads/2011/",
+			"/wp-content/uploads/2010/",
+			"/wp-content/uploads/2008/",
+			"/wp-content/uploads/1998/",
+			"wp_",
+			"jakobbradshaw.com",
+			"jb_",
+			"jb_user",
+			"users",
+			"jb_",
+			"RFX",
+			"Y:\\Marketing Team Files\\Marketing Materials\\",
+			"C:\\Users\\mrjak\\Desktop\\",
+			"RFX",
+			"PBX",
+			"NUX",
+			"HSU",
+			"ACX",
+			"CFR",
+			"ACX",
+			"BUY",
+			"ACX",
+			"BUY",
+			"ACX",
+			"cax",
+			"RFX",
+			"ACX",
+			"else ()",
+			"cl",
+			"cfr",
+			"cax"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"}",
+			"{",
+			"GLDB",
+			"X:\\Marketing Team Files\\Marketing Materials\\",
+			"#7e5ba6",
+			"#2d7abf",
+			"#26003d",
+			"C:\\Users\\jacob\\Dropbox (Catalyst Funds)\\Marketing Team Files\\Marketing Materials\\",
+			"https://obtlaw.com",
+			"https://www.obtlaw.com",
+			"https://www.umhomeloan.com",
+			"https://www.athenassisters.us",
+			"https://www.jakobbradshaw.com",
+			"https://clementinecater.com",
+			"https://umhomeloan.com",
+			"https://umhomeloan.us",
+			"https://athenassisters.us",
+			"https://jakobbradshaw.com",
+			"https://obtlaw.com",
+			"obtlaw.com",
+			"https://obtlaw.com",
+			"obtlaw.com",
+			"/wp-content/uploads/sites/11/mk_templates/",
+			"/wp-content/uploads/sites/11/mk_assets/",
+			"/wp-content/uploads/sites/11/js_composer/",
+			"/wp-content/uploads/sites/11/bfi_thumb/",
+			"/wp-content/uploads/sites/11/2020/",
+			"/wp-content/uploads/sites/11/2019/",
+			"/wp-content/uploads/sites/11/2018/",
+			"/wp-content/uploads/sites/11/2017/",
+			"/wp-content/uploads/sites/11/2016/",
+			"/wp-content/uploads/sites/11/2015/",
+			"/wp-content/uploads/sites/11/2014/",
+			"/wp-content/uploads/sites/11/2013/",
+			"/wp-content/uploads/sites/11/2012/",
+			"/wp-content/uploads/sites/11/2011/",
+			"/wp-content/uploads/sites/11/2010/",
+			"/wp-content/uploads/sites/11/2008/",
+			"/wp-content/uploads/sites/11/1998/",
+			"/wp-content/uploads/sites/11/2020/",
+			"/wp-content/uploads/sites/11/2019/",
+			"/wp-content/uploads/sites/11/2018/",
+			"/wp-content/uploads/sites/11/2017/",
+			"/wp-content/uploads/sites/11/2016/",
+			"/wp-content/uploads/sites/11/2015/",
+			"/wp-content/uploads/sites/11/2014/",
+			"/wp-content/uploads/sites/11/2013/",
+			"/wp-content/uploads/sites/11/2012/",
+			"/wp-content/uploads/sites/11/2011/",
+			"/wp-content/uploads/sites/11/2010/",
+			"/wp-content/uploads/sites/11/2008/",
+			"/wp-content/uploads/sites/11/1998/",
+			"/wp-content/uploads/sites/11/sites/11/2009/",
+			"/wp-content/uploads/sites/11/sites/11/2008/",
+			"/wp-content/uploads/sites/11/sites/11/1998/",
+			"jb_",
+			"http://obt.jakobbradshaw.com",
+			"/wp-content/uploads/sites/11/2017/",
+			"http://obt.jakobbradshaw.com",
+			"/wp-content/uploads/sites/11/2020/",
+			"/wp-content/uploads/sites/11/2019/",
+			"/wp-content/uploads/sites/11/2018/",
+			"/wp-content/uploads/sites/11/2017/",
+			"/wp-content/uploads/sites/11/2016/",
+			"/wp-content/uploads/sites/11/2015/",
+			"/wp-content/uploads/sites/11/2014/",
+			"/wp-content/uploads/sites/11/2013/",
+			"/wp-content/uploads/sites/11/2012/",
+			"/wp-content/uploads/sites/11/2011/",
+			"/wp-content/uploads/sites/11/2010/",
+			"/wp-content/uploads/sites/11/2008/",
+			"/wp-content/uploads/sites/11/1998/",
+			"jb_",
+			"wp_",
+			"HNDL",
+			"C:\\Users\\jacob\\Dropbox (Catalyst Funds)\\Marketing Team Files\\Marketing Materials\\",
+			"Y:\\Marketing Team Files\\Marketing Materials\\",
+			"ROMO",
+			"RDM",
+			"RTAVF",
+			"PBX",
+			"NUX",
+			"TRX",
+			"TRI",
+			"TEZ",
+			"SHI",
+			"RFX",
+			"OIP",
+			"MLX",
+			"MBX",
+			"IOX",
+			"INS",
+			"IIX",
+			"HRS",
+			"HII",
+			"HDC",
+			"EIX",
+			"CWX",
+			"CTV",
+			"CPE",
+			"CLT",
+			"CLP",
+			"CGG",
+			"CFR",
+			"CAX",
+			"ATR",
+			"BUY",
+			"CFH",
+			"HSU",
+			"HRS",
+			"HBA",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "assets/ChartBuilder/server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 877,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								105,
+								105
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 198.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "assets/ChartBuilder/internal.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2422,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1710,
+								1710
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 528.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "assets/ChartBuilder/public/scripts/acx.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8367,
+						"regions":
+						{
+							"col_08DA94FF":
+							{
+								"flags": 16,
+								"regions":
+								[
+									[
+										2454,
+										2461
+									],
+									[
+										5032,
+										5039
+									],
+									[
+										7563,
+										7570
+									]
+								],
+								"scope": "col_08DA94FF"
+							},
+							"col_08DA94FF_icon":
+							{
+								"flags": 16,
+								"icon": "Packages/User/Color Highlight.cache/col_08DA94FF_circle.png",
+								"regions":
+								[
+									[
+										2422,
+										2422
+									],
+									[
+										5003,
+										5003
+									],
+									[
+										7534,
+										7534
+									]
+								],
+								"scope": "col_gutter"
+							},
+							"col_2D7ABFFF":
+							{
+								"flags": 16,
+								"regions":
+								[
+									[
+										2743,
+										2750
+									],
+									[
+										5356,
+										5363
+									],
+									[
+										7889,
+										7896
+									]
+								],
+								"scope": "col_2D7ABFFF"
+							},
+							"col_2D7ABFFF_icon":
+							{
+								"flags": 16,
+								"icon": "Packages/User/Color Highlight.cache/col_2D7ABFFF_circle.png",
+								"regions":
+								[
+									[
+										2711,
+										2711
+									],
+									[
+										5326,
+										5326
+									],
+									[
+										7859,
+										7859
+									]
+								],
+								"scope": "col_gutter"
+							}
+						},
+						"selection":
+						[
+							[
+								5627,
+								5627
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 5676.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "assets/ChartBuilder/public/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 458,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								238,
+								238
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 31.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "AutoCharts.sublime-project",
+	"replace":
+	{
+		"height": 58.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 408.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
