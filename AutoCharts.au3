@@ -30,6 +30,7 @@ $mLogFile = GUICtrlCreateMenuItem("&Open Log File", $mHelp)
 $TAB_Main = GUICtrlCreateTab(8, 176, 601, 353)
 GUICtrlSetFont(-1, 10, 400, 0, "Arial")
 $TAB_Catalyst = GUICtrlCreateTabItem("Catalyst Fact Sheets")
+GUICtrlSetState(-1,$GUI_SHOW)
 $BTN_RunCatalyst = GUICtrlCreateButton("Process Updates", 160, 483, 115, 33)
 GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 GUICtrlSetBkColor(-1, 0xC0DCC0)
@@ -138,7 +139,6 @@ GUICtrlSetBkColor(-1, 0xFFFFFF)
 $BTN_RunRational = GUICtrlCreateButton("Process Updates", 27, 477, 115, 33)
 GUICtrlSetBkColor(-1, 0xC0DCC0)
 $TAB_StrategyShares = GUICtrlCreateTabItem("Strategy Shares Fact Sheets")
-GUICtrlSetState(-1,$GUI_SHOW)
 $GLDB = GUICtrlCreateCheckbox("GLDB", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX,$BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
@@ -316,7 +316,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 
 			EndIf
 				FileMove ( @ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1) ; Move all .CSV back to Data folder and overwrite.
-				FileDelete ( @ScriptDir & "/VBS_Scripts/*.xlsx" ) ; deletes remaining .xlsx from conversion
+				FileDelete ( @ScriptDir & "/VBS_Scripts/*.xlsx") ; deletes remaining .xlsx from conversion
 	Else
 			ContinueLoop
 	EndIf
@@ -326,29 +326,15 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 EndFunc ;-->RunCSVConvert
 
 
-Func LoadScripts() ; Looks at file names in current fund's data directory to determin which charts to updaate.
-		Local $aChartList = _FileListToArray(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\", "*csv")
-		If @error = 1 Then
-			MsgBox($MB_SYSTEMMODAL, "", "Path was invalid.")
-			Exit
-		EndIf
-
-		If @error = 4 Then
-			MsgBox($MB_SYSTEMMODAL, "", "No file(s) were found.")
-			Exit
-		EndIf
-		; Display the results returned by _FileListToArray.
-		Local $aChartListResult = _ArrayFindAll ($aChartlist, $CurrentFund & "_EXPORT", default, default, default, 1)
-		_ArrayDisplay($aChartListResult, "Found")
-EndFunc ; -->DeterminScriptNames
-
-Func HTMLChartEditor(ByRef $CurrentFund) ; Edits index_TEMPLATE.html file to include current fund's chart .js file
+Func HTMLChartEditor() ; Edits index_TEMPLATE.html file to include current fund's chart .js file
 	LOCAL $file = @ScriptDir & "\assets\ChartBuilder\public\index_TEMPLATE.html"
 	LOCAL $text = FileRead ($file)
 
-	$tout1 = StringReplace ($text, '<script src="/scripts/chart2.js"></script></body></html>', '<script src="/scripts/' & $CurrentFund & '.js"></script></body></html>')
+	$tout1 = StringReplace ($text, '<script src="/scripts/CHANGEME.js"></script>', '<script src="/scripts/' & $CurrentFund & '.js"></script>')
 	FileWrite (@ScriptDir & "\assets\ChartBuilder\public\index.html", $tout1)
 EndFunc ; -->HTMLChartEditor
+
+
 
 
 Func CreateCharts()
@@ -356,7 +342,8 @@ Func CreateCharts()
 		If $aCatalystCheck[$a] <> "" Then
 			$CurrentFund = $aCatalystCheck[$a]
 			Call ("HTMLChartEditor")
-
+			RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
+			FileDelete (@ScriptDir & "\assets\ChartBuilder\public\index.html") ; ~ Deletes index.html file that was created in Func HTMLChartEditor to keep from editing the same file.
 		Else
 			ContinueLoop
 		EndIf

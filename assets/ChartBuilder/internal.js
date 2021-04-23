@@ -33,35 +33,41 @@ module.exports = async (server) => {
 
         await driver.get(url);
         await driver.executeAsyncScript(() => {
-            
-            let callback = arguments[arguments.length - 1],
-                exportChart = () => {
 
-                    chart.exporting.events.on('exportfinished', () => { 
-                        setTimeout(callback, 500);
-                    });
 
-                    // Start the export
-                    //chart.exporting.export('svg');
-                    document.getElementsByClassName('.amcharts-amexport-clickable').click();
+                    let callback = arguments[arguments.length - 1],
+                        exportChart = () => {
 
-                },
-                startExportWhenReady = () => {
+                            chart1.exporting.events.on('exportfinished', () => {
+                                setTimeout(callback, 1250);
+                            });
 
-                    if (chart.isReady())
-                        exportChart();
+                            // Start the export
+
+
+                            chart1.exporting.export('svg');
+
+
+
+
+                        },
+                        startExportWhenReady = () => {
+
+                            if (chart1.isReady())
+                                exportChart();
+                            else
+                                chart1.events.on('ready', exportChart);
+                        };
+
+                    if (document.readyState === 'complete')
+                        startExportWhenReady();
                     else
-                        chart.events.on('ready', exportChart);
-                };
-            
-            if (document.readyState === 'complete')
-                startExportWhenReady();
-            else
-                document.addEventListener('DOMContentLoaded', startExportWhenReady);
-        })
-        .then(() => {
-            driver.quit();
-        });
+                        document.addEventListener('DOMContentLoaded', startExportWhenReady);
+                
+            })
+            .then(() => {
+                driver.quit();
+            });
 
     } finally {
         await driver.quit();

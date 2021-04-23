@@ -1,3 +1,6 @@
+// ################################   Creates Dynamic CSS on page for charts. ################################################
+
+
 // create an element
 const style = document.createElement('style');
 
@@ -30,6 +33,8 @@ body {
 document.head.appendChild(style);
 
 
+
+
 // ################################   CHART 1  ACXIX - 10k Chart (Line) ################################################
 
 
@@ -38,22 +43,22 @@ am4core.useTheme(am4themes_amcharts);
 // Themes end
 
 // Create chart instance
-var chart = am4core.create("chartdiv", am4charts.XYChart);
+var chart1 = am4core.create("chartdiv", am4charts.XYChart);
 
 // Set up data source
-chart.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_EXPORT_10kChart.csv";
-chart.dataSource.parser = new am4core.CSVParser();
-chart.dataSource.parser.options.useColumnNames = true;
+chart1.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_EXPORT_10kChart.csv";
+chart1.dataSource.parser = new am4core.CSVParser();
+chart1.dataSource.parser.options.useColumnNames = true;
 
 // Set input format for the dates
-chart.dateFormatter.inputDateFormat = "yyyy-MM-dd";
-chart.numberFormatter.numberFormat = "'$'#,###.";
+chart1.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+chart1.numberFormatter.numberFormat = "'$'#,###.";
 
 
 
 
 // Create axes
-var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+var dateAxis = chart1.xAxes.push(new am4charts.DateAxis());
 dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "23px";
 dateAxis.renderer.grid.template.disabled = true;
@@ -68,7 +73,7 @@ dateAxis.extraMin = 0.025;
 dateAxis.startLocation = 0.49;
 dateAxis.endLocation = 0.4;
 
-var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "23px";
 
@@ -76,7 +81,7 @@ valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "'$'#,###";
 
 // Create series
-var series1 = chart.series.push(new am4charts.LineSeries());
+var series1 = chart1.series.push(new am4charts.LineSeries());
 series1.dataFields.valueY = "ACXIX";
 series1.dataFields.dateX = "Date";
 series1.name = "ACXIX";
@@ -85,7 +90,7 @@ series1.tooltipText = "{valueY}";
 series1.tensionX = 0.93;
 series1.stroke = am4core.color("#08da94");
 
-var series2 = chart.series.push(new am4charts.LineSeries());
+var series2 = chart1.series.push(new am4charts.LineSeries());
 series2.dataFields.valueY = "CSLABMF";
 series2.dataFields.dateX = "Date";
 series2.name = "CSLABMF";
@@ -96,23 +101,24 @@ series2.stroke = am4core.color("#2d7abf");
 
 
 // Add legend
-chart.legend = new am4charts.Legend();
-chart.legend.labels.template.fontSize = "24px";
-chart.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
-chart.legend.labels.template.minWidth = 200;
-chart.legend.labels.template.truncate = false;
+chart1.legend = new am4charts.Legend();
+chart1.legend.labels.template.fontSize = "24px";
+chart1.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
+chart1.legend.labels.template.minWidth = 200;
+chart1.legend.labels.template.truncate = false;
 
 
 
 // Export this stuff
-chart.exporting.menu = new am4core.ExportMenu();
-chart.exporting.menu.items = [{
+chart1.exporting.menu = new am4core.ExportMenu();
+chart1.exporting.menu.items = [{
   "label": "...",
   "menu": [
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart.exporting.filePrefix = "ACX_10k";
+chart1.exporting.filePrefix = "ACX_10k";
+
 
 
 
@@ -126,18 +132,18 @@ am4core.useTheme(am4themes_amcharts);
 // Themes end
 
 // Create chart instance
-var chart = am4core.create("chartdiv2", am4charts.XYChart);
+var chart2 = am4core.create("chartdiv2", am4charts.XYChart);
 
 // Add percent sign to all numbers
-chart.numberFormatter.numberFormat = "#.#'%'";
+chart2.numberFormatter.numberFormat = "#.#'%'";
 
 // Set up data source
-chart.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_EXPORT_AnnualReturn.csv";
-chart.dataSource.parser = new am4core.CSVParser();
-chart.dataSource.parser.options.useColumnNames = true;
+chart2.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_EXPORT_AnnualReturn.csv";
+chart2.dataSource.parser = new am4core.CSVParser();
+chart2.dataSource.parser.options.useColumnNames = true;
 
 // Create axes
-var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+var categoryAxis = chart2.xAxes.push(new am4charts.CategoryAxis());
 categoryAxis.dataFields.category = "Date";
 categoryAxis.renderer.labels.template.fontWeight = "Bold";
 categoryAxis.renderer.labels.template.fontSize = "23px";
@@ -153,7 +159,7 @@ categoryAxis.renderer.labels.template.textAlign = "middle";
 var label = categoryAxis.renderer.labels.template;
 label.wrap = true;
 label.maxWidth = 100;
-var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+var valueAxis = chart2.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.grid.template.disabled = true;
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "23px";
@@ -161,7 +167,7 @@ valueAxis.renderer.labels.template.fontSize = "23px";
 
 
 // Create series
-var series = chart.series.push(new am4charts.ColumnSeries());
+var series = chart2.series.push(new am4charts.ColumnSeries());
 series.dataFields.valueY = "ACXIX";
 series.dataFields.categoryX = "Date";
 series.name = "ACXIX";
@@ -172,7 +178,7 @@ series.columns.template.width = am4core.percent(100);
 
 
 
-var series2 = chart.series.push(new am4charts.ColumnSeries());
+var series2 = chart2.series.push(new am4charts.ColumnSeries());
 series2.dataFields.valueY = "SP500TR";
 series2.dataFields.categoryX = "Date";
 series2.name = "S&P 500 TR Index";
@@ -185,20 +191,20 @@ series2.columns.template.width = am4core.percent(100);
 
 
 // Add legend
-chart.legend = new am4charts.Legend();
-chart.legend.labels.template.fontSize = "23px";
-chart.legend.labels.template.truncate = false;
+chart2.legend = new am4charts.Legend();
+chart2.legend.labels.template.fontSize = "23px";
+chart2.legend.labels.template.truncate = false;
 
 
 // Export this stuff
-chart.exporting.menu = new am4core.ExportMenu();
-chart.exporting.menu.items = [{
+chart2.exporting.menu = new am4core.ExportMenu();
+chart2.exporting.menu.items = [{
   "label": "...",
   "menu": [
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart.exporting.filePrefix = "ACX_AnnualReturn";
+chart2.exporting.filePrefix = "ACX_AnnualReturn";
 
 
 // ################################   CHART 3  ACX S&P 500 Down Months (Bar) ################################################
@@ -209,18 +215,18 @@ am4core.useTheme(am4themes_amcharts);
 // Themes end
 
 // Create chart instance
-var chart = am4core.create("chartdiv3", am4charts.XYChart);
+var chart3 = am4core.create("chartdiv3", am4charts.XYChart);
 
 // Add percent sign to all numbers
-chart.numberFormatter.numberFormat = "#.#'%'";
+chart3.numberFormatter.numberFormat = "#.#'%'";
 
 // Set up data source
-chart.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_EXPORT_SPDownMonths.csv";
-chart.dataSource.parser = new am4core.CSVParser();
-chart.dataSource.parser.options.useColumnNames = true;
+chart3.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_EXPORT_SPDownMonths.csv";
+chart3.dataSource.parser = new am4core.CSVParser();
+chart3.dataSource.parser.options.useColumnNames = true;
 
 // Create axes
-var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+var categoryAxis = chart3.xAxes.push(new am4charts.CategoryAxis());
 categoryAxis.dataFields.category = "Date";
 categoryAxis.renderer.labels.template.fontWeight = "Bold";
 categoryAxis.renderer.labels.template.fontSize = "23px";
@@ -235,7 +241,7 @@ categoryAxis.renderer.grid.template.strokeOpacity = .2;
 categoryAxis.renderer.labels.template.dx = -20;
 
 
-var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+var valueAxis = chart3.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.grid.template.disabled = true;
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "23px";
@@ -244,7 +250,7 @@ valueAxis.renderer.labels.template.fontSize = "23px";
 
 
 // Create series
-var series = chart.series.push(new am4charts.ColumnSeries());
+var series = chart3.series.push(new am4charts.ColumnSeries());
 series.dataFields.valueY = "ACXIX";
 series.dataFields.categoryX = "Date";
 series.name = "ACXIX";
@@ -255,7 +261,7 @@ series.columns.template.width = am4core.percent(100);
 
 
 
-var series2 = chart.series.push(new am4charts.ColumnSeries());
+var series2 = chart3.series.push(new am4charts.ColumnSeries());
 series2.dataFields.valueY = "S&P 500 TR Index";
 series2.dataFields.categoryX = "Date";
 series2.name = "S&P 500TR";
@@ -267,17 +273,28 @@ series2.columns.template.width = am4core.percent(100);
 
 
 // Add legend
-chart.legend = new am4charts.Legend();
-chart.legend.labels.template.fontSize = "23px";
-chart.legend.labels.template.truncate = false;
+chart3.legend = new am4charts.Legend();
+chart3.legend.labels.template.fontSize = "23px";
+chart3.legend.labels.template.truncate = false;
 
 
 // Export this stuff
-chart.exporting.menu = new am4core.ExportMenu();
-chart.exporting.menu.items = [{
+chart3.exporting.menu = new am4core.ExportMenu();
+chart3.exporting.menu.items = [{
   "label": "...",
   "menu": [
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart.exporting.filePrefix = "ACX_S&PDownMonths";
+chart3.exporting.filePrefix = "ACX_S&PDownMonths";
+
+// ################################   Export any charts OTHER THAN chart1 ################################################
+
+function loadFrame() {
+     chart2.exporting.export('svg');
+     chart3.exporting.export('svg');
+};
+
+window.onload = setTimeout(loadFrame, 1000);
+                           
+                        
