@@ -1,0 +1,8 @@
+Vehicle Name,Returns,Standard Deviation,Sharpe Ratio FTSE 3-Month T-Bill,ID
+S&P/LSTA Leveraged Loan,3.85,6.03,0.50,1
+JPM EMBI+,5.60,7.83,0.61,2
+Bloomberg Barclays US Corporate High Yield,5.74,7.31,0.67,3
+Bloomberg Barclays US Long Treasury,8.78,11.08,0.72,4
+Bloomberg Barclays US Municipals,4.54,3.53,1.05,5
+Bloomberg Barclays CMBS,4.06,3.20,1.01,6
+Bloomberg Barclays US Aggregate,4.09,3.02,1.08,7

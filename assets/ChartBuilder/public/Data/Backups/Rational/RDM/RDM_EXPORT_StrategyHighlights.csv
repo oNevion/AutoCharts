@@ -1,6 +1,18 @@
 Label,Value,ID
-Commodities,49.26,1
-Currencies,21.96,2
-Sovereign Bonds,14.37,3
-Stocks,14.16,4
-Volatility,0.25,5
+Bonds,28.12,1
+Currencies,5.58,2
+Energies,16.27,3
+Grains,7.11,4
+Indices,17.58,5
+Meats,6.9,6
+Metals,12.42,7
+Rates,0,8
+Softs,5.89,9
+Volatility,0.12,10
+,,
+,,
+,,
+,,
+,,
+,,
+,,

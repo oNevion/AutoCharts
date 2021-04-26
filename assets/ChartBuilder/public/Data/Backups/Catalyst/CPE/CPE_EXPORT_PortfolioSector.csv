@@ -1,13 +1,13 @@
 Label,Portfolio,S&P 500,ID
-Information Technology,33.4,27.6,1
-Communication Services,16.9,10.8,2
-Consumer Discretionary,15.6,12.7,3
-Industrials,15.5,8.4,4
-Health Care,14.4,13.5,5
-Materials,3.7,2.6,6
-Cash,0.5,0.0,7
-Financials,0.0,10.4,8
-Consumer Staples,0.0,6.5,9
-Real Estate,0.0,2.4,10
-Utilities,0.0,2.8,11
-Energy,0.0,2.3,12
+Information Technology,27.3,26.6,1
+Consumer Discretionary,19.6,12.4,2
+Industrials,14.6,8.9,3
+Financials,11.7,11.3,4
+Health Care,11.4,13.0,5
+Communication Services,7.9,10.9,6
+Materials,6.5,2.7,7
+Cash,0.9,0.0,8
+Consumer Staples,0.0,6.1,9
+Real Estate,0.0,2.5,10
+Utilities,0.0,2.7,11
+Energy,0.0,2.8,12

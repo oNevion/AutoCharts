@@ -39,7 +39,7 @@ module.exports = async (server) => {
                         exportChart = () => {
 
                             chart1.exporting.events.on('exportfinished', () => {
-                                setTimeout(callback, 1250);
+                                setTimeout(callback, 2200);
                             });
 
                             // Start the export
