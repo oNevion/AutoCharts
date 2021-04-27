@@ -1,3 +1,26 @@
+#RequireAdmin
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
+#AutoIt3Wrapper_Outfile=AutoCharts.exe
+#AutoIt3Wrapper_Outfile_x64=AutoCharts64.exe
+#AutoIt3Wrapper_UseUpx=y
+#AutoIt3Wrapper_Compile_Both=y
+#AutoIt3Wrapper_UseX64=y
+#AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
+#AutoIt3Wrapper_Res_Fileversion=2.0.0.3
+#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
+#AutoIt3Wrapper_Res_ProductName=AutoCharts
+#AutoIt3Wrapper_Res_ProductVersion=2.0.0.2
+#AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
+#AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
+#AutoIt3Wrapper_Res_SaveSource=y
+#AutoIt3Wrapper_Res_Language=1033
+#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
+#AutoIt3Wrapper_Res_HiDpi=y
+#AutoIt3Wrapper_Add_Constants=n
+#AutoIt3Wrapper_Run_Tidy=y
+#AutoIt3Wrapper_Run_Au3Stripper=y
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #include <Array.au3>
 #include <File.au3>
 #include <MsgBoxConstants.au3>
@@ -10,6 +33,7 @@
 #include <MsgBoxConstants.au3>
 #include <EditConstants.au3>
 #include <GUIListBox.au3>
+
 #Region ### GLOBAL Arrays and Variables
 Global $aCatalystCheck[24]
 Global $aRationalCheck[8]
@@ -26,6 +50,10 @@ Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
 Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $FundFamily = ""
 Global $LogFile
+
+
+
+
 
 ;Predeclare the variables with dummy values to prevent firing the Case statements, only for GUI this time
 Global $GUI_UserSettings = 9999
@@ -172,9 +200,10 @@ Func RunMainGui()
 	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 	GUICtrlSetBkColor(-1, 0xC0DCC0)
 	GUICtrlCreateTabItem("")
-	$Pic1 = GUICtrlCreatePic("C:\Users\mrjak\Documents\SublimeProjects\AutoCharts\assets\Wizard\main-img.jpg", 0, 0, 569, 167, BitOR($GUI_SS_DEFAULT_PIC, $SS_CENTERIMAGE))
+	$Pic1 = GUICtrlCreatePic(@ScriptDir & "\assets\GUI_Menus\main-img.bmp", 0, 0, 569, 167, BitOR($GUI_SS_DEFAULT_PIC, $SS_CENTERIMAGE))
+	GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
 	Global $ProgressBar = GUICtrlCreateProgress(8, 536, 550, 17)
-	Global $UpdateLabel = GUICtrlCreateLabel("Click Process Updates to Start", 16, 560, 148, 17)
+	Global $UpdateLabel = GUICtrlCreateLabel("Click Process Updates to Start", 16, 560, 540, 17)
 
 	GUISetState()
 
@@ -326,7 +355,7 @@ Func RunMainGui()
 						_FileWriteLog($LogFile, "############################### END OF RUN - CATALYST ###############################") ; Write to the logfile
 						FileClose($LogFile) ; Close the filehandle to release the file.
 
-						Exit
+						;Exit
 
 					Case $BTN_RunRational
 						$FundFamily = "Rational"
@@ -338,7 +367,7 @@ Func RunMainGui()
 						_FileWriteLog($LogFile, "############################### END OF RUN - RATIONAL ###############################") ; Write to the logfile
 						FileClose($LogFile) ; Close the filehandle to release the file.
 
-						Exit
+						;Exit
 
 					Case $BTN_RunStrategyShares
 						$FundFamily = "StrategyShares"
@@ -350,7 +379,7 @@ Func RunMainGui()
 						_FileWriteLog($LogFile, "############################### END OF RUN - STRATEGY SHARES ###############################") ; Write to the logfile
 						FileClose($LogFile) ; Close the filehandle to release the file.
 
-						Exit
+						;Exit
 
 
 
@@ -483,7 +512,7 @@ Func DetermineDates()
 
 	$text = FileReadLine($file, 3)
 
-	$tout1 = StringReplace($text, '"March 31, 2021",2', '"' & $QtrToMonth & ' ' & $DayNumber & ',' & $INPT_CurYear & '",2' & @CRLF)
+	$tout1 = StringReplace($text, '"March 31, 2021",2', '"' & $QtrToMonth & ' ' & $DayNumber & ', ' & $INPT_CurYear & '",2' & @CRLF)
 	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 4)
