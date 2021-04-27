@@ -1,37 +1,44 @@
-## Welcome to GitHub Pages
+# AutoCharts
 
-You can use the [editor on GitHub](https://github.com/oNevion/AutoCharts/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+AutoCharts is a program that automatically updates the Catalyst/Rational/Strategy Shares fund fact sheets and other marketing material every quarter when new financial data is available. This is a program designed with various technologies like AutoIt, Node.JS, and amCharts.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Prerequisites
 
-### Markdown
+Please make sure you have the following installed on your system:
+* Node.JS
+* Dropbox
+* Microsoft Excel
+* Adobe InDesign
+* Datalinker Plugin for Adobe InDesign
+* Firefox
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Please note that Node.js is included in the installer file for AutoCharts2.0. So it should install for you if you have not installed seperately.
 
-```markdown
-Syntax highlighted code block
+The Smart Sync "AutoCharts&Tables" folder in the shared Dropbox folder must be set to Local. For more information on Dropbox's Smart Sync, go here:  
+https://help.dropbox.com/installs-integrations/sync-uploads/smart-sync
 
-# Header 1
-## Header 2
-### Header 3
+## Installation
 
-- Bulleted
-- List
+Use the installer file here:   
+[https://www.dropbox.com/sh/4ccj4zkz9q5ychg/AACQbPWlp15-9ePd69bPTZ0ba?dl=0](https://www.dropbox.com/sh/4ccj4zkz9q5ychg/AACQbPWlp15-9ePd69bPTZ0ba?dl=0)
 
-1. Numbered
-2. List
+## Usage
 
-**Bold** and _Italic_ and `Code` text
+* Double check the prerequisites above!
 
-[Link](url) and ![Image](src)
-```
+* Before you run through an update, you need to update the settings by going to Settings > Edit  
+![alt](docs/img/autocharts1.gif)  
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+* Once you have updated the backup file located in Dropbox (Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files) you must **SYNC** it with AutoCharts. To do this, simply select "Sync Files" in the Files menu.  
+![alt](docs/img/autocharts2.gif)  
 
-### Jekyll Themes
+* Lastly, to update a fund, just select it and click "Process Updates"  
+![alt](docs/img/autocharts3.gif)  
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/oNevion/AutoCharts/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Requests and Future Development
+AutoCharts2 is still in active development and more features will be coming soon. Please feel free to request new features with me at jakob.bradshaw@catalystmf.com
 
-### Support or Contact
+This program was built and designed for the internal use of the marketing department of Catalyst Funds. 
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
