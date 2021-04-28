@@ -2,10 +2,7 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
-#AutoIt3Wrapper_Outfile_x64=AutoCharts64.exe
 #AutoIt3Wrapper_UseUpx=y
-#AutoIt3Wrapper_Compile_Both=y
-#AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
 #AutoIt3Wrapper_Res_Fileversion=2.0.0.3
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
@@ -17,7 +14,7 @@
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Res_HiDpi=y
-#AutoIt3Wrapper_Add_Constants=n
+#AutoIt3Wrapper_Add_Constants=y
 #AutoIt3Wrapper_Run_Tidy=y
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
