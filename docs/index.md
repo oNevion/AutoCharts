@@ -27,13 +27,13 @@ Use the installer file here:
 * Double check the prerequisites above!
 
 * Before you run through an update, you need to update the settings by going to Settings > Edit  
-![alt](docs/img/autocharts1.gif)  
+![alt](img/autocharts1.gif)  
 
 * Once you have updated the backup file located in Dropbox (Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files) you must **SYNC** it with AutoCharts. To do this, simply select "Sync Files" in the Files menu.  
-![alt](docs/img/autocharts2.gif)  
+![alt](img/autocharts2.gif)  
 
 * Lastly, to update a fund, just select it and click "Process Updates"  
-![alt](docs/img/autocharts3.gif)  
+![alt](img/autocharts3.gif)  
 
 ## Requests and Future Development
 AutoCharts2 is still in active development and more features will be coming soon. Please feel free to request new features with me at jakob.bradshaw@catalystmf.com
