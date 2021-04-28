@@ -265,7 +265,7 @@ chart3.exporting.filePrefix = "GLDB_GoldExposurePie";
 
 // Create chart instance
 var chart4 = am4core.create("chartdiv4", am4charts.PieChart);
-chart4.innerRadius = am4core.percent(40);
+chart4.innerRadius = am4core.percent(60);
 
 // Set up data source
 chart4.dataSource.url = "../Data/Backups/StrategyShares/GLDB/GLDB_EXPORT_BondExposurePie.csv";
@@ -414,6 +414,7 @@ categoryAxis.renderer.labels.template.fontSize = "25px";
 categoryAxis.renderer.cellStartLocation = 0.1;
 categoryAxis.renderer.cellEndLocation = 0.9;
 categoryAxis.renderer.grid.template.strokeOpacity = .2;
+categoryAxis.renderer.labels.template.disabled = true;
 
 
 
@@ -551,6 +552,7 @@ series.labels.template.disabled = true;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
+  am4core.color("#E7E7E7"),
   am4core.color("#0d345e"),
   am4core.color("#08da94"),
   am4core.color("#6aaadd"),

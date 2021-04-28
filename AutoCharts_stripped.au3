@@ -526,20 +526,19 @@ $CurrentFund = $FamilySwitch[$a]
 GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund)
 GUICtrlSetData($ProgressBar, 15)
 FileCopy(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")
-If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
-RunCSVConvert4Institution()
-Else
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 _FileWriteLog($LogFile, "~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 _FileWriteLog($LogFile, "Converted " & $CurrentFund & ".xlsx file to csv")
 GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & ".xlsx file to csv")
+If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
+RunCSVConvert4Institution()
 EndIf
-GUICtrlSetData($ProgressBar, 25)
 If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 RunCSVConvert4Brochure()
 EndIf
+GUICtrlSetData($ProgressBar, 25)
 FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)
 FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\" & $FundFamily & "\" & $CurrentFund & "\Links\" & "*.csv", 1)
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)

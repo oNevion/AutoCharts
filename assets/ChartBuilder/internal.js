@@ -22,7 +22,7 @@ module.exports = async (server) => {
     options.setPreference('browser.download.dir', __dirname);
 
     // Open the browser headless
-    //options.addArguments('-headless');
+    options.addArguments('-headless');
 
     let driver = await new Builder()
         .forBrowser('firefox')

@@ -1,7 +1,7 @@
 Label,ACXIX,S&P 500 TR,ID
-Standard Deviation,8.89,15.82,1
-Sharpe Ratio,0.43,0.60,2
-Alpha (vs. S&P 500 TR),3.02,-,3
-Beta vs. (vs. S&P 500 TR),0.09,-,4
-R-squared (vs. S&P 500 TR),0.03,-,5
+Standard Deviation,8.81,14.93,1
+Sharpe Ratio,0.21,0.47,2
+Alpha (vs. S&P 500 TR),1.63,-,3
+Beta vs. (vs. S&P 500 TR),0.03,-,4
+R-squared (vs. S&P 500 TR),0.00,-,5
 Maximum Drawdown,-13.35,-50.95,6
