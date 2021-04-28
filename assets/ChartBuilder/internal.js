@@ -39,13 +39,13 @@ module.exports = async (server) => {
                         exportChart = () => {
 
                             chart1.exporting.events.on('exportfinished', () => {
-                                setTimeout(callback, 2200);
+                                setTimeout(callback, 1800);
                             });
 
                             // Start the export
 
 
-                            chart1.exporting.export('svg');
+                            chart1.exporting.export('png');
 
 
 
