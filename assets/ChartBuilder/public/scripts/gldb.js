@@ -58,9 +58,6 @@ body {
 // append to DOM
 document.head.appendChild(style);
 
-
-
-
 // ################################   CHART 1 GLDB - Gold Vs US Dollar (Line) ################################################
 
 
@@ -177,7 +174,7 @@ valueAxis.renderer.minGridDistance = 60;
 valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "#,###'%'";
 
-let series2 = chart2.series.push(new am4charts.LineSeries());
+var series2 = chart2.series.push(new am4charts.LineSeries());
 series2.dataFields.valueY = "% Increase in Price of Gold";
 series2.dataFields.dateX = "Date";
 series2.name = "% Increase in Price of Gold";
@@ -267,7 +264,7 @@ chart3.exporting.filePrefix = "GLDB_GoldExposurePie";
 // ################################ CHART 4 GLDB - Bond Exposure (Pie) ################################################
 
 // Create chart instance
-var chart4 = am4core.create("chartdiv3", am4charts.PieChart);
+var chart4 = am4core.create("chartdiv4", am4charts.PieChart);
 chart4.innerRadius = am4core.percent(40);
 
 // Set up data source
@@ -594,6 +591,7 @@ chart8.exporting.filePrefix = "GLDB_SectorWeights";
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
+     chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
      chart4.exporting.export('svg');

@@ -508,6 +508,7 @@ chart6.exporting.filePrefix = "CFR_Brochure_US_YieldCurve";
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
+     chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
      chart4.exporting.export('svg');

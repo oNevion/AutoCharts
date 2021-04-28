@@ -214,6 +214,7 @@ chart2.exporting.filePrefix = "CLP_SectorAllocation";
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
+     chart1.exporting.export('svg');
      chart2.exporting.export('svg');
 };
 

@@ -1,5 +1,5 @@
-const Hapi = require('hapi');
-const Inert = require('inert');
+const Hapi = require('@hapi/hapi');
+const Inert = require('@hapi/inert');
 const exportChart = require('./internal');
 const server = new Hapi.Server({
     host: 'localhost',

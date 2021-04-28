@@ -172,6 +172,7 @@ chart2.exporting.filePrefix = "BUY_PortfolioSector";
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
+     chart1.exporting.export('svg');
      chart2.exporting.export('svg');
 };
 

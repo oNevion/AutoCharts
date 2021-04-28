@@ -412,6 +412,7 @@ chart4.exporting.filePrefix = "HRS_I_RiskRewardProfile";
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
+     chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
      chart4.exporting.export('svg');

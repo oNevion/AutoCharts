@@ -291,6 +291,7 @@ chart3.exporting.filePrefix = "ACX_S&PDownMonths";
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
+     chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
 };

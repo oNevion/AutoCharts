@@ -190,6 +190,7 @@ chart2.exporting.filePrefix = "MLX_I_10k";
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
+     chart1.exporting.export('svg');
      chart2.exporting.export('svg');
 };
 

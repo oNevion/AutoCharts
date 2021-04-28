@@ -113,3 +113,11 @@ chart1.exporting.menu.items = [{
   ]
 }];
 chart1.exporting.filePrefix = "IOX_10k";
+
+// ################################   Export any charts OTHER THAN chart1 ################################################
+
+function loadFrame() {
+     chart1.exporting.export('svg');
+};
+
+window.onload = setTimeout(loadFrame, 1800);
