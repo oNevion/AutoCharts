@@ -5,9 +5,9 @@
         "node": ">=6.0.0"
     },
     "devDependencies": {
-        "selenium-webdriver": "4.0.0-alpha.1",
-        "geckodriver": "1.15.1",
-        "hapi": "18.1.0",
-        "inert": "5.1.2"
+        "selenium-webdriver": "4.0.0-beta.3",
+        "geckodriver": "1.22.x",
+        "@hapi/hapi": "20.x",
+        "@hapi/inert": "6.x"
     }
 }
