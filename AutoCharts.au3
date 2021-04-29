@@ -346,20 +346,27 @@ Func RunMainGui()
 
 
 					Case $BTN_RunCatalyst
-						$FundFamily = "Catalyst"
-						$FamilySwitch = $aCatalystCheck
-						GUICtrlSetData($ProgressBar, 10)
+						VerifyDropbox()
+						If $bDBVerified = True Then
+							$FundFamily = "Catalyst"
+							$FamilySwitch = $aCatalystCheck
+							GUICtrlSetData($ProgressBar, 10)
 
 
-						RunCSVConvert()
-						CreateCharts()
+							RunCSVConvert()
+							CreateCharts()
 
-						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-						_FileWriteLog($LogFile, "############################### END OF RUN - CATALYST ###############################") ; Write to the logfile
-						FileClose($LogFile) ; Close the filehandle to release the file.
-						GUICtrlSetData($ProgressBar, 0)
-						MsgBox(0, "Finished", "The process has finished.")
-						GUICtrlSetData($UpdateLabel, "The process has finished.")
+							$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+							_FileWriteLog($LogFile, "############################### END OF RUN - CATALYST ###############################") ; Write to the logfile
+							FileClose($LogFile) ; Close the filehandle to release the file.
+							GUICtrlSetData($ProgressBar, 0)
+							MsgBox(0, "Finished", "The process has finished.")
+							GUICtrlSetData($UpdateLabel, "The process has finished.")
+						Else
+							If @error = 50 Then
+								MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+							EndIf
+						EndIf
 
 
 					Case $BTN_RunRational
@@ -429,13 +436,15 @@ Func RunMainGui()
 								$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 								$bDBVerified = IniRead($ini, 'Settings', 'DBVerified', '')
 
-
 								DetermineDates()
 								MsgBox(0, "Success", "Your settings were saved.")
 							Else
 								MsgBox(0, "Error!", "An error occured")
 							EndIf
 							VerifyDropbox()
+							If @error = 50 Then
+								MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.")
+							EndIf
 
 
 							; Close Settings Window after saving file.
@@ -449,6 +458,7 @@ Func RunMainGui()
 	WEnd
 EndFunc   ;==>RunMainGui
 #EndRegion ### END Koda GUI section ###
+
 
 
 #Region ### START Koda GUI section ### Form=C:\Users\mrjak\Documents\SublimeProjects\AutoCharts\assets\GUI_UserSettings.kxf
@@ -478,8 +488,7 @@ Func VerifyDropbox()
 	Else
 		$bDBVerified = False
 		IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
-		MsgBox(0, "Error!", "Your Dropbox directory can not be verified. Please try again.")
-
+		SetError(50)
 	EndIf
 EndFunc   ;==>VerifyDropbox
 
@@ -556,7 +565,7 @@ Func DetermineDates()
 
 	$text = FileReadLine($file, 4)
 
-	$tout1 = StringReplace($text, '1Q 2021,3', $Select_Quarter & ' ' & $INPT_CurYear & ',3' & @CRLF)
+	$tout1 = StringReplace($text, 'Q1 2021,3', $Select_Quarter & ' ' & $INPT_CurYear & ',3' & @CRLF)
 	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 5)
