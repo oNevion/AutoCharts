@@ -18,11 +18,6 @@ body {
 		height:500px!important;
     }
 
-        #chartdiv2 {
-        width:1200px!important;
-		height:500px!important;
-    }
-
      #chartdiv3 {
         width:1200px!important;
     height:500px!important;
@@ -161,151 +156,151 @@ chart1.exporting.menu.items = [{
 chart1.exporting.filePrefix = "RDM_10k";
 
 
-// ################################ CHART 2 RDM - Asset Allocation (Area) ################################################
+// // ################################ CHART 2 RDM - Asset Allocation (Area) ################################################
 
-// Themes begin
-am4core.useTheme(am4themes_amcharts);
-// Themes end
+// // Themes begin
+// am4core.useTheme(am4themes_amcharts);
+// // Themes end
 
-// Create chart instance
-var chart2 = am4core.create("chartdiv2", am4charts.XYChart);
+// // Create chart instance
+// var chart2 = am4core.create("chartdiv2", am4charts.XYChart);
 
-// Set up data source
-chart2.dataSource.url = "../Data/Backups/Rational/RDM/RDM_EXPORT_AssetAllocationChart.csv";
-chart2.dataSource.parser = new am4core.CSVParser();
-chart2.dataSource.parser.options.useColumnNames = true;
-chart2.colors.list = [
-  am4core.color("#a2f5d9"),
-  am4core.color("#0d345e"),
-  am4core.color("#6aaadd"),
-  am4core.color("#08da94"),
-    am4core.color("#444444"),
-  am4core.color("#bde1ff"),
-  am4core.color("#adadc4"),
-  am4core.color("#242424")
-];
+// // Set up data source
+// chart2.dataSource.url = "../Data/Backups/Rational/RDM/RDM_EXPORT_AssetAllocationChart.csv";
+// chart2.dataSource.parser = new am4core.CSVParser();
+// chart2.dataSource.parser.options.useColumnNames = true;
+// chart2.colors.list = [
+//   am4core.color("#a2f5d9"),
+//   am4core.color("#0d345e"),
+//   am4core.color("#6aaadd"),
+//   am4core.color("#08da94"),
+//     am4core.color("#444444"),
+//   am4core.color("#bde1ff"),
+//   am4core.color("#adadc4"),
+//   am4core.color("#242424")
+// ];
 
-// Set input format for the dates
-chart2.dateFormatter.inputDateFormat = "yyyy-MM-dd";
-chart2.numberFormatter.numberFormat = "'$'#,###.";
+// // Set input format for the dates
+// chart2.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+// chart2.numberFormatter.numberFormat = "'$'#,###.";
 
-// Create axes
-var dateAxis = chart2.xAxes.push(new am4charts.DateAxis());
-dateAxis.renderer.labels.template.fontWeight = "Bold";
-dateAxis.renderer.labels.template.fontSize = "20px";
-dateAxis.renderer.grid.template.disabled = true;
-dateAxis.renderer.minGridDistance = 30;
-dateAxis.renderer.labels.template.dx = -40;
-dateAxis.renderer.labels.template.location = 1;
-dateAxis.renderer.labels.template.rotation = -60;
-dateAxis.renderer.labels.template.verticalCenter = "middle";
-dateAxis.renderer.labels.template.horizontalCenter = "left";
-dateAxis.dateFormats.setKey("month", "MM/yyyy");
-dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
+// // Create axes
+// var dateAxis = chart2.xAxes.push(new am4charts.DateAxis());
+// dateAxis.renderer.labels.template.fontWeight = "Bold";
+// dateAxis.renderer.labels.template.fontSize = "20px";
+// dateAxis.renderer.grid.template.disabled = true;
+// dateAxis.renderer.minGridDistance = 30;
+// dateAxis.renderer.labels.template.dx = -40;
+// dateAxis.renderer.labels.template.location = 1;
+// dateAxis.renderer.labels.template.rotation = -60;
+// dateAxis.renderer.labels.template.verticalCenter = "middle";
+// dateAxis.renderer.labels.template.horizontalCenter = "left";
+// dateAxis.dateFormats.setKey("month", "MM/yyyy");
+// dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
 
-var valueAxis = chart2.yAxes.push(new am4charts.ValueAxis());
-valueAxis.renderer.labels.template.fontWeight = "Bold";
-valueAxis.renderer.labels.template.fontSize = "21px";
-valueAxis.renderer.minGridDistance = 30;
-valueAxis.numberFormatter = new am4core.NumberFormatter();
-valueAxis.numberFormatter.numberFormat = "#,###'%'";
+// var valueAxis = chart2.yAxes.push(new am4charts.ValueAxis());
+// valueAxis.renderer.labels.template.fontWeight = "Bold";
+// valueAxis.renderer.labels.template.fontSize = "21px";
+// valueAxis.renderer.minGridDistance = 30;
+// valueAxis.numberFormatter = new am4core.NumberFormatter();
+// valueAxis.numberFormatter.numberFormat = "#,###'%'";
 
-var series = chart2.series.push(new am4charts.LineSeries());
-series.dataFields.dateX = "Date";
-series.name = "US Stocks";
-series.dataFields.valueY = "US Stocks";
-series.fillOpacity = 1;
-series.stacked = true;
+// var series = chart2.series.push(new am4charts.LineSeries());
+// series.dataFields.dateX = "Date";
+// series.name = "US Stocks";
+// series.dataFields.valueY = "US Stocks";
+// series.fillOpacity = 1;
+// series.stacked = true;
 
-var series2 = chart2.series.push(new am4charts.LineSeries());
-series2.name = "Foreign Stocks";
-series2.dataFields.dateX = "Date";
-series2.dataFields.valueY = "Foreign Stocks";
-series2.sequencedInterpolation = true;
-series2.fillOpacity = 1;
-series2.stacked = true;
+// var series2 = chart2.series.push(new am4charts.LineSeries());
+// series2.name = "Foreign Stocks";
+// series2.dataFields.dateX = "Date";
+// series2.dataFields.valueY = "Foreign Stocks";
+// series2.sequencedInterpolation = true;
+// series2.fillOpacity = 1;
+// series2.stacked = true;
 
-var series3 = chart2.series.push(new am4charts.LineSeries());
-series3.name = "US Bonds";
-series3.dataFields.dateX = "Date";
-series3.dataFields.valueY = "US Bonds";
-series3.sequencedInterpolation = true;
-series3.fillOpacity = 1;
-series3.defaultState.transitionDuration = 1000;
-series3.stacked = true;
+// var series3 = chart2.series.push(new am4charts.LineSeries());
+// series3.name = "US Bonds";
+// series3.dataFields.dateX = "Date";
+// series3.dataFields.valueY = "US Bonds";
+// series3.sequencedInterpolation = true;
+// series3.fillOpacity = 1;
+// series3.defaultState.transitionDuration = 1000;
+// series3.stacked = true;
 
-var series4 = chart2.series.push(new am4charts.LineSeries());
-series4.name = "Foreign Bonds";
-series4.dataFields.dateX = "Date";
-series4.dataFields.valueY = "Foreign Bonds";
-series4.sequencedInterpolation = true;
-series4.fillOpacity = 1;
-series4.defaultState.transitionDuration = 1000;
-series4.stacked = true;
-
-
-var series5 = chart2.series.push(new am4charts.LineSeries());
-series5.name = "US Real Estate";
-series5.dataFields.dateX = "Date";
-series5.dataFields.valueY = "US Real Estate";
-series5.sequencedInterpolation = true;
-series5.fillOpacity = 1;
-series5.defaultState.transitionDuration = 1000;
-series5.stacked = true;
+// var series4 = chart2.series.push(new am4charts.LineSeries());
+// series4.name = "Foreign Bonds";
+// series4.dataFields.dateX = "Date";
+// series4.dataFields.valueY = "Foreign Bonds";
+// series4.sequencedInterpolation = true;
+// series4.fillOpacity = 1;
+// series4.defaultState.transitionDuration = 1000;
+// series4.stacked = true;
 
 
-var series6 = chart2.series.push(new am4charts.LineSeries());
-series6.name = "Commodities";
-series6.dataFields.dateX = "Date";
-series6.dataFields.valueY = "Commodities";
-series6.sequencedInterpolation = true;
-series6.fillOpacity = 1;
-series6.defaultState.transitionDuration = 1000;
-series6.stacked = true;
+// var series5 = chart2.series.push(new am4charts.LineSeries());
+// series5.name = "US Real Estate";
+// series5.dataFields.dateX = "Date";
+// series5.dataFields.valueY = "US Real Estate";
+// series5.sequencedInterpolation = true;
+// series5.fillOpacity = 1;
+// series5.defaultState.transitionDuration = 1000;
+// series5.stacked = true;
 
 
-var series7 = chart2.series.push(new am4charts.LineSeries());
-series7.name = "Gold";
-series7.dataFields.dateX = "Date";
-series7.dataFields.valueY = "Gold";
-series7.sequencedInterpolation = true;
-series7.fillOpacity = 1;
-series7.defaultState.transitionDuration = 1000;
-series7.stacked = true;
-
-var series8 = chart2.series.push(new am4charts.LineSeries());
-series8.name = "Currencies";
-series8.dataFields.dateX = "Date";
-series8.dataFields.valueY = "Currencies";
-series8.sequencedInterpolation = true;
-series8.fillOpacity = 1;
-series8.defaultState.transitionDuration = 1000;
-series8.stacked = true;
+// var series6 = chart2.series.push(new am4charts.LineSeries());
+// series6.name = "Commodities";
+// series6.dataFields.dateX = "Date";
+// series6.dataFields.valueY = "Commodities";
+// series6.sequencedInterpolation = true;
+// series6.fillOpacity = 1;
+// series6.defaultState.transitionDuration = 1000;
+// series6.stacked = true;
 
 
-// Add legend
-chart2.legend = new am4charts.Legend();
-chart2.legend.position = "right";
-chart2.legend.maxWidth = undefined;
-chart2.legend.maxheight = 400;
-chart2.legend.valueLabels.template.align = "right";
-chart2.legend.valueLabels.template.textAlign = "end";  
-chart2.legend.labels.template.minWidth = 80;
-chart2.legend.labels.template.truncate = false;
-chart2.legend.itemContainers.template.marginTop = -75;
+// var series7 = chart2.series.push(new am4charts.LineSeries());
+// series7.name = "Gold";
+// series7.dataFields.dateX = "Date";
+// series7.dataFields.valueY = "Gold";
+// series7.sequencedInterpolation = true;
+// series7.fillOpacity = 1;
+// series7.defaultState.transitionDuration = 1000;
+// series7.stacked = true;
+
+// var series8 = chart2.series.push(new am4charts.LineSeries());
+// series8.name = "Currencies";
+// series8.dataFields.dateX = "Date";
+// series8.dataFields.valueY = "Currencies";
+// series8.sequencedInterpolation = true;
+// series8.fillOpacity = 1;
+// series8.defaultState.transitionDuration = 1000;
+// series8.stacked = true;
+
+
+// // Add legend
+// chart2.legend = new am4charts.Legend();
+// chart2.legend.position = "right";
+// chart2.legend.maxWidth = undefined;
+// chart2.legend.maxheight = 400;
+// chart2.legend.valueLabels.template.align = "right";
+// chart2.legend.valueLabels.template.textAlign = "end";  
+// chart2.legend.labels.template.minWidth = 80;
+// chart2.legend.labels.template.truncate = false;
+// chart2.legend.itemContainers.template.marginTop = -75;
 
 
 
 
-// Export this stuff
-chart2.exporting.menu = new am4core.ExportMenu();
-chart2.exporting.menu.items = [{
-  "label": "...",
-  "menu": [
-          { "type": "svg", "label": "SVG" },
-  ]
-}];
-chart2.exporting.filePrefix = "RDM_AssetAllocation";
+// // Export this stuff
+// chart2.exporting.menu = new am4core.ExportMenu();
+// chart2.exporting.menu.items = [{
+//   "label": "...",
+//   "menu": [
+//           { "type": "svg", "label": "SVG" },
+//   ]
+// }];
+// chart2.exporting.filePrefix = "RDM_AssetAllocation";
 
 
 // ################################ CHART 3 RDM - Volatility Chart ################################################
@@ -1020,7 +1015,6 @@ chart11.exporting.filePrefix = "RDM_Brochure_Export_15WorstQuarters";
 
 function loadFrame() {
      chart1.exporting.export('svg');
-     chart2.exporting.export('svg');
      chart3.exporting.export('svg');
      chart4.exporting.export('svg');
      chart5.exporting.export('svg');
@@ -1032,6 +1026,6 @@ function loadFrame() {
      chart11.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1800);
+window.onload = setTimeout(loadFrame, 2200);
                            
                         
