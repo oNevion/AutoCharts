@@ -1,8 +1,9 @@
 
 builds/2.0.0/AutoCharts2.0.0_Installer.exe
-*.log
-*.csv
-*.log
+**.log
+**.csv
+**.log
 AutoCharts.log
-*.csv
+**.csv
 settings.ini
+BackUp/
