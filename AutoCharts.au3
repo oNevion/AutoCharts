@@ -71,7 +71,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.0", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.1.1", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	$mSyncFiles = GUICtrlCreateMenuItem("&Pull Data From Dropbox", $mFile)
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
