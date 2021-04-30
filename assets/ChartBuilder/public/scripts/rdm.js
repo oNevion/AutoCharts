@@ -425,7 +425,7 @@ series.hiddenState.properties.startAngle = -90;
 
 // Add legend
 chart4.legend = new am4charts.Legend();
-chart4.legend.position = "bottom";
+chart4.legend.position = "right";
 chart4.legend.maxWidth = undefined;
 chart4.legend.maxheight = 400;
 chart4.legend.valueLabels.template.align = "right";
