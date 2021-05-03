@@ -147,3 +147,51 @@
 2021-05-03 11:57:22 : ~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~
 2021-05-03 11:57:22 : Updated Rational Expense Ratios
 2021-05-03 11:57:22 : ############################### END OF RUN - RATIONAL ###############################
+2021-05-03 15:36:38 : Synced Dropbox data with Autocharts Data
+2021-05-03 15:39:47 : ~~~~~~~~~~~~ GLDB CSV CONVERSION START ~~~~~~~~~~~~
+2021-05-03 15:39:47 : Converted GLDB.xlsx file to csv
+2021-05-03 15:39:50 : ~~~~~~~~~~~~ GLDB CSV CONVERSION START ~~~~~~~~~~~~
+2021-05-03 15:39:50 : Converted GLDB.xlsx and GLDB-institutional.xlsx files to csv
+2021-05-03 15:39:50 : Moved the GLDB.csv files to the fund's InDesign Links folder in Dropbox
+2021-05-03 15:39:50 : Deleted remaining GLDB.xlsx files from CSV Conversion directory
+2021-05-03 15:39:50 : ~~~~~~~~~~~~ GLDB CHART GENERATION START ~~~~~~~~~~~~
+2021-05-03 15:39:50 : Created HTML file for GLDB chart generation
+2021-05-03 15:39:50 : Initializing Local Server for amCharts
+2021-05-03 15:39:59 : GLDB charts generated in SVG format using amCharts
+2021-05-03 15:40:00 : GLDB charts moved to the funds InDesign Links folder
+2021-05-03 15:40:00 : ############################### END OF RUN - STRATEGY SHARES ###############################
+2021-05-03 15:40:45 : Pulled Strategy Shares Data from Dropbox
+2021-05-03 15:40:48 : ~~~~~~~~~~~~ GLDB CSV CONVERSION START ~~~~~~~~~~~~
+2021-05-03 15:40:48 : Converted GLDB.xlsx file to csv
+2021-05-03 15:40:51 : ~~~~~~~~~~~~ GLDB CSV CONVERSION START ~~~~~~~~~~~~
+2021-05-03 15:40:51 : Converted GLDB.xlsx and GLDB-institutional.xlsx files to csv
+2021-05-03 15:40:51 : Moved the GLDB.csv files to the fund's InDesign Links folder in Dropbox
+2021-05-03 15:40:51 : Deleted remaining GLDB.xlsx files from CSV Conversion directory
+2021-05-03 15:40:51 : ~~~~~~~~~~~~ GLDB CHART GENERATION START ~~~~~~~~~~~~
+2021-05-03 15:40:51 : Created HTML file for GLDB chart generation
+2021-05-03 15:40:51 : Initializing Local Server for amCharts
+2021-05-03 15:40:59 : GLDB charts generated in SVG format using amCharts
+2021-05-03 15:40:59 : GLDB charts moved to the funds InDesign Links folder
+2021-05-03 15:40:59 : ############################### END OF RUN - STRATEGY SHARES ###############################
+2021-05-03 15:45:40 : Pulled Catalyst Data from Dropbox
+2021-05-03 15:45:42 : ~~~~~~~~~~~~ ACX CSV CONVERSION START ~~~~~~~~~~~~
+2021-05-03 15:45:42 : Converted ACX.xlsx file to csv
+2021-05-03 15:45:42 : Moved the ACX.csv files to the fund's InDesign Links folder in Dropbox
+2021-05-03 15:45:42 : Deleted remaining ACX.xlsx files from CSV Conversion directory
+2021-05-03 15:45:42 : ~~~~~~~~~~~~ ACX CHART GENERATION START ~~~~~~~~~~~~
+2021-05-03 15:45:42 : Created HTML file for ACX chart generation
+2021-05-03 15:45:42 : Initializing Local Server for amCharts
+2021-05-03 15:45:49 : ACX charts generated in SVG format using amCharts
+2021-05-03 15:45:49 : ACX charts moved to the funds InDesign Links folder
+2021-05-03 15:45:49 : ############################### END OF RUN - CATALYST ###############################
+2021-05-03 15:46:10 : Pulled Rational Data from Dropbox
+2021-05-03 15:46:12 : ~~~~~~~~~~~~ HBA CSV CONVERSION START ~~~~~~~~~~~~
+2021-05-03 15:46:12 : Converted HBA.xlsx file to csv
+2021-05-03 15:46:13 : Moved the HBA.csv files to the fund's InDesign Links folder in Dropbox
+2021-05-03 15:46:13 : Deleted remaining HBA.xlsx files from CSV Conversion directory
+2021-05-03 15:46:13 : ~~~~~~~~~~~~ HBA CHART GENERATION START ~~~~~~~~~~~~
+2021-05-03 15:46:13 : Created HTML file for HBA chart generation
+2021-05-03 15:46:13 : Initializing Local Server for amCharts
+2021-05-03 15:46:16 : HBA charts generated in SVG format using amCharts
+2021-05-03 15:46:16 : HBA charts moved to the funds InDesign Links folder
+2021-05-03 15:46:16 : ############################### END OF RUN - RATIONAL ###############################

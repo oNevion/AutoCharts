@@ -346,7 +346,7 @@ Func RunMainGui()
 							$FamilySwitch = $aCatalystCheck
 							GUICtrlSetData($ProgressBar, 10)
 
-
+							PullCatalystData()
 							RunCSVConvert()
 							CreateCharts()
 
@@ -368,6 +368,7 @@ Func RunMainGui()
 						$FamilySwitch = $aCatalystCheck
 						GUICtrlSetData($ProgressBar, 10)
 
+						PullCatalystData()
 						RunExpenseRatios()
 
 						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
@@ -386,6 +387,7 @@ Func RunMainGui()
 						$FamilySwitch = $aRationalCheck
 						GUICtrlSetData($ProgressBar, 10)
 
+						PullRationalData()
 						RunCSVConvert()
 						CreateCharts()
 
@@ -401,6 +403,7 @@ Func RunMainGui()
 						$FamilySwitch = $aRationalCheck
 						GUICtrlSetData($ProgressBar, 10)
 
+						PullRationalData()
 						RunExpenseRatios()
 
 						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
@@ -418,6 +421,7 @@ Func RunMainGui()
 						$FamilySwitch = $aStrategyCheck
 						GUICtrlSetData($ProgressBar, 10)
 
+						PullStrategySharesData()
 						RunCSVConvert()
 						CreateCharts()
 
@@ -528,7 +532,7 @@ Func SyncronizeDataFiles()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-
+	DirRemove(@ScriptDir & $CSVDataDir, 1)
 	DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", @ScriptDir & $CSVDataDir, 1)
 
 	SplashOff()
@@ -537,6 +541,49 @@ Func SyncronizeDataFiles()
 	_FileWriteLog($LogFile, "Synced Dropbox data with Autocharts Data") ; Write to the logfile
 
 EndFunc   ;==>SyncronizeDataFiles
+
+Func PullCatalystData()
+
+	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+	DirRemove(@ScriptDir & $CSVDataDir & "\Catalyst", 1)
+	DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
+
+	SplashOff()
+
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+	_FileWriteLog($LogFile, "Pulled Catalyst Data from Dropbox") ; Write to the logfile
+
+EndFunc   ;==>PullCatalystData
+
+Func PullRationalData()
+
+	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+	DirRemove(@ScriptDir & $CSVDataDir & "\Rational", 1)
+	DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", @ScriptDir & $CSVDataDir & "\Rational", 1)
+
+	SplashOff()
+
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+	_FileWriteLog($LogFile, "Pulled Rational Data from Dropbox") ; Write to the logfile
+
+EndFunc   ;==>PullRationalData
+
+
+Func PullStrategySharesData()
+
+	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+	DirRemove(@ScriptDir & $CSVDataDir & "\StrategyShares", 1)
+	DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", @ScriptDir & $CSVDataDir & "\StrategyShares", 1)
+
+	SplashOff()
+
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+	_FileWriteLog($LogFile, "Pulled Strategy Shares Data from Dropbox") ; Write to the logfile
+
+EndFunc   ;==>PullStrategySharesData
 
 
 Func DetermineDates()
