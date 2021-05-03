@@ -1,4 +1,3 @@
-#RequireAdmin
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
@@ -12,7 +11,6 @@
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_Res_Language=1033
-#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Res_HiDpi=y
 #AutoIt3Wrapper_Run_Tidy=y
 #AutoIt3Wrapper_Run_Au3Stripper=y
@@ -90,6 +88,8 @@ Func RunMainGui()
 	$BTN_RunCatalyst = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
 	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 	GUICtrlSetBkColor(-1, 0xC0DCC0)
+	$BTN_Catalyst_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
+	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 	;$BTN_SelectAllCatalyst = GUICtrlCreateButton("Select All", 28, 483, 115, 33)
 	;GUICtrlSetBkColor(-1, 0xC0DCC0)
 	$ACX = GUICtrlCreateCheckbox("ACX", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
@@ -188,7 +188,8 @@ Func RunMainGui()
 	$BTN_RunRational = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
 	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 	GUICtrlSetBkColor(-1, 0xC0DCC0)
-
+	$BTN_Rational_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
+	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 
 	$TAB_StrategyShares = GUICtrlCreateTabItem("Strategy Shares Fact Sheets")
 	$GLDB = GUICtrlCreateCheckbox("GLDB", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
@@ -369,6 +370,24 @@ Func RunMainGui()
 						EndIf
 
 
+					Case $BTN_Catalyst_UpdateExpenseRatio
+						$FundFamily = "Catalyst"
+						$FamilySwitch = $aCatalystCheck
+						GUICtrlSetData($ProgressBar, 10)
+
+						RunExpenseRatios()
+
+						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+						_FileWriteLog($LogFile, "############################### END OF RUN - CATALYST ###############################")     ; Write to the logfile
+						FileClose($LogFile)     ; Close the filehandle to release the file.
+						GUICtrlSetData($ProgressBar, 0)
+						MsgBox(0, "Finished", "The process has finished.")
+						GUICtrlSetData($UpdateLabel, "The process has finished.")
+						If @error = 50 Then
+							MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+						EndIf
+
+
 					Case $BTN_RunRational
 						$FundFamily = "Rational"
 						$FamilySwitch = $aRationalCheck
@@ -383,6 +402,23 @@ Func RunMainGui()
 						GUICtrlSetData($ProgressBar, 0)
 						MsgBox(0, "Finished", "The process has finished.")
 						GUICtrlSetData($UpdateLabel, "The process has finished.")
+
+					Case $BTN_Rational_UpdateExpenseRatio
+						$FundFamily = "Rational"
+						$FamilySwitch = $aRationalCheck
+						GUICtrlSetData($ProgressBar, 10)
+
+						RunExpenseRatios()
+
+						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+						_FileWriteLog($LogFile, "############################### END OF RUN - RATIONAL ###############################")     ; Write to the logfile
+						FileClose($LogFile)     ; Close the filehandle to release the file.
+						GUICtrlSetData($ProgressBar, 0)
+						MsgBox(0, "Finished", "The process has finished.")
+						GUICtrlSetData($UpdateLabel, "The process has finished.")
+						If @error = 50 Then
+							MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+						EndIf
 
 					Case $BTN_RunStrategyShares
 						$FundFamily = "StrategyShares"
@@ -732,5 +768,50 @@ Func CreateCharts()
 	Next
 EndFunc   ;==>CreateCharts
 
+Func RunExpenseRatios()
+	If $FundFamily = "Catalyst" Then
+		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
+		GUICtrlSetData($ProgressBar, 60)
+
+		FileCopy(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Catalyst Data Directory
+		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+
+		$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+		_FileWriteLog($LogFile, "~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")         ; Write to the logfile
+		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
+
+		_FileWriteLog($LogFile, "Updated Catalyst Expense Ratios")         ; Write to the logfile
+
+		GUICtrlSetData($UpdateLabel, "Updated Catalyst Expense Ratios")
+		FileCopy(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
+
+
+	EndIf
+	If $FundFamily = "Rational" Then
+		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
+		GUICtrlSetData($ProgressBar, 60)
+
+		FileCopy(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Rational Data Directory
+		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+
+		$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+		_FileWriteLog($LogFile, "~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")         ; Write to the logfile
+		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
+
+		_FileWriteLog($LogFile, "Updated Rational Expense Ratios")         ; Write to the logfile
+
+		GUICtrlSetData($UpdateLabel, "Updated Rational Expense Ratios")
+		FileCopy(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
+
+
+	EndIf
+
+	GUICtrlSetData($ProgressBar, 100)
+
+EndFunc   ;==>RunExpenseRatios
 
 #EndRegion ### Start Main Functions Region
