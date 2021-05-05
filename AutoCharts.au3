@@ -3,10 +3,10 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.1.0.2
+#AutoIt3Wrapper_Res_Fileversion=2.2.0
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.1.0.1
+#AutoIt3Wrapper_Res_ProductVersion=2.2.0
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -69,9 +69,10 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.1.1", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.2.0", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	$mSyncFiles = GUICtrlCreateMenuItem("&Pull Data From Dropbox", $mFile)
+	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
 	$mSettings = GUICtrlCreateMenu("&Settings")
@@ -81,6 +82,7 @@ Func RunMainGui()
 	$mHelp = GUICtrlCreateMenu("&Help")
 	$mAbout = GUICtrlCreateMenuItem("&About", $mHelp)
 	$mLogFile = GUICtrlCreateMenuItem("&Open Log File", $mHelp)
+	$mClearLog = GUICtrlCreateMenuItem("&Clear Log File", $mHelp)
 	$TAB_Main = GUICtrlCreateTab(8, 176, 553, 353)
 	GUICtrlSetFont(-1, 10, 400, 0, "Arial")
 	$TAB_Catalyst = GUICtrlCreateTabItem("Catalyst Fact Sheets")
@@ -225,6 +227,8 @@ Func RunMainGui()
 					Case $mEditSettings
 						;GUICtrlSetState($mEditSettings, $GUI_DISABLE)
 						OpenSettingsGUI()
+					Case $mClearLog
+						ClearLog()
 					Case $mAbout
 						ShellExecute("https://onevion.github.io/AutoCharts/")
 
@@ -662,6 +666,19 @@ Func DetermineDates()
 
 
 EndFunc   ;==>DetermineDates
+
+Func ClearLog()
+	FileDelete(@ScriptDir & "\AutoCharts.log")
+	_FileCreate(@ScriptDir & "\AutoCharts.log")
+	If @error = 0 Then
+		MsgBox(0, "Success", "Log file cleared.")
+	EndIf
+	If @error = 1 Then
+		MsgBox(0, "Error!", "There was an error with clearing the log.")
+	EndIf
+
+EndFunc   ;==>ClearLog
+
 
 
 Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" files and converts those automatically as well.

@@ -979,13 +979,19 @@
 					<components>
 						<object type="TAMenuItem" name="mSyncFiles">
 							<properties>
-								<property name="Caption" vt="String">&amp;Sync Files</property>
+								<property name="Caption" vt="String">&amp;Pull Data From Dropbox</property>
 							</properties>
 							<components/>
 						</object>
 						<object type="TAMenuItem" name="mUploadFactsheets">
 							<properties>
 								<property name="Caption" vt="String">Upload Factsheets to Website</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mCreateArchive">
+							<properties>
+								<property name="Caption" vt="String">&amp;Create Factsheet Archive</property>
 							</properties>
 							<components/>
 						</object>
@@ -1036,6 +1042,12 @@
 						<object type="TAMenuItem" name="mLogFile">
 							<properties>
 								<property name="Caption" vt="String">&amp;Open Log File</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mClearLog">
+							<properties>
+								<property name="Caption" vt="String">&amp;Clear Log File</property>
 							</properties>
 							<components/>
 						</object>
