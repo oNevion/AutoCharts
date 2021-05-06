@@ -14,13 +14,13 @@ body {
 
 
     #chartdiv {
-        width:950px!important;
+        width:1010px!important;
 		height:520px!important;
     }
 
         #chartdiv2 {
         width:950px!important;
-		height:520px!important;
+		height:451px!important;
     }
 
      #chartdiv3 {
@@ -54,73 +54,43 @@ document.head.appendChild(style);
 // ################################   CHART 1 CFR 10k Chart (Line) ################################################
 
 
-// Themes begin
-am4core.useTheme(am4themes_amcharts);
-// Themes end
-
 // Create chart instance
-var chart1 = am4core.create("chartdiv", am4charts.XYChart);
+var chart1 = am4core.create("chartdiv", am4charts.PieChart);
+chart1.innerRadius = am4core.percent(40);
 
 // Set up data source
-chart1.dataSource.url = "../Data/Backups/Catalyst/CFR/CFR_EXPORT_GrowthOf10k.csv";
+chart1.dataSource.url = "../Data/Backups/Catalyst/CFR/CFR_EXPORT_S&PCreditRating.csv";
 chart1.dataSource.parser = new am4core.CSVParser();
 chart1.dataSource.parser.options.useColumnNames = true;
-chart1.exporting.useWebFonts = false;
 
 
+// Add series
+var series = chart1.series.push(new am4charts.PieSeries());
+series.dataFields.value = "Value";
+series.dataFields.category = "Label";
+series.slices.template.stroke = am4core.color("#ffffff");
+series.slices.template.strokeWidth = 2;
+series.slices.template.strokeOpacity = 1;
+series.labels.template.disabled = true;
+series.ticks.template.disabled = true;
+series.slices.template.tooltipText = "";
+series.colors.list = [
+  am4core.color("#08da94"),
+  am4core.color("#2d7abf"),
+  am4core.color("#26003d"),
+  am4core.color("#61328d"),
 
-// Set input format for the dates
-chart1.dateFormatter.inputDateFormat = "yyyy-MM-dd";
-chart1.numberFormatter.numberFormat = "'$'#,###.";
-
-
-
-
-// Create axes
-var dateAxis = chart1.xAxes.push(new am4charts.DateAxis());
-dateAxis.renderer.labels.template.fontWeight = "Bold";
-dateAxis.renderer.labels.template.fontSize = "20px";
-dateAxis.renderer.grid.template.disabled = true;
-dateAxis.renderer.labels.template.dy = 10;
-dateAxis.renderer.minGridDistance = 60;
-dateAxis.renderer.labels.template.location = 0;
-dateAxis.extraMax = 0.04; 
-dateAxis.renderer.minLabelPosition = -0.1;
-
-
-var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
-valueAxis.renderer.labels.template.fontWeight = "Bold";
-valueAxis.renderer.labels.template.fontSize = "20px";
-
-valueAxis.numberFormatter = new am4core.NumberFormatter();
-valueAxis.numberFormatter.numberFormat = "'$'#,###";
-
-// Create series
-var series1 = chart1.series.push(new am4charts.LineSeries());
-series1.dataFields.valueY = "CFRIX";
-series1.dataFields.dateX = "Date";
-series1.name = "CFRIX";
-series1.strokeWidth = 3;
-series1.tooltipText = "{valueY}";
-series1.tensionX = 0.93;
-series1.stroke = am4core.color("#08da94");
-
-var series2 = chart1.series.push(new am4charts.LineSeries());
-series2.dataFields.valueY = "S&P LSTA Lvg. Loan 100";
-series2.dataFields.dateX = "Date";
-series2.name = "S&P LSTA Levg. Loan 100 TR Index";
-series2.strokeWidth = 3;
-series2.tooltipText = "{valueY}";
-series2.tensionX = 0.93;
-series2.stroke = am4core.color("#2d7abf");
+];
 
 // Add legend
 chart1.legend = new am4charts.Legend();
-chart1.legend.labels.template.fontSize = "20px";
-chart1.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
-chart1.legend.labels.template.minWidth = 150;
+chart1.legend.position = "right";
+chart1.legend.maxWidth = undefined;
+chart1.legend.maxheight = 400;
+chart1.legend.valueLabels.template.align = "right";
+chart1.legend.valueLabels.template.textAlign = "end";  
+chart1.legend.labels.template.minWidth = 175;
 chart1.legend.labels.template.truncate = false;
-
 
 // Export this stuff
 chart1.exporting.menu = new am4core.ExportMenu();
@@ -130,7 +100,7 @@ chart1.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart1.exporting.filePrefix = "CFR_10k";
+chart1.exporting.filePrefix = "CFR_MoodyPie";
 
 
 // ################################ CHART 2 CFR Brochure LSTAvsAGG Chart (Line) ################################################
@@ -305,13 +275,13 @@ am4core.useTheme(am4themes_amcharts);
 var chart4 = am4core.create("chartdiv4", am4charts.XYChart);
 
 // Set up data source
-chart4.dataSource.url = "../Data/Backups/Catalyst/CFR/CFR_CaseStudy.csv";
+chart4.dataSource.url = "../Data/Backups/Catalyst/CFR/CFR_EXPORT_InterestRatesTable.csv";
 chart4.dataSource.parser = new am4core.CSVParser();
 chart4.dataSource.parser.options.useColumnNames = true;
 
 // Create axes
 var categoryAxis = chart4.xAxes.push(new am4charts.CategoryAxis());
-categoryAxis.dataFields.category = "Category";
+categoryAxis.dataFields.category = "Label";
 categoryAxis.renderer.labels.template.fontWeight = "Bold";
 categoryAxis.renderer.grid.template.disabled = false;
 categoryAxis.renderer.grid.template.location = 0;
@@ -333,7 +303,7 @@ valueAxis.renderer.numberFormatter.numberFormat = "#'%'";
 // Create series
 var series = chart4.series.push(new am4charts.ColumnSeries());
 series.dataFields.valueY = "Floating Rate Loans";
-series.dataFields.categoryX = "Category";
+series.dataFields.categoryX = "Label";
 series.name = "Floating Rate Loans";
 series.clustered = true;
 series.fill = am4core.color("#08da94");
@@ -342,7 +312,7 @@ series.columns.template.width = am4core.percent(100);
 
 var series2 = chart4.series.push(new am4charts.ColumnSeries());
 series2.dataFields.valueY = "U.S. Aggregate";
-series2.dataFields.categoryX = "Category";
+series2.dataFields.categoryX = "Label";
 series2.name = "U.S. Aggregate";
 series2.clustered = true;
 series2.fill = am4core.color("#61a8e8");
@@ -351,7 +321,7 @@ series2.columns.template.width = am4core.percent(100);
 
 var series3 = chart4.series.push(new am4charts.ColumnSeries());
 series3.dataFields.valueY = "U.S. Treasury";
-series3.dataFields.categoryX = "Category";
+series3.dataFields.categoryX = "Label";
 series3.name = "U.S. Treasury";
 series3.clustered = true;
 series3.fill = am4core.color("#26003d");
@@ -359,12 +329,54 @@ series3.strokeWidth = 0;
 series3.columns.template.width = am4core.percent(100);
 
 
+var bullet = series.bullets.push(new am4charts.LabelBullet());
+bullet.label.text = "{valueY.value}";
+bullet.label.hideOversized = false;
+bullet.label.fontSize = "25px";
+bullet.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > values.openValueY.value
+    ? "top"
+    : "bottom";
+});
 
+
+var bullet2 = series2.bullets.push(new am4charts.LabelBullet());
+bullet2.label.text = "{valueY.value}";
+bullet2.label.hideOversized = false;
+bullet2.label.fontSize = "25px";
+bullet2.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > values.openValueY.value
+    ? "top"
+    : "bottom";
+});
+
+var bullet3 = series3.bullets.push(new am4charts.LabelBullet());
+bullet3.label.text = "{valueY.value}";
+bullet3.label.hideOversized = false;
+bullet3.label.fontSize = "25px";
+bullet3.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > 0
+    ? "bottom"
+    : "top";
+});
 
 // Add legend
 chart4.legend = new am4charts.Legend();
 chart4.legend.labels.template.fontSize = "30px";
 chart4.legend.labels.template.truncate = false;
+chart4.maskBullets = false
 
 
 // Export this stuff
@@ -375,7 +387,7 @@ chart4.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart4.exporting.filePrefix = "CFR_CaseStudy";
+chart4.exporting.filePrefix = "CFR_InterestRatesTable";
 
 
 
