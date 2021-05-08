@@ -627,7 +627,7 @@ Func DetermineDates()
 
 	;Create CSV Line by Line for Datalinker to read current year and quarter.
 
-	Local $file = @ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDatesTEMP.csv"
+	Local $file = @ScriptDir & "\assets\ChartBuilder\public\Data\Update_FactSheetDatesTEMP.csv"
 	Local $text = FileReadLine($file, 1)
 
 	$tout1 = StringReplace($text, 'Label,ID', 'Label,ID' & @CRLF)
