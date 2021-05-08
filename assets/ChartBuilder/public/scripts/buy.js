@@ -73,7 +73,7 @@ valueAxis.renderer.labels.template.fontSize = "25px";
 
 // Create series
 var series = chart1.series.push(new am4charts.ColumnSeries());
-series.dataFields.valueY = "BUYIX";
+series.dataFields.valueY = "Portfolio";
 series.dataFields.categoryX = "Date";
 series.name = "BUYIX";
 series.clustered = true;
@@ -85,9 +85,9 @@ series.columns.template.width = am4core.percent(100);
 
 
 var series2 = chart1.series.push(new am4charts.ColumnSeries());
-series2.dataFields.valueY = "Mid-Cap Blend";
+series2.dataFields.valueY = "Index";
 series2.dataFields.categoryX = "Date";
-series2.name = "Mid-Cap Blend";
+series2.name = "S&P 500 TR Index";
 series2.clustered = true;
 series2.fill = am4core.color("#2d7abf");
 series2.strokeWidth = 0;
@@ -141,8 +141,12 @@ series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
   am4core.color("#08da94"),
-  am4core.color("#2d7abf"),
-  am4core.color("#26003d"),
+  am4core.color("#00c9af"),
+  am4core.color("#00b6c7"),
+  am4core.color("#00a1d6"),
+  am4core.color("#008ad9"),
+  am4core.color("#0070cd"),
+  am4core.color("#2d53b3"),
   am4core.color("#61328d"),
 
 ];
@@ -151,7 +155,7 @@ series.colors.list = [
 chart2.legend = new am4charts.Legend();
 chart2.legend.position = "left";
 chart2.legend.maxWidth = undefined;
-chart2.legend.maxheight = 400;
+//chart2.legend.maxheight = 400;
 chart2.legend.labels.template.fontSize = "18px";
 chart2.legend.valueLabels.template.fontSize = "18px";
 chart2.legend.labels.template.minWidth = 250;
