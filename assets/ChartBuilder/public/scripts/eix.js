@@ -28,6 +28,11 @@ body {
     height:500px!important;
     }
 
+    #chartdiv4 {
+        width:1330px!important;
+    height:460px!important;
+    }
+
 `;
 
 // append to DOM
@@ -279,12 +284,116 @@ chart3.exporting.menu.items = [{
 chart3.exporting.filePrefix = "EIX_I_10k";
 
 
+// ################################ CHART 4 EIX Presentation - Income Asset Class (Bar) ################################################
+
+// Themes begin
+am4core.useTheme(am4themes_amcharts);
+// Themes end
+
+// Create chart instance
+var chart4 = am4core.create("chartdiv4", am4charts.XYChart);
+
+// Add percent sign to all numbers
+chart4.numberFormatter.numberFormat = "#.#'%'";
+
+// Set up data source
+chart4.dataSource.url = "../Data/Backups/Catalyst/EIX/EIX_PRES_IncomeAssetClassBar.csv";
+chart4.dataSource.parser = new am4core.CSVParser();
+chart4.dataSource.parser.options.useColumnNames = true;
+
+// Create axes
+var categoryAxis = chart4.xAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "Label";
+categoryAxis.renderer.labels.template.fontWeight = "Bold";
+categoryAxis.renderer.labels.template.fontSize = "23px";
+categoryAxis.renderer.grid.template.disabled = false;
+categoryAxis.renderer.grid.template.location = 0;
+categoryAxis.renderer.minGridDistance = 30;
+categoryAxis.renderer.cellStartLocation = 0.1;
+categoryAxis.renderer.cellEndLocation = 0.9;
+categoryAxis.renderer.grid.template.strokeOpacity = .2;
+
+var valueAxis = chart4.yAxes.push(new am4charts.ValueAxis());
+valueAxis.renderer.grid.template.disabled = true;
+valueAxis.renderer.labels.template.fontWeight = "Bold";
+valueAxis.renderer.labels.template.fontSize = "23px";
+
+
+
+// Create series
+var series = chart4.series.push(new am4charts.ColumnSeries());
+series.dataFields.valueY = "Senior Legacy RMBS Index";
+series.dataFields.categoryX = "Label";
+series.name = "Senior Legacy RMBS Index";
+series.clustered = true;
+series.fill = am4core.color("#61328d");
+series.strokeWidth = 0;
+series.columns.template.width = am4core.percent(100);
+
+
+
+var series2 = chart4.series.push(new am4charts.ColumnSeries());
+series2.dataFields.valueY = "Agency MBS";
+series2.dataFields.categoryX = "Label";
+series2.name = "Agency MBS";
+series2.clustered = true;
+series2.fill = am4core.color("#0069c8");
+series2.strokeWidth = 0;
+series2.columns.template.width = am4core.percent(100);
+
+
+var series3 = chart4.series.push(new am4charts.ColumnSeries());
+series3.dataFields.valueY = "High Yield Bond Index";
+series3.dataFields.categoryX = "Label";
+series3.name = "High Yield Bond Index";
+series3.clustered = true;
+series3.fill = am4core.color("#0096d9");
+series3.strokeWidth = 0;
+series3.columns.template.width = am4core.percent(100);
+
+
+var series4 = chart4.series.push(new am4charts.ColumnSeries());
+series4.dataFields.valueY = "Aggregate Bond Index";
+series4.dataFields.categoryX = "Label";
+series4.name = "Aggregate Bond Index";
+series4.clustered = true;
+series4.fill = am4core.color("#00bbc1");
+series4.strokeWidth = 0;
+series4.columns.template.width = am4core.percent(100);
+
+var series5 = chart4.series.push(new am4charts.ColumnSeries());
+series5.dataFields.valueY = "Municipal Bond Index";
+series5.dataFields.categoryX = "Label";
+series5.name = "Municipal Bond Index";
+series5.clustered = true;
+series5.fill = am4core.color("#08da94");
+series5.strokeWidth = 0;
+series5.columns.template.width = am4core.percent(100);
+
+// Add legend
+chart4.legend = new am4charts.Legend();
+chart4.legend.labels.template.fontSize = "23px";
+chart4.legend.labels.template.truncate = false;
+
+
+// Export this stuff
+chart4.exporting.menu = new am4core.ExportMenu();
+chart4.exporting.menu.items = [{
+  "label": "...",
+  "menu": [
+          { "type": "svg", "label": "SVG" },
+  ]
+}];
+chart4.exporting.filePrefix = "EIX_PRES_IncomeAssetClassBar";
+
+
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
      chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
+     chart4.exporting.export('svg');
 };
 
 window.onload = setTimeout(loadFrame, 1800);
