@@ -51,7 +51,7 @@ document.head.appendChild(style);
 
 
 
-// ################################   CHART 1 CFR 10k Chart (Line) ################################################
+// ################################   CHART 1 CFR S&P Credit Rating (Line) ################################################
 
 
 // Create chart instance
@@ -333,6 +333,7 @@ var bullet = series.bullets.push(new am4charts.LabelBullet());
 bullet.label.text = "{valueY.value}";
 bullet.label.hideOversized = false;
 bullet.label.fontSize = "25px";
+bullet.label.strokeWidth = 0;
 bullet.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
     return center;
@@ -348,6 +349,7 @@ var bullet2 = series2.bullets.push(new am4charts.LabelBullet());
 bullet2.label.text = "{valueY.value}";
 bullet2.label.hideOversized = false;
 bullet2.label.fontSize = "25px";
+bullet2.label.strokeWidth = 0;
 bullet2.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
     return center;
@@ -362,6 +364,7 @@ var bullet3 = series3.bullets.push(new am4charts.LabelBullet());
 bullet3.label.text = "{valueY.value}";
 bullet3.label.hideOversized = false;
 bullet3.label.fontSize = "25px";
+bullet3.label.strokeWidth = 0;
 bullet3.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
     return center;
@@ -388,7 +391,6 @@ chart4.exporting.menu.items = [{
   ]
 }];
 chart4.exporting.filePrefix = "CFR_InterestRatesTable";
-
 
 
 // ################################ CHART 5 CFR Case Study - Fed Fund Rate ################################################
@@ -518,6 +520,7 @@ chart6.exporting.menu.items = [{
 chart6.exporting.filePrefix = "CFR_Brochure_US_YieldCurve";
 
 // ################################   Export any charts OTHER THAN chart1 ################################################
+
 
 function loadFrame() {
      chart1.exporting.export('svg');
