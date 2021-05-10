@@ -28,6 +28,7 @@
 #include <EditConstants.au3>
 #include <GUIListBox.au3>
 
+
 #Region ### GLOBAL Arrays and Variables
 Global $aCatalystCheck[24]
 Global $aRationalCheck[8]
@@ -47,14 +48,18 @@ Global $LogFile
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
 
 
-
-
-
 ;Predeclare the variables with dummy values to prevent firing the Case statements, only for GUI this time
 Global $GUI_UserSettings = 9999
 $INPT_DropboxFolder = 9999
 $BTN_Save = 9999
 $BTN_Cancel = 9999
+$BTN_SelectDBPath = 9999
+
+$Radio_Q1 = 4
+$Radio_Q2 = 4
+$Radio_Q3 = 4
+$Radio_Q4 = 4
+
 #EndRegion ### GLOBAL Arrays and Variables
 
 #Region ### START Main GUI Load
@@ -449,6 +454,8 @@ Func RunMainGui()
 					Case $GUI_EVENT_CLOSE ; If we get the CLOSE message from this GUI - we just delete the GUI
 						GUIDelete($GUI_UserSettings)
 						;GUICtrlSetState($mEditSettings, $GUI_ENABLE)
+
+
 					Case $BTN_Save
 						$DATA_UserSettings = GUICtrlRead($INPT_DropboxFolder)
 						If $DATA_UserSettings = "" Then
@@ -459,8 +466,31 @@ Func RunMainGui()
 							$DATA_UserSettings = GUICtrlRead($INPT_Name)
 							$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UserName', $DATA_UserSettings)
 
-							$DATA_UserSettings = GUICtrlRead($Select_Quarter)
-							$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+							If GUICtrlRead($Radio_Q1) = 1 Then
+								$Select_Quarter = "Q1" ; Checks to see if Radio for Q1 is Checked
+								$DATA_UserSettings = "Q1"
+								$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+							EndIf
+
+							If GUICtrlRead($Radio_Q2) = 1 Then
+								$Select_Quarter = "Q2" ; Checks to see if Radio for Q2 is Checked
+								$DATA_UserSettings = "Q2"
+								$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+							EndIf
+
+							If GUICtrlRead($Radio_Q3) = 1 Then
+								$Select_Quarter = "Q3" ; Checks to see if Radio for Q3 is Checked
+								$DATA_UserSettings = "Q3"
+								$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+							EndIf
+
+							If GUICtrlRead($Radio_Q4) = 1 Then
+								$Select_Quarter = "Q4" ; Checks to see if Radio for Q4 is Checked
+								$DATA_UserSettings = "Q4"
+								$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+							EndIf
+
+
 
 							$DATA_UserSettings = GUICtrlRead($INPT_CurYear)
 							$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentYear', $DATA_UserSettings)
@@ -487,6 +517,8 @@ Func RunMainGui()
 							; Close Settings Window after saving file.
 							GUIDelete($GUI_UserSettings)
 						EndIf
+					Case $BTN_SelectDBPath
+						BrowseForDBPath()
 					Case $BTN_Cancel
 						GUIDelete($GUI_UserSettings)
 
@@ -502,20 +534,60 @@ EndFunc   ;==>RunMainGui
 
 
 Func OpenSettingsGUI()
-	$GUI_UserSettings = GUICreate("User Settings", 203, 249, -1, -1)
+
+	$DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
+	$INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
+	$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
+	$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
+
+	$GUI_UserSettings = GUICreate("User Settings", 207, 254, -1, -1)
 	$INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 16, 32, 169, 21)
 	$BTN_Save = GUICtrlCreateButton("Save", 16, 208, 75, 25)
 	$BTN_Cancel = GUICtrlCreateButton("Cancel", 112, 208, 75, 25)
 	$Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox Folder:", 16, 15, 116, 17)
-	$INPT_Name = GUICtrlCreateInput($INPT_Name, 16, 80, 169, 21)
-	$Label_Name = GUICtrlCreateLabel("Your Name:", 16, 63, 60, 17)
-	$Select_Quarter = GUICtrlCreateList("", 16, 120, 57, 58)
-	GUICtrlSetData(-1, "Q1|Q2|Q3|Q4")
-	$INPT_CurYear = GUICtrlCreateInput($INPT_CurYear, 80, 136, 105, 21)
-	$Label_Year = GUICtrlCreateLabel("Current Year", 80, 119, 63, 17)
+	$BTN_SelectDBPath = GUICtrlCreateButton("Browse", 16, 56, 169, 25)
+	$INPT_Name = GUICtrlCreateInput($INPT_Name, 16, 112, 169, 21)
+	$Label_Name = GUICtrlCreateLabel("Your Name:", 16, 95, 60, 17)
+
+	$Radio_Q1 = GUICtrlCreateRadio("Q1", 17, 152, 35, 17)
+	If $Select_Quarter = "Q1" Then
+		GUICtrlSetState($Radio_Q1, 1)
+	EndIf
+
+	$Radio_Q2 = GUICtrlCreateRadio("Q2", 56, 152, 35, 17)
+	If $Select_Quarter = "Q2" Then
+		GUICtrlSetState($Radio_Q2, 1)
+	EndIf
+	$Radio_Q3 = GUICtrlCreateRadio("Q3", 17, 176, 35, 17)
+	If $Select_Quarter = "Q3" Then
+		GUICtrlSetState($Radio_Q3, 1)
+	EndIf
+	$Radio_Q4 = GUICtrlCreateRadio("Q4", 56, 176, 35, 17)
+	If $Select_Quarter = "Q4" Then
+		GUICtrlSetState($Radio_Q4, 1)
+	EndIf
+
+	$INPT_CurYear = GUICtrlCreateInput($INPT_CurYear, 120, 168, 63, 21)
+	$Label_Year = GUICtrlCreateLabel("Current Year", 120, 151, 63, 17)
 	GUISetState()
 EndFunc   ;==>OpenSettingsGUI
 #EndRegion ### END Koda GUI section ###
+
+Func BrowseForDBPath()
+	; Create a constant variable in Local scope of the message to display in FileSelectFolder.
+	Local Const $sMessage = "Select a folder"
+
+	; Display an open dialog to select a file.
+	Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
+	If @error Then
+		; Display the error message.
+		MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
+		GUICtrlSetData($INPT_DropboxFolder, "")
+
+	Else
+		GUICtrlSetData($INPT_DropboxFolder, $sFileSelectFolder)
+	EndIf
+EndFunc   ;==>BrowseForDBPath
 
 
 Func VerifyDropbox()
