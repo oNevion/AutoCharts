@@ -27,7 +27,7 @@
 #include <MsgBoxConstants.au3>
 #include <EditConstants.au3>
 #include <GUIListBox.au3>
-
+#include "Zip.au3"
 
 #Region ### GLOBAL Arrays and Variables
 Global $aCatalystCheck[24]
@@ -242,6 +242,9 @@ Func RunMainGui()
 						$_Run = "notepad.exe " & $sTextFile
 						ConsoleWrite("$_Run : " & $_Run & @CRLF)
 						Run($_Run, @WindowsDir, @SW_SHOWDEFAULT)
+
+					Case $mCreateArchive
+						CreateFactSheetArchive()
 
 					Case $ACX
 						If GUICtrlRead($ACX) = 1 Then $aCatalystCheck[0] = "ACX" ; Sets first slot of the Catalyst Array to 1 if CHECKED
@@ -942,5 +945,32 @@ Func RunExpenseRatios()
 	GUICtrlSetData($ProgressBar, 100)
 
 EndFunc   ;==>RunExpenseRatios
+
+Func CreateFactSheetArchive()
+	Local $Zip, $myfile
+
+	; Create a constant variable in Local scope of the message to display in FileSelectFolder.
+	Local Const $sMessage = "Select Save Location"
+
+	; Display an open dialog to select a file.
+	Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
+	If @error Then
+		; Display the error message.
+		MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
+
+	Else
+		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $INPT_Name & "_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
+		_Zip_AddFolder($Zip, $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
+		_Zip_AddFolder($Zip, $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
+		MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip) ;Msgbox Counting Items in $Zip
+		$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+
+		_FileWriteLog($LogFile, "Created Factsheet Archive at " & $Zip) ; Write to the logfile
+
+	EndIf
+
+
+EndFunc   ;==>CreateFactSheetArchive
+
 
 #EndRegion ### Start Main Functions Region
