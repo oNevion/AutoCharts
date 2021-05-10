@@ -710,7 +710,7 @@ Func DetermineDates()
 
 	$text = FileReadLine($file, 2)
 
-	$tout1 = StringReplace($text, '3/31/2021,1', $MonthNumber & '/' & $DayNumber & '/' & $INPT_CurYear & ',1' & @CRLF)
+	$tout1 = StringReplace($text, '03/31/2021,1', $MonthNumber & '/' & $DayNumber & '/' & $INPT_CurYear & ',1' & @CRLF)
 	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 3)
@@ -781,6 +781,9 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 				RunCSVConvert4Brochure()
 			EndIf
+			If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+				RunCSVConvert4Presentation()
+			EndIf
 
 
 
@@ -818,11 +821,9 @@ Func RunCSVConvert4Institution() ; Dynamically checks for funds with "-instituti
 	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
 
 	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")     ; Write to the logfile
-	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 
-	_FileWriteLog($LogFile, "Converted " & $CurrentFund & ".xlsx and " & $CurrentFund & "-institutional.xlsx files to csv")     ; Write to the logfile
-	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & ".xlsx and " & $CurrentFund & "-institutional.xlsx files to csv")
+	_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-institutional.xlsx file to csv")     ; Write to the logfile
+	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-institutional.xlsx file to csv")
 
 
 EndFunc   ;==>RunCSVConvert4Institution
@@ -834,14 +835,25 @@ Func RunCSVConvert4Brochure() ; Dynamically checks for funds with "-brochure.xls
 	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
 
 	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")     ; Write to the logfile
-	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 
-	_FileWriteLog($LogFile, "Converted " & $CurrentFund & ".xlsx and " & $CurrentFund & "-brochure.xlsx files to csv")     ; Write to the logfile
-	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & ".xlsx and " & $CurrentFund & "-brochure.xlsx files to csv")
+	_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-brochure.xlsx file to csv")     ; Write to the logfile
+	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-brochure.xlsx file to csv")
 
 
 EndFunc   ;==>RunCSVConvert4Brochure
+
+
+Func RunCSVConvert4Presentation() ; Dynamically checks for funds with "-brochure.xlsx" files and converts those automatically as well.
+
+	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+
+	_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-presentation.xlsx file to csv")     ; Write to the logfile
+	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-presentation.xlsx file to csv")
+
+
+EndFunc   ;==>RunCSVConvert4Presentation
 
 
 
