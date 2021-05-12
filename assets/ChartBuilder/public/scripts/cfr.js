@@ -51,7 +51,7 @@ document.head.appendChild(style);
 
 
 
-// ################################   CHART 1 CFR S&P Credit Rating (Line) ################################################
+// ################################   CHART 1 CFR S&P Credit Rating (Pie) ################################################
 
 
 // Create chart instance
@@ -66,7 +66,7 @@ chart1.dataSource.parser.options.useColumnNames = true;
 
 // Add series
 var series = chart1.series.push(new am4charts.PieSeries());
-series.dataFields.value = "Value";
+series.dataFields.value = "Scaled to 100";
 series.dataFields.category = "Label";
 series.slices.template.stroke = am4core.color("#ffffff");
 series.slices.template.strokeWidth = 2;
@@ -75,12 +75,21 @@ series.labels.template.disabled = true;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
+  am4core.color("#3c1e57"),
+  am4core.color("#253b7d"),
+  am4core.color("#00589e"),
+  am4core.color("#0074b4"),
+  am4core.color("#0090bd"),
+  am4core.color("#00aab9"),
+  am4core.color("#00c3aa"),
   am4core.color("#08da94"),
-  am4core.color("#2d7abf"),
-  am4core.color("#26003d"),
-  am4core.color("#61328d"),
-
+  am4core.color("#00b59c"),
+  am4core.color("#008f96"),
+  am4core.color("#006981"),
+  am4core.color("#004560")
 ];
+series.legendSettings.valueText = "{value.formatNumber('#.00%')}";
+
 
 // Add legend
 chart1.legend = new am4charts.Legend();
@@ -91,6 +100,7 @@ chart1.legend.valueLabels.template.align = "right";
 chart1.legend.valueLabels.template.textAlign = "end";  
 chart1.legend.labels.template.minWidth = 175;
 chart1.legend.labels.template.truncate = false;
+
 
 // Export this stuff
 chart1.exporting.menu = new am4core.ExportMenu();
