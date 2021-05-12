@@ -140,14 +140,14 @@ series.labels.template.disabled = true;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
-  am4core.color("#08da94"),
-  am4core.color("#00c9af"),
-  am4core.color("#00b6c7"),
-  am4core.color("#00a1d6"),
-  am4core.color("#008ad9"),
-  am4core.color("#0070cd"),
-  am4core.color("#2d53b3"),
-  am4core.color("#61328d"),
+  am4core.color("#110e5d"),
+  am4core.color("#00358a"),
+  am4core.color("#0058ae"),
+  am4core.color("#007bc5"),
+  am4core.color("#009dcf"),
+  am4core.color("#00bfcc"),
+  am4core.color("#00e0bf"),
+  am4core.color("#09ffad"),
 
 ];
 
