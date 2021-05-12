@@ -64,7 +64,7 @@
 				<property name="Top" vt="Int16">176</property>
 				<property name="Width" vt="Int16">553</property>
 				<property name="Height" vt="Int16">353</property>
-				<property name="ActivePage" vt="Ident">TAB_Catalyst</property>
+				<property name="ActivePage" vt="Ident">TAB_Rational</property>
 				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
 				<property name="Font.Height" vt="Int8">-13</property>
@@ -320,7 +320,7 @@
 						<object type="TACheckbox" name="IIX">
 							<properties>
 								<property name="Left" vt="Int16">224</property>
-								<property name="Top" vt="Int16">174</property>
+								<property name="Top" vt="Int8">126</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">IIX</property>
@@ -343,7 +343,7 @@
 						<object type="TACheckbox" name="HII">
 							<properties>
 								<property name="Left" vt="Int16">224</property>
-								<property name="Top" vt="Int8">124</property>
+								<property name="Top" vt="Int8">76</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">HII</property>
@@ -366,7 +366,7 @@
 						<object type="TACheckbox" name="EIX">
 							<properties>
 								<property name="Left" vt="Int16">224</property>
-								<property name="Top" vt="Int8">74</property>
+								<property name="Top" vt="Int8">26</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">EIX</property>
@@ -388,8 +388,8 @@
 						</object>
 						<object type="TACheckbox" name="CWX">
 							<properties>
-								<property name="Left" vt="Int16">224</property>
-								<property name="Top" vt="Int8">24</property>
+								<property name="Left" vt="Int8">120</property>
+								<property name="Top" vt="Int16">224</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">CWX</property>
@@ -409,13 +409,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="CTV">
+						<object type="TACheckbox" name="INS">
 							<properties>
-								<property name="Left" vt="Int8">120</property>
-								<property name="Top" vt="Int16">224</property>
+								<property name="Left" vt="Int16">224</property>
+								<property name="Top" vt="Int16">176</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">CTV</property>
+								<property name="Caption" vt="String">INS</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -432,13 +432,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="INS">
+						<object type="TACheckbox" name="IOX">
 							<properties>
 								<property name="Left" vt="Int16">224</property>
 								<property name="Top" vt="Int16">224</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">INS</property>
+								<property name="Caption" vt="String">IOX</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -455,13 +455,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="IOX">
+						<object type="TACheckbox" name="MBX">
 							<properties>
 								<property name="Left" vt="Int16">328</property>
-								<property name="Top" vt="Int8">24</property>
+								<property name="Top" vt="Int8">26</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">IOX</property>
+								<property name="Caption" vt="String">MBX</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -478,13 +478,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="MBX">
+						<object type="TACheckbox" name="MLX">
 							<properties>
 								<property name="Left" vt="Int16">328</property>
-								<property name="Top" vt="Int8">74</property>
+								<property name="Top" vt="Int8">76</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">MBX</property>
+								<property name="Caption" vt="String">MLX</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -501,13 +501,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="MLX">
+						<object type="TACheckbox" name="SHI">
 							<properties>
 								<property name="Left" vt="Int16">328</property>
-								<property name="Top" vt="Int8">124</property>
+								<property name="Top" vt="Int8">126</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">MLX</property>
+								<property name="Caption" vt="String">SHI</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -524,13 +524,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="SHI">
+						<object type="TACheckbox" name="TEZ">
 							<properties>
 								<property name="Left" vt="Int16">328</property>
-								<property name="Top" vt="Int16">174</property>
+								<property name="Top" vt="Int16">176</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">SHI</property>
+								<property name="Caption" vt="String">TEZ</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -547,13 +547,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="TEZ">
+						<object type="TACheckbox" name="TRI">
 							<properties>
 								<property name="Left" vt="Int16">328</property>
 								<property name="Top" vt="Int16">224</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">TEZ</property>
+								<property name="Caption" vt="String">TRI</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -570,13 +570,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="TRI">
+						<object type="TACheckbox" name="TRX">
 							<properties>
 								<property name="Left" vt="Int16">432</property>
-								<property name="Top" vt="Int8">24</property>
+								<property name="Top" vt="Int8">26</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">TRI</property>
+								<property name="Caption" vt="String">TRX</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -593,26 +593,24 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="TRX">
+						<object type="TAButton" name="BTN_Catalyst_UpdateExpenseRatio">
 							<properties>
-								<property name="Left" vt="Int16">432</property>
-								<property name="Top" vt="Int8">74</property>
-								<property name="Width" vt="Int8">90</property>
-								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">TRX</property>
-								<property name="Color" vt="Ident">clWhite</property>
+								<property name="Left" vt="Int16">224</property>
+								<property name="Top" vt="Int16">272</property>
+								<property name="Width" vt="Int16">195</property>
+								<property name="Height" vt="Int8">33</property>
+								<property name="Caption" vt="String">Update Expense Ratios</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
-								<property name="Font.Height" vt="Int8">-16</property>
-								<property name="Font.Name" vt="String">Montserrat Black</property>
-								<property name="Font.Style" vt="Set"/>
-								<property name="ParentColor" vt="False">False</property>
+								<property name="Font.Height" vt="Int8">-11</property>
+								<property name="Font.Name" vt="String">MS Sans Serif</property>
+								<property name="Font.Style" vt="Set">fsBold</property>
 								<property name="ParentFont" vt="False">False</property>
 								<property name="TabOrder" vt="Int8">22</property>
-								<property name="OnClick" vt="String">ACXClick</property>
-								<property name="CtrlStyle" vt="Int32">1342246915</property>
+								<property name="Color" vt="Ident">clBtnFace</property>
+								<property name="CtrlStyle" vt="Int32">1342373888</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
-								<property name="Resizing" vt="Set">DockHeight</property>
+								<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
 							</properties>
 							<components/>
 						</object>
@@ -791,29 +789,6 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="RTAVF">
-							<properties>
-								<property name="Left" vt="Int8">120</property>
-								<property name="Top" vt="Int16">174</property>
-								<property name="Width" vt="Int8">90</property>
-								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">RTAVF</property>
-								<property name="Color" vt="Ident">clWhite</property>
-								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
-								<property name="Font.Color" vt="Ident">clWindowText</property>
-								<property name="Font.Height" vt="Int8">-16</property>
-								<property name="Font.Name" vt="String">Montserrat Black</property>
-								<property name="Font.Style" vt="Set"/>
-								<property name="ParentColor" vt="False">False</property>
-								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">7</property>
-								<property name="OnClick" vt="String">ACXClick</property>
-								<property name="CtrlStyle" vt="Int32">1342246915</property>
-								<property name="CtrlExStyle" vt="Int8">0</property>
-								<property name="Resizing" vt="Set">DockHeight</property>
-							</properties>
-							<components/>
-						</object>
 						<object type="TAButton" name="BTN_RunRational">
 							<properties>
 								<property name="Left" vt="Int8">16</property>
@@ -827,7 +802,7 @@
 								<property name="Font.Name" vt="String">MS Sans Serif</property>
 								<property name="Font.Style" vt="Set">fsBold</property>
 								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">8</property>
+								<property name="TabOrder" vt="Int8">7</property>
 								<property name="Color" vt="Ident">clMoneyGreen</property>
 								<property name="CtrlStyle" vt="Int32">1342373888</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>
@@ -981,13 +956,19 @@
 					<components>
 						<object type="TAMenuItem" name="mSyncFiles">
 							<properties>
-								<property name="Caption" vt="String">&amp;Sync Files</property>
+								<property name="Caption" vt="String">&amp;Pull Data From Dropbox</property>
 							</properties>
 							<components/>
 						</object>
 						<object type="TAMenuItem" name="mUploadFactsheets">
 							<properties>
 								<property name="Caption" vt="String">Upload Factsheets to Website</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mCreateArchive">
+							<properties>
+								<property name="Caption" vt="String">&amp;Create Factsheet Archive</property>
 							</properties>
 							<components/>
 						</object>
@@ -1038,6 +1019,12 @@
 						<object type="TAMenuItem" name="mLogFile">
 							<properties>
 								<property name="Caption" vt="String">&amp;Open Log File</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mClearLog">
+							<properties>
+								<property name="Caption" vt="String">&amp;Clear Log File</property>
 							</properties>
 							<components/>
 						</object>

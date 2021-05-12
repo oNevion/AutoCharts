@@ -1,4 +1,9 @@
-#RequireAdmin
+Global Const $UBOUND_DIMENSIONS = 0
+Global Const $UBOUND_ROWS = 1
+Global Const $UBOUND_COLUMNS = 2
+Global Const $MB_SYSTEMMODAL = 4096
+Global Const $STR_ENTIRESPLIT = 1
+Global Const $STR_NOCOUNT = 2
 Global Const $_ARRAYCONSTANT_SORTINFOSIZE = 11
 Global $__g_aArrayDisplay_SortInfo[$_ARRAYCONSTANT_SORTINFOSIZE]
 Global Const $_ARRAYCONSTANT_tagLVITEM = "struct;uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;int TextMax;int Image;lparam Param;" & "int Indent;int GroupID;uint Columns;ptr pColumns;ptr piColFmt;int iGroup;endstruct"
@@ -48,8 +53,129 @@ GUICtrlSendMsg($hWnd, 0x1073, $iIndex, $pItem)
 EndIf
 Return DllStructGetData($tBuffer, "Text")
 EndFunc
+Global Enum $ARRAYFILL_FORCE_DEFAULT, $ARRAYFILL_FORCE_SINGLEITEM, $ARRAYFILL_FORCE_INT, $ARRAYFILL_FORCE_NUMBER, $ARRAYFILL_FORCE_PTR, $ARRAYFILL_FORCE_HWND, $ARRAYFILL_FORCE_STRING, $ARRAYFILL_FORCE_BOOLEAN
+Func _ArrayAdd(ByRef $aArray, $vValue, $iStart = 0, $sDelim_Item = "|", $sDelim_Row = @CRLF, $iForce = $ARRAYFILL_FORCE_DEFAULT)
+If $iStart = Default Then $iStart = 0
+If $sDelim_Item = Default Then $sDelim_Item = "|"
+If $sDelim_Row = Default Then $sDelim_Row = @CRLF
+If $iForce = Default Then $iForce = $ARRAYFILL_FORCE_DEFAULT
+If Not IsArray($aArray) Then Return SetError(1, 0, -1)
+Local $iDim_1 = UBound($aArray, $UBOUND_ROWS)
+Local $hDataType = 0
+Switch $iForce
+Case $ARRAYFILL_FORCE_INT
+$hDataType = Int
+Case $ARRAYFILL_FORCE_NUMBER
+$hDataType = Number
+Case $ARRAYFILL_FORCE_PTR
+$hDataType = Ptr
+Case $ARRAYFILL_FORCE_HWND
+$hDataType = Hwnd
+Case $ARRAYFILL_FORCE_STRING
+$hDataType = String
+Case $ARRAYFILL_FORCE_BOOLEAN
+$hDataType = "Boolean"
+EndSwitch
+Switch UBound($aArray, $UBOUND_DIMENSIONS)
+Case 1
+If $iForce = $ARRAYFILL_FORCE_SINGLEITEM Then
+ReDim $aArray[$iDim_1 + 1]
+$aArray[$iDim_1] = $vValue
+Return $iDim_1
+EndIf
+If IsArray($vValue) Then
+If UBound($vValue, $UBOUND_DIMENSIONS) <> 1 Then Return SetError(5, 0, -1)
+$hDataType = 0
+Else
+Local $aTmp = StringSplit($vValue, $sDelim_Item, $STR_NOCOUNT + $STR_ENTIRESPLIT)
+If UBound($aTmp, $UBOUND_ROWS) = 1 Then
+$aTmp[0] = $vValue
+EndIf
+$vValue = $aTmp
+EndIf
+Local $iAdd = UBound($vValue, $UBOUND_ROWS)
+ReDim $aArray[$iDim_1 + $iAdd]
+For $i = 0 To $iAdd - 1
+If String($hDataType) = "Boolean" Then
+Switch $vValue[$i]
+Case "True", "1"
+$aArray[$iDim_1 + $i] = True
+Case "False", "0", ""
+$aArray[$iDim_1 + $i] = False
+EndSwitch
+ElseIf IsFunc($hDataType) Then
+$aArray[$iDim_1 + $i] = $hDataType($vValue[$i])
+Else
+$aArray[$iDim_1 + $i] = $vValue[$i]
+EndIf
+Next
+Return $iDim_1 + $iAdd - 1
+Case 2
+Local $iDim_2 = UBound($aArray, $UBOUND_COLUMNS)
+If $iStart < 0 Or $iStart > $iDim_2 - 1 Then Return SetError(4, 0, -1)
+Local $iValDim_1, $iValDim_2 = 0, $iColCount
+If IsArray($vValue) Then
+If UBound($vValue, $UBOUND_DIMENSIONS) <> 2 Then Return SetError(5, 0, -1)
+$iValDim_1 = UBound($vValue, $UBOUND_ROWS)
+$iValDim_2 = UBound($vValue, $UBOUND_COLUMNS)
+$hDataType = 0
+Else
+Local $aSplit_1 = StringSplit($vValue, $sDelim_Row, $STR_NOCOUNT + $STR_ENTIRESPLIT)
+$iValDim_1 = UBound($aSplit_1, $UBOUND_ROWS)
+Local $aTmp[$iValDim_1][0], $aSplit_2
+For $i = 0 To $iValDim_1 - 1
+$aSplit_2 = StringSplit($aSplit_1[$i], $sDelim_Item, $STR_NOCOUNT + $STR_ENTIRESPLIT)
+$iColCount = UBound($aSplit_2)
+If $iColCount > $iValDim_2 Then
+$iValDim_2 = $iColCount
+ReDim $aTmp[$iValDim_1][$iValDim_2]
+EndIf
+For $j = 0 To $iColCount - 1
+$aTmp[$i][$j] = $aSplit_2[$j]
+Next
+Next
+$vValue = $aTmp
+EndIf
+If UBound($vValue, $UBOUND_COLUMNS) + $iStart > UBound($aArray, $UBOUND_COLUMNS) Then Return SetError(3, 0, -1)
+ReDim $aArray[$iDim_1 + $iValDim_1][$iDim_2]
+For $iWriteTo_Index = 0 To $iValDim_1 - 1
+For $j = 0 To $iDim_2 - 1
+If $j < $iStart Then
+$aArray[$iWriteTo_Index + $iDim_1][$j] = ""
+ElseIf $j - $iStart > $iValDim_2 - 1 Then
+$aArray[$iWriteTo_Index + $iDim_1][$j] = ""
+Else
+If String($hDataType) = "Boolean" Then
+Switch $vValue[$iWriteTo_Index][$j - $iStart]
+Case "True", "1"
+$aArray[$iWriteTo_Index + $iDim_1][$j] = True
+Case "False", "0", ""
+$aArray[$iWriteTo_Index + $iDim_1][$j] = False
+EndSwitch
+ElseIf IsFunc($hDataType) Then
+$aArray[$iWriteTo_Index + $iDim_1][$j] = $hDataType($vValue[$iWriteTo_Index][$j - $iStart])
+Else
+$aArray[$iWriteTo_Index + $iDim_1][$j] = $vValue[$iWriteTo_Index][$j - $iStart]
+EndIf
+EndIf
+Next
+Next
+Case Else
+Return SetError(2, 0, -1)
+EndSwitch
+Return UBound($aArray, $UBOUND_ROWS) - 1
+EndFunc
 Global Const $FO_APPEND = 1
 Global Const $FO_OVERWRITE = 2
+Global Const $FO_CREATEPATH = 8
+Func _FileCreate($sFilePath)
+Local $hFileOpen = FileOpen($sFilePath, BitOR($FO_OVERWRITE, $FO_CREATEPATH))
+If $hFileOpen = -1 Then Return SetError(1, 0, 0)
+Local $iFileWrite = FileWrite($hFileOpen, "")
+FileClose($hFileOpen)
+If Not $iFileWrite Then Return SetError(2, 0, 0)
+Return 1
+EndFunc
 Func _FileWriteLog($sLogPath, $sLogMsg, $iFlag = -1)
 Local $iOpenMode = $FO_APPEND
 Local $sMsg = @YEAR & "-" & @MON & "-" & @MDAY & " " & @HOUR & ":" & @MIN & ":" & @SEC & " : " & $sLogMsg
@@ -82,6 +208,102 @@ Local $aRet = DllCall('kernel32.dll', 'bool', 'GetVersionExW', 'struct*', $tOSVI
 If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
 Return BitOR(BitShift(DllStructGetData($tOSVI, 2), -8), DllStructGetData($tOSVI, 3))
 EndFunc
+If UBound($CMDLine) > 1 Then
+If $CMDLine[1] <> "" Then _Zip_VirtualZipOpen()
+EndIf
+Func _Zip_Create($hFilename)
+$hFp = FileOpen($hFilename, 26)
+$sString = Chr(80) & Chr(75) & Chr(5) & Chr(6) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0)
+FileWrite($hFp, $sString)
+If @error Then Return SetError(1,0,0)
+FileClose($hFp)
+While Not FileExists($hFilename)
+Sleep(10)
+Wend
+Return $hFilename
+EndFunc
+Func _Zip_AddFolder($hZipFile, $hFolder, $flag = 1)
+Local $DLLChk = _Zip_DllChk()
+If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
+If not _IsFullPath($hZipFile) then Return SetError(4,0)
+If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
+If StringRight($hFolder, 1) <> "\" Then $hFolder &= "\"
+$files = _Zip_Count($hZipFile)
+$oApp = ObjCreate("Shell.Application")
+$oCopy = $oApp.NameSpace($hZipFile).CopyHere($oApp.Namespace($hFolder))
+While 1
+If $flag = 1 then _Hide()
+If _Zip_Count($hZipFile) =($files+1) Then ExitLoop
+Sleep(10)
+WEnd
+Return SetError(0,0,1)
+EndFunc
+Func _Zip_Unzip($hZipFile, $hFilename, $hDestPath, $flag = 1)
+Local $DLLChk = _Zip_DllChk()
+If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
+If not _IsFullPath($hZipFile) then Return SetError(4,0)
+If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
+If Not FileExists($hDestPath) Then DirCreate($hDestPath)
+$oApp = ObjCreate("Shell.Application")
+$hFolderitem = $oApp.NameSpace($hZipFile).Parsename($hFilename)
+$oApp.NameSpace($hDestPath).Copyhere($hFolderitem)
+While 1
+If $flag = 1 then _Hide()
+If FileExists($hDestPath & "\" & $hFilename) Then
+return SetError(0, 0, 1)
+ExitLoop
+EndIf
+Sleep(500)
+WEnd
+EndFunc
+Func _Zip_Count($hZipFile)
+Local $DLLChk = _Zip_DllChk()
+If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
+If not _IsFullPath($hZipFile) then Return SetError(4,0)
+If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
+$items = _Zip_List($hZipFile)
+Return UBound($items) - 1
+EndFunc
+Func _Zip_List($hZipFile)
+local $aArray[1]
+Local $DLLChk = _Zip_DllChk()
+If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
+If not _IsFullPath($hZipFile) then Return SetError(4,0)
+If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
+$oApp = ObjCreate("Shell.Application")
+$hList = $oApp.Namespace($hZipFile).Items
+For $item in $hList
+_ArrayAdd($aArray,$item.name)
+Next
+$aArray[0] = UBound($aArray) - 1
+Return $aArray
+EndFunc
+Func _Zip_VirtualZipOpen()
+$ZipSplit = StringSplit($CMDLine[1], ",")
+$ZipName = $ZipSplit[1]
+$ZipFile = $ZipSplit[2]
+_Zip_Unzip($ZipName, $ZipFile, @TempDir & "\", 4+16)
+If @error Then Return SetError(@error,0,0)
+ShellExecute(@TempDir & "\" & $ZipFile)
+EndFunc
+Func _Zip_DllChk()
+If Not FileExists(@SystemDir & "\zipfldr.dll") Then Return 2
+If Not RegRead("HKEY_CLASSES_ROOT\CLSID\{E88DCCE0-B7B3-11d1-A9F0-00AA0060FA31}", "") Then Return 3
+Return 0
+EndFunc
+Func _IsFullPath($path)
+if StringInStr($path,":\") then
+Return True
+Else
+Return False
+EndIf
+Endfunc
+Func _Hide()
+If ControlGetHandle("[CLASS:#32770]", "", "[CLASS:SysAnimate32; INSTANCE:1]") <> "" And WinGetState("[CLASS:#32770]") <> @SW_HIDE Then
+$hWnd = WinGetHandle("[CLASS:#32770]")
+WinSetState($hWnd, "", @SW_HIDE)
+EndIf
+EndFunc
 Global $aCatalystCheck[24]
 Global $aRationalCheck[8]
 Global $aStrategyCheck[3]
@@ -100,20 +322,27 @@ Global $GUI_UserSettings = 9999
 $INPT_DropboxFolder = 9999
 $BTN_Save = 9999
 $BTN_Cancel = 9999
+$BTN_SelectDBPath = 9999
+$Radio_Q1 = 4
+$Radio_Q2 = 4
+$Radio_Q3 = 4
+$Radio_Q4 = 4
 RunMainGui()
 Func RunMainGui()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-$MainGUI = GUICreate("AutoCharts 2.0", 570, 609, -1, -1)
+$MainGUI = GUICreate("AutoCharts 2.2.0", 570, 609, -1, -1)
 $mFile = GUICtrlCreateMenu("&File")
 $mSyncFiles = GUICtrlCreateMenuItem("&Pull Data From Dropbox", $mFile)
+$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
 $mSettings = GUICtrlCreateMenu("&Settings")
 $mEditSettings = GUICtrlCreateMenuItem("&Edit", $mSettings)
 $mHelp = GUICtrlCreateMenu("&Help")
 $mAbout = GUICtrlCreateMenuItem("&About", $mHelp)
 $mLogFile = GUICtrlCreateMenuItem("&Open Log File", $mHelp)
+$mClearLog = GUICtrlCreateMenuItem("&Clear Log File", $mHelp)
 $TAB_Main = GUICtrlCreateTab(8, 176, 553, 353)
 GUICtrlSetFont(-1, 10, 400, 0, "Arial")
 $TAB_Catalyst = GUICtrlCreateTabItem("Catalyst Fact Sheets")
@@ -121,6 +350,8 @@ GUICtrlSetState(-1, $GUI_SHOW)
 $BTN_RunCatalyst = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
 GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 GUICtrlSetBkColor(-1, 0xC0DCC0)
+$BTN_Catalyst_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
+GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 $ACX = GUICtrlCreateCheckbox("ACX", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
@@ -148,43 +379,40 @@ GUICtrlSetBkColor(-1, 0xFFFFFF)
 $CFR = GUICtrlCreateCheckbox("CFR", 132, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$IIX = GUICtrlCreateCheckbox("IIX", 236, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$IIX = GUICtrlCreateCheckbox("IIX", 236, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$HII = GUICtrlCreateCheckbox("HII", 236, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$HII = GUICtrlCreateCheckbox("HII", 236, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$EIX = GUICtrlCreateCheckbox("EIX", 236, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$EIX = GUICtrlCreateCheckbox("EIX", 236, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$CWX = GUICtrlCreateCheckbox("CWX", 236, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$CWX = GUICtrlCreateCheckbox("CWX", 132, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$CTV = GUICtrlCreateCheckbox("CTV", 132, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$INS = GUICtrlCreateCheckbox("INS", 236, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$INS = GUICtrlCreateCheckbox("INS", 236, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$IOX = GUICtrlCreateCheckbox("IOX", 236, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$IOX = GUICtrlCreateCheckbox("IOX", 340, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$MBX = GUICtrlCreateCheckbox("MBX", 340, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$MBX = GUICtrlCreateCheckbox("MBX", 340, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$MLX = GUICtrlCreateCheckbox("MLX", 340, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$MLX = GUICtrlCreateCheckbox("MLX", 340, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$SHI = GUICtrlCreateCheckbox("SHI", 340, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$SHI = GUICtrlCreateCheckbox("SHI", 340, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$TEZ = GUICtrlCreateCheckbox("TEZ", 340, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$TEZ = GUICtrlCreateCheckbox("TEZ", 340, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$TRI = GUICtrlCreateCheckbox("TRI", 340, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$TRI = GUICtrlCreateCheckbox("TRI", 444, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-GUICtrlSetBkColor(-1, 0xFFFFFF)
-$TRX = GUICtrlCreateCheckbox("TRX", 444, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$TRX = GUICtrlCreateCheckbox("TRX", 444, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
 $TAB_Rational = GUICtrlCreateTabItem("Rational Fact Sheets")
@@ -215,6 +443,8 @@ GUICtrlSetBkColor(-1, 0xFFFFFF)
 $BTN_RunRational = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
 GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 GUICtrlSetBkColor(-1, 0xC0DCC0)
+$BTN_Rational_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
+GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 $TAB_StrategyShares = GUICtrlCreateTabItem("Strategy Shares Fact Sheets")
 $GLDB = GUICtrlCreateCheckbox("GLDB", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
@@ -250,6 +480,8 @@ FileClose($LogFile)
 Exit
 Case $mEditSettings
 OpenSettingsGUI()
+Case $mClearLog
+ClearLog()
 Case $mAbout
 ShellExecute("https://onevion.github.io/AutoCharts/")
 Case $mLogFile
@@ -257,6 +489,8 @@ $sTextFile = @ScriptDir & "\AutoCharts.log"
 $_Run = "notepad.exe " & $sTextFile
 ConsoleWrite("$_Run : " & $_Run & @CRLF)
 Run($_Run, @WindowsDir, @SW_SHOWDEFAULT)
+Case $mCreateArchive
+CreateFactSheetArchive()
 Case $ACX
 If GUICtrlRead($ACX) = 1 Then $aCatalystCheck[0] = "ACX"
 If GUICtrlRead($ACX) = 4 Then $aCatalystCheck[0] = 0
@@ -296,9 +530,6 @@ If GUICtrlRead($EIX) = 4 Then $aCatalystCheck[12] = 0
 Case $CWX
 If GUICtrlRead($CWX) = 1 Then $aCatalystCheck[13] = "CWX"
 If GUICtrlRead($CWX) = 4 Then $aCatalystCheck[13] = 0
-Case $CTV
-If GUICtrlRead($CTV) = 1 Then $aCatalystCheck[14] = "CTV"
-If GUICtrlRead($CTV) = 4 Then $aCatalystCheck[14] = 0
 Case $INS
 If GUICtrlRead($INS) = 1 Then $aCatalystCheck[15] = "INS"
 If GUICtrlRead($INS) = 4 Then $aCatalystCheck[15] = 0
@@ -357,9 +588,12 @@ Case $ROMO
 If GUICtrlRead($ROMO) = 1 Then $aStrategyCheck[2] = "ROMO"
 If GUICtrlRead($ROMO) = 4 Then $aStrategyCheck[2] = 0
 Case $BTN_RunCatalyst
+VerifyDropbox()
+If $bDBVerified = True Then
 $FundFamily = "Catalyst"
 $FamilySwitch = $aCatalystCheck
 GUICtrlSetData($ProgressBar, 10)
+PullCatalystData()
 RunCSVConvert()
 CreateCharts()
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
@@ -368,10 +602,31 @@ FileClose($LogFile)
 GUICtrlSetData($ProgressBar, 0)
 MsgBox(0, "Finished", "The process has finished.")
 GUICtrlSetData($UpdateLabel, "The process has finished.")
+Else
+If @error = 50 Then
+MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+EndIf
+EndIf
+Case $BTN_Catalyst_UpdateExpenseRatio
+$FundFamily = "Catalyst"
+$FamilySwitch = $aCatalystCheck
+GUICtrlSetData($ProgressBar, 10)
+PullCatalystData()
+RunExpenseRatios()
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "############################### END OF RUN - CATALYST ###############################")
+FileClose($LogFile)
+GUICtrlSetData($ProgressBar, 0)
+MsgBox(0, "Finished", "The process has finished.")
+GUICtrlSetData($UpdateLabel, "The process has finished.")
+If @error = 50 Then
+MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+EndIf
 Case $BTN_RunRational
 $FundFamily = "Rational"
 $FamilySwitch = $aRationalCheck
 GUICtrlSetData($ProgressBar, 10)
+PullRationalData()
 RunCSVConvert()
 CreateCharts()
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
@@ -380,10 +635,26 @@ FileClose($LogFile)
 GUICtrlSetData($ProgressBar, 0)
 MsgBox(0, "Finished", "The process has finished.")
 GUICtrlSetData($UpdateLabel, "The process has finished.")
+Case $BTN_Rational_UpdateExpenseRatio
+$FundFamily = "Rational"
+$FamilySwitch = $aRationalCheck
+GUICtrlSetData($ProgressBar, 10)
+PullRationalData()
+RunExpenseRatios()
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "############################### END OF RUN - RATIONAL ###############################")
+FileClose($LogFile)
+GUICtrlSetData($ProgressBar, 0)
+MsgBox(0, "Finished", "The process has finished.")
+GUICtrlSetData($UpdateLabel, "The process has finished.")
+If @error = 50 Then
+MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+EndIf
 Case $BTN_RunStrategyShares
 $FundFamily = "StrategyShares"
 $FamilySwitch = $aStrategyCheck
 GUICtrlSetData($ProgressBar, 10)
+PullStrategySharesData()
 RunCSVConvert()
 CreateCharts()
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
@@ -408,8 +679,26 @@ Else
 $iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $DATA_UserSettings)
 $DATA_UserSettings = GUICtrlRead($INPT_Name)
 $iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UserName', $DATA_UserSettings)
-$DATA_UserSettings = GUICtrlRead($Select_Quarter)
+If GUICtrlRead($Radio_Q1) = 1 Then
+$Select_Quarter = "Q1"
+$DATA_UserSettings = "Q1"
 $iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+EndIf
+If GUICtrlRead($Radio_Q2) = 1 Then
+$Select_Quarter = "Q2"
+$DATA_UserSettings = "Q2"
+$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+EndIf
+If GUICtrlRead($Radio_Q3) = 1 Then
+$Select_Quarter = "Q3"
+$DATA_UserSettings = "Q3"
+$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+EndIf
+If GUICtrlRead($Radio_Q4) = 1 Then
+$Select_Quarter = "Q4"
+$DATA_UserSettings = "Q4"
+$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+EndIf
 $DATA_UserSettings = GUICtrlRead($INPT_CurYear)
 $iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentYear', $DATA_UserSettings)
 If $iSettingsConfirm = 1 Then
@@ -424,8 +713,13 @@ Else
 MsgBox(0, "Error!", "An error occured")
 EndIf
 VerifyDropbox()
+If @error = 50 Then
+MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.")
+EndIf
 GUIDelete($GUI_UserSettings)
 EndIf
+Case $BTN_SelectDBPath
+BrowseForDBPath()
 Case $BTN_Cancel
 GUIDelete($GUI_UserSettings)
 EndSwitch
@@ -433,18 +727,47 @@ EndSwitch
 WEnd
 EndFunc
 Func OpenSettingsGUI()
-$GUI_UserSettings = GUICreate("User Settings", 203, 249, -1, -1)
+$DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
+$INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
+$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
+$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
+$GUI_UserSettings = GUICreate("User Settings", 207, 254, -1, -1)
 $INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 16, 32, 169, 21)
 $BTN_Save = GUICtrlCreateButton("Save", 16, 208, 75, 25)
 $BTN_Cancel = GUICtrlCreateButton("Cancel", 112, 208, 75, 25)
 $Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox Folder:", 16, 15, 116, 17)
-$INPT_Name = GUICtrlCreateInput($INPT_Name, 16, 80, 169, 21)
-$Label_Name = GUICtrlCreateLabel("Your Name:", 16, 63, 60, 17)
-$Select_Quarter = GUICtrlCreateList("", 16, 120, 57, 58)
-GUICtrlSetData(-1, "Q1|Q2|Q3|Q4")
-$INPT_CurYear = GUICtrlCreateInput($INPT_CurYear, 80, 136, 105, 21)
-$Label_Year = GUICtrlCreateLabel("Current Year", 80, 119, 63, 17)
+$BTN_SelectDBPath = GUICtrlCreateButton("Browse", 16, 56, 169, 25)
+$INPT_Name = GUICtrlCreateInput($INPT_Name, 16, 112, 169, 21)
+$Label_Name = GUICtrlCreateLabel("Your Name:", 16, 95, 60, 17)
+$Radio_Q1 = GUICtrlCreateRadio("Q1", 17, 152, 35, 17)
+If $Select_Quarter = "Q1" Then
+GUICtrlSetState($Radio_Q1, 1)
+EndIf
+$Radio_Q2 = GUICtrlCreateRadio("Q2", 56, 152, 35, 17)
+If $Select_Quarter = "Q2" Then
+GUICtrlSetState($Radio_Q2, 1)
+EndIf
+$Radio_Q3 = GUICtrlCreateRadio("Q3", 17, 176, 35, 17)
+If $Select_Quarter = "Q3" Then
+GUICtrlSetState($Radio_Q3, 1)
+EndIf
+$Radio_Q4 = GUICtrlCreateRadio("Q4", 56, 176, 35, 17)
+If $Select_Quarter = "Q4" Then
+GUICtrlSetState($Radio_Q4, 1)
+EndIf
+$INPT_CurYear = GUICtrlCreateInput($INPT_CurYear, 120, 168, 63, 21)
+$Label_Year = GUICtrlCreateLabel("Current Year", 120, 151, 63, 17)
 GUISetState()
+EndFunc
+Func BrowseForDBPath()
+Local Const $sMessage = "Select a folder"
+Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
+If @error Then
+MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
+GUICtrlSetData($INPT_DropboxFolder, "")
+Else
+GUICtrlSetData($INPT_DropboxFolder, $sFileSelectFolder)
+EndIf
 EndFunc
 Func VerifyDropbox()
 If FileExists($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then
@@ -453,15 +776,40 @@ IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
 Else
 $bDBVerified = False
 IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
-MsgBox(0, "Error!", "Your Dropbox directory can not be verified. Please try again.")
+SetError(50)
 EndIf
 EndFunc
 Func SyncronizeDataFiles()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+DirRemove(@ScriptDir & $CSVDataDir, 1)
 DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", @ScriptDir & $CSVDataDir, 1)
 SplashOff()
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 _FileWriteLog($LogFile, "Synced Dropbox data with Autocharts Data")
+EndFunc
+Func PullCatalystData()
+SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+DirRemove(@ScriptDir & $CSVDataDir & "\Catalyst", 1)
+DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
+SplashOff()
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "Pulled Catalyst Data from Dropbox")
+EndFunc
+Func PullRationalData()
+SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+DirRemove(@ScriptDir & $CSVDataDir & "\Rational", 1)
+DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", @ScriptDir & $CSVDataDir & "\Rational", 1)
+SplashOff()
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "Pulled Rational Data from Dropbox")
+EndFunc
+Func PullStrategySharesData()
+SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+DirRemove(@ScriptDir & $CSVDataDir & "\StrategyShares", 1)
+DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", @ScriptDir & $CSVDataDir & "\StrategyShares", 1)
+SplashOff()
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "Pulled Strategy Shares Data from Dropbox")
 EndFunc
 Func DetermineDates()
 $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
@@ -494,18 +842,18 @@ FileClose($LogFile)
 If FileExists(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv") Then
 FileDelete(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv")
 EndIf
-Local $file = @ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDatesTEMP.csv"
+Local $file = @ScriptDir & "\assets\ChartBuilder\public\Data\Update_FactSheetDatesTEMP.csv"
 Local $text = FileReadLine($file, 1)
 $tout1 = StringReplace($text, 'Label,ID', 'Label,ID' & @CRLF)
 FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
 $text = FileReadLine($file, 2)
-$tout1 = StringReplace($text, '3/31/2021,1', $MonthNumber & '/' & $DayNumber & '/' & $INPT_CurYear & ',1' & @CRLF)
+$tout1 = StringReplace($text, '03/31/2021,1', $MonthNumber & '/' & $DayNumber & '/' & $INPT_CurYear & ',1' & @CRLF)
 FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
 $text = FileReadLine($file, 3)
 $tout1 = StringReplace($text, '"March 31, 2021",2', '"' & $QtrToMonth & ' ' & $DayNumber & ', ' & $INPT_CurYear & '",2' & @CRLF)
 FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
 $text = FileReadLine($file, 4)
-$tout1 = StringReplace($text, '1Q 2021,3', $Select_Quarter & ' ' & $INPT_CurYear & ',3' & @CRLF)
+$tout1 = StringReplace($text, 'Q1 2021,3', $Select_Quarter & ' ' & $INPT_CurYear & ',3' & @CRLF)
 FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
 $text = FileReadLine($file, 5)
 $tout1 = StringReplace($text, 'March 2021,4', $QtrToMonth & ' ' & $INPT_CurYear & ',4' & @CRLF)
@@ -518,6 +866,16 @@ FileMove(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheet
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 _FileWriteLog($LogFile, "Updated FactSheetDates CSV File with selected dates")
 FileClose($LogFile)
+EndFunc
+Func ClearLog()
+FileDelete(@ScriptDir & "\AutoCharts.log")
+_FileCreate(@ScriptDir & "\AutoCharts.log")
+If @error = 0 Then
+MsgBox(0, "Success", "Log file cleared.")
+EndIf
+If @error = 1 Then
+MsgBox(0, "Error!", "There was an error with clearing the log.")
+EndIf
 EndFunc
 Func RunCSVConvert()
 For $a = 0 To(UBound($FamilySwitch) - 1)
@@ -537,6 +895,9 @@ RunCSVConvert4Institution()
 EndIf
 If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 RunCSVConvert4Brochure()
+EndIf
+If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+RunCSVConvert4Presentation()
 EndIf
 GUICtrlSetData($ProgressBar, 25)
 FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)
@@ -558,18 +919,20 @@ EndFunc
 Func RunCSVConvert4Institution()
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-_FileWriteLog($LogFile, "~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
-GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
-_FileWriteLog($LogFile, "Converted " & $CurrentFund & ".xlsx and " & $CurrentFund & "-institutional.xlsx files to csv")
-GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & ".xlsx and " & $CurrentFund & "-institutional.xlsx files to csv")
+_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-institutional.xlsx file to csv")
+GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-institutional.xlsx file to csv")
 EndFunc
 Func RunCSVConvert4Brochure()
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)
 $LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-_FileWriteLog($LogFile, "~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
-GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
-_FileWriteLog($LogFile, "Converted " & $CurrentFund & ".xlsx and " & $CurrentFund & "-brochure.xlsx files to csv")
-GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & ".xlsx and " & $CurrentFund & "-brochure.xlsx files to csv")
+_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-brochure.xlsx file to csv")
+GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-brochure.xlsx file to csv")
+EndFunc
+Func RunCSVConvert4Presentation()
+RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-presentation.xlsx file to csv")
+GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-presentation.xlsx file to csv")
 EndFunc
 Func HTMLChartEditor()
 Local $file = @ScriptDir & "\assets\ChartBuilder\public\index_TEMPLATE.html"
@@ -605,4 +968,50 @@ ContinueLoop
 EndIf
 GUICtrlSetData($ProgressBar, 100)
 Next
+EndFunc
+Func RunExpenseRatios()
+If $FundFamily = "Catalyst" Then
+GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
+GUICtrlSetData($ProgressBar, 60)
+FileCopy(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")
+RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")
+GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
+_FileWriteLog($LogFile, "Updated Catalyst Expense Ratios")
+GUICtrlSetData($UpdateLabel, "Updated Catalyst Expense Ratios")
+FileCopy(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)
+FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)
+FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
+EndIf
+If $FundFamily = "Rational" Then
+GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
+GUICtrlSetData($ProgressBar, 60)
+FileCopy(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")
+RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")
+GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
+_FileWriteLog($LogFile, "Updated Rational Expense Ratios")
+GUICtrlSetData($UpdateLabel, "Updated Rational Expense Ratios")
+FileCopy(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)
+FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)
+FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
+EndIf
+GUICtrlSetData($ProgressBar, 100)
+EndFunc
+Func CreateFactSheetArchive()
+Local $Zip, $myfile
+Local Const $sMessage = "Select Save Location"
+Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
+If @error Then
+MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
+Else
+$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $INPT_Name & "_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip")
+_Zip_AddFolder($Zip, $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", 4)
+_Zip_AddFolder($Zip, $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4)
+MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip)
+$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+_FileWriteLog($LogFile, "Created Factsheet Archive at " & $Zip)
+EndIf
 EndFunc

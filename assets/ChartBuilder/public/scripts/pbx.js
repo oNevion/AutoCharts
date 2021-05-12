@@ -27,6 +27,11 @@ body {
         width:1600px!important;
     height:680px!important;
     }
+
+    #chartdiv4 {
+        width:1330px!important;
+    height:400px!important;
+    }
 `;
 
 // append to DOM
@@ -310,12 +315,92 @@ chart3.exporting.menu.items = [{
 }];
 chart3.exporting.filePrefix = "PBX_ConvertibleBondsChart";
 
+// ################################   CHART 4  PBX Case Study - Convertible Issuance Bar ################################################
+
+
+// Themes begin
+am4core.useTheme(am4themes_amcharts);
+// Themes end
+
+// Create chart instance
+var chart4 = am4core.create("chartdiv4", am4charts.XYChart);
+
+
+// Set up data source
+chart4.dataSource.url = "../Data/Backups/Rational/PBX/PBX_CaseStudy_ConvertibleIssuanceBar.csv";
+chart4.dataSource.parser = new am4core.CSVParser();
+chart4.dataSource.parser.options.useColumnNames = true;
+
+// Create axes
+var categoryAxis = chart4.xAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "Year";
+categoryAxis.renderer.labels.template.fontWeight = "Bold";
+categoryAxis.renderer.grid.template.disabled = false;
+categoryAxis.renderer.grid.template.location = 0;
+categoryAxis.renderer.minGridDistance = 30;
+categoryAxis.renderer.labels.template.fontSize = "30px";
+categoryAxis.renderer.cellStartLocation = 0.1;
+categoryAxis.renderer.cellEndLocation = 0.9;
+categoryAxis.renderer.grid.template.strokeOpacity = .2;
+categoryAxis.renderer.labels.template.textAlign = "middle";
+
+var valueAxis = chart4.yAxes.push(new am4charts.ValueAxis());
+valueAxis.renderer.grid.template.disabled = true;
+valueAxis.renderer.labels.template.fontWeight = "Bold";
+valueAxis.renderer.labels.template.fontSize = "30px";
+valueAxis.renderer.numberFormatter.numberFormat = "#";
+
+
+
+// Create series
+var series = chart4.series.push(new am4charts.ColumnSeries());
+series.dataFields.valueY = "Convertibles";
+series.dataFields.categoryX = "Year";
+series.name = "Convertibles";
+series.clustered = true;
+series.fill = am4core.color("#08da94");
+series.strokeWidth = 0;
+series.columns.template.width = am4core.percent(80);
+
+
+var bullet = series.bullets.push(new am4charts.LabelBullet());
+bullet.label.text = "{valueY.value}";
+bullet.label.hideOversized = false;
+bullet.label.fontSize = "32px";
+bullet.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > values.openValueY.value
+    ? "top"
+    : "bottom";
+});
+
+// Add legend
+chart4.legend = new am4charts.Legend();
+chart4.legend.labels.template.fontSize = "30px";
+chart4.legend.labels.template.truncate = false;
+chart4.maskBullets = false
+
+
+// Export this stuff
+chart4.exporting.menu = new am4core.ExportMenu();
+chart4.exporting.menu.items = [{
+  "label": "...",
+  "menu": [
+          { "type": "svg", "label": "SVG" },
+  ]
+}];
+chart4.exporting.filePrefix = "PBX_CaseStudy_ConvertibleIssuanceBar";
+
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
      chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
+     chart4.exporting.export('svg');
 };
 
 window.onload = setTimeout(loadFrame, 1000);
