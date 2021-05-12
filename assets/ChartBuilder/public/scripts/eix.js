@@ -29,7 +29,7 @@ body {
     }
 
     #chartdiv4 {
-        width:1330px!important;
+        width:1430px!important;
     height:460px!important;
     }
 
@@ -293,9 +293,6 @@ am4core.useTheme(am4themes_amcharts);
 // Create chart instance
 var chart4 = am4core.create("chartdiv4", am4charts.XYChart);
 
-// Add percent sign to all numbers
-chart4.numberFormatter.numberFormat = "#.#'%'";
-
 // Set up data source
 chart4.dataSource.url = "../Data/Backups/Catalyst/EIX/EIX_PRES_IncomeAssetClassBar.csv";
 chart4.dataSource.parser = new am4core.CSVParser();
@@ -316,7 +313,8 @@ categoryAxis.renderer.grid.template.strokeOpacity = .2;
 var valueAxis = chart4.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.grid.template.disabled = true;
 valueAxis.renderer.labels.template.fontWeight = "Bold";
-valueAxis.renderer.labels.template.fontSize = "23px";
+valueAxis.renderer.labels.template.fontSize = "30px";
+valueAxis.renderer.numberFormatter.numberFormat = "#'%'";
 
 
 
@@ -326,38 +324,34 @@ series.dataFields.valueY = "Senior Legacy RMBS Index";
 series.dataFields.categoryX = "Label";
 series.name = "Senior Legacy RMBS Index";
 series.clustered = true;
-series.fill = am4core.color("#61328d");
+series.fill = am4core.color("#110e5d");
 series.strokeWidth = 0;
 series.columns.template.width = am4core.percent(100);
-
-
 
 var series2 = chart4.series.push(new am4charts.ColumnSeries());
 series2.dataFields.valueY = "Agency MBS";
 series2.dataFields.categoryX = "Label";
 series2.name = "Agency MBS";
 series2.clustered = true;
-series2.fill = am4core.color("#0069c8");
+series2.fill = am4core.color("#004fa6");
 series2.strokeWidth = 0;
 series2.columns.template.width = am4core.percent(100);
-
 
 var series3 = chart4.series.push(new am4charts.ColumnSeries());
 series3.dataFields.valueY = "High Yield Bond Index";
 series3.dataFields.categoryX = "Label";
 series3.name = "High Yield Bond Index";
 series3.clustered = true;
-series3.fill = am4core.color("#0096d9");
+series3.fill = am4core.color("#008ccc");
 series3.strokeWidth = 0;
 series3.columns.template.width = am4core.percent(100);
-
 
 var series4 = chart4.series.push(new am4charts.ColumnSeries());
 series4.dataFields.valueY = "Aggregate Bond Index";
 series4.dataFields.categoryX = "Label";
 series4.name = "Aggregate Bond Index";
 series4.clustered = true;
-series4.fill = am4core.color("#00bbc1");
+series4.fill = am4core.color("#00c7ca");
 series4.strokeWidth = 0;
 series4.columns.template.width = am4core.percent(100);
 
@@ -366,14 +360,91 @@ series5.dataFields.valueY = "Municipal Bond Index";
 series5.dataFields.categoryX = "Label";
 series5.name = "Municipal Bond Index";
 series5.clustered = true;
-series5.fill = am4core.color("#08da94");
+series5.fill = am4core.color("#09ffad");
 series5.strokeWidth = 0;
 series5.columns.template.width = am4core.percent(100);
+
+var bullet = series.bullets.push(new am4charts.LabelBullet());
+bullet.label.text = "{valueY.value}";
+bullet.label.hideOversized = false;
+bullet.label.fontSize = "18px";
+bullet.label.strokeWidth = 0;
+bullet.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > values.openValueY.value
+    ? "top"
+    : "bottom";
+});
+
+var bullet2 = series2.bullets.push(new am4charts.LabelBullet());
+bullet2.label.text = "{valueY.value}";
+bullet2.label.hideOversized = false;
+bullet2.label.fontSize = "18px";
+bullet2.label.strokeWidth = 0;
+bullet2.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > values.openValueY.value
+    ? "top"
+    : "bottom";
+});
+
+var bullet3 = series3.bullets.push(new am4charts.LabelBullet());
+bullet3.label.text = "{valueY.value}";
+bullet3.label.hideOversized = false;
+bullet3.label.fontSize = "18px";
+bullet3.label.strokeWidth = 0;
+bullet3.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > values.openValueY.value
+    ? "top"
+    : "bottom";
+});
+
+var bullet4 = series4.bullets.push(new am4charts.LabelBullet());
+bullet4.label.text = "{valueY.value}";
+bullet4.label.hideOversized = false;
+bullet4.label.fontSize = "18px";
+bullet4.label.strokeWidth = 0;
+bullet4.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > values.openValueY.value
+    ? "top"
+    : "bottom";
+});
+
+var bullet5 = series5.bullets.push(new am4charts.LabelBullet());
+bullet5.label.text = "{valueY.value}";
+bullet5.label.hideOversized = false;
+bullet5.label.fontSize = "18px";
+bullet5.label.strokeWidth = 0;
+bullet5.label.adapter.add("verticalCenter", function(center, target) {
+  if (!target.dataItem) {
+    return center;
+  }
+  var values = target.dataItem.values;
+  return values.valueY.value > values.openValueY.value
+    ? "top"
+    : "bottom";
+});
+
 
 // Add legend
 chart4.legend = new am4charts.Legend();
 chart4.legend.labels.template.fontSize = "23px";
 chart4.legend.labels.template.truncate = false;
+chart4.maskBullets = false
 
 
 // Export this stuff
