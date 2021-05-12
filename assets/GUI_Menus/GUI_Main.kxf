@@ -64,7 +64,7 @@
 				<property name="Top" vt="Int16">176</property>
 				<property name="Width" vt="Int16">553</property>
 				<property name="Height" vt="Int16">353</property>
-				<property name="ActivePage" vt="Ident">TAB_Catalyst</property>
+				<property name="ActivePage" vt="Ident">TAB_Rational</property>
 				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
 				<property name="Font.Height" vt="Int8">-13</property>
@@ -789,29 +789,6 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="RTAVF">
-							<properties>
-								<property name="Left" vt="Int8">120</property>
-								<property name="Top" vt="Int16">174</property>
-								<property name="Width" vt="Int8">90</property>
-								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">RTAVF</property>
-								<property name="Color" vt="Ident">clWhite</property>
-								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
-								<property name="Font.Color" vt="Ident">clWindowText</property>
-								<property name="Font.Height" vt="Int8">-16</property>
-								<property name="Font.Name" vt="String">Montserrat Black</property>
-								<property name="Font.Style" vt="Set"/>
-								<property name="ParentColor" vt="False">False</property>
-								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">7</property>
-								<property name="OnClick" vt="String">ACXClick</property>
-								<property name="CtrlStyle" vt="Int32">1342246915</property>
-								<property name="CtrlExStyle" vt="Int8">0</property>
-								<property name="Resizing" vt="Set">DockHeight</property>
-							</properties>
-							<components/>
-						</object>
 						<object type="TAButton" name="BTN_RunRational">
 							<properties>
 								<property name="Left" vt="Int8">16</property>
@@ -825,7 +802,7 @@
 								<property name="Font.Name" vt="String">MS Sans Serif</property>
 								<property name="Font.Style" vt="Set">fsBold</property>
 								<property name="ParentFont" vt="False">False</property>
-								<property name="TabOrder" vt="Int8">8</property>
+								<property name="TabOrder" vt="Int8">7</property>
 								<property name="Color" vt="Ident">clMoneyGreen</property>
 								<property name="CtrlStyle" vt="Int32">1342373888</property>
 								<property name="CtrlExStyle" vt="Int8">0</property>

@@ -186,9 +186,6 @@ Func RunMainGui()
 	$RFX = GUICtrlCreateCheckbox("RFX", 132, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$RTAVF = GUICtrlCreateCheckbox("RTAVF", 132, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
 	$BTN_RunRational = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
 	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
 	GUICtrlSetBkColor(-1, 0xC0DCC0)
@@ -333,9 +330,6 @@ Func RunMainGui()
 					Case $RFX
 						If GUICtrlRead($RFX) = 1 Then $aRationalCheck[6] = "RFX" ; Sets  slot of the Rational Array to 1 if CHECKED
 						If GUICtrlRead($RFX) = 4 Then $aRationalCheck[6] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
-					Case $RTAVF
-						If GUICtrlRead($RTAVF) = 1 Then $aRationalCheck[7] = "RTAVF" ; Sets  slot of the Rational Array to 1 if CHECKED
-						If GUICtrlRead($RTAVF) = 4 Then $aRationalCheck[7] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
 
 
 					Case $GLDB
