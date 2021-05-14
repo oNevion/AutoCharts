@@ -349,6 +349,7 @@ valueAxis.renderer.grid.template.disabled = true;
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "30px";
 valueAxis.renderer.numberFormatter.numberFormat = "#";
+valueAxis.min = 0;
 
 
 
@@ -367,6 +368,7 @@ var bullet = series.bullets.push(new am4charts.LabelBullet());
 bullet.label.text = "{valueY.value}";
 bullet.label.hideOversized = false;
 bullet.label.fontSize = "32px";
+bullet.label.strokeWidth = 0;
 bullet.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
     return center;
