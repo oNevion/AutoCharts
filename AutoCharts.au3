@@ -589,7 +589,7 @@ EndFunc   ;==>BrowseForDBPath
 
 
 Func VerifyDropbox()
-	If FileExists($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
+	If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
 		$bDBVerified = True
 		IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
 	Else
@@ -607,7 +607,7 @@ Func SyncronizeDataFiles()
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
 	DirRemove(@ScriptDir & $CSVDataDir, 1)
-	DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", @ScriptDir & $CSVDataDir, 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", @ScriptDir & $CSVDataDir, 1)
 
 	SplashOff()
 
@@ -621,7 +621,7 @@ Func PullCatalystData()
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
 	DirRemove(@ScriptDir & $CSVDataDir & "\Catalyst", 1)
-	DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
 
 	SplashOff()
 
@@ -635,7 +635,7 @@ Func PullRationalData()
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
 	DirRemove(@ScriptDir & $CSVDataDir & "\Rational", 1)
-	DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", @ScriptDir & $CSVDataDir & "\Rational", 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", @ScriptDir & $CSVDataDir & "\Rational", 1)
 
 	SplashOff()
 
@@ -650,7 +650,7 @@ Func PullStrategySharesData()
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
 	DirRemove(@ScriptDir & $CSVDataDir & "\StrategyShares", 1)
-	DirCopy($DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", @ScriptDir & $CSVDataDir & "\StrategyShares", 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", @ScriptDir & $CSVDataDir & "\StrategyShares", 1)
 
 	SplashOff()
 
@@ -788,7 +788,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 
 
 			FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
-			FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\" & $FundFamily & "\" & $CurrentFund & "\Links\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\" & $FundFamily & "\" & $CurrentFund & "\Links\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
 
 			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 			_FileWriteLog($LogFile, "Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox") ; Write to the logfile
@@ -881,8 +881,8 @@ Func CreateCharts()
 		If $FamilySwitch[$a] <> "" Then
 			$CurrentFund = $FamilySwitch[$a]
 			Call("HTMLChartEditor")
-			RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE) ;~ Runs local server to create current fund's amcharts svgs.
-			;RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
+			;RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE) ;~ Runs local server to create current fund's amcharts svgs.
+			RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
 			GUICtrlSetData($ProgressBar, 70)
 
 			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
@@ -891,7 +891,7 @@ Func CreateCharts()
 
 
 			FileDelete(@ScriptDir & "\assets\ChartBuilder\public\index.html")  ; ~ Deletes index.html file that was created in Func HTMLChartEditor to keep from editing the same file.
-			FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\" & $FundFamily & "\" & $CurrentFund & "\Links\" & "*.svg", 1)   ; Move all .SVG to Dropbox Indesign Files and Overwrite.
+			FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\" & $FundFamily & "\" & $CurrentFund & "\Links\" & "*.svg", 1)   ; Move all .SVG to Dropbox Indesign Files and Overwrite.
 			GUICtrlSetData($ProgressBar, 92)
 
 			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
@@ -923,7 +923,7 @@ Func RunExpenseRatios()
 
 		GUICtrlSetData($UpdateLabel, "Updated Catalyst Expense Ratios")
 		FileCopy(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
-		FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
 		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
 
 
@@ -943,7 +943,7 @@ Func RunExpenseRatios()
 
 		GUICtrlSetData($UpdateLabel, "Updated Rational Expense Ratios")
 		FileCopy(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
-		FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
 		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
 
 
@@ -967,8 +967,8 @@ Func CreateFactSheetArchive()
 
 	Else
 		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $INPT_Name & "_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
-		_Zip_AddFolder($Zip, $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
-		_Zip_AddFolder($Zip, $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
+		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
+		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
 		MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip) ;Msgbox Counting Items in $Zip
 		$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 
