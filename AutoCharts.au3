@@ -3,10 +3,10 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.2.0.1
+#AutoIt3Wrapper_Res_Fileversion=2.2.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.2.0
+#AutoIt3Wrapper_Res_ProductVersion=2.2.1
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -75,7 +75,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.2.0", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.2.1", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	$mSyncFiles = GUICtrlCreateMenuItem("&Pull Data From Dropbox", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
