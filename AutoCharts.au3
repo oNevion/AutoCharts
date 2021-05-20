@@ -881,8 +881,8 @@ Func CreateCharts()
 		If $FamilySwitch[$a] <> "" Then
 			$CurrentFund = $FamilySwitch[$a]
 			Call("HTMLChartEditor")
-			;RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE) ;~ Runs local server to create current fund's amcharts svgs.
-			RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
+			RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE) ;~ Runs local server to create current fund's amcharts svgs.
+			;RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
 			GUICtrlSetData($ProgressBar, 70)
 
 			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)

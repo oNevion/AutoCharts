@@ -15,7 +15,7 @@ body {
 
     #chartdiv {
         width:1080px!important;
-		height:560px!important;
+		height:500px!important;
     }
 
         #chartdiv2 {
@@ -259,8 +259,6 @@ series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
 series1.tensionX = 0.93;
 series1.stroke = am4core.color("#08da94");
-series1.legendSettings.labelText = "{name}[/]";
-series1.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
 var series2 = chart3.series.push(new am4charts.LineSeries());
 series2.dataFields.valueY = "Barclay CTA";
@@ -270,8 +268,6 @@ series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 series2.tensionX = 0.93;
 series2.stroke = am4core.color("#2d7abf");
-series2.legendSettings.labelText = "{name}[/]";
-series2.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
 var series3 = chart3.series.push(new am4charts.LineSeries());
 series3.dataFields.valueY = "S&P 500 TR Index";
@@ -281,13 +277,13 @@ series3.strokeWidth = 3;
 series3.tooltipText = "{valueY}";
 series3.tensionX = 0.93;
 series3.stroke = am4core.color("#d97c7c");
-series3.legendSettings.labelText = "{name}[/]";
-series3.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
 // Add legend
 chart3.legend = new am4charts.Legend();
 chart3.legend.itemContainers.template.marginTop = -15;
 chart3.legend.labels.template.truncate = false;
+chart3.legend.labels.template.fontSize = "14px";
+chart3.legend.labels.template.text = "{name}[/]  [bold {color}]{valueY.close}";
 
 
 // Export this stuff
