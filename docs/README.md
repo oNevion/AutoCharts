@@ -37,7 +37,7 @@ Use the installer file here:
 
 ![alt](/img/autocharts2.gif)  
 
-?> **Tip |** As of v2.2.0, you may skip the above step as AutoCharts will automatically sync with Dropbox when you press the "Proccess Updates" button
+?> **Tip |** As of v2.2.0, you may skip the above step as AutoCharts will automatically sync with Dropbox when you press the "Process Updates" button
 
 * Lastly, to update a fund, just select it and click "Process Updates"
 
