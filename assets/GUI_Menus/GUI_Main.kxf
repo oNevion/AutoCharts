@@ -1005,6 +1005,25 @@
 						</object>
 					</components>
 				</object>
+				<object type="TAMenuItem" name="mDataLinker">
+					<properties>
+						<property name="Caption" vt="String">DataLinker</property>
+					</properties>
+					<components>
+						<object type="TAMenuItem" name="mImportDataLinker">
+							<properties>
+								<property name="Caption" vt="String">Import Data Sources</property>
+							</properties>
+							<components/>
+						</object>
+						<object type="TAMenuItem" name="mExportDataLinker">
+							<properties>
+								<property name="Caption" vt="String">Export Data Sources</property>
+							</properties>
+							<components/>
+						</object>
+					</components>
+				</object>
 				<object type="TAMenuItem" name="mHelp">
 					<properties>
 						<property name="Caption" vt="String">&amp;Help</property>
