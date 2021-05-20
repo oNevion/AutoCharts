@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.3.0 
+### Current Release
+
+*May 20, 2021*
+
+* Create new menu item for Syncing with Dropbox/Database
+* Create Database on Dropbox for a more centralized approach to data management
+* Add Upload amCharts Scripts option
+* AutoCharts now syncs amCharts scripts with database when running
+* Add Upload DataLinker to Database Option
+* Add Export DataLinker Option
+* Add Import DataLinker Option
+
 ## 2.2.0
 
 *May 12, 2021*

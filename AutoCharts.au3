@@ -218,11 +218,18 @@ Func RunMainGui()
 
 	GUISetState()
 
+
+
+
 	Local $aMsg
 	While 1
 		$aMsg = GUIGetMsg(1) ; Use advanced parameter to get array
 		Switch $aMsg[1] ; check which GUI box sent the message
 			Case $MainGUI
+				If $INPT_Name <> "Jakob" Then
+					GUICtrlSetState($mUploadamCharts, $GUI_DISABLE)
+					GUICtrlSetState($mUploadDatalinker, $GUI_DISABLE)
+				EndIf
 				Switch $aMsg[0] ; Now check for the messages for $MainGUI
 					Case $GUI_EVENT_CLOSE ; If we get the CLOSE message from this GUI - we exit <<<<<<<<<<<<<<<
 						FileClose($LogFile)
@@ -532,7 +539,6 @@ Func RunMainGui()
 						BrowseForDBPath()
 					Case $BTN_Cancel
 						GUIDelete($GUI_UserSettings)
-
 				EndSwitch
 		EndSwitch
 	WEnd
