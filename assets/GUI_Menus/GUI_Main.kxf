@@ -954,12 +954,6 @@
 						<property name="Caption" vt="String">&amp;File</property>
 					</properties>
 					<components>
-						<object type="TAMenuItem" name="mSyncFiles">
-							<properties>
-								<property name="Caption" vt="String">&amp;Pull Data From Dropbox</property>
-							</properties>
-							<components/>
-						</object>
 						<object type="TAMenuItem" name="mUploadFactsheets">
 							<properties>
 								<property name="Caption" vt="String">Upload Factsheets to Website</property>
@@ -991,17 +985,49 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TAMenuItem" name="mImportSettings">
+					</components>
+				</object>
+				<object type="TAMenuItem" name="mSyncOptions">
+					<properties>
+						<property name="Caption" vt="String">S&amp;ync Options</property>
+					</properties>
+					<components>
+						<object type="TAMenuItem" name="mSyncFiles">
 							<properties>
-								<property name="Caption" vt="String">&amp;Import</property>
+								<property name="Caption" vt="String">&amp;Pull Data From Dropbox</property>
 							</properties>
 							<components/>
 						</object>
-						<object type="TAMenuItem" name="mExportSettings">
+						<object type="TAMenuItem" name="mUploadamCharts">
 							<properties>
-								<property name="Caption" vt="String">&amp;Export</property>
+								<property name="Caption" vt="String">Upload amChart Files</property>
 							</properties>
 							<components/>
+						</object>
+						<object type="TAMenuItem" name="mDataLinker">
+							<properties>
+								<property name="Caption" vt="String">&amp;DataLinker</property>
+							</properties>
+							<components>
+								<object type="TAMenuItem" name="mImportDataLinker">
+									<properties>
+										<property name="Caption" vt="String">Import Data Sources</property>
+									</properties>
+									<components/>
+								</object>
+								<object type="TAMenuItem" name="mExportDataLinker">
+									<properties>
+										<property name="Caption" vt="String">Export Data Sources</property>
+									</properties>
+									<components/>
+								</object>
+								<object type="TAMenuItem" name="mUploadDatalinker">
+									<properties>
+										<property name="Caption" vt="String">Upload Data Sources to Database</property>
+									</properties>
+									<components/>
+								</object>
+							</components>
 						</object>
 					</components>
 				</object>

@@ -3,16 +3,15 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.2.0.1
+#AutoIt3Wrapper_Res_Fileversion=2.3.0.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.2.0
+#AutoIt3Wrapper_Res_ProductVersion=2.3.0
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_HiDpi=y
-#AutoIt3Wrapper_Add_Constants=n
 #AutoIt3Wrapper_Run_Tidy=y
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -47,7 +46,7 @@ Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $FundFamily = ""
 Global $LogFile
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
-
+Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 
 ;Predeclare the variables with dummy values to prevent firing the Case statements, only for GUI this time
 Global $GUI_UserSettings = 9999
@@ -75,20 +74,25 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.2.0", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.3.0", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
-	$mSyncFiles = GUICtrlCreateMenuItem("&Pull Data From Dropbox", $mFile)
-	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
+	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 	$mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
 	$mSettings = GUICtrlCreateMenu("&Settings")
 	$mEditSettings = GUICtrlCreateMenuItem("&Edit", $mSettings)
-	;$mImportSettings = GUICtrlCreateMenuItem("&Import", $mSettings)
-	;$mExportSettings = GUICtrlCreateMenuItem("&Export", $mSettings)
+	$mSyncOptions = GUICtrlCreateMenu("Sync Options")
+	$mSyncFiles = GUICtrlCreateMenuItem("&Pull Data From Dropbox", $mSyncOptions)
+	$mUploadamCharts = GUICtrlCreateMenuItem("Upload amChart Files", $mSyncOptions)
+	$mDataLinker = GUICtrlCreateMenu("&DataLinker", $mSyncOptions)
+	$mImportDataLinker = GUICtrlCreateMenuItem("Import Data Sources", $mDataLinker)
+	$mExportDataLinker = GUICtrlCreateMenuItem("Export Data Sources", $mDataLinker)
+	$mUploadDatalinker = GUICtrlCreateMenuItem("Upload Data Sources to Database", $mDataLinker)
 	$mHelp = GUICtrlCreateMenu("&Help")
 	$mAbout = GUICtrlCreateMenuItem("&About", $mHelp)
 	$mLogFile = GUICtrlCreateMenuItem("&Open Log File", $mHelp)
 	$mClearLog = GUICtrlCreateMenuItem("&Clear Log File", $mHelp)
+
 	$TAB_Main = GUICtrlCreateTab(8, 176, 553, 353)
 	GUICtrlSetFont(-1, 10, 400, 0, "Arial")
 	$TAB_Catalyst = GUICtrlCreateTabItem("Catalyst Fact Sheets")
@@ -213,11 +217,18 @@ Func RunMainGui()
 
 	GUISetState()
 
+
+
+
 	Local $aMsg
 	While 1
 		$aMsg = GUIGetMsg(1) ; Use advanced parameter to get array
 		Switch $aMsg[1] ; check which GUI box sent the message
 			Case $MainGUI
+				If $INPT_Name <> "Jakob" Then
+					GUICtrlSetState($mUploadamCharts, $GUI_DISABLE)
+					GUICtrlSetState($mUploadDatalinker, $GUI_DISABLE)
+				EndIf
 				Switch $aMsg[0] ; Now check for the messages for $MainGUI
 					Case $GUI_EVENT_CLOSE ; If we get the CLOSE message from this GUI - we exit <<<<<<<<<<<<<<<
 						FileClose($LogFile)
@@ -230,6 +241,14 @@ Func RunMainGui()
 					Case $mEditSettings
 						;GUICtrlSetState($mEditSettings, $GUI_DISABLE)
 						OpenSettingsGUI()
+					Case $mUploadamCharts
+						UploadamCharts()
+					Case $mExportDataLinker
+						ExportDatalinker()
+					Case $mImportDataLinker
+						ImportDatalinker()
+					Case $mUploadDatalinker
+						UploadDatalinker()
 					Case $mClearLog
 						ClearLog()
 					Case $mAbout
@@ -519,7 +538,6 @@ Func RunMainGui()
 						BrowseForDBPath()
 					Case $BTN_Cancel
 						GUIDelete($GUI_UserSettings)
-
 				EndSwitch
 		EndSwitch
 	WEnd
@@ -609,10 +627,18 @@ Func SyncronizeDataFiles()
 	DirRemove(@ScriptDir & $CSVDataDir, 1)
 	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", @ScriptDir & $CSVDataDir, 1)
 
-	SplashOff()
-
 	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 	_FileWriteLog($LogFile, "Synced Dropbox data with Autocharts Data") ; Write to the logfile
+
+	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+
+	_FileWriteLog($LogFile, "Downloaded amChart Scripts from Database") ; Write to the logfile
+
+
+	SplashOff()
+
+
 
 EndFunc   ;==>SyncronizeDataFiles
 
@@ -623,11 +649,15 @@ Func PullCatalystData()
 	DirRemove(@ScriptDir & $CSVDataDir & "\Catalyst", 1)
 	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
 
-	SplashOff()
-
 	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 	_FileWriteLog($LogFile, "Pulled Catalyst Data from Dropbox") ; Write to the logfile
 
+	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+
+	_FileWriteLog($LogFile, "Downloaded amChart Scripts from Database") ; Write to the logfile
+
+	SplashOff()
 EndFunc   ;==>PullCatalystData
 
 Func PullRationalData()
@@ -637,11 +667,15 @@ Func PullRationalData()
 	DirRemove(@ScriptDir & $CSVDataDir & "\Rational", 1)
 	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", @ScriptDir & $CSVDataDir & "\Rational", 1)
 
-	SplashOff()
-
 	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 	_FileWriteLog($LogFile, "Pulled Rational Data from Dropbox") ; Write to the logfile
 
+	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+
+	_FileWriteLog($LogFile, "Downloaded amChart Scripts from Database") ; Write to the logfile
+
+	SplashOff()
 EndFunc   ;==>PullRationalData
 
 
@@ -652,12 +686,139 @@ Func PullStrategySharesData()
 	DirRemove(@ScriptDir & $CSVDataDir & "\StrategyShares", 1)
 	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", @ScriptDir & $CSVDataDir & "\StrategyShares", 1)
 
-	SplashOff()
-
 	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
 	_FileWriteLog($LogFile, "Pulled Strategy Shares Data from Dropbox") ; Write to the logfile
 
+	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+
+	_FileWriteLog($LogFile, "Downloaded amChart Scripts from Database") ; Write to the logfile
+
+	SplashOff()
+
 EndFunc   ;==>PullStrategySharesData
+
+Func UploadamCharts()
+	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+	DirRemove($DatabaseDir & "\amCharts", 1)
+	DirCopy(@ScriptDir & "\assets\ChartBuilder\public\scripts", $DatabaseDir & "\amCharts", 1)
+
+	SplashOff()
+
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+	_FileWriteLog($LogFile, "Uploaded amCharts Scripts to Database") ; Write to the logfile
+EndFunc   ;==>UploadamCharts
+
+
+Func ExportDatalinker()
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+
+
+	Local Const $sMessage = "Select where you would like to save the Datalinker file."
+
+	; Display an open dialog to select a file.
+	Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
+	If @error Then
+		; Display the error message.
+		MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
+	Else
+		FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $sFileSelectFolder & "\" & $INPT_Name & "_Datalinker.xml", 1)
+		If @error Then
+			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error finding your DataLinker file.")
+			_FileWriteLog($LogFile, "Error! Unable to Export Datalinker File to " & $sFileSelectFolder) ; Write to the logfile
+		Else
+			MsgBox($MB_SYSTEMMODAL, "Success", "Datalinker File Exported to " & $sFileSelectFolder)
+
+			_FileWriteLog($LogFile, "Datalinker File Exported to " & $sFileSelectFolder) ; Write to the logfile
+
+		EndIf
+	EndIf
+
+EndFunc   ;==>ExportDatalinker
+
+Func UploadDatalinker()
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+
+
+
+	If $INPT_Name = "Jakob" Then
+		FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir, 1)
+		If @error Then
+			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error uploading your Datalinker file to the database.")
+			_FileWriteLog($LogFile, "Error! Unable to Upload Datalinker File to " & $DatabaseDir) ; Write to the logfile
+		Else
+			MsgBox($MB_SYSTEMMODAL, "Success", "Datalinker File has been uploaded to the database.")
+
+			_FileWriteLog($LogFile, "Datalinker File Uploaded to " & $DatabaseDir) ; Write to the logfile
+
+		EndIf
+	Else
+
+		FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir & "\" & $INPT_Name & "_Datalinker.xml", 1)
+		If @error Then
+			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error uploading your Datalinker file to the database.")
+			_FileWriteLog($LogFile, "Error! Unable to Upload Datalinker File to " & $DatabaseDir) ; Write to the logfile
+		Else
+			MsgBox($MB_SYSTEMMODAL, "Success", "Datalinker File has been uploaded to the database.")
+
+			_FileWriteLog($LogFile, "Datalinker File Uploaded to " & $DatabaseDir) ; Write to the logfile
+
+		EndIf
+	EndIf
+
+EndFunc   ;==>UploadDatalinker
+
+
+Func ImportDatalinker()
+
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+
+
+	FileCopy($DatabaseDir & "\DataLinker.xml", @ScriptDir & "\Datalinker_TEMP.xml", 1)
+	If @error Then
+		MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign")
+		_FileWriteLog($LogFile, "Error! Unable to Import Datalinker File to InDesign")     ; Write to the logfile
+	Else
+		_FileWriteLog($LogFile, "Datalinker File Imported to AutoCharts Directory")     ; Write to the logfile
+
+	EndIf
+
+	Local $file = @ScriptDir & "\Datalinker_TEMP.xml"
+	Local $text = FileRead($file)
+
+
+	If $INPT_Name <> "Jakob" Then
+		$tout1 = StringReplace($text, 'X:\Marketing Team Files\', $DropboxDir & '\Marketing Team Files\')
+		FileWrite(@ScriptDir & "\DataLinker_Updated.xml", $tout1)
+		FileCopy(@ScriptDir & "\Datalinker_Updated.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
+
+		If @error Then
+			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
+			_FileWriteLog($LogFile, "Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
+		Else
+			MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+			FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
+			FileDelete(@ScriptDir & "\Datalinker_TEMP.xml")
+			_FileWriteLog($LogFile, "Datalinker File Imported to InDesign successfully") ; Write to the logfile
+
+		EndIf
+	Else
+		FileCopy(@ScriptDir & "\Datalinker_TEMP.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
+		If @error Then
+			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
+			_FileWriteLog($LogFile, "Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
+		Else
+			MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+			FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
+			FileDelete(@ScriptDir & "\Datalinker_TEMP.xml")
+			_FileWriteLog($LogFile, "Datalinker File Imported to InDesign successfully") ; Write to the logfile
+
+		EndIf
+
+	EndIf
+
+EndFunc   ;==>ImportDatalinker
 
 
 Func DetermineDates()
@@ -881,8 +1042,8 @@ Func CreateCharts()
 		If $FamilySwitch[$a] <> "" Then
 			$CurrentFund = $FamilySwitch[$a]
 			Call("HTMLChartEditor")
-			;RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE) ;~ Runs local server to create current fund's amcharts svgs.
-			RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
+			RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE) ;~ Runs local server to create current fund's amcharts svgs.
+			;RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
 			GUICtrlSetData($ProgressBar, 70)
 
 			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
