@@ -1,7 +1,14 @@
 # Changelog
 
-## 2.3.0 
+## 2.3.1 
 ### Current Release
+
+*May 24, 2021*
+
+* Removed CFH from Logic
+* Added DCX to Logic
+
+## 2.3.0 
 
 *May 20, 2021*
 

@@ -4,5 +4,5 @@
 - [Changelog](changelog)
 - **Links**
 - [Github](https://github.com/oNevion)
-- [Download Installer](https://www.dropbox.com/sh/4ccj4zkz9q5ychg/AACQbPWlp15-9ePd69bPTZ0ba?dl=0)
+- [Download Installer](https://github.com/oNevion/AutoCharts/releases/download/v2.3.1/AutoCharts_2.3.1_Installer.exe)
 - [Roadmap](https://github.com/oNevion/AutoCharts/projects/1?fullscreen=true)
