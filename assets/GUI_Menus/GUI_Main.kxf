@@ -5,7 +5,7 @@
 		<property name="Top" vt="Int8">124</property>
 		<property name="Width" vt="Int16">585</property>
 		<property name="Height" vt="Int16">647</property>
-		<property name="Caption" vt="String">AutoCharts 2.0</property>
+		<property name="Caption" vt="String">AutoCharts 2.3.1</property>
 		<property name="Color" vt="Ident">clBtnFace</property>
 		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 		<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -48,10 +48,10 @@
 				<property name="Left" vt="Int8">0</property>
 				<property name="Top" vt="Int8">0</property>
 				<property name="Width" vt="Int16">569</property>
-				<property name="Height" vt="Int16">166</property>
+				<property name="Height" vt="Int16">167</property>
 				<property name="CtrlStyle" vt="Int32">1342309134</property>
 				<property name="CtrlExStyle" vt="Int8">0</property>
-				<property name="PicturePath" vt="String">C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\GUI_Menus\main-img.jpg</property>
+				<property name="PicturePath" vt="String">C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\GUI_Menus\main-img.bmp</property>
 				<property name="TabOrder" vt="Int8">1</property>
 				<property name="Resizing" vt="Set">DockWidth, DockHeight</property>
 				<property name="Stretch" vt="Ident">sProportional</property>
@@ -64,7 +64,7 @@
 				<property name="Top" vt="Int16">176</property>
 				<property name="Width" vt="Int16">553</property>
 				<property name="Height" vt="Int16">353</property>
-				<property name="ActivePage" vt="Ident">TAB_Rational</property>
+				<property name="ActivePage" vt="Ident">TAB_Catalyst</property>
 				<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 				<property name="Font.Color" vt="Ident">clWindowText</property>
 				<property name="Font.Height" vt="Int8">-13</property>
@@ -202,13 +202,13 @@
 							</properties>
 							<components/>
 						</object>
-						<object type="TACheckbox" name="CFH">
+						<object type="TACheckbox" name="DCX">
 							<properties>
-								<property name="Left" vt="Int8">16</property>
+								<property name="Left" vt="Int8">120</property>
 								<property name="Top" vt="Int16">224</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
-								<property name="Caption" vt="String">CFH</property>
+								<property name="Caption" vt="String">DCX</property>
 								<property name="Color" vt="Ident">clWhite</property>
 								<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
 								<property name="Font.Color" vt="Ident">clWindowText</property>
@@ -228,7 +228,7 @@
 						<object type="TACheckbox" name="CPE">
 							<properties>
 								<property name="Left" vt="Int8">120</property>
-								<property name="Top" vt="Int16">174</property>
+								<property name="Top" vt="Int8">126</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">CPE</property>
@@ -251,7 +251,7 @@
 						<object type="TACheckbox" name="CLT">
 							<properties>
 								<property name="Left" vt="Int8">120</property>
-								<property name="Top" vt="Int8">124</property>
+								<property name="Top" vt="Int8">76</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">CLT</property>
@@ -274,7 +274,7 @@
 						<object type="TACheckbox" name="CLP">
 							<properties>
 								<property name="Left" vt="Int8">120</property>
-								<property name="Top" vt="Int8">74</property>
+								<property name="Top" vt="Int8">26</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">CLP</property>
@@ -296,8 +296,8 @@
 						</object>
 						<object type="TACheckbox" name="CFR">
 							<properties>
-								<property name="Left" vt="Int8">120</property>
-								<property name="Top" vt="Int8">24</property>
+								<property name="Left" vt="Int8">16</property>
+								<property name="Top" vt="Int16">224</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">CFR</property>
@@ -389,7 +389,7 @@
 						<object type="TACheckbox" name="CWX">
 							<properties>
 								<property name="Left" vt="Int8">120</property>
-								<property name="Top" vt="Int16">224</property>
+								<property name="Top" vt="Int16">176</property>
 								<property name="Width" vt="Int8">90</property>
 								<property name="Height" vt="Int8">30</property>
 								<property name="Caption" vt="String">CWX</property>

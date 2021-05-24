@@ -3,10 +3,10 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.3.0.1
+#AutoIt3Wrapper_Res_Fileversion=2.3.1.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.3.0
+#AutoIt3Wrapper_Res_ProductVersion=2.3.1
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -74,7 +74,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.3.0", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.3.1", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -102,8 +102,6 @@ Func RunMainGui()
 	GUICtrlSetBkColor(-1, 0xC0DCC0)
 	$BTN_Catalyst_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
 	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
-	;$BTN_SelectAllCatalyst = GUICtrlCreateButton("Select All", 28, 483, 115, 33)
-	;GUICtrlSetBkColor(-1, 0xC0DCC0)
 	$ACX = GUICtrlCreateCheckbox("ACX", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
@@ -116,19 +114,19 @@ Func RunMainGui()
 	$CAX = GUICtrlCreateCheckbox("CAX", 28, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CFH = GUICtrlCreateCheckbox("CFH", 28, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+	$CPE = GUICtrlCreateCheckbox("CPE", 132, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CPE = GUICtrlCreateCheckbox("CPE", 132, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+	$CLT = GUICtrlCreateCheckbox("CLT", 132, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CLT = GUICtrlCreateCheckbox("CLT", 132, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+	$CLP = GUICtrlCreateCheckbox("CLP", 132, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CLP = GUICtrlCreateCheckbox("CLP", 132, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+	$CFR = GUICtrlCreateCheckbox("CFR", 28, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CFR = GUICtrlCreateCheckbox("CFR", 132, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+	$DCX = GUICtrlCreateCheckbox("DCX", 132, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
 	$IIX = GUICtrlCreateCheckbox("IIX", 236, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
@@ -140,7 +138,7 @@ Func RunMainGui()
 	$EIX = GUICtrlCreateCheckbox("EIX", 236, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CWX = GUICtrlCreateCheckbox("CWX", 132, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+	$CWX = GUICtrlCreateCheckbox("CWX", 132, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
 	$INS = GUICtrlCreateCheckbox("INS", 236, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
@@ -167,6 +165,7 @@ Func RunMainGui()
 	$TRX = GUICtrlCreateCheckbox("TRX", 444, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 	GUICtrlSetBkColor(-1, 0xFFFFFF)
+
 
 	$TAB_Rational = GUICtrlCreateTabItem("Rational Fact Sheets")
 	$HBA = GUICtrlCreateCheckbox("HBA", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
@@ -275,9 +274,9 @@ Func RunMainGui()
 					Case $CAX
 						If GUICtrlRead($CAX) = 1 Then $aCatalystCheck[3] = "CAX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
 						If GUICtrlRead($CAX) = 4 Then $aCatalystCheck[3] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $CFH
-						If GUICtrlRead($CFH) = 1 Then $aCatalystCheck[4] = "CFH" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($CFH) = 4 Then $aCatalystCheck[4] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+					Case $DCX
+						If GUICtrlRead($DCX) = 1 Then $aCatalystCheck[4] = "DCX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+						If GUICtrlRead($DCX) = 4 Then $aCatalystCheck[4] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
 					Case $CPE
 						If GUICtrlRead($CPE) = 1 Then $aCatalystCheck[5] = "CPE" ; Sets  slot of the Catalyst Array to 1 if CHECKED
 						If GUICtrlRead($CPE) = 4 Then $aCatalystCheck[5] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
