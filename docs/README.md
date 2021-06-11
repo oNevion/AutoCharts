@@ -12,29 +12,41 @@ Please make sure you have the following installed on your system:
 * Datalinker Plugin for Adobe InDesign
 * Firefox
 
-The Smart Sync "AutoCharts&Tables" folder in the shared Dropbox folder must be set to Local. For more information on Dropbox's Smart Sync, go here:  
-https://help.dropbox.com/installs-integrations/sync-uploads/smart-sync
+The Smart Sync "AutoCharts&Tables" folder in the shared Dropbox folder must be set to Local. 
+
+[Click here for more information on Dropbox's Smart Sync](https://help.dropbox.com/installs-integrations/sync-uploads/smart-sync)
 
 ## Installation
 
 Use the installer file here:   
-[https://www.dropbox.com/sh/4ccj4zkz9q5ychg/AACQbPWlp15-9ePd69bPTZ0ba?dl=0](https://www.dropbox.com/sh/4ccj4zkz9q5ychg/AACQbPWlp15-9ePd69bPTZ0ba?dl=0)
+[Current Release - 2.3.1](https://github.com/oNevion/AutoCharts/releases/download/v2.3.1/AutoCharts_2.3.1_Installer.exe)
 
 ## Usage
 
 * Double check the prerequisites above!
 
-* Before you run through an update, you need to update the settings by going to Settings > Edit  
+* Before you run through an update, you need to update the settings by going to Settings > Edit
+
+`Settings > Edit`
+
 ![alt](/img/autocharts1.gif)  
 
-* Once you have updated the backup file located in Dropbox (Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files) you must **SYNC** it with AutoCharts. To do this, simply select "Sync Files" in the Files menu.  
+* After you have updated a backup file for a fund in Dropbox, you should sync Dropbox with AutoCharts. To do this, simply select "Pull Data from Dropbox" under the "Sync Options" menu.  
+
+`Sync Options > Pull Data from Dropbox`
+
 ![alt](/img/autocharts2.gif)  
 
-* Lastly, to update a fund, just select it and click "Process Updates"  
+?> **Tip |** As of v2.2.0, you may skip the above step as AutoCharts will automatically sync with Dropbox when you press the "Process Updates" button
+
+* Lastly, to update a fund, just select it and click "Process Updates"
+
 ![alt](/img/autocharts3.gif)  
 
 ## Requests and Future Development
-AutoCharts2 is still in active development and more features will be coming soon. Please feel free to request new features with me at jakob.bradshaw@catalystmf.com
+AutoCharts is still in active development and more features will be coming soon. 
+
+[View Roadmap Here](https://github.com/oNevion/AutoCharts/projects/1?fullscreen=true)
 
 This program was built and designed for the internal use of the marketing department of Catalyst Funds. 
 

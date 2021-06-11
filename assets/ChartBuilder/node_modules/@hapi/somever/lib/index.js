@@ -119,7 +119,7 @@ exports.compare = function (a, b, options = {}) {
             return an ? aFirst : bFirst;
         }
 
-        return (a < b ? aFirst : bFirst);
+        return (ai < bi ? aFirst : bFirst);
     }
 };
 

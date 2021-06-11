@@ -1,9 +1,8 @@
 ;===============================================================================
 ;
-; Name:    			DataLinker Integration
+; Name:    DataLinker Integration
 ; Description:      Custom Integration of DataLinker plugin for InDesign
 ; Author(s):        oNevion
-; Version:          v0.1
 ;
 ;===============================================================================
 
@@ -30,11 +29,11 @@ Func ExportDatalinker()
 		FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $sFileSelectFolder & "\" & $INPT_Name & "_Datalinker.xml", 1)
 		If @error Then
 			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error finding your DataLinker file.")
-			_LogaError("Error! Unable to Export Datalinker File to " & $sFileSelectFolder) ; Write to the logfile
+			_FileWriteLog($LogFile, "Error! Unable to Export Datalinker File to " & $sFileSelectFolder) ; Write to the logfile
 		Else
 			MsgBox($MB_SYSTEMMODAL, "Success", "Datalinker File Exported to " & $sFileSelectFolder)
 
-			_LogaInfo("Datalinker File Exported to " & $sFileSelectFolder) ; Write to the logfile
+			_FileWriteLog($LogFile, "Datalinker File Exported to " & $sFileSelectFolder) ; Write to the logfile
 
 		EndIf
 	EndIf
@@ -50,16 +49,19 @@ EndFunc   ;==>ExportDatalinker
 ;
 ;===============================================================================
 Func UploadDatalinker()
+	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
+
+
 
 	If $INPT_Name = "Jakob" Then
 		FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir, 1)
 		If @error Then
 			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error uploading your Datalinker file to the database.")
-			_LogaError("Error! Unable to Upload Datalinker File to " & $DatabaseDir) ; Write to the logfile
+			_FileWriteLog($LogFile, "Error! Unable to Upload Datalinker File to " & $DatabaseDir) ; Write to the logfile
 		Else
 			MsgBox($MB_SYSTEMMODAL, "Success", "Datalinker File has been uploaded to the database.")
 
-			_LogaInfo("Datalinker File Uploaded to " & $DatabaseDir) ; Write to the logfile
+			_FileWriteLog($LogFile, "Datalinker File Uploaded to " & $DatabaseDir) ; Write to the logfile
 
 		EndIf
 	Else
@@ -67,11 +69,11 @@ Func UploadDatalinker()
 		FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir & "\" & $INPT_Name & "_Datalinker.xml", 1)
 		If @error Then
 			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error uploading your Datalinker file to the database.")
-			_LogaError("Error! Unable to Upload Datalinker File to " & $DatabaseDir) ; Write to the logfile
+			_FileWriteLog($LogFile, "Error! Unable to Upload Datalinker File to " & $DatabaseDir) ; Write to the logfile
 		Else
 			MsgBox($MB_SYSTEMMODAL, "Success", "Datalinker File has been uploaded to the database.")
 
-			_LogaInfo("Datalinker File Uploaded to " & $DatabaseDir) ; Write to the logfile
+			_FileWriteLog($LogFile, "Datalinker File Uploaded to " & $DatabaseDir) ; Write to the logfile
 
 		EndIf
 	EndIf
@@ -93,9 +95,9 @@ Func ImportDatalinker()
 	FileCopy($DatabaseDir & "\DataLinker.xml", @ScriptDir & "\Datalinker_TEMP.xml", 1)
 	If @error Then
 		MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign")
-		_LogaError("Error! Unable to Import Datalinker File to InDesign")     ; Write to the logfile
+		_FileWriteLog($LogFile, "Error! Unable to Import Datalinker File to InDesign")     ; Write to the logfile
 	Else
-		_LogaInfo("Datalinker File Imported to AutoCharts Directory")     ; Write to the logfile
+		_FileWriteLog($LogFile, "Datalinker File Imported to AutoCharts Directory")     ; Write to the logfile
 
 	EndIf
 
@@ -110,24 +112,24 @@ Func ImportDatalinker()
 
 		If @error Then
 			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
-			_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
+			_FileWriteLog($LogFile, "Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
 		Else
 			MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
 			FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
 			FileDelete(@ScriptDir & "\Datalinker_TEMP.xml")
-			_LogaInfo("Datalinker File Imported to InDesign successfully") ; Write to the logfile
+			_FileWriteLog($LogFile, "Datalinker File Imported to InDesign successfully") ; Write to the logfile
 
 		EndIf
 	Else
 		FileCopy(@ScriptDir & "\Datalinker_TEMP.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
 		If @error Then
 			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
-			_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
+			_FileWriteLog($LogFile, "Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
 		Else
 			MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
 			FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
 			FileDelete(@ScriptDir & "\Datalinker_TEMP.xml")
-			_LogaInfo("Datalinker File Imported to InDesign successfully") ; Write to the logfile
+			_FileWriteLog($LogFile, "Datalinker File Imported to InDesign successfully") ; Write to the logfile
 
 		EndIf
 

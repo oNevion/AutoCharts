@@ -410,7 +410,7 @@ Func RunMainGui()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-$MainGUI = GUICreate("AutoCharts 2.3.0", 570, 609, -1, -1)
+$MainGUI = GUICreate("AutoCharts 2.3.1", 570, 609, -1, -1)
 $mFile = GUICtrlCreateMenu("&File")
 $mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
@@ -448,19 +448,19 @@ GUICtrlSetBkColor(-1, 0xFFFFFF)
 $CAX = GUICtrlCreateCheckbox("CAX", 28, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$CFH = GUICtrlCreateCheckbox("CFH", 28, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$CPE = GUICtrlCreateCheckbox("CPE", 132, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$CPE = GUICtrlCreateCheckbox("CPE", 132, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$CLT = GUICtrlCreateCheckbox("CLT", 132, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$CLT = GUICtrlCreateCheckbox("CLT", 132, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$CLP = GUICtrlCreateCheckbox("CLP", 132, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$CLP = GUICtrlCreateCheckbox("CLP", 132, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$CFR = GUICtrlCreateCheckbox("CFR", 28, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$CFR = GUICtrlCreateCheckbox("CFR", 132, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$DCX = GUICtrlCreateCheckbox("DCX", 132, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
 $IIX = GUICtrlCreateCheckbox("IIX", 236, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
@@ -472,7 +472,7 @@ GUICtrlSetBkColor(-1, 0xFFFFFF)
 $EIX = GUICtrlCreateCheckbox("EIX", 236, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
-$CWX = GUICtrlCreateCheckbox("CWX", 132, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+$CWX = GUICtrlCreateCheckbox("CWX", 132, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
 GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
 GUICtrlSetBkColor(-1, 0xFFFFFF)
 $INS = GUICtrlCreateCheckbox("INS", 236, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
@@ -596,9 +596,9 @@ If GUICtrlRead($BUY) = 4 Then $aCatalystCheck[2] = 0
 Case $CAX
 If GUICtrlRead($CAX) = 1 Then $aCatalystCheck[3] = "CAX"
 If GUICtrlRead($CAX) = 4 Then $aCatalystCheck[3] = 0
-Case $CFH
-If GUICtrlRead($CFH) = 1 Then $aCatalystCheck[4] = "CFH"
-If GUICtrlRead($CFH) = 4 Then $aCatalystCheck[4] = 0
+Case $DCX
+If GUICtrlRead($DCX) = 1 Then $aCatalystCheck[4] = "DCX"
+If GUICtrlRead($DCX) = 4 Then $aCatalystCheck[4] = 0
 Case $CPE
 If GUICtrlRead($CPE) = 1 Then $aCatalystCheck[5] = "CPE"
 If GUICtrlRead($CPE) = 4 Then $aCatalystCheck[5] = 0
