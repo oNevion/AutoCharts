@@ -3,10 +3,10 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.3.1.1
-#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
+#AutoIt3Wrapper_Res_Fileversion=2.4.0
+#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=n
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.3.1
+#AutoIt3Wrapper_Res_ProductVersion=2.4.0
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -38,16 +38,12 @@ Global $aStrategyCheck[3]
 Global $FamilySwitch
 
 Global $CurrentFund
-Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
 Global $ini = 'settings.ini'
-Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
 Global $INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
 Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
 Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $FundFamily = ""
-Global $LogFile
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
-Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 
 ;Predeclare the variables with dummy values to prevent firing the Case statements, only for GUI this time
 Global $GUI_UserSettings = 9999
@@ -63,16 +59,31 @@ $Radio_Q4 = 4
 
 #EndRegion ### GLOBAL Arrays and Variables
 
-#Region ### START DataLinker Include
+#Region ### START Custom Includes
+;-------------------------------------------------------------------------------
+; Main program that manages Logging
+;
+; This is the entry point to the DataLinker code.
+;-------------------------------------------------------------------------------
+#include './src/Logger.au3'
+
+;-------------------------------------------------------------------------------
+; Main program that manages database sync functions
+;
+; This is the entry point to the database sync code.
+;-------------------------------------------------------------------------------
+#include './src/Database_Sync.au3'
+
 
 ;-------------------------------------------------------------------------------
 ; Main program that manages DataLinker Functions
 ;
-; This is the entry point to the DataLinker code. This file
+; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
 #include './src/DataLinker_Func.au3'
 
-#EndRegion ### START DataLinker Include
+
+#EndRegion ### START Custom Includes
 
 
 #Region ### START Main GUI Load
@@ -86,7 +97,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.3.1", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.0", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -242,12 +253,10 @@ Func RunMainGui()
 				EndIf
 				Switch $aMsg[0] ; Now check for the messages for $MainGUI
 					Case $GUI_EVENT_CLOSE ; If we get the CLOSE message from this GUI - we exit <<<<<<<<<<<<<<<
-						FileClose($LogFile)
 						ExitLoop
 					Case $mExit
 						Exit
 					Case $GUI_EVENT_CLOSE
-						FileClose($LogFile)
 						Exit
 					Case $mEditSettings
 						;GUICtrlSetState($mEditSettings, $GUI_DISABLE)
@@ -387,9 +396,8 @@ Func RunMainGui()
 							RunCSVConvert()
 							CreateCharts()
 
-							$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-							_FileWriteLog($LogFile, "############################### END OF RUN - CATALYST ###############################") ; Write to the logfile
-							FileClose($LogFile) ; Close the filehandle to release the file.
+							_LogaInfo("############################### END OF RUN - CATALYST ###############################")
+
 							GUICtrlSetData($ProgressBar, 0)
 							MsgBox(0, "Finished", "The process has finished.")
 							GUICtrlSetData($UpdateLabel, "The process has finished.")
@@ -408,9 +416,8 @@ Func RunMainGui()
 						PullCatalystData()
 						RunExpenseRatios()
 
-						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-						_FileWriteLog($LogFile, "############################### END OF RUN - CATALYST ###############################")     ; Write to the logfile
-						FileClose($LogFile)     ; Close the filehandle to release the file.
+						_LogaInfo("############################### END OF RUN - CATALYST ###############################")     ; Write to the logfile
+
 						GUICtrlSetData($ProgressBar, 0)
 						MsgBox(0, "Finished", "The process has finished.")
 						GUICtrlSetData($UpdateLabel, "The process has finished.")
@@ -428,9 +435,8 @@ Func RunMainGui()
 						RunCSVConvert()
 						CreateCharts()
 
-						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-						_FileWriteLog($LogFile, "############################### END OF RUN - RATIONAL ###############################") ; Write to the logfile
-						FileClose($LogFile) ; Close the filehandle to release the file.
+						_LogaInfo("############################### END OF RUN - RATIONAL ###############################") ; Write to the logfile
+
 						GUICtrlSetData($ProgressBar, 0)
 						MsgBox(0, "Finished", "The process has finished.")
 						GUICtrlSetData($UpdateLabel, "The process has finished.")
@@ -443,9 +449,8 @@ Func RunMainGui()
 						PullRationalData()
 						RunExpenseRatios()
 
-						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-						_FileWriteLog($LogFile, "############################### END OF RUN - RATIONAL ###############################")     ; Write to the logfile
-						FileClose($LogFile)     ; Close the filehandle to release the file.
+						_LogaInfo("############################### END OF RUN - RATIONAL ###############################")     ; Write to the logfile
+
 						GUICtrlSetData($ProgressBar, 0)
 						MsgBox(0, "Finished", "The process has finished.")
 						GUICtrlSetData($UpdateLabel, "The process has finished.")
@@ -462,9 +467,8 @@ Func RunMainGui()
 						RunCSVConvert()
 						CreateCharts()
 
-						$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-						_FileWriteLog($LogFile, "############################### END OF RUN - STRATEGY SHARES ###############################") ; Write to the logfile
-						FileClose($LogFile) ; Close the filehandle to release the file.
+						_LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################") ; Write to the logfile
+
 						GUICtrlSetData($ProgressBar, 0)
 						MsgBox(0, "Finished", "The process has finished.")
 
@@ -617,113 +621,7 @@ Func BrowseForDBPath()
 EndFunc   ;==>BrowseForDBPath
 
 
-Func VerifyDropbox()
-	If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
-		$bDBVerified = True
-		IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
-	Else
-		$bDBVerified = False
-		IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
-		SetError(50)
-	EndIf
-EndFunc   ;==>VerifyDropbox
-
-
 #Region ### Start Main Functions Region
-
-Func SyncronizeDataFiles()
-
-	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-
-	DirRemove(@ScriptDir & $CSVDataDir, 1)
-	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", @ScriptDir & $CSVDataDir, 1)
-
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "Synced Dropbox data with Autocharts Data") ; Write to the logfile
-
-	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-
-	_FileWriteLog($LogFile, "Downloaded amChart Scripts from Database") ; Write to the logfile
-
-
-	SplashOff()
-
-
-
-EndFunc   ;==>SyncronizeDataFiles
-
-Func PullCatalystData()
-
-	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-
-	DirRemove(@ScriptDir & $CSVDataDir & "\Catalyst", 1)
-	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
-
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "Pulled Catalyst Data from Dropbox") ; Write to the logfile
-
-	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-
-	_FileWriteLog($LogFile, "Downloaded amChart Scripts from Database") ; Write to the logfile
-
-	SplashOff()
-EndFunc   ;==>PullCatalystData
-
-Func PullRationalData()
-
-	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-
-	DirRemove(@ScriptDir & $CSVDataDir & "\Rational", 1)
-	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", @ScriptDir & $CSVDataDir & "\Rational", 1)
-
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "Pulled Rational Data from Dropbox") ; Write to the logfile
-
-	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-
-	_FileWriteLog($LogFile, "Downloaded amChart Scripts from Database") ; Write to the logfile
-
-	SplashOff()
-EndFunc   ;==>PullRationalData
-
-
-Func PullStrategySharesData()
-
-	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-
-	DirRemove(@ScriptDir & $CSVDataDir & "\StrategyShares", 1)
-	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", @ScriptDir & $CSVDataDir & "\StrategyShares", 1)
-
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "Pulled Strategy Shares Data from Dropbox") ; Write to the logfile
-
-	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-
-	_FileWriteLog($LogFile, "Downloaded amChart Scripts from Database") ; Write to the logfile
-
-	SplashOff()
-
-EndFunc   ;==>PullStrategySharesData
-
-Func UploadamCharts()
-	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-
-	DirRemove($DatabaseDir & "\amCharts", 1)
-	DirCopy(@ScriptDir & "\assets\ChartBuilder\public\scripts", $DatabaseDir & "\amCharts", 1)
-
-	SplashOff()
-
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "Uploaded amCharts Scripts to Database") ; Write to the logfile
-EndFunc   ;==>UploadamCharts
-
-
-
-
 
 Func DetermineDates()
 	$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
@@ -752,9 +650,7 @@ Func DetermineDates()
 		MsgBox(0, "Error!", "A quarter has not been selected in the settings tab.")
 	EndIf
 
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "Determined quarter to be ~" & $Select_Quarter & "~ and current year to be ~" & $INPT_CurYear & "~") ; Write to the logfile
-	FileClose($LogFile) ; Close the filehandle to release the file.
+	_LogaInfo("Determined quarter to be ~" & $Select_Quarter & "~ and current year to be ~" & $INPT_CurYear & "~") ; Write to the logfile
 
 	If FileExists(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv") Then
 		FileDelete(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv")
@@ -795,9 +691,7 @@ Func DetermineDates()
 	FileClose(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv") ; Close the filehandle to release the file.
 	FileMove(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $DropboxDir & "Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", 1)
 
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "Updated FactSheetDates CSV File with selected dates") ; Write to the logfile
-	FileClose($LogFile) ; Close the filehandle to release the file.
+	_LogaInfo("Updated FactSheetDates CSV File with selected dates") ; Write to the logfile
 
 
 EndFunc   ;==>DetermineDates
@@ -824,24 +718,23 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund)
 			GUICtrlSetData($ProgressBar, 15)
 
-			FileCopy(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")   ; grab .xlsx from current fund directory and move to /VBS_Scripts
+			FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")   ; grab .xlsx from current fund directory and move to /VBS_Scripts
 			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
-			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-			_FileWriteLog($LogFile, "~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")     ; Write to the logfile
+			_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")     ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 
-			_FileWriteLog($LogFile, "Converted " & $CurrentFund & ".xlsx file to csv")     ; Write to the logfile
+			_LogaInfo("Converted " & $CurrentFund & ".xlsx file to csv")     ; Write to the logfile
 
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & ".xlsx file to csv")
 
-			If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
+			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
 				RunCSVConvert4Institution()
 			EndIf
-			If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
+			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 				RunCSVConvert4Brochure()
 			EndIf
-			If FileExists(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 				RunCSVConvert4Presentation()
 			EndIf
 
@@ -853,17 +746,15 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 
 
 			FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
-			FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\" & $FundFamily & "\" & $CurrentFund & "\Links\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
 
-			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-			_FileWriteLog($LogFile, "Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox") ; Write to the logfile
+			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
 			GUICtrlSetData($ProgressBar, 30)
 
 
 			FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")       ; deletes remaining .xlsx from conversion
-			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-			_FileWriteLog($LogFile, "Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
+			_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 			GUICtrlSetData($ProgressBar, 35)
 
@@ -880,9 +771,7 @@ Func RunCSVConvert4Institution() ; Dynamically checks for funds with "-instituti
 
 	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
 
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-
-	_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-institutional.xlsx file to csv")     ; Write to the logfile
+	_LogaInfo("Converted " & $CurrentFund & "-institutional.xlsx file to csv")     ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-institutional.xlsx file to csv")
 
 
@@ -894,9 +783,7 @@ Func RunCSVConvert4Brochure() ; Dynamically checks for funds with "-brochure.xls
 
 	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
 
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-
-	_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-brochure.xlsx file to csv")     ; Write to the logfile
+	_LogaInfo("Converted " & $CurrentFund & "-brochure.xlsx file to csv")     ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-brochure.xlsx file to csv")
 
 
@@ -907,9 +794,7 @@ Func RunCSVConvert4Presentation() ; Dynamically checks for funds with "-brochure
 
 	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
 
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-
-	_FileWriteLog($LogFile, "Converted " & $CurrentFund & "-presentation.xlsx file to csv")     ; Write to the logfile
+	_LogaInfo("Converted " & $CurrentFund & "-presentation.xlsx file to csv")     ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & "-presentation.xlsx file to csv")
 
 
@@ -925,14 +810,13 @@ Func HTMLChartEditor() ; Edits index_TEMPLATE.html file to include current fund'
 	$tout1 = StringReplace($text, '<script src="/scripts/CHANGEME.js"></script>', '<script src="/scripts/' & $CurrentFund & '.js"></script>')
 	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\index.html", $tout1)
 
-	$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-	_FileWriteLog($LogFile, "~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~") ; Write to the logfile
+	_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~") ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~")
 
-	_FileWriteLog($LogFile, "Created HTML file for " & $CurrentFund & " chart generation") ; Write to the logfile
+	_LogaInfo("Created HTML file for " & $CurrentFund & " chart generation") ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Created HTML file for " & $CurrentFund & " chart generation")
 
-	_FileWriteLog($LogFile, "Initializing Local Server for amCharts") ; Write to the logfile
+	_LogaInfo("Initializing Local Server for amCharts") ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Initializing Local Server for amCharts")
 
 
@@ -950,17 +834,15 @@ Func CreateCharts()
 			;RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
 			GUICtrlSetData($ProgressBar, 70)
 
-			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-			_FileWriteLog($LogFile, $CurrentFund & " charts generated in SVG format using amCharts") ; Write to the logfile
+			_LogaInfo($CurrentFund & " charts generated in SVG format using amCharts") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Charts generated in SVG format using amCharts")
 
 
 			FileDelete(@ScriptDir & "\assets\ChartBuilder\public\index.html")  ; ~ Deletes index.html file that was created in Func HTMLChartEditor to keep from editing the same file.
-			FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\" & $FundFamily & "\" & $CurrentFund & "\Links\" & "*.svg", 1)   ; Move all .SVG to Dropbox Indesign Files and Overwrite.
+			FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $DatabaseDir & "\images\charts\" & $FundFamily & "\" & $CurrentFund & "\*.svg", 1)   ; Move all .SVG to Database
 			GUICtrlSetData($ProgressBar, 92)
 
-			$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-			_FileWriteLog($LogFile, $CurrentFund & " charts moved to the funds InDesign Links folder") ; Write to the logfile
+			_LogaInfo($CurrentFund & " charts moved to the funds InDesign Links folder") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Charts moved to the funds InDesign Links folder")
 
 
@@ -977,18 +859,16 @@ Func RunExpenseRatios()
 		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
 		GUICtrlSetData($ProgressBar, 60)
 
-		FileCopy(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Catalyst Data Directory
+		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Catalyst Data Directory
 		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
-		$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-		_FileWriteLog($LogFile, "~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")         ; Write to the logfile
+		_LogaInfo("~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")     ; Write to the logfile
 		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
 
-		_FileWriteLog($LogFile, "Updated Catalyst Expense Ratios")         ; Write to the logfile
+		_LogaInfo("Updated Catalyst Expense Ratios")         ; Write to the logfile
 
 		GUICtrlSetData($UpdateLabel, "Updated Catalyst Expense Ratios")
-		FileCopy(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
-		FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
 		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
 
 
@@ -997,18 +877,16 @@ Func RunExpenseRatios()
 		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
 		GUICtrlSetData($ProgressBar, 60)
 
-		FileCopy(@ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Rational Data Directory
+		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Rational Data Directory
 		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
-		$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-		_FileWriteLog($LogFile, "~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")         ; Write to the logfile
+		_LogaInfo("~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")         ; Write to the logfile
 		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
 
-		_FileWriteLog($LogFile, "Updated Rational Expense Ratios")         ; Write to the logfile
+		_LogaInfo("Updated Rational Expense Ratios")         ; Write to the logfile
 
 		GUICtrlSetData($UpdateLabel, "Updated Rational Expense Ratios")
-		FileCopy(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
-		FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
 		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
 
 
@@ -1032,12 +910,10 @@ Func CreateFactSheetArchive()
 
 	Else
 		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $INPT_Name & "_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
-		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
+		_Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
 		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
 		MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip) ;Msgbox Counting Items in $Zip
-		$LogFile = FileOpen(@ScriptDir & "\AutoCharts.log", 1)
-
-		_FileWriteLog($LogFile, "Created Factsheet Archive at " & $Zip) ; Write to the logfile
+		_LogaInfo("Created Factsheet Archive at " & $Zip) ; Write to the logfile
 
 	EndIf
 
