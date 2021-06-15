@@ -76,8 +76,8 @@ Func PullCatalystData()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	DirRemove(@ScriptDir & $CSVDataDir & "\Catalyst", 1)
-	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
+	DirRemove($DatabaseDir & "\fin_backup_files\Catalyst", 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", $DatabaseDir & "\fin_backup_files\Catalyst", 1)
 
 	_LogaInfo("Pulled Catalyst Data from Dropbox") ; Write to the logfile
 
@@ -101,8 +101,8 @@ Func PullRationalData()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	DirRemove(@ScriptDir & $CSVDataDir & "\Rational", 1)
-	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", @ScriptDir & $CSVDataDir & "\Rational", 1)
+	DirRemove($DatabaseDir & "\fin_backup_files\Rational", 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", $DatabaseDir & "\fin_backup_files\Rational", 1)
 
 	_LogaInfo("Pulled Rational Data from Dropbox") ; Write to the logfile
 
@@ -126,8 +126,8 @@ Func PullStrategySharesData()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	DirRemove(@ScriptDir & $CSVDataDir & "\StrategyShares", 1)
-	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", @ScriptDir & $CSVDataDir & "\StrategyShares", 1)
+	DirRemove($DatabaseDir & "\fin_backup_files\StrategyShares", 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", $DatabaseDir & "\fin_backup_files\StrategyShares", 1)
 
 	_LogaInfo("Pulled Strategy Shares Data from Dropbox") ; Write to the logfile
 
