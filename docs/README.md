@@ -19,7 +19,7 @@ The Smart Sync "AutoCharts&Tables" folder in the shared Dropbox folder must be s
 ## Installation
 
 Use the installer file here:   
-[Current Release - 2.3.1](https://github.com/oNevion/AutoCharts/releases/download/v2.3.1/AutoCharts_2.3.1_Installer.exe)
+[Current Release - 2.4.0](https://github.com/oNevion/AutoCharts/releases/download/v2.4.0/AutoCharts_2.4.0_Installer.exe)
 
 ## Usage
 

@@ -1,7 +1,18 @@
 # Changelog
 
-## 2.3.1 
+## 2.4.0 
 ### Current Release
+
+*July 05, 2021*
+
+* Increased amCharts Server Wait Time
+* Centralized Database
+* Updated Pie and Bar Chart Layouts to work with new image system
+* Datalinker database updated to point to correct files
+* Externalized main programming functions for future development ease
+* Updated logging procedure
+
+## 2.3.1 
 
 *May 24, 2021*
 
