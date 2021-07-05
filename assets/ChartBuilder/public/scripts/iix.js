@@ -14,7 +14,7 @@ body {
 
 
     #chartdiv {
-        width:1180px!important;
+        width:980px!important;
 		height:570px!important;
     }
 
@@ -36,7 +36,8 @@ document.head.appendChild(style);
 
 // Create chart instance
 var chart1 = am4core.create("chartdiv", am4charts.PieChart);
-chart1.innerRadius = am4core.percent(40);
+chart1.innerRadius = am4core.percent(50);
+chart1.radius = am4core.percent(70);
 
 // Set up data source
 chart1.dataSource.url = "../Data/Backups/Catalyst/IIX/IIX_EXPORT_PortSectorAllocation.csv";
@@ -59,25 +60,25 @@ series.labels.template.disabled = true;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
-  am4core.color("#08da94"),
-  am4core.color("#2d7abf"),
-  am4core.color("#26003d"),
   am4core.color("#61328d"),
+  am4core.color("#4f548e"),
+  am4core.color("#426d8f"),
+  am4core.color("#368490"),
+  am4core.color("#2a9a91"),
+  am4core.color("#1faf92"),
+  am4core.color("#13c593"),
+  am4core.color("#08da94"),
 
 ];
 
 
-// Create initial animation
-series.hiddenState.properties.opacity = 1;
-series.hiddenState.properties.endAngle = -90;
-series.hiddenState.properties.startAngle = -90;
-
-
 // Add legend
 chart1.legend = new am4charts.Legend();
-chart1.legend.position = "left";
-chart1.legend.maxWidth = 300;
-chart1.legend.maxheight = 400;
+chart1.legend.position = "right";
+chart1.legend.valign = "middle";
+
+chart1.legend.maxWidth = undefined;
+chart1.legend.maxheight = 600;
 chart1.legend.valueLabels.template.align = "right";
 chart1.legend.valueLabels.template.textAlign = "end";  
 chart1.legend.labels.template.fontSize = "18px";

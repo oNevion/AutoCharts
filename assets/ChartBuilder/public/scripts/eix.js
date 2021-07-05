@@ -19,7 +19,7 @@ body {
     }
 
         #chartdiv2 {
-        width:900px!important;
+        width:760px!important;
 		height:411px!important;
     }
 
@@ -151,10 +151,10 @@ series2.labels.template.disabled = true;
 series2.ticks.template.disabled = true;
 series2.slices.template.tooltipText = "";
 series2.colors.list = [
-    am4core.color("#08da94"),
-    am4core.color("#61328d"),
-    am4core.color("#26003d"),
-    am4core.color("#2d7abf"),
+    am4core.color("#694885"),
+    am4core.color("#9975b6"),
+    am4core.color("#cca5e9"),
+    am4core.color("#ffdcff"),
 ];
 
 // Add series
@@ -164,29 +164,32 @@ series.dataFields.category = "Outer-Label";
 series.slices.template.stroke = am4core.color("#ffffff");
 series.slices.template.strokeWidth = 2;
 series.slices.template.strokeOpacity = 1;
-series.labels.template.disabled = true;
-series.ticks.template.disabled = true;
+//series.labels.template.disabled = true;
+//series.ticks.template.disabled = true;
+series.labels.template.maxWidth = 210;
+series.labels.template.wrap = true;
 series.slices.template.tooltipText = "";
+
 series.colors.list = [
-    am4core.color("#133b59"),
-        am4core.color("#0e996b"),
+    am4core.color("#3c1e57"),
+        am4core.color("#2a616d"),
 
-    am4core.color("#78bcfa"),
+    am4core.color("#199c80"),
 
-    am4core.color("#2d7abf"),
+    am4core.color("#08da94"),
 ];
 
 
 // Add legend
-chart2.legend = new am4charts.Legend();
-chart2.legend.position = "left";
-chart2.legend.maxWidth = undefined;
-chart2.legend.maxheight = 400;
-chart2.legend.valueLabels.template.align = "right";
-chart2.legend.valueLabels.template.textAlign = "end";
-chart2.legend.labels.template.minWidth = 300;
-chart2.legend.valueLabels.template.text = "{value.value.formatNumber('#.0')}%";
-chart2.legend.labels.template.truncate = false;
+//chart2.legend = new am4charts.Legend();
+//chart2.legend.position = "left";
+//chart2.legend.maxWidth = undefined;
+//chart2.legend.maxheight = 400;
+//chart2.legend.valueLabels.template.align = "right";
+//chart2.legend.valueLabels.template.textAlign = "end";
+//chart2.legend.labels.template.minWidth = 300;
+//chart2.legend.valueLabels.template.text = "{value.value.formatNumber('#.0')}%";
+//chart2.legend.labels.template.truncate = false;
 
 
 // Export this stuff

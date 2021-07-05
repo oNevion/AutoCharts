@@ -76,10 +76,6 @@ dateAxis.gridIntervals.setAll([
   { timeUnit: "month", count: 1 },
   { timeUnit: "month", count: 1 }
 ]);
-
-
-
-
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "24px";
@@ -418,6 +414,6 @@ function loadFrame() {
      chart4.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1000);
+window.onload = setTimeout(loadFrame, 1200);
                            
                         

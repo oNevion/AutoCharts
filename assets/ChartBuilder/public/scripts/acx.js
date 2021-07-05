@@ -19,13 +19,8 @@ body {
     }
 
         #chartdiv2 {
-        width:1330px!important;
-		height:250px!important;
-    }
-
-     #chartdiv3 {
-        width:1330px!important;
-		height:300px!important;
+        width:800px!important;
+    height:400px!important;
     }
 `;
 
@@ -122,77 +117,49 @@ chart1.exporting.filePrefix = "ACX_10k";
 
 
 
-// ################################   CHART 2  ACX - Annual Return (Bar) ################################################
+// ################################   ACXIX Portfolio Sector (Pie) ################################################
 
 
-
-
-// Themes begin
-am4core.useTheme(am4themes_amcharts);
-// Themes end
 
 // Create chart instance
-var chart2 = am4core.create("chartdiv2", am4charts.XYChart);
+var chart2 = am4core.create("chartdiv2", am4charts.PieChart);
+chart2.innerRadius = am4core.percent(40);
 
-// Add percent sign to all numbers
-chart2.numberFormatter.numberFormat = "#.#'%'";
 
 // Set up data source
-chart2.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_EXPORT_AnnualReturn.csv";
+chart2.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_Portfolio_Composition.csv";
 chart2.dataSource.parser = new am4core.CSVParser();
 chart2.dataSource.parser.options.useColumnNames = true;
 
-// Create axes
-var categoryAxis = chart2.xAxes.push(new am4charts.CategoryAxis());
-categoryAxis.dataFields.category = "Date";
-categoryAxis.renderer.labels.template.fontWeight = "Bold";
-categoryAxis.renderer.labels.template.fontSize = "23px";
-categoryAxis.renderer.grid.template.disabled = false;
-categoryAxis.renderer.grid.template.disabled = false;
-categoryAxis.renderer.grid.template.location = 0;
-categoryAxis.renderer.minGridDistance = 30;
-categoryAxis.renderer.cellStartLocation = 0.1;
-categoryAxis.renderer.cellEndLocation = 0.9;
-categoryAxis.renderer.grid.template.strokeOpacity = .2;
-categoryAxis.renderer.labels.template.textAlign = "middle";
+// Add series
+var series = chart2.series.push(new am4charts.PieSeries());
+series.dataFields.value = "Data";
+series.dataFields.category = "Label";
+series.slices.template.stroke = am4core.color("#ffffff");
+series.slices.template.strokeWidth = 2;
+series.slices.template.strokeOpacity = 1;
+series.labels.template.disabled = true;
+series.ticks.template.disabled = true;
+series.slices.template.tooltipText = "";
+series.colors.list = [
+  am4core.color("#110e5d"),
+  am4core.color("#004399"),
+  am4core.color("#0074c2"),
+  am4core.color("#00a4d0"),
+  am4core.color("#00d3c5"),
+  am4core.color("#09ffad"),
 
-var label = categoryAxis.renderer.labels.template;
-label.wrap = true;
-label.maxWidth = 100;
-var valueAxis = chart2.yAxes.push(new am4charts.ValueAxis());
-valueAxis.renderer.grid.template.disabled = true;
-valueAxis.renderer.labels.template.fontWeight = "Bold";
-valueAxis.renderer.labels.template.fontSize = "23px";
-
-
-
-// Create series
-var series = chart2.series.push(new am4charts.ColumnSeries());
-series.dataFields.valueY = "ACXIX";
-series.dataFields.categoryX = "Date";
-series.name = "ACXIX";
-series.clustered = true;
-series.fill = am4core.color("#08da94");
-series.strokeWidth = 0;
-series.columns.template.width = am4core.percent(100);
-
-
-
-var series2 = chart2.series.push(new am4charts.ColumnSeries());
-series2.dataFields.valueY = "SP500TR";
-series2.dataFields.categoryX = "Date";
-series2.name = "S&P 500 TR Index";
-series2.clustered = true;
-series2.fill = am4core.color("#2d7abf");
-series2.strokeWidth = 0;
-series2.columns.template.width = am4core.percent(100);
-
-
-
+];
 
 // Add legend
 chart2.legend = new am4charts.Legend();
-chart2.legend.labels.template.fontSize = "23px";
+chart2.legend.position = "left";
+chart2.legend.maxWidth = undefined;
+//chart2.legend.maxheight = 400;
+chart2.legend.labels.template.fontSize = "18px";
+chart2.legend.valueLabels.template.fontSize = "18px";
+chart2.legend.labels.template.minWidth = 250;
+chart2.legend.valueLabels.template.text = "{value.value.formatNumber('#.0')}%";
 chart2.legend.labels.template.truncate = false;
 
 
@@ -204,96 +171,13 @@ chart2.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart2.exporting.filePrefix = "ACX_AnnualReturn";
-
-
-// ################################   CHART 3  ACX S&P 500 Down Months (Bar) ################################################
-
-
-// Themes begin
-am4core.useTheme(am4themes_amcharts);
-// Themes end
-
-// Create chart instance
-var chart3 = am4core.create("chartdiv3", am4charts.XYChart);
-
-// Add percent sign to all numbers
-chart3.numberFormatter.numberFormat = "#.#'%'";
-
-// Set up data source
-chart3.dataSource.url = "../Data/Backups/Catalyst/ACX/ACX_EXPORT_SPDownMonths.csv";
-chart3.dataSource.parser = new am4core.CSVParser();
-chart3.dataSource.parser.options.useColumnNames = true;
-
-// Create axes
-var categoryAxis = chart3.xAxes.push(new am4charts.CategoryAxis());
-categoryAxis.dataFields.category = "Date";
-categoryAxis.renderer.labels.template.fontWeight = "Bold";
-categoryAxis.renderer.labels.template.fontSize = "23px";
-categoryAxis.renderer.grid.template.disabled = false;
-categoryAxis.renderer.minGridDistance = 30;
-categoryAxis.renderer.grid.template.location = 0;
-categoryAxis.renderer.labels.template.rotation = -45;
-categoryAxis.renderer.labels.template.location = 0;
-categoryAxis.renderer.cellStartLocation = 0.1;
-categoryAxis.renderer.cellEndLocation = 0.9;
-categoryAxis.renderer.grid.template.strokeOpacity = .2;
-categoryAxis.renderer.labels.template.dx = -20;
-
-
-var valueAxis = chart3.yAxes.push(new am4charts.ValueAxis());
-valueAxis.renderer.grid.template.disabled = true;
-valueAxis.renderer.labels.template.fontWeight = "Bold";
-valueAxis.renderer.labels.template.fontSize = "23px";
-
-
-
-
-// Create series
-var series = chart3.series.push(new am4charts.ColumnSeries());
-series.dataFields.valueY = "ACXIX";
-series.dataFields.categoryX = "Date";
-series.name = "ACXIX";
-series.clustered = true;
-series.fill = am4core.color("#08da94");
-series.strokeWidth = 0;
-series.columns.template.width = am4core.percent(100);
-
-
-
-var series2 = chart3.series.push(new am4charts.ColumnSeries());
-series2.dataFields.valueY = "S&P 500 TR Index";
-series2.dataFields.categoryX = "Date";
-series2.name = "S&P 500TR";
-series2.clustered = true;
-series2.fill = am4core.color("#2d7abf");
-series2.strokeWidth = 0;
-series2.columns.template.width = am4core.percent(100);
-
-
-
-// Add legend
-chart3.legend = new am4charts.Legend();
-chart3.legend.labels.template.fontSize = "23px";
-chart3.legend.labels.template.truncate = false;
-
-
-// Export this stuff
-chart3.exporting.menu = new am4core.ExportMenu();
-chart3.exporting.menu.items = [{
-  "label": "...",
-  "menu": [
-          { "type": "svg", "label": "SVG" },
-  ]
-}];
-chart3.exporting.filePrefix = "ACX_S&PDownMonths";
+chart2.exporting.filePrefix = "ACX_PortfolioComposition";
 
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
      chart1.exporting.export('svg');
      chart2.exporting.export('svg');
-     chart3.exporting.export('svg');
 };
 
 window.onload = setTimeout(loadFrame, 1000);

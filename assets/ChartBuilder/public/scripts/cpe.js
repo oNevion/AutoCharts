@@ -14,8 +14,8 @@ body {
 
 
     #chartdiv {
-        width:690px!important;
-		height:591px!important;
+        width:900px!important;
+		height:500px!important;
     }
 
         #chartdiv2 {
@@ -51,7 +51,13 @@ document.head.appendChild(style);
 
 // Create chart instance
 var chart1 = am4core.create("chartdiv", am4charts.PieChart);
-chart1.innerRadius = am4core.percent(40);
+chart1.marginTop = "";
+chart1.width = "100%";
+chart1.height = "440";
+chart1.verticalCenter = "top";
+chart1.layout = "vertical";
+chart1.radius = "80%";
+chart1.innerRadius = "50%";
 
 // Set up data source
 chart1.dataSource.url = "../Data/Backups/Catalyst/CPE/CPE_EXPORT_PortfolioSector.csv";
@@ -66,6 +72,7 @@ chart1.hiddenState.properties.opacity = 0;
 // Add series
 var series = chart1.series.push(new am4charts.PieSeries());
 series.dataFields.value = "Portfolio";
+series.dataFields.value2 = "S&P 500";
 series.dataFields.category = "Label";
 series.slices.template.stroke = am4core.color("#ffffff");
 series.slices.template.strokeWidth = 2;
@@ -74,16 +81,18 @@ series.labels.template.disabled = true;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
+  am4core.color("#3c1e57"),
+  am4core.color("#253b7d"),
+  am4core.color("#00589e"),
+  am4core.color("#0074b4"),
+  am4core.color("#0090bd"),
+  am4core.color("#00aab9"),
+  am4core.color("#00c3aa"),
   am4core.color("#08da94"),
-  am4core.color("#2d7abf"),
-  am4core.color("#26003d"),
-  am4core.color("#61328d"),
-  am4core.color("#8d3275"),
-  am4core.color("#8a2933"),
-  am4core.color("#a65433"),
-  am4core.color("#a67c08"),
-  am4core.color("#457308"),
-
+  am4core.color("#00b59c"),
+  am4core.color("#008f96"),
+  am4core.color("#006981"),
+  am4core.color("#004560")
 ];
 
 
@@ -95,13 +104,14 @@ series.hiddenState.properties.startAngle = -90;
 
 // Add legend
 chart1.legend = new am4charts.Legend();
-chart1.legend.position = "bottom";
+chart1.legend.position = "right";
 chart1.legend.maxWidth = undefined;
-chart1.legend.maxheight = 400;
+chart1.legend.maxheight = 700;
 chart1.legend.valueLabels.template.align = "right";
 chart1.legend.valueLabels.template.textAlign = "end";  
-chart1.legend.labels.template.minWidth = 175;
+chart1.legend.labels.template.minWidth = 225;
 chart1.legend.labels.template.truncate = false;
+chart1.legend.valueLabels.template.text = "[bold #26003d]{value}%[/] | [bold #A8A8A8]{value2}%[/]";
 
 
 

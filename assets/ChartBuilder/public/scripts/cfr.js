@@ -14,7 +14,7 @@ body {
 
 
     #chartdiv {
-        width:1010px!important;
+        width:800px!important;
 		height:520px!important;
     }
 
@@ -56,7 +56,13 @@ document.head.appendChild(style);
 
 // Create chart instance
 var chart1 = am4core.create("chartdiv", am4charts.PieChart);
-chart1.innerRadius = am4core.percent(40);
+chart1.marginTop = "";
+chart1.width = "100%";
+chart1.height = "370";
+chart1.verticalCenter = "top";
+chart1.layout = "vertical";
+chart1.radius = "80%";
+chart1.innerRadius = "50%";
 
 // Set up data source
 chart1.dataSource.url = "../Data/Backups/Catalyst/CFR/CFR_EXPORT_S&PCreditRating.csv";
@@ -95,11 +101,21 @@ series.legendSettings.valueText = "{value.formatNumber('#.00%')}";
 chart1.legend = new am4charts.Legend();
 chart1.legend.position = "right";
 chart1.legend.maxWidth = undefined;
-chart1.legend.maxheight = 400;
+chart1.legend.minheight = 700;
+chart1.legend.position = "right";
+chart1.legend.valign = "top";
+
 chart1.legend.valueLabels.template.align = "right";
 chart1.legend.valueLabels.template.textAlign = "end";  
 chart1.legend.labels.template.minWidth = 175;
 chart1.legend.labels.template.truncate = false;
+chart1.legend.align = "right";
+chart1.legend.contentAlign = "right";
+chart1.legend.contentValign = "top";
+chart1.legend.minWidth = "";
+chart1.legend.verticalCenter = "top";
+chart1.legend.layout = "vertical";
+chart1.legend.position = "right";
 
 
 // Export this stuff
