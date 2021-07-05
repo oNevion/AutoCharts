@@ -20,15 +20,15 @@ body {
 
         #chartdiv2 {
         width:1200px!important;
-		height:800px!important;
+		height:700px!important;
     }
 
      #chartdiv3 {
-        width:690px!important;
+        width:1390px!important;
     height:591px!important;
     }
     #chartdiv4 {
-        width:1010px!important;
+        width:1410px!important;
     height:451px!important;
     }
 `;
@@ -237,22 +237,20 @@ series.colors.list = [
 ];
 
 
-// Create initial animation
-series.hiddenState.properties.opacity = 1;
-series.hiddenState.properties.endAngle = -90;
-series.hiddenState.properties.startAngle = -90;
-
-
 // Add legend
 chart3.legend = new am4charts.Legend();
-chart3.legend.position = "bottom";
+chart3.legend.position = "right";
 chart3.legend.maxWidth = undefined;
-chart3.legend.maxheight = 400;
+chart3.legend.maxheight = 500;
 chart3.legend.valueLabels.template.align = "right";
 chart3.legend.valueLabels.template.textAlign = "end";  
-chart3.legend.labels.template.minWidth = 175;
+chart3.legend.labels.template.minWidth = 300;
 chart3.legend.labels.template.truncate = false;
-
+chart3.legend.scale = 1.4;
+chart3.legend.itemContainers.template.paddingTop = 5;
+chart3.legend.itemContainers.template.paddingBottom = 5;
+chart3.legend.fontSize = 20;
+chart3.legend.marginTop = "20";
 
 
 
@@ -310,13 +308,17 @@ series.hiddenState.properties.startAngle = -90;
 
 // Add legend
 chart4.legend = new am4charts.Legend();
-chart4.legend.position = "left";
+chart4.legend.position = "right";
 chart4.legend.maxWidth = undefined;
-chart4.legend.maxheight = 400;
+chart4.legend.maxheight = 500;
 chart4.legend.valueLabels.template.align = "right";
 chart4.legend.valueLabels.template.textAlign = "end";  
-chart4.legend.labels.template.minWidth = 150;
+chart4.legend.labels.template.minWidth = 300;
 chart4.legend.labels.template.truncate = false;
+chart4.legend.scale = 1.4;
+chart4.legend.itemContainers.template.paddingTop = 5;
+chart4.legend.itemContainers.template.paddingBottom = 5;
+chart4.legend.fontSize = 20;
 
 
 

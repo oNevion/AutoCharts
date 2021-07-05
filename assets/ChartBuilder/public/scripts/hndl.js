@@ -282,15 +282,15 @@ series.colors.list = [
 
 
 // Add legend
-chart3.legend = new am4charts.Legend();
-chart3.legend.position = "bottom";
-chart3.legend.maxWidth = undefined;
-chart3.legend.maxheight = 400;
-chart3.legend.valueLabels.template.align = "right";
-chart3.legend.valueLabels.template.textAlign = "end";
-chart3.legend.labels.template.minWidth = 300;
-chart3.legend.valueLabels.template.text = "{value.value.formatNumber('#.0')}%";
-chart3.legend.labels.template.truncate = false;
+//chart3.legend = new am4charts.Legend();
+//chart3.legend.position = "bottom";
+//chart3.legend.maxWidth = undefined;
+//chart3.legend.maxheight = 400;
+//chart3.legend.valueLabels.template.align = "right";
+//chart3.legend.valueLabels.template.textAlign = "end";
+//chart3.legend.labels.template.minWidth = 300;
+//chart3.legend.valueLabels.template.text = "{value.value.formatNumber('#.0')}%";
+//chart3.legend.labels.template.truncate = false;
 
 
 // Export this stuff

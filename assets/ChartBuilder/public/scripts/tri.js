@@ -14,8 +14,8 @@ body {
 
 
     #chartdiv {
-        width:1010px!important;
-		height:451px!important;
+        width:810px!important;
+		height:400px!important;
     }
 
 `;
@@ -31,7 +31,8 @@ document.head.appendChild(style);
 
 // Create chart instance
 var chart1 = am4core.create("chartdiv", am4charts.PieChart);
-chart.innerRadius = am4core.percent(40);
+chart1.innerRadius = am4core.percent(40);
+chart1.radius = am4core.percent(70);
 
 // Set up data source
 chart1.dataSource.url = "../Data/Backups/Catalyst/TRI/TRI_EXPORT_DiversifiedPortfolio.csv";
@@ -62,21 +63,17 @@ series.colors.list = [
 ];
 
 
-// Create initial animation
-series.hiddenState.properties.opacity = 1;
-series.hiddenState.properties.endAngle = -90;
-series.hiddenState.properties.startAngle = -90;
-
-
 // Add legend
 chart1.legend = new am4charts.Legend();
-chart1.legend.position = "left";
+chart1.legend.position = "right";
+chart1.legend.valign = "top";
 chart1.legend.maxWidth = undefined;
-chart1.legend.maxheight = 400;
+//chart1.legend.maxheight = 500;
 chart1.legend.valueLabels.template.align = "right";
 chart1.legend.valueLabels.template.textAlign = "end";  
 chart1.legend.labels.template.minWidth = 200;
 chart1.legend.labels.template.truncate = false;
+chart1.legend.marginTop = "40";
 
 
 

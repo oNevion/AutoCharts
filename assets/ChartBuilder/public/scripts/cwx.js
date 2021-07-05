@@ -79,7 +79,7 @@ dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy");
 dateAxis.renderer.labels.template.rotation = -45;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
-dateAxis.renderer.labels.template.horizontalCenter = "middle";
+dateAxis.renderer.labels.template.horizontalCenter = "right";
 
 
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
@@ -112,7 +112,7 @@ series2.stroke = am4core.color("#2d7abf");
 // Add legend
 chart1.legend = new am4charts.Legend();
 chart1.legend.labels.template.fontSize = "20px";
-chart1.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
+chart1.legend.labels.template.text = "{name}[/]  [bold {color}]{valueY.close}";
 chart1.legend.labels.template.minWidth = 175;
 chart1.legend.labels.template.truncate = false;
 

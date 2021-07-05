@@ -576,6 +576,7 @@ chart8.legend.valueLabels.template.align = "right";
 chart8.legend.valueLabels.template.textAlign = "end";  
 chart8.legend.labels.template.minWidth = 220;
 chart8.legend.labels.template.truncate = false;
+chart8.legend.valign = "bottom";
 
 
 
