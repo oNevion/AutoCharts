@@ -3,10 +3,10 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.4.0
+#AutoIt3Wrapper_Res_Fileversion=2.4.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=n
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.4.0
+#AutoIt3Wrapper_Res_ProductVersion=2.4.1
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -97,7 +97,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.4.0", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.1", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -652,44 +652,44 @@ Func DetermineDates()
 
 	_LogaInfo("Determined quarter to be ~" & $Select_Quarter & "~ and current year to be ~" & $INPT_CurYear & "~") ; Write to the logfile
 
-	If FileExists(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv") Then
-		FileDelete(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv")
+	If FileExists($DatabaseDir & "\csv\Update_FactSheetDates.csv") Then
+		FileDelete($DatabaseDir & "\csv\Update_FactSheetDates.csv")
 	EndIf
 
 	;Create CSV Line by Line for Datalinker to read current year and quarter.
 
-	Local $file = @ScriptDir & "\assets\ChartBuilder\public\Data\Update_FactSheetDatesTEMP.csv"
+	Local $file = $DatabaseDir & "\csv\Update_FactSheetDatesTEMP.csv"
 	Local $text = FileReadLine($file, 1)
 
 	$tout1 = StringReplace($text, 'Label,ID', 'Label,ID' & @CRLF)
-	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
+	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 2)
 
 	$tout1 = StringReplace($text, '03/31/2021,1', $MonthNumber & '/' & $DayNumber & '/' & $INPT_CurYear & ',1' & @CRLF)
-	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
+	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 3)
 
 	$tout1 = StringReplace($text, '"March 31, 2021",2', '"' & $QtrToMonth & ' ' & $DayNumber & ', ' & $INPT_CurYear & '",2' & @CRLF)
-	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
+	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 4)
 
 	$tout1 = StringReplace($text, 'Q1 2021,3', $Select_Quarter & ' ' & $INPT_CurYear & ',3' & @CRLF)
-	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
+	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 5)
 
 	$tout1 = StringReplace($text, 'March 2021,4', $QtrToMonth & ' ' & $INPT_CurYear & ',4' & @CRLF)
-	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
+	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 6)
 
 	$tout1 = StringReplace($text, '03/2021,5', $MonthNumber & '/' & $INPT_CurYear & ',5')
-	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $tout1)
-	FileClose(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv") ; Close the filehandle to release the file.
-	FileMove(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $DatabaseDir & "\csv\", 1)
+	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
+	FileClose($DatabaseDir & "\csv\Update_FactSheetDates.csv") ; Close the filehandle to release the file.
+	;FileMove(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $DatabaseDir & "\csv\", 1)
 
 	_LogaInfo("Updated FactSheetDates CSV File with selected dates") ; Write to the logfile
 
