@@ -3,8 +3,7 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.4.1
-#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=n
+#AutoIt3Wrapper_Res_Fileversion=2.4.1.0
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
 #AutoIt3Wrapper_Res_ProductVersion=2.4.1
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
@@ -12,6 +11,8 @@
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_HiDpi=y
+#AutoIt3Wrapper_Add_Constants=n
+#AutoIt3Wrapper_AU3Check_Stop_OnWarning=y
 #AutoIt3Wrapper_Run_Tidy=y
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -65,14 +66,14 @@ $Radio_Q4 = 4
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
-#include './src/Logger.au3'
+#include "./src/Logger.au3"
 
 ;-------------------------------------------------------------------------------
 ; Main program that manages database sync functions
 ;
 ; This is the entry point to the database sync code.
 ;-------------------------------------------------------------------------------
-#include './src/Database_Sync.au3'
+#include "./src/Database_Sync.au3"
 
 
 ;-------------------------------------------------------------------------------
@@ -80,7 +81,7 @@ $Radio_Q4 = 4
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
-#include './src/DataLinker_Func.au3'
+#include "./src/DataLinker_Func.au3"
 
 
 #EndRegion ### START Custom Includes
