@@ -15,12 +15,12 @@ body {
 
     #chartdiv {
         width:1200px!important;
-		height:800px!important;
+    height:800px!important;
     }
 
         #chartdiv2 {
         width:1500px!important;
-		height:320px!important;
+    height:320px!important;
     }
 
      #chartdiv3 {
@@ -72,10 +72,7 @@ dateAxis.renderer.labels.template.horizontalCenter = "left";
 dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
 
-dateAxis.gridIntervals.setAll([
-  { timeUnit: "month", count: 1 },
-  { timeUnit: "month", count: 1 }
-]);
+
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "24px";
