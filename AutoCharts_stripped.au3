@@ -1524,7 +1524,6 @@ If @error Then
 MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
 _LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
-MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
 _LogaInfo("Datalinker File Imported to InDesign successfully")
 EndIf
 EndIf
@@ -1545,7 +1544,6 @@ If @error Then
 MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
 _LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
-MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
 FileDelete(@ScriptDir & "\Datalinker_Updated2.xml")
 FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
 FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
@@ -1558,7 +1556,6 @@ If @error Then
 MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
 _LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
-MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
 FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
 FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
 FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
@@ -1572,7 +1569,7 @@ Func RunMainGui()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-$MainGUI = GUICreate("AutoCharts 2.4.2", 570, 609, -1, -1)
+$MainGUI = GUICreate("AutoCharts 2.4.3", 570, 609, -1, -1)
 $mFile = GUICtrlCreateMenu("&File")
 $mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
@@ -1731,6 +1728,11 @@ Case $mExportDataLinker
 ExportDatalinker()
 Case $mImportDataLinker
 ImportDatalinker()
+If @error Then
+MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
+Else
+MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+EndIf
 Case $mUploadDatalinker
 UploadDatalinker()
 Case $mClearLog
@@ -1843,6 +1845,7 @@ If $bDBVerified = True Then
 $FundFamily = "Catalyst"
 $FamilySwitch = $aCatalystCheck
 GUICtrlSetData($ProgressBar, 10)
+ImportDatalinker()
 PullCatalystData()
 RunCSVConvert()
 CreateCharts()
@@ -1859,6 +1862,7 @@ Case $BTN_Catalyst_UpdateExpenseRatio
 $FundFamily = "Catalyst"
 $FamilySwitch = $aCatalystCheck
 GUICtrlSetData($ProgressBar, 10)
+ImportDatalinker()
 PullCatalystData()
 RunExpenseRatios()
 _LogaInfo("############################### END OF RUN - CATALYST ###############################")
@@ -1872,6 +1876,7 @@ Case $BTN_RunRational
 $FundFamily = "Rational"
 $FamilySwitch = $aRationalCheck
 GUICtrlSetData($ProgressBar, 10)
+ImportDatalinker()
 PullRationalData()
 RunCSVConvert()
 CreateCharts()
@@ -1883,6 +1888,7 @@ Case $BTN_Rational_UpdateExpenseRatio
 $FundFamily = "Rational"
 $FamilySwitch = $aRationalCheck
 GUICtrlSetData($ProgressBar, 10)
+ImportDatalinker()
 PullRationalData()
 RunExpenseRatios()
 _LogaInfo("############################### END OF RUN - RATIONAL ###############################")
@@ -1896,6 +1902,7 @@ Case $BTN_RunStrategyShares
 $FundFamily = "StrategyShares"
 $FamilySwitch = $aStrategyCheck
 GUICtrlSetData($ProgressBar, 10)
+ImportDatalinker()
 PullStrategySharesData()
 RunCSVConvert()
 CreateCharts()
