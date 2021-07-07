@@ -4,6 +4,7 @@
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
 #AutoIt3Wrapper_Res_Fileversion=2.4.5.0
+#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
 #AutoIt3Wrapper_Res_ProductVersion=2.4.5
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
