@@ -16,19 +16,6 @@
 #AutoIt3Wrapper_Run_Tidy=y
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-#include <Array.au3>
-#include <File.au3>
-#include <MsgBoxConstants.au3>
-#include <ButtonConstants.au3>
-#include <GUIConstantsEx.au3>
-#include <ProgressConstants.au3>
-#include <StaticConstants.au3>
-#include <TabConstants.au3>
-#include <WindowsConstants.au3>
-#include <MsgBoxConstants.au3>
-#include <EditConstants.au3>
-#include <GUIListBox.au3>
-#include "Zip.au3"
 
 #Region ### GLOBAL Arrays and Variables
 
@@ -60,7 +47,20 @@ $Radio_Q4 = 4
 
 #EndRegion ### GLOBAL Arrays and Variables
 
-#Region ### START Custom Includes
+#include <Array.au3>
+#include <File.au3>
+#include <MsgBoxConstants.au3>
+#include <ButtonConstants.au3>
+#include <GUIConstantsEx.au3>
+#include <ProgressConstants.au3>
+#include <StaticConstants.au3>
+#include <TabConstants.au3>
+#include <WindowsConstants.au3>
+#include <MsgBoxConstants.au3>
+#include <EditConstants.au3>
+#include <GUIListBox.au3>
+#include "Zip.au3"
+
 ;-------------------------------------------------------------------------------
 ; Main program that manages Logging
 ;
@@ -83,13 +83,6 @@ $Radio_Q4 = 4
 ;-------------------------------------------------------------------------------
 #include "./src/DataLinker_Func.au3"
 
-
-#EndRegion ### START Custom Includes
-
-
-#Region ### START Main GUI Load
-
-
 RunMainGui()
 
 Func RunMainGui()
@@ -98,7 +91,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.4.1", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.2", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -558,7 +551,6 @@ Func RunMainGui()
 		EndSwitch
 	WEnd
 EndFunc   ;==>RunMainGui
-#EndRegion ### END Koda GUI section ###
 
 
 
