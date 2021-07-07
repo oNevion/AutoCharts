@@ -30,6 +30,29 @@
 #include <GUIListBox.au3>
 #include "Zip.au3"
 
+;-------------------------------------------------------------------------------
+; Main program that manages Logging
+;
+; This is the entry point to the DataLinker code.
+;-------------------------------------------------------------------------------
+#include "./src/Logger.au3"
+
+;-------------------------------------------------------------------------------
+; Main program that manages database sync functions
+;
+; This is the entry point to the database sync code.
+;-------------------------------------------------------------------------------
+#include "./src/Database_Sync.au3"
+
+
+;-------------------------------------------------------------------------------
+; Main program that manages DataLinker Functions
+;
+; This is the entry point to the DataLinker code.
+;-------------------------------------------------------------------------------
+#include "./src/DataLinker_Func.au3"
+
+
 #Region ### GLOBAL Arrays and Variables
 
 Global $aCatalystCheck[24]
@@ -59,36 +82,6 @@ $Radio_Q3 = 4
 $Radio_Q4 = 4
 
 #EndRegion ### GLOBAL Arrays and Variables
-
-#Region ### START Custom Includes
-;-------------------------------------------------------------------------------
-; Main program that manages Logging
-;
-; This is the entry point to the DataLinker code.
-;-------------------------------------------------------------------------------
-#include "./src/Logger.au3"
-
-;-------------------------------------------------------------------------------
-; Main program that manages database sync functions
-;
-; This is the entry point to the database sync code.
-;-------------------------------------------------------------------------------
-#include "./src/Database_Sync.au3"
-
-
-;-------------------------------------------------------------------------------
-; Main program that manages DataLinker Functions
-;
-; This is the entry point to the DataLinker code.
-;-------------------------------------------------------------------------------
-#include "./src/DataLinker_Func.au3"
-
-
-#EndRegion ### START Custom Includes
-
-
-#Region ### START Main GUI Load
-
 
 RunMainGui()
 
