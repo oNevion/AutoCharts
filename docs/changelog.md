@@ -1,7 +1,27 @@
 # Changelog
 
-## 2.4.0 
+## 2.4.5 
 ### Current Release
+
+*July 07, 2021*
+
+* Automatically Import DataLinker from database when user chooses to update a material
+* Updated DataLinker alert boxes to only show when user specifically requests to import DataLinker database
+* Settings from previous installation of AutoCharts now migrates over when updating
+
+## 2.4.2
+
+*July 07, 2021*
+
+* BUG FIX: Include Files references updated and moved after global variables have been called.
+
+## 2.4.1 
+
+*July 06, 2021*
+
+* BUG FIX: Fact Sheet Dates .CSV not updating correctly.
+
+## 2.4.0 
 
 *July 05, 2021*
 

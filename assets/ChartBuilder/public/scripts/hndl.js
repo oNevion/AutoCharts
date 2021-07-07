@@ -249,8 +249,9 @@ series2.slices.template.tooltipText = "";
 series2.colors.list = [
     am4core.color("#0d345e"),
     am4core.color("#c02026"),
-    am4core.color("#08DA94"),
     am4core.color("#091829"),
+    am4core.color("#08DA94")
+
 ];
 
 // Add series
@@ -275,9 +276,10 @@ series.colors.list = [
     am4core.color("#C02026"),
     am4core.color("#A7070D"),
     am4core.color("#8D0000"),
-    am4core.color("#08DA94"),
     am4core.color("#091829"),
     am4core.color("#0d2139"),
+    am4core.color("#08DA94"),
+
 ];
 
 
