@@ -1,3 +1,23 @@
+Global $aCatalystCheck[24]
+Global $aRationalCheck[8]
+Global $aStrategyCheck[3]
+Global $FamilySwitch
+Global $CurrentFund
+Global $ini = 'settings.ini'
+Global $INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
+Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
+Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
+Global $FundFamily = ""
+Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
+Global $GUI_UserSettings = 9999
+$INPT_DropboxFolder = 9999
+$BTN_Save = 9999
+$BTN_Cancel = 9999
+$BTN_SelectDBPath = 9999
+$Radio_Q1 = 4
+$Radio_Q2 = 4
+$Radio_Q3 = 4
+$Radio_Q4 = 4
 Global Const $UBOUND_DIMENSIONS = 0
 Global Const $UBOUND_ROWS = 1
 Global Const $UBOUND_COLUMNS = 2
@@ -423,26 +443,6 @@ $hWnd = WinGetHandle("[CLASS:#32770]")
 WinSetState($hWnd, "", @SW_HIDE)
 EndIf
 EndFunc
-Global $aCatalystCheck[24]
-Global $aRationalCheck[8]
-Global $aStrategyCheck[3]
-Global $FamilySwitch
-Global $CurrentFund
-Global $ini = 'settings.ini'
-Global $INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
-Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
-Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
-Global $FundFamily = ""
-Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
-Global $GUI_UserSettings = 9999
-$INPT_DropboxFolder = 9999
-$BTN_Save = 9999
-$BTN_Cancel = 9999
-$BTN_SelectDBPath = 9999
-$Radio_Q1 = 4
-$Radio_Q2 = 4
-$Radio_Q3 = 4
-$Radio_Q4 = 4
 Global Const $__RICHEDITCONSTANT_WM_USER = 0x400
 Global Const $EM_FINDWORDBREAK = $__RICHEDITCONSTANT_WM_USER + 76
 Global Const $EM_GETTEXTLENGTHEX = $__RICHEDITCONSTANT_WM_USER + 95
@@ -1572,7 +1572,7 @@ Func RunMainGui()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-$MainGUI = GUICreate("AutoCharts 2.4.1", 570, 609, -1, -1)
+$MainGUI = GUICreate("AutoCharts 2.4.2", 570, 609, -1, -1)
 $mFile = GUICtrlCreateMenu("&File")
 $mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
