@@ -149,22 +149,24 @@ chart2.numberFormatter.numberFormat = "'$'#,###.";
 // Create axes
 var dateAxis = chart2.xAxes.push(new am4charts.DateAxis());
 dateAxis.renderer.labels.template.fontWeight = "Bold";
-dateAxis.renderer.labels.template.fontSize = "20px";
+dateAxis.renderer.labels.template.fontSize = "23px";
 dateAxis.renderer.grid.template.disabled = true;
-dateAxis.renderer.minGridDistance = 60;
+dateAxis.renderer.minGridDistance = 40;
 dateAxis.renderer.labels.template.location = 0;
-dateAxis.renderer.maxLabelPosition = 1.02;
-dateAxis.renderer.minLabelPosition = -1;
+dateAxis.renderer.labels.template.rotation = -60;
+dateAxis.renderer.labels.template.verticalCenter = "middle";
+dateAxis.renderer.labels.template.horizontalCenter = "left";
 dateAxis.extraMax = 0.035; 
 dateAxis.startLocation = 0.5;
 dateAxis.endLocation = 0.4;
-dateAxis.extraMin = 0.025; 
 dateAxis.renderer.labels.template.dy = 10;
+dateAxis.renderer.minLabelPosition = -0.05;
+dateAxis.renderer.labels.template.dx = -10;
 
 
 var valueAxis = chart2.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
-valueAxis.renderer.labels.template.fontSize = "20px";
+valueAxis.renderer.labels.template.fontSize = "23px";
 
 valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "'$'#,###";
@@ -190,7 +192,7 @@ series2.stroke = am4core.color("#2d7abf");
 
 // Add legend
 chart2.legend = new am4charts.Legend();
-chart2.legend.labels.template.fontSize = "20px";
+chart2.legend.labels.template.fontSize = "23px";
 chart2.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
 chart2.legend.labels.template.minWidth = 175;
 chart2.legend.labels.template.truncate = false;

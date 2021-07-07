@@ -3,9 +3,10 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.4.1.0
+#AutoIt3Wrapper_Res_Fileversion=2.4.5.0
+#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.4.1
+#AutoIt3Wrapper_Res_ProductVersion=2.4.5
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -83,6 +84,15 @@ $Radio_Q4 = 4
 ;-------------------------------------------------------------------------------
 #include "./src/DataLinker_Func.au3"
 
+Func CheckForSettingsMigrate()
+	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
+		FileMove(@ScriptDir & "/settings-MIGRATE.ini", @ScriptDir & "/settings.ini", 1)
+		_LogaInfo("Old settings were detected and migrated over.")
+
+	EndIf
+EndFunc   ;==>CheckForSettingsMigrate
+
+CheckForSettingsMigrate()
 RunMainGui()
 
 Func RunMainGui()
@@ -91,7 +101,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.4.2", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.5", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -261,6 +271,12 @@ Func RunMainGui()
 						ExportDatalinker()
 					Case $mImportDataLinker
 						ImportDatalinker()
+						If @error Then
+							MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
+						Else
+							MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+
+						EndIf
 					Case $mUploadDatalinker
 						UploadDatalinker()
 					Case $mClearLog
@@ -385,7 +401,7 @@ Func RunMainGui()
 							$FundFamily = "Catalyst"
 							$FamilySwitch = $aCatalystCheck
 							GUICtrlSetData($ProgressBar, 10)
-
+							ImportDatalinker()
 							PullCatalystData()
 							RunCSVConvert()
 							CreateCharts()
@@ -406,7 +422,7 @@ Func RunMainGui()
 						$FundFamily = "Catalyst"
 						$FamilySwitch = $aCatalystCheck
 						GUICtrlSetData($ProgressBar, 10)
-
+						ImportDatalinker()
 						PullCatalystData()
 						RunExpenseRatios()
 
@@ -424,7 +440,7 @@ Func RunMainGui()
 						$FundFamily = "Rational"
 						$FamilySwitch = $aRationalCheck
 						GUICtrlSetData($ProgressBar, 10)
-
+						ImportDatalinker()
 						PullRationalData()
 						RunCSVConvert()
 						CreateCharts()
@@ -439,6 +455,7 @@ Func RunMainGui()
 						$FundFamily = "Rational"
 						$FamilySwitch = $aRationalCheck
 						GUICtrlSetData($ProgressBar, 10)
+						ImportDatalinker()
 
 						PullRationalData()
 						RunExpenseRatios()
@@ -456,6 +473,7 @@ Func RunMainGui()
 						$FundFamily = "StrategyShares"
 						$FamilySwitch = $aStrategyCheck
 						GUICtrlSetData($ProgressBar, 10)
+						ImportDatalinker()
 
 						PullStrategySharesData()
 						RunCSVConvert()

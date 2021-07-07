@@ -3,7 +3,7 @@
 ; Name:    			DataLinker Integration
 ; Description:      Custom Integration of DataLinker plugin for InDesign
 ; Author(s):        oNevion
-; Version:          v0.1
+; Version:          v0.2
 ;
 ;===============================================================================
 
@@ -121,7 +121,7 @@ Func ImportDatalinker()
 			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
 			_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
 		Else
-			MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+			;MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
 			;FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
 			;FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
 			_LogaInfo("Datalinker File Imported to InDesign successfully") ; Write to the logfile
@@ -155,7 +155,7 @@ Func ImportDatalinker()
 			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
 			_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
 		Else
-			MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+			;MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
 			FileDelete(@ScriptDir & "\Datalinker_Updated2.xml")
 			FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
 			FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
@@ -169,7 +169,7 @@ Func ImportDatalinker()
 			MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
 			_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file") ; Write to the logfile
 		Else
-			MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+			;MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
 			FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
 			FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
 			FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
