@@ -261,6 +261,12 @@ Func RunMainGui()
 						ExportDatalinker()
 					Case $mImportDataLinker
 						ImportDatalinker()
+						If @error Then
+							MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
+						Else
+							MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+
+						EndIf
 					Case $mUploadDatalinker
 						UploadDatalinker()
 					Case $mClearLog
@@ -385,7 +391,7 @@ Func RunMainGui()
 							$FundFamily = "Catalyst"
 							$FamilySwitch = $aCatalystCheck
 							GUICtrlSetData($ProgressBar, 10)
-
+							ImportDatalinker()
 							PullCatalystData()
 							RunCSVConvert()
 							CreateCharts()
@@ -406,7 +412,7 @@ Func RunMainGui()
 						$FundFamily = "Catalyst"
 						$FamilySwitch = $aCatalystCheck
 						GUICtrlSetData($ProgressBar, 10)
-
+						ImportDatalinker()
 						PullCatalystData()
 						RunExpenseRatios()
 
@@ -424,7 +430,7 @@ Func RunMainGui()
 						$FundFamily = "Rational"
 						$FamilySwitch = $aRationalCheck
 						GUICtrlSetData($ProgressBar, 10)
-
+						ImportDatalinker()
 						PullRationalData()
 						RunCSVConvert()
 						CreateCharts()
@@ -439,6 +445,7 @@ Func RunMainGui()
 						$FundFamily = "Rational"
 						$FamilySwitch = $aRationalCheck
 						GUICtrlSetData($ProgressBar, 10)
+						ImportDatalinker()
 
 						PullRationalData()
 						RunExpenseRatios()
@@ -456,6 +463,7 @@ Func RunMainGui()
 						$FundFamily = "StrategyShares"
 						$FamilySwitch = $aStrategyCheck
 						GUICtrlSetData($ProgressBar, 10)
+						ImportDatalinker()
 
 						PullStrategySharesData()
 						RunCSVConvert()
