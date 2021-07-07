@@ -2,6 +2,8 @@
 
 AutoCharts is a program that automatically updates the Catalyst/Rational/Strategy Shares fund fact sheets and other marketing materials every quarter when new financial data is available. This is a program designed with various technologies like AutoIt, Node.JS, and amCharts.
 
+[View Documentation](https://onevion.github.io/AutoCharts/#/)
+
 ## Prerequisites
 
 Please make sure you have the following installed on your system:
