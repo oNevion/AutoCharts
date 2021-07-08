@@ -73,7 +73,7 @@ Func PullCatalystData()
 	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", $DatabaseDir & "\fin_backup_files\Catalyst", 1)
 	DirCopy($DatabaseDir & "\fin_backup_files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
 
-	_LogaInfo("Pulled Catalyst Data from Dropbox") ; Write to the logfile
+	_LogaInfo("Pulled All Catalyst Data from Dropbox") ; Write to the logfile
 
 	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
 	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
@@ -82,6 +82,32 @@ Func PullCatalystData()
 
 	SplashOff()
 EndFunc   ;==>PullCatalystData
+
+;===============================================================================
+;
+; Function Name:    PullCatalystFundData()
+; Description:      Downloads $CurrentFund's csv data from Dropbox Database into AutoCharts Directory
+; Parameter(s):     None
+;
+;===============================================================================
+
+Func PullCatalystFundData()
+
+	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+	DirRemove($DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, 1)
+	DirCopy($DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\Catalyst\" & $CurrentFund, 1)
+
+	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
+
+	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+
+	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
+
+	SplashOff()
+EndFunc   ;==>PullCatalystFundData
 
 ;===============================================================================
 ;
@@ -111,6 +137,32 @@ EndFunc   ;==>PullRationalData
 
 ;===============================================================================
 ;
+; Function Name:    PullRationalFundData()
+; Description:      Downloads $CurrentFund's csv data from Dropbox Database into AutoCharts Directory
+; Parameter(s):     None
+;
+;===============================================================================
+
+Func PullRationalFundData()
+
+	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+	DirRemove($DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, 1)
+	DirCopy($DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\Rational\" & $CurrentFund, 1)
+
+	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
+
+	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+
+	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
+
+	SplashOff()
+EndFunc   ;==>PullRationalFundData
+
+;===============================================================================
+;
 ; Function Name:    PullStrategySharesData()
 ; Description:      Downloads all files for Strategy Shares from Dropbox Database into AutoCharts Directory
 ; Parameter(s):     None
@@ -135,6 +187,32 @@ Func PullStrategySharesData()
 	SplashOff()
 
 EndFunc   ;==>PullStrategySharesData
+
+;===============================================================================
+;
+; Function Name:    PullStrategySharesFundData()
+; Description:      Downloads $CurrentFund's csv data from Dropbox Database into AutoCharts Directory
+; Parameter(s):     None
+;
+;===============================================================================
+
+Func PullStrategySharesFundData()
+
+	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+	DirRemove($DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, 1)
+	DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, 1)
+	DirCopy($DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\StrategyShares\" & $CurrentFund, 1)
+
+	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
+
+	DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+	DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+
+	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
+
+	SplashOff()
+EndFunc   ;==>PullRationalFundData
 
 ;===============================================================================
 ;

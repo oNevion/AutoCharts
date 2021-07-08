@@ -424,7 +424,7 @@ Func RunMainGui()
 							$FamilySwitch = $aCatalystCheck
 							GUICtrlSetData($ProgressBar, 10)
 							ImportDatalinker()
-							PullCatalystData()
+							;PullCatalystData()
 							RunCSVConvert()
 							CreateCharts()
 
@@ -463,7 +463,7 @@ Func RunMainGui()
 						$FamilySwitch = $aRationalCheck
 						GUICtrlSetData($ProgressBar, 10)
 						ImportDatalinker()
-						PullRationalData()
+						;PullRationalData()
 						RunCSVConvert()
 						CreateCharts()
 
@@ -497,7 +497,7 @@ Func RunMainGui()
 						GUICtrlSetData($ProgressBar, 10)
 						ImportDatalinker()
 
-						PullStrategySharesData()
+						;PullStrategySharesData()
 						RunCSVConvert()
 						CreateCharts()
 
@@ -750,6 +750,18 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			$CurrentFund = $FamilySwitch[$a]
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund)
 			GUICtrlSetData($ProgressBar, 15)
+
+			If $FundFamily = "Catalyst" Then
+				PullCatalystFundData()
+			EndIf
+
+			If $FundFamily = "Rational" Then
+				PullRationalFundData()
+			EndIf
+
+			If $FundFamily = "StrategyShares" Then
+				PullStrategySharesFundData()
+			EndIf
 
 			FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")   ; grab .xlsx from current fund directory and move to /VBS_Scripts
 			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
