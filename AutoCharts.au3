@@ -110,7 +110,7 @@ Func CheckForSettingsMigrate()
 	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
 		FileMove(@ScriptDir & "/settings-MIGRATE.ini", @ScriptDir & "/settings.ini", 1)
 		_LogaInfo("Old settings were detected and migrated over.")
-
+		MsgBox(64,"Thanks for upgrading!","Thanks for upgrading AutoCharts!" & @CRLF"" & @CRLF & "Before you begin, please double check your settings have imported correctly.")
 	EndIf
 EndFunc   ;==>CheckForSettingsMigrate
 
