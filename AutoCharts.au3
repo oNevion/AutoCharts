@@ -110,7 +110,7 @@ Func CheckForSettingsMigrate()
 	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
 		FileMove(@ScriptDir & "/settings-MIGRATE.ini", @ScriptDir & "/settings.ini", 1)
 		_LogaInfo("Old settings were detected and migrated over.")
-		MsgBox(64,"Thanks for upgrading!","Thanks for upgrading AutoCharts!" & @CRLF"" & @CRLF & "Before you begin, please double check your settings have imported correctly.")
+		MsgBox(64, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
 	EndIf
 EndFunc   ;==>CheckForSettingsMigrate
 
@@ -123,7 +123,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.4.5", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.6", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -751,6 +751,9 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund)
 			GUICtrlSetData($ProgressBar, 15)
 
+			_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")     ; Write to the logfile
+
+
 			If $FundFamily = "Catalyst" Then
 				PullCatalystFundData()
 			EndIf
@@ -766,7 +769,6 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")   ; grab .xlsx from current fund directory and move to /VBS_Scripts
 			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
-			_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")     ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 
 			_LogaInfo("Converted " & $CurrentFund & ".xlsx file to csv")     ; Write to the logfile
@@ -801,7 +803,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")       ; deletes remaining .xlsx from conversion
 			_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
-			GUICtrlSetData($ProgressBar, 35)
+			GUICtrlSetData($ProgressBar, 55)
 
 		Else
 			ContinueLoop
