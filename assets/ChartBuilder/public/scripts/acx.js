@@ -61,7 +61,6 @@ dateAxis.renderer.labels.template.dx = -20;
 dateAxis.renderer.labels.template.dy = 10;
 dateAxis.renderer.minGridDistance = 50;
 dateAxis.renderer.labels.template.location = 0;
-dateAxis.renderer.maxLabelPosition = 1.02;
 dateAxis.renderer.labels.template.horizontalCenter = "left";
 //dateAxis.extraMax = 0.03; 
 dateAxis.extraMin = 0.025; 

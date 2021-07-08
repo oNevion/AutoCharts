@@ -42,7 +42,7 @@ chart1.dataSource.parser = new am4core.CSVParser();
 chart1.dataSource.parser.options.useColumnNames = true;
 
 // Set input format for the dates
-chart1.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+//chart1.dateFormatter.inputDateFormat = "yyyy-MM-dd";
 chart1.numberFormatter.numberFormat = "'$'#,###.";
 
 
@@ -52,14 +52,17 @@ dateAxis.renderer.labels.template.fontSize = "19px";
 dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.labels.template.location = 0.00001;
 
-dateAxis.dateFormats.setKey("month", "MM/YYYY");
-dateAxis.periodChangeDateFormats.setKey("month", "MM/YYYY"); 
-dateAxis.renderer.minGridDistance = 40;
+dateAxis.dateFormats.setKey("day", "MMMM dt");
+dateAxis.periodChangeDateFormats.setKey("day", "MMMM dt"); 
+//dateAxis.renderer.minGridDistance = 40;
 dateAxis.renderer.labels.template.rotation = -45;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "right";
 dateAxis.renderer.labels.template.fontSize = "20px";
-
+dateAxis.gridIntervals.setAll([
+  { timeUnit: "day", count: 1 },
+  { timeUnit: "day", count: 1 }
+]);
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "20px";
@@ -76,7 +79,7 @@ series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
 //series1.tensionX = 0.9;
 series1.stroke = am4core.color("#08da94");
-    series1.hide();
+   // series1.hide();
 
 
 var series2 = chart1.series.push(new am4charts.LineSeries());
@@ -87,13 +90,13 @@ series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 //series2.tensionX = 0.9;
 series2.stroke = am4core.color("#2d7abf");
-    series2.hide();
+   // series2.hide();
 
 
 // Add legend
 chart1.legend = new am4charts.Legend();
 chart1.legend.labels.template.fontSize = "20px";
-chart1.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.open}";
+chart1.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
 chart1.legend.labels.template.minWidth = 150;
 chart1.legend.labels.template.truncate = false;
 
