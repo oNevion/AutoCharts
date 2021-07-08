@@ -3,18 +3,11 @@
 ; Name:    			Database Sync
 ; Description:      Dropbox Database Sync for AutoCharts
 ; Author(s):        oNevion
-; Version:          v0.2
+; Version:          v0.3
 ;
 ;===============================================================================
 
-#Region ### Database Variables
 
-Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
-Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
-
-
-#EndRegion ### Database Variables
 
 ;===============================================================================
 ;

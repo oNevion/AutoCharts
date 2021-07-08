@@ -36,6 +36,8 @@ Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $FundFamily = ""
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
 
+
+
 ;Predeclare the variables with dummy values to prevent firing the Case statements, only for GUI this time
 Global $GUI_UserSettings = 9999
 $INPT_DropboxFolder = 9999
@@ -49,6 +51,15 @@ $Radio_Q3 = 4
 $Radio_Q4 = 4
 
 #EndRegion ### GLOBAL Arrays and Variables
+
+#Region ### Database Variables
+
+Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
+Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
+Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
+
+
+#EndRegion ### Database Variables
 
 #include <Array.au3>
 #include <File.au3>
@@ -69,14 +80,14 @@ $Radio_Q4 = 4
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
-#include "/src/Logger.au3"
+#include "src/Logger.au3"
 
 ;-------------------------------------------------------------------------------
 ; Main program that manages database sync functions
 ;
 ; This is the entry point to the database sync code.
 ;-------------------------------------------------------------------------------
-#include "/src/Database_Sync.au3"
+#include "src/Database_Sync.au3"
 
 
 ;-------------------------------------------------------------------------------
@@ -84,7 +95,7 @@ $Radio_Q4 = 4
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
-#include "/src/DataLinker_Func.au3"
+#include "src/DataLinker_Func.au3"
 
 
 ;-------------------------------------------------------------------------------
@@ -92,7 +103,7 @@ $Radio_Q4 = 4
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
-#include "./src/FTP_Func.au3"
+;#include "src/FTP_Func.au3"
 
 
 Func CheckForSettingsMigrate()
