@@ -304,6 +304,10 @@ EndFunc
 Func _WinAPI_LoWord($iLong)
 Return BitAND($iLong, 0xFFFF)
 EndFunc
+Func _WinAPI_GetLastError(Const $_iCurrentError = @error, Const $_iCurrentExtended = @extended)
+Local $aResult = DllCall("kernel32.dll", "dword", "GetLastError")
+Return SetError($_iCurrentError, $_iCurrentExtended, $aResult[0])
+EndFunc
 Global Const $DEFAULT_GUI_FONT = 17
 Func _WinAPI_GetStockObject($iObject)
 Local $aResult = DllCall("gdi32.dll", "handle", "GetStockObject", "int", $iObject)
@@ -1563,6 +1567,58 @@ FileDelete(@ScriptDir & "\Datalinker_TEMP2.xml")
 _LogaInfo("Datalinker File Imported to InDesign successfully")
 EndIf
 EndIf
+EndFunc
+Global $__g_hWinInet_FTP = -1
+Global $__g_hCallback_FTP, $__g_bCallback_FTP = False
+Global Const $INTERNET_OPEN_TYPE_DIRECT = 1
+Global Const $INTERNET_FLAG_PASSIVE = 0x08000000
+Global Const $INTERNET_SERVICE_FTP = 1
+Func _FTP_Close($hSession)
+If $__g_hWinInet_FTP = -1 Then Return SetError(-2, 0, 0)
+Local $aDone = DllCall($__g_hWinInet_FTP, 'bool', 'InternetCloseHandle', 'handle', $hSession)
+If @error Or $aDone[0] = 0 Then Return SetError(-1, _WinAPI_GetLastError(), 0)
+If $__g_bCallback_FTP = True Then DllCallbackFree($__g_hCallback_FTP)
+Return $aDone[0]
+EndFunc
+Func _FTP_Connect($hInternetSession, $sServerName, $sUsername, $sPassword, $iPassive = 0, $iServerPort = 0, $iService = $INTERNET_SERVICE_FTP, $iFlags = 0, $fuContext = 0)
+If $__g_hWinInet_FTP = -1 Then Return SetError(-2, 0, 0)
+If $iPassive == 1 Then $iFlags = BitOR($iFlags, $INTERNET_FLAG_PASSIVE)
+Local $ai_InternetConnect = DllCall($__g_hWinInet_FTP, 'hwnd', 'InternetConnectW', 'handle', $hInternetSession, 'wstr', $sServerName, 'ushort', $iServerPort, 'wstr', $sUsername, 'wstr', $sPassword, 'dword', $iService, 'dword', $iFlags, 'dword_ptr', $fuContext)
+If @error Or $ai_InternetConnect[0] = 0 Then Return SetError(-1, _WinAPI_GetLastError(), 0)
+Return $ai_InternetConnect[0]
+EndFunc
+Func _FTP_GetLastResponseInfo(ByRef $iError, ByRef $sMessage)
+Local $ai_LastResponseInfo = DllCall($__g_hWinInet_FTP, 'bool', 'InternetGetLastResponseInfoW', 'dword*', 0, 'wstr', "", 'dword*', 4096)
+If @error Or $ai_LastResponseInfo[0] = 0 Then Return SetError(-1, _WinAPI_GetLastError(), 0)
+$iError = $ai_LastResponseInfo[1]
+$sMessage = $ai_LastResponseInfo[2]
+Return $ai_LastResponseInfo[0]
+EndFunc
+Func _FTP_Open($sAgent, $iAccessType = $INTERNET_OPEN_TYPE_DIRECT, $sProxyName = '', $sProxyBypass = '', $iFlags = 0)
+If $__g_hWinInet_FTP = -1 Then __FTP_Init()
+Local $ai_InternetOpen = DllCall($__g_hWinInet_FTP, 'handle', 'InternetOpenW', 'wstr', $sAgent, 'dword', $iAccessType, 'wstr', $sProxyName, 'wstr', $sProxyBypass, 'dword', $iFlags)
+If @error Or $ai_InternetOpen[0] = 0 Then Return SetError(-1, _WinAPI_GetLastError(), 0)
+Return $ai_InternetOpen[0]
+EndFunc
+Func __FTP_Init()
+$__g_hWinInet_FTP = DllOpen('wininet.dll')
+EndFunc
+_AutoCharts_FTP()
+Func _AutoCharts_FTP()
+Local $sServer = 'onevio.synology.me'
+Local $sUsername = 'AutoCharts_FTP'
+Local $sPass = '579!EaK%yJX6'
+Local $Err, $sFTP_Message
+Local $hOpen = _FTP_Open('MyFTP Control')
+Local $hConn = _FTP_Connect($hOpen, $sServer, $sUsername, $sPass)
+If @error Then
+MsgBox($MB_SYSTEMMODAL, '_FTP_Connect', 'ERROR=' & @error)
+Else
+_FTP_GetLastResponseInfo($Err, $sFTP_Message)
+ConsoleWrite('$Err=' & $Err & '   $sFTP_Message:' & @CRLF & $sFTP_Message & @CRLF)
+EndIf
+Local $iFtpc = _FTP_Close($hConn)
+Local $iFtpo = _FTP_Close($hOpen)
 EndFunc
 Func CheckForSettingsMigrate()
 If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
