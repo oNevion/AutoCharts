@@ -15,7 +15,7 @@ body {
 
     #chartdiv {
         width:1200px!important;
-		height:500px!important;
+		height:560px!important;
     }
 
      #chartdiv3 {
@@ -103,10 +103,11 @@ dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "left";
 dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
+dateAxis.renderer.minLabelPosition = -0.05;
 
 dateAxis.gridIntervals.setAll([
   { timeUnit: "month", count: 1 },
-  { timeUnit: "month", count: 1 }
+  { timeUnit: "month", count: 3 }
 ]);
 
 

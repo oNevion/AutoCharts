@@ -27,10 +27,7 @@ body {
         width:1390px!important;
     height:591px!important;
     }
-    #chartdiv4 {
-        width:1410px!important;
-    height:451px!important;
-    }
+
 `;
 
 // append to DOM
@@ -264,74 +261,7 @@ chart3.exporting.menu.items = [{
 }];
 chart3.exporting.filePrefix = "HSU_SectorAllocation";
 
-// ################################   CHART 4  HSU Geographic Allocation (Pie) ################################################
 
-
-// Create chart instance
-var chart4 = am4core.create("chartdiv4", am4charts.PieChart);
-chart4.innerRadius = am4core.percent(40);
-
-// Set up data source
-chart4.dataSource.url = "../Data/Backups/Rational/HSU/HSU_EXPORT_GeographicAllocation.csv";
-chart4.dataSource.parser = new am4core.CSVParser();
-chart4.dataSource.parser.options.useColumnNames = true;
-
-
-
-// Make the chart fade-in on init
-chart4.hiddenState.properties.opacity = 0;
-
-// Add series
-var series = chart4.series.push(new am4charts.PieSeries());
-series.dataFields.value = "Value";
-series.dataFields.category = "Label";
-series.slices.template.stroke = am4core.color("#ffffff");
-series.slices.template.strokeWidth = 2;
-series.slices.template.strokeOpacity = 1;
-series.labels.template.disabled = true;
-series.ticks.template.disabled = true;
-series.slices.template.tooltipText = "";
-series.colors.list = [
-  am4core.color("#0d345e"),
-  am4core.color("#08da94"),
-  am4core.color("#6aaadd"),
-  am4core.color("#091829"),
-
-];
-
-
-// Create initial animation
-series.hiddenState.properties.opacity = 1;
-series.hiddenState.properties.endAngle = -90;
-series.hiddenState.properties.startAngle = -90;
-
-
-// Add legend
-chart4.legend = new am4charts.Legend();
-chart4.legend.position = "right";
-chart4.legend.maxWidth = undefined;
-chart4.legend.maxheight = 500;
-chart4.legend.valueLabels.template.align = "right";
-chart4.legend.valueLabels.template.textAlign = "end";  
-chart4.legend.labels.template.minWidth = 300;
-chart4.legend.labels.template.truncate = false;
-chart4.legend.scale = 1.4;
-chart4.legend.itemContainers.template.paddingTop = 5;
-chart4.legend.itemContainers.template.paddingBottom = 5;
-chart4.legend.fontSize = 20;
-
-
-
-
-// Export this stuff
-chart4.exporting.menu = new am4core.ExportMenu();
-chart4.exporting.menu.items = [{
-  "label": "...",
-  "menu": [
-          { "type": "svg", "label": "SVG" },
-  ]
-}];
-chart4.exporting.filePrefix = "HSU_GeographicAllocation";
 
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
@@ -339,7 +269,6 @@ function loadFrame() {
      chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
-     chart4.exporting.export('svg');
 };
 
 window.onload = setTimeout(loadFrame, 1000);

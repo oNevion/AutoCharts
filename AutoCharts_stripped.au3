@@ -18,6 +18,9 @@ $Radio_Q1 = 4
 $Radio_Q2 = 4
 $Radio_Q3 = 4
 $Radio_Q4 = 4
+Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
+Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
+Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 Global Const $UBOUND_DIMENSIONS = 0
 Global Const $UBOUND_ROWS = 1
 Global Const $UBOUND_COLUMNS = 2
@@ -1396,9 +1399,6 @@ Return $aLoga
 EndFunc
 Global $sLogFilePath = 'FilePath="AutoCharts.log"'
 Global $hLoga1 = _LogaNew($sLogFilePath)
-Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
-Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 Func VerifyDropbox()
 If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then
 $bDBVerified = True
@@ -1426,7 +1426,18 @@ SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-
 DirRemove($DatabaseDir & "\fin_backup_files\Catalyst", 1)
 DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", $DatabaseDir & "\fin_backup_files\Catalyst", 1)
 DirCopy($DatabaseDir & "\fin_backup_files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
-_LogaInfo("Pulled Catalyst Data from Dropbox")
+_LogaInfo("Pulled All Catalyst Data from Dropbox")
+DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+_LogaInfo("Downloaded amChart Scripts from Database")
+SplashOff()
+EndFunc
+Func PullCatalystFundData()
+SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+DirRemove($DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, 1)
+DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, 1)
+DirCopy($DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\Catalyst\" & $CurrentFund, 1)
+_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
 DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
 DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
 _LogaInfo("Downloaded amChart Scripts from Database")
@@ -1443,12 +1454,23 @@ DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\sc
 _LogaInfo("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
-Func PullStrategySharesData()
+Func PullRationalFundData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-DirRemove($DatabaseDir & "\fin_backup_files\StrategyShares", 1)
-DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares", $DatabaseDir & "\fin_backup_files\StrategyShares", 1)
-DirCopy($DatabaseDir & "\fin_backup_files\StrategyShares", @ScriptDir & $CSVDataDir & "\StrategyShares", 1)
-_LogaInfo("Pulled Strategy Shares Data from Dropbox")
+DirRemove($DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, 1)
+DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, 1)
+DirCopy($DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\Rational\" & $CurrentFund, 1)
+_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
+DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+_LogaInfo("Downloaded amChart Scripts from Database")
+SplashOff()
+EndFunc
+Func PullStrategySharesFundData()
+SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+DirRemove($DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, 1)
+DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, 1)
+DirCopy($DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\StrategyShares\" & $CurrentFund, 1)
+_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
 DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
 DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
 _LogaInfo("Downloaded amChart Scripts from Database")
@@ -1568,6 +1590,7 @@ Func CheckForSettingsMigrate()
 If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
 FileMove(@ScriptDir & "/settings-MIGRATE.ini", @ScriptDir & "/settings.ini", 1)
 _LogaInfo("Old settings were detected and migrated over.")
+MsgBox(64, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
 EndIf
 EndFunc
 CheckForSettingsMigrate()
@@ -1576,7 +1599,7 @@ Func RunMainGui()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-$MainGUI = GUICreate("AutoCharts 2.4.5", 570, 609, -1, -1)
+$MainGUI = GUICreate("AutoCharts 2.4.6", 570, 609, -1, -1)
 $mFile = GUICtrlCreateMenu("&File")
 $mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
@@ -1853,7 +1876,6 @@ $FundFamily = "Catalyst"
 $FamilySwitch = $aCatalystCheck
 GUICtrlSetData($ProgressBar, 10)
 ImportDatalinker()
-PullCatalystData()
 RunCSVConvert()
 CreateCharts()
 _LogaInfo("############################### END OF RUN - CATALYST ###############################")
@@ -1884,7 +1906,6 @@ $FundFamily = "Rational"
 $FamilySwitch = $aRationalCheck
 GUICtrlSetData($ProgressBar, 10)
 ImportDatalinker()
-PullRationalData()
 RunCSVConvert()
 CreateCharts()
 _LogaInfo("############################### END OF RUN - RATIONAL ###############################")
@@ -1910,7 +1931,6 @@ $FundFamily = "StrategyShares"
 $FamilySwitch = $aStrategyCheck
 GUICtrlSetData($ProgressBar, 10)
 ImportDatalinker()
-PullStrategySharesData()
 RunCSVConvert()
 CreateCharts()
 _LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################")
@@ -2090,9 +2110,18 @@ If $FamilySwitch[$a] <> "" Then
 $CurrentFund = $FamilySwitch[$a]
 GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund)
 GUICtrlSetData($ProgressBar, 15)
+_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
+If $FundFamily = "Catalyst" Then
+PullCatalystFundData()
+EndIf
+If $FundFamily = "Rational" Then
+PullRationalFundData()
+EndIf
+If $FundFamily = "StrategyShares" Then
+PullStrategySharesFundData()
+EndIf
 FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)
-_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 _LogaInfo("Converted " & $CurrentFund & ".xlsx file to csv")
 GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Converted " & $CurrentFund & ".xlsx file to csv")
@@ -2114,7 +2143,7 @@ GUICtrlSetData($ProgressBar, 30)
 FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
 _LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
-GUICtrlSetData($ProgressBar, 35)
+GUICtrlSetData($ProgressBar, 55)
 Else
 ContinueLoop
 EndIf
@@ -2201,7 +2230,7 @@ Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
 If @error Then
 MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
 Else
-$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $INPT_Name & "_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip")
+$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip")
 _Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4)
 _Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4)
 MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip)

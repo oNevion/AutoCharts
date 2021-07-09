@@ -2,20 +2,22 @@
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
+#AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.4.5.0
+#AutoIt3Wrapper_Res_Fileversion=2.4.6.2
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.4.5
+#AutoIt3Wrapper_Res_ProductVersion=2.4.6
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_HiDpi=y
-#AutoIt3Wrapper_Add_Constants=n
 #AutoIt3Wrapper_AU3Check_Stop_OnWarning=y
+#AutoIt3Wrapper_AU3Check_Parameters=-v 1
 #AutoIt3Wrapper_Run_Tidy=y
 #AutoIt3Wrapper_Run_Au3Stripper=y
+#Au3Stripper_Parameters=/tl
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 #Region ### GLOBAL Arrays and Variables
@@ -34,6 +36,8 @@ Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $FundFamily = ""
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
 
+
+
 ;Predeclare the variables with dummy values to prevent firing the Case statements, only for GUI this time
 Global $GUI_UserSettings = 9999
 $INPT_DropboxFolder = 9999
@@ -47,6 +51,15 @@ $Radio_Q3 = 4
 $Radio_Q4 = 4
 
 #EndRegion ### GLOBAL Arrays and Variables
+
+#Region ### Database Variables
+
+Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
+Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
+Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
+
+
+#EndRegion ### Database Variables
 
 #include <Array.au3>
 #include <File.au3>
@@ -67,14 +80,14 @@ $Radio_Q4 = 4
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
-#include "./src/Logger.au3"
+#include "src/Logger.au3"
 
 ;-------------------------------------------------------------------------------
 ; Main program that manages database sync functions
 ;
 ; This is the entry point to the database sync code.
 ;-------------------------------------------------------------------------------
-#include "./src/Database_Sync.au3"
+#include "src/Database_Sync.au3"
 
 
 ;-------------------------------------------------------------------------------
@@ -82,13 +95,22 @@ $Radio_Q4 = 4
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
-#include "./src/DataLinker_Func.au3"
+#include "src/DataLinker_Func.au3"
+
+
+;-------------------------------------------------------------------------------
+; Main program that manages FTP database connections
+;
+; This is the entry point to the DataLinker code.
+;-------------------------------------------------------------------------------
+;#include "src/FTP_Func.au3"
+
 
 Func CheckForSettingsMigrate()
 	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
 		FileMove(@ScriptDir & "/settings-MIGRATE.ini", @ScriptDir & "/settings.ini", 1)
 		_LogaInfo("Old settings were detected and migrated over.")
-
+		MsgBox(64, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
 	EndIf
 EndFunc   ;==>CheckForSettingsMigrate
 
@@ -101,7 +123,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.4.5", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.6", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -402,7 +424,7 @@ Func RunMainGui()
 							$FamilySwitch = $aCatalystCheck
 							GUICtrlSetData($ProgressBar, 10)
 							ImportDatalinker()
-							PullCatalystData()
+							;PullCatalystData()
 							RunCSVConvert()
 							CreateCharts()
 
@@ -441,7 +463,7 @@ Func RunMainGui()
 						$FamilySwitch = $aRationalCheck
 						GUICtrlSetData($ProgressBar, 10)
 						ImportDatalinker()
-						PullRationalData()
+						;PullRationalData()
 						RunCSVConvert()
 						CreateCharts()
 
@@ -475,7 +497,7 @@ Func RunMainGui()
 						GUICtrlSetData($ProgressBar, 10)
 						ImportDatalinker()
 
-						PullStrategySharesData()
+						;PullStrategySharesData()
 						RunCSVConvert()
 						CreateCharts()
 
@@ -729,10 +751,24 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund)
 			GUICtrlSetData($ProgressBar, 15)
 
+			_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")     ; Write to the logfile
+
+
+			If $FundFamily = "Catalyst" Then
+				PullCatalystFundData()
+			EndIf
+
+			If $FundFamily = "Rational" Then
+				PullRationalFundData()
+			EndIf
+
+			If $FundFamily = "StrategyShares" Then
+				PullStrategySharesFundData()
+			EndIf
+
 			FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")   ; grab .xlsx from current fund directory and move to /VBS_Scripts
 			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
-			_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")     ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 
 			_LogaInfo("Converted " & $CurrentFund & ".xlsx file to csv")     ; Write to the logfile
@@ -767,7 +803,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")       ; deletes remaining .xlsx from conversion
 			_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
-			GUICtrlSetData($ProgressBar, 35)
+			GUICtrlSetData($ProgressBar, 55)
 
 		Else
 			ContinueLoop
@@ -920,7 +956,7 @@ Func CreateFactSheetArchive()
 		MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
 
 	Else
-		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $INPT_Name & "_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
+		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
 		_Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
 		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
 		MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip) ;Msgbox Counting Items in $Zip
