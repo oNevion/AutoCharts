@@ -52,24 +52,26 @@ dateAxis.renderer.labels.template.fontSize = "19px";
 dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.labels.template.location = 0.00001;
 
-dateAxis.dateFormats.setKey("day", "MMMM dt");
-dateAxis.periodChangeDateFormats.setKey("day", "MMMM dt"); 
-//dateAxis.renderer.minGridDistance = 40;
+dateAxis.renderer.minGridDistance = 40;
 dateAxis.renderer.labels.template.rotation = -45;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "right";
 dateAxis.renderer.labels.template.fontSize = "20px";
 dateAxis.gridIntervals.setAll([
   { timeUnit: "day", count: 1 },
-  { timeUnit: "day", count: 1 }
+  { timeUnit: "day", count: 30 }
 ]);
+dateAxis.dateFormats.setKey("day", "MM/YYYY");
+dateAxis.periodChangeDateFormats.setKey("day", "MM/YYYY"); 
+
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "20px";
 
 valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "'$'#,###";
-
+valueAxis.min = 7000;
+valueAxis.max = 11000; 
 // Create series
 var series1 = chart1.series.push(new am4charts.LineSeries());
 series1.dataFields.valueY = "Portfolio";
