@@ -1,0 +1,25 @@
+;aiu;
+
+[General]
+MessageTitle = Update for AutoCharts is available
+MessageBody = Notification Message
+MessageExpirationDate = 09/07/2021
+
+[Update]
+Name = AutoCharts 2.4.6
+ProductVersion = 2.4.6.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.6/AutoCharts_2.4.6.exe
+Size = 12440709
+SHA256 = CB022D47C4203F8BC2646C7DFDF72BA6F7E8489B07818BFDF24694F69E04F926
+MD5 = 97bd517a5826254e82a068d26e8cb62d
+ServerFileName = AutoCharts_2.4.6.exe
+Flags = NoCache
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 2.4.6.0
+UpdatedApplications = AutoCharts[1.0-2.4.6)
+Feature = Updated include links again
+Feature1 = Added Database variables to main program run
+Feature2 = FEATURE: Program now only downloads current fund's csv data (should help with optimization/speed)
+Feature3 = Added message box reminding user to check that their settings converted over correctly
+Feature4 = Changed naming convention when creating factsheet archives
+Feature5 = Updated GUI for 2.4.6 release
