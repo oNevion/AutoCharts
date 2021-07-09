@@ -19,7 +19,7 @@ body {
     }
 
         #chartdiv2 {
-        width:760px!important;
+        width:411px!important;
 		height:411px!important;
     }
 
@@ -164,8 +164,8 @@ series.dataFields.category = "Outer-Label";
 series.slices.template.stroke = am4core.color("#ffffff");
 series.slices.template.strokeWidth = 2;
 series.slices.template.strokeOpacity = 1;
-//series.labels.template.disabled = true;
-//series.ticks.template.disabled = true;
+series.labels.template.disabled = true;
+series.ticks.template.disabled = true;
 series.labels.template.maxWidth = 210;
 series.labels.template.wrap = true;
 series.slices.template.tooltipText = "";
@@ -178,18 +178,6 @@ series.colors.list = [
 
     am4core.color("#08da94"),
 ];
-
-
-// Add legend
-//chart2.legend = new am4charts.Legend();
-//chart2.legend.position = "left";
-//chart2.legend.maxWidth = undefined;
-//chart2.legend.maxheight = 400;
-//chart2.legend.valueLabels.template.align = "right";
-//chart2.legend.valueLabels.template.textAlign = "end";
-//chart2.legend.labels.template.minWidth = 300;
-//chart2.legend.valueLabels.template.text = "{value.value.formatNumber('#.0')}%";
-//chart2.legend.labels.template.truncate = false;
 
 
 // Export this stuff

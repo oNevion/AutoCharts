@@ -2,12 +2,11 @@
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
-#AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.4.6.2
+#AutoIt3Wrapper_Res_Fileversion=2.4.7.0
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.4.6
+#AutoIt3Wrapper_Res_ProductVersion=2.4.7
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -108,13 +107,22 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 
 Func CheckForSettingsMigrate()
 	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
-		FileMove(@ScriptDir & "/settings-MIGRATE.ini", @ScriptDir & "/settings.ini", 1)
-		_LogaInfo("Old settings were detected and migrated over.")
+		FileDelete(@ScriptDir & "/settings-MIGRATE.ini")
+		_LogaInfo("Updated install detected.")
 		MsgBox(64, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
 	EndIf
 EndFunc   ;==>CheckForSettingsMigrate
 
+Func CheckForUpdate()
+	Run(@AppDataDir & "/AutoCharts/updater.exe")
+EndFunc   ;==>CheckForUpdate
+
+;~ Func CheckForUpdateSilent()
+;~ 	RunWait(@ComSpec & " /c updater.exe", @AppDataDir & "/AutoCharts/") ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
+;~ EndFunc   ;==>CheckForUpdateSilent
+
 CheckForSettingsMigrate()
+;CheckForUpdateSilent()
 RunMainGui()
 
 Func RunMainGui()
@@ -123,7 +131,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.4.6", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.7", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -141,6 +149,7 @@ Func RunMainGui()
 	$mAbout = GUICtrlCreateMenuItem("&About", $mHelp)
 	$mLogFile = GUICtrlCreateMenuItem("&Open Log File", $mHelp)
 	$mClearLog = GUICtrlCreateMenuItem("&Clear Log File", $mHelp)
+	$mCheckUpdate = GUICtrlCreateMenuItem("&Check for Update", $mHelp)
 
 	$TAB_Main = GUICtrlCreateTab(8, 176, 553, 353)
 	GUICtrlSetFont(-1, 10, 400, 0, "Arial")
@@ -311,6 +320,9 @@ Func RunMainGui()
 						$_Run = "notepad.exe " & $sTextFile
 						ConsoleWrite("$_Run : " & $_Run & @CRLF)
 						Run($_Run, @WindowsDir, @SW_SHOWDEFAULT)
+
+					Case $mCheckUpdate
+						CheckForUpdate()
 
 					Case $mCreateArchive
 						CreateFactSheetArchive()

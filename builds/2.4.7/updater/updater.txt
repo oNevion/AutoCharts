@@ -1,0 +1,12 @@
+;aiu;
+
+[AutoCharts246]
+Name = AutoCharts 2.4.6
+URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.6/AutoCharts_2.4.6_Installer.exe
+Size = 9244880
+Description = This is the latest version of AutoCharts
+Feature1 = Automatically Import DataLinker from database when user chooses to update a material
+Feature2 = Updated DataLinker alert boxes to only show when user specifically requests to import DataLinker database
+Feature3= Settings from previous installation of AutoCharts now migrates over when updating
+FilePath = [APPDIR]AutoCharts.exe
+Version = 2.4.6

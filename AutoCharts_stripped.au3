@@ -1588,18 +1588,25 @@ EndIf
 EndFunc
 Func CheckForSettingsMigrate()
 If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
-FileMove(@ScriptDir & "/settings-MIGRATE.ini", @ScriptDir & "/settings.ini", 1)
-_LogaInfo("Old settings were detected and migrated over.")
+FileDelete(@ScriptDir & "/settings-MIGRATE.ini")
+_LogaInfo("Updated install detected.")
 MsgBox(64, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
 EndIf
 EndFunc
+Func CheckForUpdate()
+Run(@AppDataDir & "/AutoCharts/updater.exe")
+EndFunc
+Func CheckForUpdateSilent()
+RunWait(@ComSpec & " /c updater.exe -reducedgui", @AppDataDir & "/AutoCharts/")
+EndFunc
 CheckForSettingsMigrate()
+CheckForUpdateSilent()
 RunMainGui()
 Func RunMainGui()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-$MainGUI = GUICreate("AutoCharts 2.4.6", 570, 609, -1, -1)
+$MainGUI = GUICreate("AutoCharts 2.4.7", 570, 609, -1, -1)
 $mFile = GUICtrlCreateMenu("&File")
 $mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
@@ -1616,6 +1623,7 @@ $mHelp = GUICtrlCreateMenu("&Help")
 $mAbout = GUICtrlCreateMenuItem("&About", $mHelp)
 $mLogFile = GUICtrlCreateMenuItem("&Open Log File", $mHelp)
 $mClearLog = GUICtrlCreateMenuItem("&Clear Log File", $mHelp)
+$mCheckUpdate = GUICtrlCreateMenuItem("&Check for Update", $mHelp)
 $TAB_Main = GUICtrlCreateTab(8, 176, 553, 353)
 GUICtrlSetFont(-1, 10, 400, 0, "Arial")
 $TAB_Catalyst = GUICtrlCreateTabItem("Catalyst Fact Sheets")
@@ -1774,6 +1782,8 @@ $sTextFile = @ScriptDir & "\AutoCharts.log"
 $_Run = "notepad.exe " & $sTextFile
 ConsoleWrite("$_Run : " & $_Run & @CRLF)
 Run($_Run, @WindowsDir, @SW_SHOWDEFAULT)
+Case $mCheckUpdate
+CheckForUpdate()
 Case $mCreateArchive
 CreateFactSheetArchive()
 Case $ACX
