@@ -117,12 +117,12 @@ Func CheckForUpdate()
 	Run(@AppDataDir & "/AutoCharts/updater.exe")
 EndFunc   ;==>CheckForUpdate
 
-Func CheckForUpdateSilent()
-	RunWait(@ComSpec & " /c updater.exe -reducedgui", @AppDataDir & "/AutoCharts/") ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
-EndFunc   ;==>CheckForUpdateSilent
+;~ Func CheckForUpdateSilent()
+;~ 	RunWait(@ComSpec & " /c updater.exe", @AppDataDir & "/AutoCharts/") ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
+;~ EndFunc   ;==>CheckForUpdateSilent
 
 CheckForSettingsMigrate()
-CheckForUpdateSilent()
+;CheckForUpdateSilent()
 RunMainGui()
 
 Func RunMainGui()
