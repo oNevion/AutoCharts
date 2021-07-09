@@ -5,7 +5,22 @@ MessageTitle = Update for AutoCharts is available
 MessageBody = Notification Message
 MessageExpirationDate = 09/07/2021
 
-[Update]
+[2.4.7]
+Name = AutoCharts 2.4.7
+ProductVersion = 2.4.7.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.7/AutoCharts_2.4.7.exe
+Size = 13644472
+SHA256 = 1F128BADA2D619CC744BDC28434FAA7EA6C6F72ED546E8247099FB0F577863AB
+MD5 = 28ec626eaf765a711102697b870d3709
+ServerFileName = AutoCharts_2.4.7.exe
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 2.4.7.0
+UpdatedApplications = AutoCharts[1.0-2.4.7)
+Feature = Updated DCX chart
+Feature1 = Updated EIX charts
+Feature2 = Updated internal updater code
+
+[2.4.6]
 Name = AutoCharts 2.4.6
 ProductVersion = 2.4.6.0
 URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.6/AutoCharts_2.4.6.exe
