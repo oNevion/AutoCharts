@@ -1,0 +1,8 @@
+- [Getting Started](/)
+- [Features](features)
+- [Datalinker](datalinker)
+- [Changelog](changelog)
+- **Links**
+- [Github](https://github.com/oNevion)
+- [Download Installer](https://github.com/oNevion/AutoCharts/releases/download/v2.4.5/AutoCharts_2.4.5_Installer.exe)
+- [Roadmap](https://github.com/oNevion/AutoCharts/projects/1?fullscreen=true)
