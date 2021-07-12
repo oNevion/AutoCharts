@@ -1596,17 +1596,13 @@ EndFunc
 Func CheckForUpdate()
 Run(@AppDataDir & "/AutoCharts/updater.exe")
 EndFunc
-Func CheckForUpdateSilent()
-RunWait(@ComSpec & " /c updater.exe -reducedgui", @AppDataDir & "/AutoCharts/")
-EndFunc
 CheckForSettingsMigrate()
-CheckForUpdateSilent()
 RunMainGui()
 Func RunMainGui()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-$MainGUI = GUICreate("AutoCharts 2.4.7", 570, 609, -1, -1)
+$MainGUI = GUICreate("AutoCharts 2.4.8", 570, 609, -1, -1)
 $mFile = GUICtrlCreateMenu("&File")
 $mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
