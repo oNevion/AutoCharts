@@ -3,10 +3,14 @@
 ; Name:    			DataLinker Integration
 ; Description:      Custom Integration of DataLinker plugin for InDesign
 ; Author(s):        oNevion
-; Version:          v0.2
+; Version:          v0.3
 ;
 ;===============================================================================
 
+#include-once
+#include <FileConstants.au3>
+#include <MsgBoxConstants.au3>
+#include <WinAPIFiles.au3>
 
 ;===============================================================================
 ;

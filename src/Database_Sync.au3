@@ -3,9 +3,17 @@
 ; Name:    			Database Sync
 ; Description:      Dropbox Database Sync for AutoCharts
 ; Author(s):        oNevion
-; Version:          v0.3
+; Version:          v0.4
 ;
 ;===============================================================================
+
+#include-once
+#include <MsgBoxConstants.au3>
+#include <WinAPIFiles.au3>
+#include <AutoItConstants.au3>
+#include <MsgBoxConstants.au3>
+#include <FileConstants.au3>
+
 
 ;===============================================================================
 ;
