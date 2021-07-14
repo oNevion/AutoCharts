@@ -84,7 +84,7 @@ series1.dataFields.dateX = "Date";
 series1.name = "CLPFX";
 series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
-series1.tensionX = 0.95;
+//series1.tensionX = 0.95;
 series1.stroke = am4core.color("#08da94");
 
 var series2 = chart1.series.push(new am4charts.LineSeries());
@@ -93,7 +93,7 @@ series2.dataFields.dateX = "Date";
 series2.name = "NASDAQ-100 Index";
 series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
-series2.tensionX = 0.95;
+//series2.tensionX = 0.95;
 series2.stroke = am4core.color("#2d7abf");
 
 //let circleBullet2 = series2.bullets.push(new am4charts.CircleBullet());

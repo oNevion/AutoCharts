@@ -61,6 +61,7 @@ series.colors.list = [
   am4core.color("#61328d"),
 
 ];
+series.legendSettings.valueText = "{value.formatNumber('#.00%')}";
 
 
 // Add legend

@@ -26,7 +26,7 @@ document.head.appendChild(style);
 
 
 
-// ################################   CHART 1 INS - Annual Return (Bar) ################################################
+// ################################   CHART 1 IOX - 10k Chart (Line) ################################################
 
 
 // Themes begin
@@ -66,7 +66,7 @@ dateAxis.extraMax = 0.02;
 
 dateAxis.gridIntervals.setAll([
   { timeUnit: "month", count: 1 },
-  { timeUnit: "month", count: 2 }
+  { timeUnit: "month", count: 3 }
 ]);
 
 

@@ -552,11 +552,18 @@ series.labels.template.disabled = true;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
-  am4core.color("#E7E7E7"),
-  am4core.color("#0d345e"),
   am4core.color("#08da94"),
-  am4core.color("#6aaadd"),
-  am4core.color("#091829"),
+  am4core.color("#19ca90"),
+  am4core.color("#20b98b"),
+  am4core.color("#25a986"),
+  am4core.color("#279a82"),
+  am4core.color("#278a7d"),
+  am4core.color("#267b78"),
+  am4core.color("#246c73"),
+  am4core.color("#215e6e"),
+  am4core.color("#1c4f69"),
+  am4core.color("#164163"),
+  am4core.color("#0d345e"),
 
 ];
 
@@ -577,7 +584,8 @@ chart8.legend.valueLabels.template.textAlign = "end";
 chart8.legend.labels.template.minWidth = 220;
 chart8.legend.labels.template.truncate = false;
 chart8.legend.valign = "bottom";
-
+chart8.legend.itemContainers.template.paddingTop = 4;
+chart8.legend.itemContainers.template.paddingBottom = 4;
 
 
 
@@ -604,6 +612,6 @@ function loadFrame() {
      chart8.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1800);
+window.onload = setTimeout(loadFrame, 2100);
                            
                         
