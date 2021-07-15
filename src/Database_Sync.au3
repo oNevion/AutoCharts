@@ -15,6 +15,8 @@
 #include <FileConstants.au3>
 
 
+;sync.exe "X:\Marketing Team Files\AutoCharts_Database" "C:\Users\mrjak\Documents\GitHub\AutoIt UDF\BackUp" /VerifyByDate /PreserveDates
+
 ;===============================================================================
 ;
 ; Function Name:    VerifyDropbox()
