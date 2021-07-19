@@ -3,16 +3,37 @@
 [General]
 MessageTitle = Update for AutoCharts is available
 MessageBody = Notification Message
-MessageExpirationDate = 09/07/2021
+MessageExpirationDate = 02/08/2021
+
+[2.4.9]
+Name = AutoCharts 2.4.9
+ProductVersion = 2.4.9.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.9/AutoCharts_2.4.9.exe
+Size = 13724200
+ReleaseDate = 19/07/2021
+SHA256 = 21F8D751A637EC8292DC5B9F731BF07203AEE5D8AD677DA27833AD14B537D7CF
+MD5 = aa3dd9a622e61599c48e35d2faffa0ac
+ServerFileName = AutoCharts_2.4.8.exe
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 2.4.8.0
+UpdatedApplications = AutoCharts[1.0-2.4.9)
+Description = AutoCharts 2.4.9 should fix the database sync issue on user's machines. 
+Feature = Added WinSCP Library for future feature releases
+Feature1 = Updated Include syntax by globalizing database sync variables
+Feature2 = AutoCharts now checks for updates on startup
+Feature3 = You can manually check for updates by going to HELP > Check for Updates
+Enhancement = Database sync now uses XCopy and only replaces files if they've been recently modified. Should perform a lot faster.
+BugFix = Database sync issue should be fixed now as a required include was accidentally deleted.
+AutoCloseApplication = [APPDIR]AutoCharts.exe
 
 [2.4.8]
 Name = AutoCharts 2.4.8
 ProductVersion = 2.4.8.0
 URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.8/AutoCharts_2.4.8.exe
-Size = 13681192
+Size = 13724200
 ReleaseDate = 12/07/2021
-SHA256 = 3911B7AD66556C587528E9AF395E1142AEB271AB91762D76C2B5265398911EAE
-MD5 = ac1426c0bbaa8e61b6e22a33f5b6f0e1
+SHA256 = 21F8D751A637EC8292DC5B9F731BF07203AEE5D8AD677DA27833AD14B537D7CF
+MD5 = aa3dd9a622e61599c48e35d2faffa0ac
 ServerFileName = AutoCharts_2.4.8.exe
 RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
 Version = 2.4.8.0
