@@ -556,10 +556,6 @@ dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "left";
 
-
-
-
-
 var valueAxis = chart8.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "20px";
@@ -634,10 +630,6 @@ dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "left";
 
-
-
-
-
 var valueAxis = chart9.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "20px";
@@ -667,7 +659,7 @@ series2.stroke = am4core.color("#025268");
 // Add legend
 chart9.legend = new am4charts.Legend();
 chart9.legend.labels.template.fontSize = "20px";
-chart9.legend.labels.template.truncate = false;
+chart9.legend.labels.template.truncate = true;
 chart9.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
 chart9.legend.itemContainers.template.marginTop = -15;
 
@@ -689,7 +681,7 @@ am4core.useTheme(am4themes_amcharts);
 // Themes end
 
 // Create chart instance
-var chart10 = am4core.create("chartdiv9", am4charts.XYChart);
+var chart10 = am4core.create("chartdiv10", am4charts.XYChart);
 
 // Set up data source
 chart10.dataSource.url = "../Data/Backups/Rational/RDM/RDM_BROCHURE_EXPORT_3StylesVsEq.csv";
