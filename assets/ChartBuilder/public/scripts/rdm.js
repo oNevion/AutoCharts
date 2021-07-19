@@ -270,6 +270,7 @@ series.colors.list = [
   am4core.color("#0d324d"),
 
 ];
+series.legendSettings.valueText = "{value.formatNumber('#.00%')}";
 
 
 // Create initial animation

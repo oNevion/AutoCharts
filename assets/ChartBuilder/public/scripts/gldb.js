@@ -575,7 +575,8 @@ chart8.legend.valueLabels.template.textAlign = "end";
 chart8.legend.labels.template.minWidth = 220;
 chart8.legend.labels.template.truncate = false;
 chart8.legend.valign = "bottom";
-
+chart8.legend.itemContainers.template.paddingTop = 4;
+chart8.legend.itemContainers.template.paddingBottom = 4;
 
 
 
@@ -601,6 +602,6 @@ function loadFrame() {
      chart8.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1800);
+window.onload = setTimeout(loadFrame, 2100);
                            
                         
