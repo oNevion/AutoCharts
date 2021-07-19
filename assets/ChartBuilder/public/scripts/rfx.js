@@ -251,6 +251,7 @@ categoryAxis.renderer.cellStartLocation = 0.1;
 categoryAxis.renderer.cellEndLocation = 0.9;
 categoryAxis.renderer.grid.template.strokeOpacity = .2;
 categoryAxis.renderer.labels.template.textAlign = "middle";
+categoryAxis.renderer.labels.template.disabled = true
 
 var label = categoryAxis.renderer.labels.template;
 label.wrap = true;

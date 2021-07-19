@@ -575,8 +575,8 @@ chart8.legend.valueLabels.template.textAlign = "end";
 chart8.legend.labels.template.minWidth = 220;
 chart8.legend.labels.template.truncate = false;
 chart8.legend.valign = "bottom";
-chart8.legend.itemContainers.template.paddingTop = 4;
-chart8.legend.itemContainers.template.paddingBottom = 4;
+chart8.legend.itemContainers.template.paddingTop = 2;
+chart8.legend.itemContainers.template.paddingBottom = 2;
 
 
 
