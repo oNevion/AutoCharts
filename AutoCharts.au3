@@ -116,17 +116,18 @@ Func CheckForUpdate()
 	Run(@AppDataDir & "/AutoCharts/AutoCharts_Updater.exe")
 EndFunc   ;==>CheckForUpdate
 
-;~ Func CheckForUpdateSilent()
-;~ 	RunWait(@ComSpec & " /c AutoCharts_Updater.exe", @AppDataDir & "/AutoCharts/") ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
-;~ EndFunc   ;==>CheckForUpdateSilent
+Func CheckForUpdateSilent()
+	Run(@ComSpec & " /c AutoCharts_Updater.exe", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
+EndFunc   ;==>CheckForUpdateSilent
 
 CheckForSettingsMigrate()
-;CheckForUpdateSilent()
 RunMainGui()
 
 Func RunMainGui()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
+	CheckForUpdateSilent()
+
 	Sleep(2000)
 	SplashOff()
 
