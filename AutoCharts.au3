@@ -54,7 +54,7 @@ Global $Radio_Q4 = 4
 
 #Region ### Database Variables
 
-Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
+Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups\"
 Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
 Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 
@@ -113,7 +113,7 @@ Func CheckForSettingsMigrate()
 EndFunc   ;==>CheckForSettingsMigrate
 
 Func CheckForUpdate()
-	Run(@AppDataDir & "/AutoCharts/updater.exe")
+	Run(@AppDataDir & "/AutoCharts/AutoCharts_Updater.exe")
 EndFunc   ;==>CheckForUpdate
 
 ;~ Func CheckForUpdateSilent()
@@ -523,7 +523,7 @@ Func RunMainGui()
 
 					Case $mSyncFiles
 						SyncronizeDataFiles()
-						MsgBox(0, "Alert", "Sync Successful")
+						MsgBox(0, "Alert", "Sync Completed. Done in " & TimerDiff($timer) / 1000 & " seconds!")
 
 				EndSwitch
 			Case $GUI_UserSettings

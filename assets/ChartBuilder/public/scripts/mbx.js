@@ -183,8 +183,8 @@ valueAxis.renderer.labels.template.fontSize = "25px";
 valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "'$'#,###";
 valueAxis.logarithmic = true;
-valueAxis.max = 128000;
-valueAxis.min = 8000;
+valueAxis.max = 140000;
+valueAxis.min = 8750;
 valueAxis.strictMinMax = true; 
 valueAxis.renderer.grid.template.disabled = true;
 valueAxis.renderer.labels.template.disabled = true;
@@ -193,11 +193,11 @@ function createGrid(value) {
   range.value = value;
   range.label.text = "{value}";
 }
-createGrid(8000);
-createGrid(16000);
-createGrid(32000);
-createGrid(64000);
-createGrid(128000);
+createGrid(8750);
+createGrid(17500);
+createGrid(35000);
+createGrid(70000);
+createGrid(140000);
 valueAxis.title.text = "Logarithmic";
 valueAxis.title.fontSize = "25px";
 valueAxis.title.fontWeight = "regular";
