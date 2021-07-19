@@ -1,7 +1,41 @@
 # Changelog
 
-## 2.4.5 
+## 2.4.9
 ### Current Release
+
+*July 12, 2021*
+
+* Added WinSCP Library for future feature releases
+* Updated Include syntax by globalizing database sync variables
+* AutoCharts now checks for updates on startup
+* You can manually check for updates by going to HELP > Check for Updates
+* Database sync now uses XCopy and only replaces files if they've been recently modified. Should perform a lot faster.
+* BugFix: Database sync issue should be fixed now as a required include was accidentally deleted.
+
+## 2.4.8
+
+*July 12, 2021*
+
+* Update to link to autocharts updater in script
+
+## 2.4.7
+
+*July 09, 2021*
+
+* Worked on fixing database sync issue
+
+## 2.4.6
+
+*July 09, 2021*
+
+* Updated include links again
+* Added Database variables to main program run
+* FEATURE: Program now only downloads current fund's csv data (should help with optimization/speed)
+* Added message box reminding user to check that their settings converted over correctly
+* Changed naming convention when creating factsheet archives
+* Updated GUI for 2.4.6 release
+
+## 2.4.5 
 
 *July 07, 2021*
 

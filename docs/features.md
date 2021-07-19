@@ -72,6 +72,12 @@ You may also clear the log file easily by selecting "Clear Log File" in the "Hel
 
 `Help > Clear Log File`
 
+## Check for Updates
+
+As of AutoCharts 2.4.9, the program has the ability to check for updates! The program checks for updates everytime you run it and you can also manually check with the following:
+
+`Help > Check for Update`
+
 ## Future Development
 
 If you would like to see what upcoming features are planned, please look at the road map located on GitHub
