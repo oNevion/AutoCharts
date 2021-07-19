@@ -3,11 +3,11 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_UseX64=n
-#AutoIt3Wrapper_Res_Description=AutoCharts 2.4.8
-#AutoIt3Wrapper_Res_Fileversion=2.4.8.3
+#AutoIt3Wrapper_Res_Description=AutoCharts 2.4.9
+#AutoIt3Wrapper_Res_Fileversion=2.4.9.0
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.4.8
+#AutoIt3Wrapper_Res_ProductVersion=2.4.9
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -117,7 +117,7 @@ Func CheckForUpdate()
 EndFunc   ;==>CheckForUpdate
 
 Func CheckForUpdateSilent()
-	Run(@ComSpec & " /c AutoCharts_Updater.exe", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
+	Run(@ComSpec & " /c AutoCharts_Updater.exe -nogui", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
 EndFunc   ;==>CheckForUpdateSilent
 
 CheckForSettingsMigrate()
@@ -131,7 +131,7 @@ Func RunMainGui()
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.4.8", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.9", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)

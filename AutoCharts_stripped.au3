@@ -18,7 +18,7 @@ Global $Radio_Q1 = 4
 Global $Radio_Q2 = 4
 Global $Radio_Q3 = 4
 Global $Radio_Q4 = 4
-Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
+Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups\"
 Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
 Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 Global Const $UBOUND_DIMENSIONS = 0
@@ -1399,6 +1399,9 @@ Return $aLoga
 EndFunc
 Global $sLogFilePath = 'FilePath="AutoCharts.log"'
 Global $hLoga1 = _LogaNew($sLogFilePath)
+Local $source
+Local $destination
+Global $timer
 Func VerifyDropbox()
 If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then
 $bDBVerified = True
@@ -1411,75 +1414,100 @@ EndIf
 EndFunc
 Func SyncronizeDataFiles()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-DirRemove($DatabaseDir & "\fin_backup_files", 1)
-DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files", $DatabaseDir & "\fin_backup_files", 1)
-DirRemove(@ScriptDir & $CSVDataDir, 1)
-DirCopy($DatabaseDir & "\fin_backup_files", @ScriptDir & $CSVDataDir, 1)
+$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files"
+$destination = $DatabaseDir & "\fin_backup_files"
+$timer = TimerInit()
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$source = $DatabaseDir & "\fin_backup_files"
+$destination = @ScriptDir & $CSVDataDir
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Synced Dropbox data with Autocharts Data")
-DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+$source = $DatabaseDir & "\amCharts"
+$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
 Func PullCatalystData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-DirRemove($DatabaseDir & "\fin_backup_files\Catalyst", 1)
-DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst", $DatabaseDir & "\fin_backup_files\Catalyst", 1)
-DirCopy($DatabaseDir & "\fin_backup_files\Catalyst", @ScriptDir & $CSVDataDir & "\Catalyst", 1)
+$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst"
+$destination = $DatabaseDir & "\fin_backup_files\Catalyst"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$source = $DatabaseDir & "\fin_backup_files\Catalyst"
+$destination = @ScriptDir & $CSVDataDir & "\Catalyst"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Pulled All Catalyst Data from Dropbox")
-DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+$source = $DatabaseDir & "\amCharts"
+$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
 Func PullCatalystFundData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-DirRemove($DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, 1)
-DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, 1)
-DirCopy($DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\Catalyst\" & $CurrentFund, 1)
+$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $CurrentFund & "\"
+$destination = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$source = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
+$destination = @ScriptDir & $CSVDataDir & "\Catalyst\" & $CurrentFund & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
-DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+$source = $DatabaseDir & "\amCharts"
+$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
 Func PullRationalData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-DirRemove($DatabaseDir & "\fin_backup_files\Rational", 1)
-DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational", $DatabaseDir & "\fin_backup_files\Rational", 1)
-DirCopy($DatabaseDir & "\fin_backup_files\Rational", @ScriptDir & $CSVDataDir & "\Rational", 1)
+$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\"
+$destination = $DatabaseDir & "\fin_backup_files\Rational\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$source = $DatabaseDir & "\fin_backup_files\Rational\"
+$destination = @ScriptDir & $CSVDataDir & "\Rational\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Pulled Rational Data from Dropbox")
-DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+$source = $DatabaseDir & "\amCharts"
+$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
 Func PullRationalFundData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-DirRemove($DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, 1)
-DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, 1)
-DirCopy($DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\Rational\" & $CurrentFund, 1)
+$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $CurrentFund & "\"
+$destination = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$source = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
+$destination = @ScriptDir & $CSVDataDir & "\Rational\" & $CurrentFund & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
-DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+$source = $DatabaseDir & "\amCharts"
+$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
 Func PullStrategySharesFundData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-DirRemove($DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, 1)
-DirCopy($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $CurrentFund, $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, 1)
-DirCopy($DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund, @ScriptDir & $CSVDataDir & "\StrategyShares\" & $CurrentFund, 1)
+$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $CurrentFund & "\"
+$destination = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$source = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
+$destination = @ScriptDir & $CSVDataDir & "\StrategyShares\" & $CurrentFund & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
-DirRemove(@ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
-DirCopy($DatabaseDir & "\amCharts", @ScriptDir & "\assets\ChartBuilder\public\scripts", 1)
+$source = $DatabaseDir & "\amCharts"
+$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 _LogaInfo("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
 Func UploadamCharts()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-DirRemove($DatabaseDir & "\amCharts", 1)
-DirCopy(@ScriptDir & "\assets\ChartBuilder\public\scripts", $DatabaseDir & "\amCharts", 1)
+$source = "C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\ChartBuilder\public\scripts"
+$destination = $DatabaseDir & "\amCharts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 SplashOff()
 _LogaInfo("Uploaded amCharts Scripts to Database")
 EndFunc
@@ -1594,15 +1622,19 @@ MsgBox(64, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF &
 EndIf
 EndFunc
 Func CheckForUpdate()
-Run(@AppDataDir & "/AutoCharts/updater.exe")
+Run(@AppDataDir & "/AutoCharts/AutoCharts_Updater.exe")
+EndFunc
+Func CheckForUpdateSilent()
+Run(@ComSpec & " /c AutoCharts_Updater.exe -nogui", @AppDataDir & "/AutoCharts/", @SW_HIDE)
 EndFunc
 CheckForSettingsMigrate()
 RunMainGui()
 Func RunMainGui()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
+CheckForUpdateSilent()
 Sleep(2000)
 SplashOff()
-$MainGUI = GUICreate("AutoCharts 2.4.8", 570, 609, -1, -1)
+$MainGUI = GUICreate("AutoCharts 2.4.9", 570, 609, -1, -1)
 $mFile = GUICtrlCreateMenu("&File")
 $mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
 $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
@@ -1945,7 +1977,7 @@ MsgBox(0, "Finished", "The process has finished.")
 GUICtrlSetData($UpdateLabel, "The process has finished.")
 Case $mSyncFiles
 SyncronizeDataFiles()
-MsgBox(0, "Alert", "Sync Successful")
+MsgBox(0, "Alert", "Sync Completed. Done in " & TimerDiff($timer) / 1000 & " seconds!")
 EndSwitch
 Case $GUI_UserSettings
 Switch $aMsg[0]
