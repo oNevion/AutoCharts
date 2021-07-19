@@ -24,8 +24,8 @@ body {
     }
 
      #chartdiv3 {
-        width:690px!important;
-    height:591px!important;
+        width:900px!important;
+    height:300px!important;
     }
 
      #chartdiv4 {
@@ -218,37 +218,73 @@ chart2.exporting.menu.items = [{
 chart2.exporting.filePrefix = "GLDB_GoldVsFedReserve";
 
 
-// ################################ CHART 3 GLDB - Gold Exposure (Pie) ################################################
+// ################################ CHART 3 GLDB - Gold/Bond Exposure (Bar) ################################################
+
+// Themes begin
+am4core.useTheme(am4themes_amcharts);
+// Themes end
 
 // Create chart instance
-var chart3 = am4core.create("chartdiv3", am4charts.PieChart);
-chart3.innerRadius = am4core.percent(40);
+var chart3 = am4core.create("chartdiv3", am4charts.XYChart);
+
+// Add percent sign to all numbers
+chart3.numberFormatter.numberFormat = "#.#'%'";
 
 // Set up data source
-chart3.dataSource.url = "../Data/Backups/StrategyShares/GLDB/GLDB_EXPORT_GoldExposurePie.csv";
+chart3.dataSource.url = "../Data/Backups/StrategyShares/GLDB/GLDB_EXPORT_ExposureBarChart.csv";
 chart3.dataSource.parser = new am4core.CSVParser();
 chart3.dataSource.parser.options.useColumnNames = true;
 
+// Create axes
+var categoryAxis = chart3.yAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "Label";
+categoryAxis.renderer.labels.template.fontWeight = "Bold";
+categoryAxis.renderer.labels.template.fontSize = "20px";
+categoryAxis.renderer.grid.template.disabled = false;
+categoryAxis.renderer.grid.template.location = 0;
+categoryAxis.renderer.cellStartLocation = 0.1;
+categoryAxis.renderer.cellEndLocation = 0.9;
+categoryAxis.renderer.grid.template.strokeOpacity = .2;
+categoryAxis.renderer.labels.template.disabled = true
 
 
-// Make the chart fade-in on init
-chart3.hiddenState.properties.opacity = 0;
 
-// Add series
-var series = chart3.series.push(new am4charts.PieSeries());
-series.dataFields.value = "Value";
-series.dataFields.category = "Label";
-series.slices.template.stroke = am4core.color("#ffffff");
-series.slices.template.strokeWidth = 2;
-series.slices.template.strokeOpacity = 1;
-series.labels.template.disabled = true;
-series.ticks.template.disabled = true;
-series.slices.template.tooltipText = "";
-series.colors.list = [
-  am4core.color("#08da94"),
-  am4core.color("#E7E7E7"),
-];
+var valueAxis = chart3.xAxes.push(new am4charts.ValueAxis());
+valueAxis.renderer.grid.template.disabled = true;
+valueAxis.renderer.labels.template.fontWeight = "Bold";
+valueAxis.renderer.labels.template.fontSize = "20px";
+valueAxis.renderer.grid.template.location = 0;
+valueAxis.renderer.labels.template.dx = -20;
+valueAxis.min = 70;
+valueAxis.renderer.labels.template.horizontalCenter = "left";
+valueAxis.renderer.labels.template.verticalCenter = "middle";
+valueAxis.renderer.maxLabelPosition = 0.99;
+valueAxis.renderer.minGridDistance = 50;
 
+var series2 = chart3.series.push(new am4charts.ColumnSeries());
+series2.dataFields.valueX = "Bonds";
+series2.dataFields.categoryY = "Label";
+series2.name = "Bonds";
+//series2.clustered = true;
+series2.fill = am4core.color("#025268");
+series2.strokeWidth = 0;
+//series2.columns.template.width = am4core.percent(100);
+
+// Create series
+var series = chart3.series.push(new am4charts.ColumnSeries());
+series.dataFields.valueX = "Gold";
+series.dataFields.categoryY = "Label";
+series.name = "Gold";
+//series.clustered = true;
+series.fill = am4core.color("#08da94");
+series.strokeWidth = 0;
+//series.columns.template.width = am4core.percent(100);
+
+// Add legend
+chart3.legend = new am4charts.Legend();
+chart3.legend.labels.template.fontSize = "20px";
+chart3.legend.labels.template.truncate = false;
+chart3.legend.labels.template.text = "{name}[/] [bold {color}]{valueX.close}";
 
 // Export this stuff
 chart3.exporting.menu = new am4core.ExportMenu();
@@ -258,50 +294,7 @@ chart3.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart3.exporting.filePrefix = "GLDB_GoldExposurePie";
-
-
-// ################################ CHART 4 GLDB - Bond Exposure (Pie) ################################################
-
-// Create chart instance
-var chart4 = am4core.create("chartdiv4", am4charts.PieChart);
-chart4.innerRadius = am4core.percent(60);
-
-// Set up data source
-chart4.dataSource.url = "../Data/Backups/StrategyShares/GLDB/GLDB_EXPORT_BondExposurePie.csv";
-chart4.dataSource.parser = new am4core.CSVParser();
-chart4.dataSource.parser.options.useColumnNames = true;
-
-
-
-// Make the chart fade-in on init
-chart4.hiddenState.properties.opacity = 0;
-
-// Add series
-var series = chart4.series.push(new am4charts.PieSeries());
-series.dataFields.value = "Value";
-series.dataFields.category = "Label";
-series.slices.template.stroke = am4core.color("#ffffff");
-series.slices.template.strokeWidth = 2;
-series.slices.template.strokeOpacity = 1;
-series.labels.template.disabled = true;
-series.ticks.template.disabled = true;
-series.slices.template.tooltipText = "";
-series.colors.list = [
-  am4core.color("#0d345e"),
-  am4core.color("#E7E7E7"),
-];
-
-
-// Export this stuff
-chart4.exporting.menu = new am4core.ExportMenu();
-chart4.exporting.menu.items = [{
-  "label": "...",
-  "menu": [
-          { "type": "svg", "label": "SVG" },
-  ]
-}];
-chart4.exporting.filePrefix = "GLDB_BondExposurePie";
+chart3.exporting.filePrefix = "GLDB_GoldBondExposureBar";
 
 
 // ################################ CHART 5 GLDB - Institutional Growth of 10k (Line) ################################################
@@ -552,18 +545,16 @@ series.labels.template.disabled = true;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
-  am4core.color("#08da94"),
-  am4core.color("#19ca90"),
-  am4core.color("#20b98b"),
-  am4core.color("#25a986"),
-  am4core.color("#279a82"),
-  am4core.color("#278a7d"),
-  am4core.color("#267b78"),
-  am4core.color("#246c73"),
-  am4core.color("#215e6e"),
-  am4core.color("#1c4f69"),
-  am4core.color("#164163"),
   am4core.color("#0d345e"),
+  am4core.color("#0c4664"),
+  am4core.color("#0c5769"),
+  am4core.color("#0b696f"),
+  am4core.color("#0b7b75"),
+  am4core.color("#0a8d7b"),
+  am4core.color("#0aa081"),
+  am4core.color("#09b387"),
+  am4core.color("#09c68e"),
+  am4core.color("#08da94"),
 
 ];
 
@@ -605,7 +596,6 @@ function loadFrame() {
      chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
-     chart4.exporting.export('svg');
      chart5.exporting.export('svg');
      chart6.exporting.export('svg');
      chart7.exporting.export('svg');

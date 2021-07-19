@@ -336,7 +336,7 @@ dateAxis.periodChangeDateFormats.setKey("day", "M/d/yyyy");
 var valueAxis = chart4.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
 valueAxis.renderer.labels.template.fontSize = "20px";
-valueAxis.renderer.minGridDistance = 80;
+//valueAxis.renderer.minGridDistance = 80;
 
 valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "#,###'%'";

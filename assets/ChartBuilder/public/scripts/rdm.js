@@ -259,15 +259,15 @@ series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
   am4core.color("#08da94"),
-  am4core.color("#1bc68f"),
-  am4core.color("#23b289"),
-  am4core.color("#269f83"),
-  am4core.color("#278c7d"),
-  am4core.color("#267977"),
-  am4core.color("#236771"),
-  am4core.color("#1e566b"),
-  am4core.color("#184565"),
-  am4core.color("#0d345e"),
+  am4core.color("#17c68c"),
+  am4core.color("#1db184"),
+  am4core.color("#209e7d"),
+  am4core.color("#218b75"),
+  am4core.color("#20786d"),
+  am4core.color("#1e6565"),
+  am4core.color("#1a545d"),
+  am4core.color("#154255"),
+  am4core.color("#0d324d"),
 
 ];
 series.legendSettings.valueText = "{value.formatNumber('#.00%')}";

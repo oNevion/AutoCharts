@@ -2,11 +2,12 @@
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseUpx=y
-#AutoIt3Wrapper_Res_Description=Built for Catalyst and Rational Funds
-#AutoIt3Wrapper_Res_Fileversion=2.4.8.1
+#AutoIt3Wrapper_UseX64=n
+#AutoIt3Wrapper_Res_Description=AutoCharts 2.4.9
+#AutoIt3Wrapper_Res_Fileversion=2.4.9.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=2.4.8
+#AutoIt3Wrapper_Res_ProductVersion=2.4.9
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -14,7 +15,7 @@
 #AutoIt3Wrapper_Res_HiDpi=y
 #AutoIt3Wrapper_Add_Constants=n
 #AutoIt3Wrapper_AU3Check_Stop_OnWarning=y
-#AutoIt3Wrapper_AU3Check_Parameters=-v 1
+#AutoIt3Wrapper_AU3Check_Parameters=-w 1 -v 1
 #AutoIt3Wrapper_Run_Tidy=y
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/tl
@@ -40,21 +41,21 @@ Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
 
 ;Predeclare the variables with dummy values to prevent firing the Case statements, only for GUI this time
 Global $GUI_UserSettings = 9999
-$INPT_DropboxFolder = 9999
-$BTN_Save = 9999
-$BTN_Cancel = 9999
-$BTN_SelectDBPath = 9999
+Global $INPT_DropboxFolder = 9999
+Global $BTN_Save = 9999
+Global $BTN_Cancel = 9999
+Global $BTN_SelectDBPath = 9999
 
-$Radio_Q1 = 4
-$Radio_Q2 = 4
-$Radio_Q3 = 4
-$Radio_Q4 = 4
+Global $Radio_Q1 = 4
+Global $Radio_Q2 = 4
+Global $Radio_Q3 = 4
+Global $Radio_Q4 = 4
 
 #EndRegion ### GLOBAL Arrays and Variables
 
 #Region ### Database Variables
 
-Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups"
+Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups\"
 Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
 Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 
@@ -89,14 +90,12 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 ;-------------------------------------------------------------------------------
 #include "src/Database_Sync.au3"
 
-
 ;-------------------------------------------------------------------------------
 ; Main program that manages DataLinker Functions
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
 #include "src/DataLinker_Func.au3"
-
 
 ;-------------------------------------------------------------------------------
 ; Main program that manages FTP database connections
@@ -115,24 +114,25 @@ Func CheckForSettingsMigrate()
 EndFunc   ;==>CheckForSettingsMigrate
 
 Func CheckForUpdate()
-	Run(@AppDataDir & "/AutoCharts/updater.exe")
+	Run(@AppDataDir & "/AutoCharts/AutoCharts_Updater.exe")
 EndFunc   ;==>CheckForUpdate
 
-;~ Func CheckForUpdateSilent()
-;~ 	RunWait(@ComSpec & " /c AutoCharts_Updater.exe", @AppDataDir & "/AutoCharts/") ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
-;~ EndFunc   ;==>CheckForUpdateSilent
+Func CheckForUpdateSilent()
+	Run(@ComSpec & " /c AutoCharts_Updater.exe -nogui", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
+EndFunc   ;==>CheckForUpdateSilent
 
 CheckForSettingsMigrate()
-;CheckForUpdateSilent()
 RunMainGui()
 
 Func RunMainGui()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
+	CheckForUpdateSilent()
+
 	Sleep(2000)
 	SplashOff()
 
-	$MainGUI = GUICreate("AutoCharts 2.4.8", 570, 609, -1, -1)
+	$MainGUI = GUICreate("AutoCharts 2.4.9", 570, 609, -1, -1)
 	$mFile = GUICtrlCreateMenu("&File")
 	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
 	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
@@ -525,7 +525,7 @@ Func RunMainGui()
 
 					Case $mSyncFiles
 						SyncronizeDataFiles()
-						MsgBox(0, "Alert", "Sync Successful")
+						MsgBox(0, "Alert", "Sync Completed. Done in " & TimerDiff($timer) / 1000 & " seconds!")
 
 				EndSwitch
 			Case $GUI_UserSettings
