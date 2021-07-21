@@ -472,15 +472,11 @@ dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "24px";
 dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.minGridDistance = 20;
-dateAxis.renderer.labels.template.dx = -40;
+dateAxis.renderer.maxLabelPosition = 1.001;
 dateAxis.renderer.labels.template.location = 0;
 dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
-dateAxis.renderer.labels.template.horizontalCenter = "left";
-
-
-
-
+dateAxis.renderer.labels.template.horizontalCenter = "right";
 
 var valueAxis = chart7.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
@@ -550,11 +546,11 @@ dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "20px";
 dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.minGridDistance = 40;
-dateAxis.renderer.labels.template.dx = -40;
 dateAxis.renderer.labels.template.location = 0;
 dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
-dateAxis.renderer.labels.template.horizontalCenter = "left";
+dateAxis.renderer.labels.template.horizontalCenter = "right";
+dateAxis.renderer.maxLabelPosition = 1.05;
 
 var valueAxis = chart8.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
@@ -624,11 +620,11 @@ dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "20px";
 dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.minGridDistance = 40;
-dateAxis.renderer.labels.template.dx = -40;
 dateAxis.renderer.labels.template.location = 0;
 dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
-dateAxis.renderer.labels.template.horizontalCenter = "left";
+dateAxis.renderer.labels.template.horizontalCenter = "right";
+dateAxis.renderer.maxLabelPosition = 1.05;
 
 var valueAxis = chart9.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
@@ -698,13 +694,13 @@ dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "24px";
 dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.minGridDistance = 40;
-dateAxis.renderer.labels.template.dx = -40;
 dateAxis.renderer.labels.template.location = 0;
 dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
-dateAxis.renderer.labels.template.horizontalCenter = "left";
+dateAxis.renderer.labels.template.horizontalCenter = "right";
 dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
+dateAxis.renderer.maxLabelPosition = 1.001;
 
 var valueAxis = chart10.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
