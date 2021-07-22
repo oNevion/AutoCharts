@@ -13,7 +13,7 @@
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #AutoIt3Wrapper_Res_HiDpi=y
-#AutoIt3Wrapper_Add_Constants=y
+#AutoIt3Wrapper_Add_Constants=n
 #AutoIt3Wrapper_AU3Check_Stop_OnWarning=y
 #AutoIt3Wrapper_AU3Check_Parameters=-w 1 -v 1
 #AutoIt3Wrapper_Run_Tidy=y
@@ -117,9 +117,9 @@ Func CheckForUpdate()
 	Run(@AppDataDir & "/AutoCharts/AutoCharts_Updater.exe")
 EndFunc   ;==>CheckForUpdate
 
-Func CheckForUpdateSilent()
-	Run(@ComSpec & " /c AutoCharts_Updater.exe -nogui", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
-EndFunc   ;==>CheckForUpdateSilent
+;Func CheckForUpdateSilent()
+;Run(@ComSpec & " /c AutoCharts_Updater.exe -nogui", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
+;EndFunc   ;==>CheckForUpdateSilent
 
 CheckForSettingsMigrate()
 RunMainGui()
@@ -127,7 +127,7 @@ RunMainGui()
 Func RunMainGui()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
-	CheckForUpdateSilent()
+	;CheckForUpdateSilent()
 
 	Sleep(2000)
 	SplashOff()
@@ -431,6 +431,9 @@ Func RunMainGui()
 
 
 					Case $BTN_RunCatalyst
+
+						MsgBox(32, "Debuggin", $DatabaseDir)
+
 						VerifyDropbox()
 						If $bDBVerified = True Then
 							$FundFamily = "Catalyst"
