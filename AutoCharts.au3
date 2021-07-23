@@ -71,9 +71,11 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 #include <StaticConstants.au3>
 #include <TabConstants.au3>
 #include <WindowsConstants.au3>
-#include <MsgBoxConstants.au3>
 #include <EditConstants.au3>
 #include <GUIListBox.au3>
+#include <WinAPIFiles.au3>
+#include <AutoItConstants.au3>
+#include <FileConstants.au3>
 #include "Zip.au3"
 
 ;-------------------------------------------------------------------------------
