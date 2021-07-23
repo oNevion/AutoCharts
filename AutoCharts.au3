@@ -116,7 +116,7 @@ Func CheckForSettingsMigrate()
 EndFunc   ;==>CheckForSettingsMigrate
 
 Func CheckForUpdate()
-	Run(@AppDataDir & "/AutoCharts/AutoCharts_Updater.exe")
+	Run(@ScriptDir & "/AutoCharts_Updater.exe")
 EndFunc   ;==>CheckForUpdate
 
 ;Func CheckForUpdateSilent()
