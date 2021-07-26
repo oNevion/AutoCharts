@@ -157,10 +157,10 @@ dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "24px";
 dateAxis.renderer.grid.template.disabled = true;
 //dateAxis.renderer.labels.template.location = .00000001;
-dateAxis.renderer.minGridDistance = 20;
+dateAxis.renderer.minGridDistance = 40;
 dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
-dateAxis.renderer.labels.template.horizontalCenter = "right";
+dateAxis.renderer.labels.template.horizontalCenter = "left";
 dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
 //dateAxis.extraMax = 0.05; 
@@ -217,7 +217,7 @@ dateAxis.renderer.axisFills.template.fillOpacity = 0.1;
 
 dateAxis.fillRule = function(dataItem) {
   let date = new Date(dataItem.value);
-  if (date.getMonth() == 3 || date.getMonth() == 4 || date.getMonth() == 5 || date.getMonth() == 9 || date.getMonth() == 10 || date.getMonth() == 11) {
+  if (date.getMonth() == 3 || date.getMonth() == 4 || date.getMonth() == 5 || date.getMonth() == 5 || date.getMonth() == 6) {
     dataItem.axisFill.visible = true;
   }
   else {
