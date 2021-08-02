@@ -13,7 +13,7 @@
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #AutoIt3Wrapper_Res_HiDpi=y
-#AutoIt3Wrapper_Add_Constants=n
+#AutoIt3Wrapper_Add_Constants=y
 #AutoIt3Wrapper_AU3Check_Stop_OnWarning=y
 #AutoIt3Wrapper_AU3Check_Parameters=-w 1 -v 1
 #AutoIt3Wrapper_Run_Tidy=y
