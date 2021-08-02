@@ -21,6 +21,7 @@
 #Au3Stripper_Parameters=/tl
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
+
 #Region ### GLOBAL Arrays and Variables
 
 Global $aCatalystCheck[24]
@@ -100,18 +101,17 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 #include "src/DataLinker_Func.au3"
 
 ;-------------------------------------------------------------------------------
-; Main program that manages FTP database connections
+; Main program that houses all GUI events and controls
 ;
-; This is the entry point to the DataLinker code.
+; This is the entry point to the GUI Wrapper code.
 ;-------------------------------------------------------------------------------
-;#include "src/FTP_Func.au3"
-
+#include "src/GUI_Wrapper.au3"
 
 Func CheckForSettingsMigrate()
 	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
 		FileDelete(@ScriptDir & "/settings-MIGRATE.ini")
 		_LogaInfo("Updated install detected.")
-		MsgBox(64, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
+		_Metro_MsgBox(0, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
 	EndIf
 EndFunc   ;==>CheckForSettingsMigrate
 
@@ -124,552 +124,536 @@ EndFunc   ;==>CheckForUpdate
 ;EndFunc   ;==>CheckForUpdateSilent
 
 CheckForSettingsMigrate()
-RunMainGui()
-
-Func RunMainGui()
-
-	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
-	;CheckForUpdateSilent()
-
-	Sleep(2000)
-	SplashOff()
-
-	$MainGUI = GUICreate("AutoCharts 2.4.9", 570, 609, -1, -1)
-	$mFile = GUICtrlCreateMenu("&File")
-	;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
-	$mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
-	$mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
-	$mSettings = GUICtrlCreateMenu("&Settings")
-	$mEditSettings = GUICtrlCreateMenuItem("&Edit", $mSettings)
-	$mSyncOptions = GUICtrlCreateMenu("Sync Options")
-	$mSyncFiles = GUICtrlCreateMenuItem("&Pull Data From Dropbox", $mSyncOptions)
-	$mUploadamCharts = GUICtrlCreateMenuItem("Upload amChart Files", $mSyncOptions)
-	$mDataLinker = GUICtrlCreateMenu("&DataLinker", $mSyncOptions)
-	$mImportDataLinker = GUICtrlCreateMenuItem("Import Data Sources", $mDataLinker)
-	$mExportDataLinker = GUICtrlCreateMenuItem("Export Data Sources", $mDataLinker)
-	$mUploadDatalinker = GUICtrlCreateMenuItem("Upload Data Sources to Database", $mDataLinker)
-	$mHelp = GUICtrlCreateMenu("&Help")
-	$mAbout = GUICtrlCreateMenuItem("&About", $mHelp)
-	$mLogFile = GUICtrlCreateMenuItem("&Open Log File", $mHelp)
-	$mClearLog = GUICtrlCreateMenuItem("&Clear Log File", $mHelp)
-	$mCheckUpdate = GUICtrlCreateMenuItem("&Check for Update", $mHelp)
-
-	$TAB_Main = GUICtrlCreateTab(8, 176, 553, 353)
-	GUICtrlSetFont(-1, 10, 400, 0, "Arial")
-	$TAB_Catalyst = GUICtrlCreateTabItem("Catalyst Fact Sheets")
-	GUICtrlSetState(-1, $GUI_SHOW)
-	$BTN_RunCatalyst = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
-	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
-	GUICtrlSetBkColor(-1, 0xC0DCC0)
-	$BTN_Catalyst_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
-	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
-	$ACX = GUICtrlCreateCheckbox("ACX", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$ATR = GUICtrlCreateCheckbox("ATR", 28, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$BUY = GUICtrlCreateCheckbox("BUY", 28, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CAX = GUICtrlCreateCheckbox("CAX", 28, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CPE = GUICtrlCreateCheckbox("CPE", 132, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CLT = GUICtrlCreateCheckbox("CLT", 132, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CLP = GUICtrlCreateCheckbox("CLP", 132, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CFR = GUICtrlCreateCheckbox("CFR", 28, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$DCX = GUICtrlCreateCheckbox("DCX", 132, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$IIX = GUICtrlCreateCheckbox("IIX", 236, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$HII = GUICtrlCreateCheckbox("HII", 236, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$EIX = GUICtrlCreateCheckbox("EIX", 236, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$CWX = GUICtrlCreateCheckbox("CWX", 132, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$INS = GUICtrlCreateCheckbox("INS", 236, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$IOX = GUICtrlCreateCheckbox("IOX", 236, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$MBX = GUICtrlCreateCheckbox("MBX", 340, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$MLX = GUICtrlCreateCheckbox("MLX", 340, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$SHI = GUICtrlCreateCheckbox("SHI", 340, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$TEZ = GUICtrlCreateCheckbox("TEZ", 340, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$TRI = GUICtrlCreateCheckbox("TRI", 340, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$TRX = GUICtrlCreateCheckbox("TRX", 444, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-
-
-	$TAB_Rational = GUICtrlCreateTabItem("Rational Fact Sheets")
-	$HBA = GUICtrlCreateCheckbox("HBA", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$HDC = GUICtrlCreateCheckbox("HDC", 28, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$HRS = GUICtrlCreateCheckbox("HRS", 28, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$HSU = GUICtrlCreateCheckbox("HSU", 28, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$PBX = GUICtrlCreateCheckbox("PBX", 132, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$RDM = GUICtrlCreateCheckbox("RDM", 132, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$RFX = GUICtrlCreateCheckbox("RFX", 132, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$BTN_RunRational = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
-	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
-	GUICtrlSetBkColor(-1, 0xC0DCC0)
-	$BTN_Rational_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
-	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
-
-	$TAB_StrategyShares = GUICtrlCreateTabItem("Strategy Shares Fact Sheets")
-	$GLDB = GUICtrlCreateCheckbox("GLDB", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$HNDL = GUICtrlCreateCheckbox("HNDL", 28, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$ROMO = GUICtrlCreateCheckbox("ROMO", 28, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
-	GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
-	GUICtrlSetBkColor(-1, 0xFFFFFF)
-	$BTN_RunStrategyShares = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
-	GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
-	GUICtrlSetBkColor(-1, 0xC0DCC0)
-	GUICtrlCreateTabItem("")
-	$Pic1 = GUICtrlCreatePic(@ScriptDir & "\assets\GUI_Menus\main-img.bmp", 0, 0, 569, 167, BitOR($GUI_SS_DEFAULT_PIC, $SS_CENTERIMAGE))
-	GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
-	Global $ProgressBar = GUICtrlCreateProgress(8, 536, 550, 17)
-	Global $UpdateLabel = GUICtrlCreateLabel("Click Process Updates to Start", 16, 560, 540, 17)
-
-	GUISetState()
-
-
-
-
-	Local $aMsg
-	While 1
-		$aMsg = GUIGetMsg(1) ; Use advanced parameter to get array
-		Switch $aMsg[1] ; check which GUI box sent the message
-			Case $MainGUI
-				If $INPT_Name <> "Jakob" Then
-					GUICtrlSetState($mUploadamCharts, $GUI_DISABLE)
-					GUICtrlSetState($mUploadDatalinker, $GUI_DISABLE)
-				EndIf
-				Switch $aMsg[0] ; Now check for the messages for $MainGUI
-					Case $GUI_EVENT_CLOSE ; If we get the CLOSE message from this GUI - we exit <<<<<<<<<<<<<<<
-						ExitLoop
-					Case $mExit
-						Exit
-					Case $GUI_EVENT_CLOSE
-						Exit
-					Case $mEditSettings
-						;GUICtrlSetState($mEditSettings, $GUI_DISABLE)
-						OpenSettingsGUI()
-					Case $mUploadamCharts
-						UploadamCharts()
-					Case $mExportDataLinker
-						ExportDatalinker()
-					Case $mImportDataLinker
-						ImportDatalinker()
-						If @error Then
-							MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
-						Else
-							MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
-
-						EndIf
-					Case $mUploadDatalinker
-						UploadDatalinker()
-					Case $mClearLog
-						ClearLog()
-					Case $mAbout
-						ShellExecute("https://onevion.github.io/AutoCharts/")
-
-					Case $mLogFile
-						$sTextFile = @ScriptDir & "\AutoCharts.log"
-						$_Run = "notepad.exe " & $sTextFile
-						ConsoleWrite("$_Run : " & $_Run & @CRLF)
-						Run($_Run, @WindowsDir, @SW_SHOWDEFAULT)
-
-					Case $mCheckUpdate
-						CheckForUpdate()
-
-					Case $mCreateArchive
-						CreateFactSheetArchive()
-
-					Case $ACX
-						If GUICtrlRead($ACX) = 1 Then $aCatalystCheck[0] = "ACX" ; Sets first slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($ACX) = 4 Then $aCatalystCheck[0] = 0 ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $ATR
-						If GUICtrlRead($ATR) = 1 Then $aCatalystCheck[1] = "ATR" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($ATR) = 4 Then $aCatalystCheck[1] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $BUY
-						If GUICtrlRead($BUY) = 1 Then $aCatalystCheck[2] = "BUY" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($BUY) = 4 Then $aCatalystCheck[2] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $CAX
-						If GUICtrlRead($CAX) = 1 Then $aCatalystCheck[3] = "CAX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($CAX) = 4 Then $aCatalystCheck[3] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $DCX
-						If GUICtrlRead($DCX) = 1 Then $aCatalystCheck[4] = "DCX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($DCX) = 4 Then $aCatalystCheck[4] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $CPE
-						If GUICtrlRead($CPE) = 1 Then $aCatalystCheck[5] = "CPE" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($CPE) = 4 Then $aCatalystCheck[5] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $CLT
-						If GUICtrlRead($CLT) = 1 Then $aCatalystCheck[6] = "CLT" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($CLT) = 4 Then $aCatalystCheck[6] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $CLP
-						If GUICtrlRead($CLP) = 1 Then $aCatalystCheck[7] = "CLP" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($CLP) = 4 Then $aCatalystCheck[7] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $CFR
-						If GUICtrlRead($CFR) = 1 Then $aCatalystCheck[9] = "CFR" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($CFR) = 4 Then $aCatalystCheck[9] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $IIX
-						If GUICtrlRead($IIX) = 1 Then $aCatalystCheck[10] = "IIX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($IIX) = 4 Then $aCatalystCheck[10] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $HII
-						If GUICtrlRead($HII) = 1 Then $aCatalystCheck[11] = "HII" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($HII) = 4 Then $aCatalystCheck[11] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $EIX
-						If GUICtrlRead($EIX) = 1 Then $aCatalystCheck[12] = "EIX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($EIX) = 4 Then $aCatalystCheck[12] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $CWX
-						If GUICtrlRead($CWX) = 1 Then $aCatalystCheck[13] = "CWX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($CWX) = 4 Then $aCatalystCheck[13] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $INS
-						If GUICtrlRead($INS) = 1 Then $aCatalystCheck[15] = "INS" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($INS) = 4 Then $aCatalystCheck[15] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $IOX
-						If GUICtrlRead($IOX) = 1 Then $aCatalystCheck[16] = "IOX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($IOX) = 4 Then $aCatalystCheck[16] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $MBX
-						If GUICtrlRead($MBX) = 1 Then $aCatalystCheck[17] = "MBX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($MBX) = 4 Then $aCatalystCheck[17] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $MLX
-						If GUICtrlRead($MLX) = 1 Then $aCatalystCheck[18] = "MLX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($MLX) = 4 Then $aCatalystCheck[18] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $SHI
-						If GUICtrlRead($SHI) = 1 Then $aCatalystCheck[20] = "SHI" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($SHI) = 4 Then $aCatalystCheck[20] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $TEZ
-						If GUICtrlRead($TEZ) = 1 Then $aCatalystCheck[21] = "TEZ" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($TEZ) = 4 Then $aCatalystCheck[21] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $TRI
-						If GUICtrlRead($TRI) = 1 Then $aCatalystCheck[22] = "TRI" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($TRI) = 4 Then $aCatalystCheck[22] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-					Case $TRX
-						If GUICtrlRead($TRX) = 1 Then $aCatalystCheck[23] = "TRX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
-						If GUICtrlRead($TRX) = 4 Then $aCatalystCheck[23] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
-
-
-					Case $HBA
-						If GUICtrlRead($HBA) = 1 Then $aRationalCheck[0] = "HBA" ; Sets  slot of the Rational Array to 1 if CHECKED
-						If GUICtrlRead($HBA) = 4 Then $aRationalCheck[0] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
-					Case $HDC
-						If GUICtrlRead($HDC) = 1 Then $aRationalCheck[1] = "HDC" ; Sets  slot of the Rational Array to 1 if CHECKED
-						If GUICtrlRead($HDC) = 4 Then $aRationalCheck[1] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
-					Case $HRS
-						If GUICtrlRead($HRS) = 1 Then $aRationalCheck[2] = "HRS" ; Sets  slot of the Rational Array to 1 if CHECKED
-						If GUICtrlRead($HRS) = 4 Then $aRationalCheck[2] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
-					Case $HSU
-						If GUICtrlRead($HSU) = 1 Then $aRationalCheck[3] = "HSU" ; Sets  slot of the Rational Array to 1 if CHECKED
-						If GUICtrlRead($HSU) = 4 Then $aRationalCheck[3] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
-					Case $PBX
-						If GUICtrlRead($PBX) = 1 Then $aRationalCheck[4] = "PBX" ; Sets  slot of the Rational Array to 1 if CHECKED
-						If GUICtrlRead($PBX) = 4 Then $aRationalCheck[4] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
-					Case $RDM
-						If GUICtrlRead($RDM) = 1 Then $aRationalCheck[5] = "RDM" ; Sets  slot of the Rational Array to 1 if CHECKED
-						If GUICtrlRead($RDM) = 4 Then $aRationalCheck[5] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
-					Case $RFX
-						If GUICtrlRead($RFX) = 1 Then $aRationalCheck[6] = "RFX" ; Sets  slot of the Rational Array to 1 if CHECKED
-						If GUICtrlRead($RFX) = 4 Then $aRationalCheck[6] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
-
-
-					Case $GLDB
-						If GUICtrlRead($GLDB) = 1 Then $aStrategyCheck[0] = "GLDB" ; Sets  slot of the Strategy Shares Array to 1 if CHECKED
-						If GUICtrlRead($GLDB) = 4 Then $aStrategyCheck[0] = 0 ; Sets  slot of the Strategy Shares Array to 0 if NOT CHECKED
-					Case $HNDL
-						If GUICtrlRead($HNDL) = 1 Then $aStrategyCheck[1] = "HNDL" ; Sets  slot of the Strategy Shares Array to 1 if CHECKED
-						If GUICtrlRead($HNDL) = 4 Then $aStrategyCheck[1] = 0 ; Sets  slot of the Strategy Shares Array to 0 if NOT CHECKED
-					Case $ROMO
-						If GUICtrlRead($ROMO) = 1 Then $aStrategyCheck[2] = "ROMO" ; Sets  slot of the Strategy Shares Array to 1 if CHECKED
-						If GUICtrlRead($ROMO) = 4 Then $aStrategyCheck[2] = 0 ; Sets  slot of the Strategy Shares Array to 0 if NOT CHECKED
-
-
-
-
-
-					Case $BTN_RunCatalyst
-
-						MsgBox(32, "Debuggin", $DatabaseDir)
-
-						VerifyDropbox()
-						If $bDBVerified = True Then
-							$FundFamily = "Catalyst"
-							$FamilySwitch = $aCatalystCheck
-							GUICtrlSetData($ProgressBar, 10)
-							ImportDatalinker()
-							;PullCatalystData()
-							RunCSVConvert()
-							CreateCharts()
-
-							_LogaInfo("############################### END OF RUN - CATALYST ###############################")
-
-							GUICtrlSetData($ProgressBar, 0)
-							MsgBox(0, "Finished", "The process has finished.")
-							GUICtrlSetData($UpdateLabel, "The process has finished.")
-						Else
-							If @error = 50 Then
-								MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
-							EndIf
-						EndIf
-
-
-					Case $BTN_Catalyst_UpdateExpenseRatio
-						$FundFamily = "Catalyst"
-						$FamilySwitch = $aCatalystCheck
-						GUICtrlSetData($ProgressBar, 10)
-						ImportDatalinker()
-						PullCatalystData()
-						RunExpenseRatios()
-
-						_LogaInfo("############################### END OF RUN - CATALYST ###############################")     ; Write to the logfile
-
-						GUICtrlSetData($ProgressBar, 0)
-						MsgBox(0, "Finished", "The process has finished.")
-						GUICtrlSetData($UpdateLabel, "The process has finished.")
-						If @error = 50 Then
-							MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
-						EndIf
-
-
-					Case $BTN_RunRational
-						$FundFamily = "Rational"
-						$FamilySwitch = $aRationalCheck
-						GUICtrlSetData($ProgressBar, 10)
-						ImportDatalinker()
-						;PullRationalData()
-						RunCSVConvert()
-						CreateCharts()
-
-						_LogaInfo("############################### END OF RUN - RATIONAL ###############################") ; Write to the logfile
-
-						GUICtrlSetData($ProgressBar, 0)
-						MsgBox(0, "Finished", "The process has finished.")
-						GUICtrlSetData($UpdateLabel, "The process has finished.")
-
-					Case $BTN_Rational_UpdateExpenseRatio
-						$FundFamily = "Rational"
-						$FamilySwitch = $aRationalCheck
-						GUICtrlSetData($ProgressBar, 10)
-						ImportDatalinker()
-
-						PullRationalData()
-						RunExpenseRatios()
-
-						_LogaInfo("############################### END OF RUN - RATIONAL ###############################")     ; Write to the logfile
-
-						GUICtrlSetData($ProgressBar, 0)
-						MsgBox(0, "Finished", "The process has finished.")
-						GUICtrlSetData($UpdateLabel, "The process has finished.")
-						If @error = 50 Then
-							MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
-						EndIf
-
-					Case $BTN_RunStrategyShares
-						$FundFamily = "StrategyShares"
-						$FamilySwitch = $aStrategyCheck
-						GUICtrlSetData($ProgressBar, 10)
-						ImportDatalinker()
-
-						;PullStrategySharesData()
-						RunCSVConvert()
-						CreateCharts()
-
-						_LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################") ; Write to the logfile
-
-						GUICtrlSetData($ProgressBar, 0)
-						MsgBox(0, "Finished", "The process has finished.")
-
-						GUICtrlSetData($UpdateLabel, "The process has finished.")
-
-
-
-					Case $mSyncFiles
-						SyncronizeDataFiles()
-						MsgBox(0, "Alert", "Sync Completed. Done in " & TimerDiff($timer) / 1000 & " seconds!")
-
-				EndSwitch
-			Case $GUI_UserSettings
-				Switch $aMsg[0] ; Now check for the messages for $GUI_UserSettings
-					Case $GUI_EVENT_CLOSE ; If we get the CLOSE message from this GUI - we just delete the GUI
-						GUIDelete($GUI_UserSettings)
-						;GUICtrlSetState($mEditSettings, $GUI_ENABLE)
-
-
-					Case $BTN_Save
-						$DATA_UserSettings = GUICtrlRead($INPT_DropboxFolder)
-						If $DATA_UserSettings = "" Then
-							MsgBox(0, "Error!", "You must select a dropbox directory!")
-						Else
-							$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $DATA_UserSettings)
-
-							$DATA_UserSettings = GUICtrlRead($INPT_Name)
-							$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UserName', $DATA_UserSettings)
-
-							If GUICtrlRead($Radio_Q1) = 1 Then
-								$Select_Quarter = "Q1" ; Checks to see if Radio for Q1 is Checked
-								$DATA_UserSettings = "Q1"
-								$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
-							EndIf
-
-							If GUICtrlRead($Radio_Q2) = 1 Then
-								$Select_Quarter = "Q2" ; Checks to see if Radio for Q2 is Checked
-								$DATA_UserSettings = "Q2"
-								$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
-							EndIf
-
-							If GUICtrlRead($Radio_Q3) = 1 Then
-								$Select_Quarter = "Q3" ; Checks to see if Radio for Q3 is Checked
-								$DATA_UserSettings = "Q3"
-								$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
-							EndIf
-
-							If GUICtrlRead($Radio_Q4) = 1 Then
-								$Select_Quarter = "Q4" ; Checks to see if Radio for Q4 is Checked
-								$DATA_UserSettings = "Q4"
-								$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
-							EndIf
-
-
-
-							$DATA_UserSettings = GUICtrlRead($INPT_CurYear)
-							$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentYear', $DATA_UserSettings)
-
-							If $iSettingsConfirm = 1 Then
-
-								$DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-								$INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
-								$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
-								$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
-								$bDBVerified = IniRead($ini, 'Settings', 'DBVerified', '')
-
-								DetermineDates()
-								MsgBox(0, "Success", "Your settings were saved.")
-							Else
-								MsgBox(0, "Error!", "An error occured")
-							EndIf
-							VerifyDropbox()
-							If @error = 50 Then
-								MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.")
-							EndIf
-
-
-							; Close Settings Window after saving file.
-							GUIDelete($GUI_UserSettings)
-						EndIf
-					Case $BTN_SelectDBPath
-						BrowseForDBPath()
-					Case $BTN_Cancel
-						GUIDelete($GUI_UserSettings)
-				EndSwitch
-		EndSwitch
-	WEnd
-EndFunc   ;==>RunMainGui
+;RunMainGui()
+
+; Func RunMainGui()
+
+; 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
+; 	;CheckForUpdateSilent()
+
+; 	Sleep(2000)
+; 	SplashOff()
+
+; $MainGUI = GUICreate("AutoCharts 2.4.9", 570, 609, -1, -1)
+; $mFile = GUICtrlCreateMenu("&File")
+; ;$mUploadFactsheets = GUICtrlCreateMenuItem("Upload Factsheets to Website", $mFile)
+; $mCreateArchive = GUICtrlCreateMenuItem("&Create Factsheet Archive", $mFile)
+; $mExit = GUICtrlCreateMenuItem("&Exit", $mFile)
+; $mSettings = GUICtrlCreateMenu("&Settings")
+; $mEditSettings = GUICtrlCreateMenuItem("&Edit", $mSettings)
+; $mSyncOptions = GUICtrlCreateMenu("Sync Options")
+; $mSyncFiles = GUICtrlCreateMenuItem("&Pull Data From Dropbox", $mSyncOptions)
+; $mUploadamCharts = GUICtrlCreateMenuItem("Upload amChart Files", $mSyncOptions)
+; $mDataLinker = GUICtrlCreateMenu("&DataLinker", $mSyncOptions)
+; $mImportDataLinker = GUICtrlCreateMenuItem("Import Data Sources", $mDataLinker)
+; $mExportDataLinker = GUICtrlCreateMenuItem("Export Data Sources", $mDataLinker)
+; $mUploadDatalinker = GUICtrlCreateMenuItem("Upload Data Sources to Database", $mDataLinker)
+; $mHelp = GUICtrlCreateMenu("&Help")
+; $mAbout = GUICtrlCreateMenuItem("&About", $mHelp)
+; $mLogFile = GUICtrlCreateMenuItem("&Open Log File", $mHelp)
+; $mClearLog = GUICtrlCreateMenuItem("&Clear Log File", $mHelp)
+; $mCheckUpdate = GUICtrlCreateMenuItem("&Check for Update", $mHelp)
+
+; $TAB_Main = GUICtrlCreateTab(8, 176, 553, 353)
+; GUICtrlSetFont(-1, 10, 400, 0, "Arial")
+; $TAB_Catalyst = GUICtrlCreateTabItem("Catalyst Fact Sheets")
+; GUICtrlSetState(-1, $GUI_SHOW)
+; $BTN_RunCatalyst = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
+; GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
+; GUICtrlSetBkColor(-1, 0xC0DCC0)
+; $BTN_Catalyst_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
+; GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
+; $ACX = GUICtrlCreateCheckbox("ACX", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $ATR = GUICtrlCreateCheckbox("ATR", 28, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $BUY = GUICtrlCreateCheckbox("BUY", 28, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $CAX = GUICtrlCreateCheckbox("CAX", 28, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $CPE = GUICtrlCreateCheckbox("CPE", 132, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $CLT = GUICtrlCreateCheckbox("CLT", 132, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $CLP = GUICtrlCreateCheckbox("CLP", 132, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $CFR = GUICtrlCreateCheckbox("CFR", 28, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $DCX = GUICtrlCreateCheckbox("DCX", 132, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $IIX = GUICtrlCreateCheckbox("IIX", 236, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $HII = GUICtrlCreateCheckbox("HII", 236, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $EIX = GUICtrlCreateCheckbox("EIX", 236, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $CWX = GUICtrlCreateCheckbox("CWX", 132, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $INS = GUICtrlCreateCheckbox("INS", 236, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $IOX = GUICtrlCreateCheckbox("IOX", 236, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $MBX = GUICtrlCreateCheckbox("MBX", 340, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $MLX = GUICtrlCreateCheckbox("MLX", 340, 279, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $SHI = GUICtrlCreateCheckbox("SHI", 340, 329, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $TEZ = GUICtrlCreateCheckbox("TEZ", 340, 379, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $TRI = GUICtrlCreateCheckbox("TRI", 340, 427, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $TRX = GUICtrlCreateCheckbox("TRX", 444, 229, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+
+
+; $TAB_Rational = GUICtrlCreateTabItem("Rational Fact Sheets")
+; $HBA = GUICtrlCreateCheckbox("HBA", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $HDC = GUICtrlCreateCheckbox("HDC", 28, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $HRS = GUICtrlCreateCheckbox("HRS", 28, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $HSU = GUICtrlCreateCheckbox("HSU", 28, 377, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $PBX = GUICtrlCreateCheckbox("PBX", 132, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $RDM = GUICtrlCreateCheckbox("RDM", 132, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $RFX = GUICtrlCreateCheckbox("RFX", 132, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $BTN_RunRational = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
+; GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
+; GUICtrlSetBkColor(-1, 0xC0DCC0)
+; $BTN_Rational_UpdateExpenseRatio = GUICtrlCreateButton("Update Expense Ratios", 236, 475, 195, 33)
+; GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
+
+; $TAB_StrategyShares = GUICtrlCreateTabItem("Strategy Shares Fact Sheets")
+; $GLDB = GUICtrlCreateCheckbox("GLDB", 28, 227, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $HNDL = GUICtrlCreateCheckbox("HNDL", 28, 277, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $ROMO = GUICtrlCreateCheckbox("ROMO", 28, 327, 90, 30, BitOR($GUI_SS_DEFAULT_CHECKBOX, $BS_PUSHLIKE))
+; GUICtrlSetFont(-1, 12, 400, 0, "Montserrat Black")
+; GUICtrlSetBkColor(-1, 0xFFFFFF)
+; $BTN_RunStrategyShares = GUICtrlCreateButton("Process Updates", 28, 475, 195, 33)
+; GUICtrlSetFont(-1, 8, 800, 0, "MS Sans Serif")
+; GUICtrlSetBkColor(-1, 0xC0DCC0)
+; GUICtrlCreateTabItem("")
+Global $ProgressBar = GUICtrlCreateProgress(8, 536, 550, 17)
+Global $UpdateLabel = GUICtrlCreateLabel("Click Process Updates to Start", 16, 560, 540, 17)
+
+; GUISetState()
+
+
+
+
+; Local $aMsg
+; While 1
+; 	$aMsg = GUIGetMsg(1) ; Use advanced parameter to get array
+; 	Switch $aMsg[1] ; check which GUI box sent the message
+; 		Case $MainGUI
+; 			If $INPT_Name <> "Jakob" Then
+; 				GUICtrlSetState($mUploadamCharts, $GUI_DISABLE)
+; 				GUICtrlSetState($mUploadDatalinker, $GUI_DISABLE)
+; 			EndIf
+; 			Switch $aMsg[0] ; Now check for the messages for $MainGUI
+; 				Case $GUI_EVENT_CLOSE ; If we get the CLOSE message from this GUI - we exit <<<<<<<<<<<<<<<
+; 					ExitLoop
+; 				Case $mExit
+; 					Exit
+; 				Case $GUI_EVENT_CLOSE
+; 					Exit
+; 				Case $mEditSettings
+; 					;GUICtrlSetState($mEditSettings, $GUI_DISABLE)
+; 					OpenSettingsGUI()
+; 				Case $mUploadamCharts
+; 					UploadamCharts()
+; 				Case $mExportDataLinker
+; 					ExportDatalinker()
+; 				Case $mImportDataLinker
+; 					ImportDatalinker()
+; 					If @error Then
+; 						MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
+; 					Else
+; 						MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+
+; 					EndIf
+; 				Case $mUploadDatalinker
+; 					UploadDatalinker()
+; 				Case $mClearLog
+; 					ClearLog()
+; 				Case $mAbout
+; 					ShellExecute("https://onevion.github.io/AutoCharts/")
+
+; 				Case $mLogFile
+; 					$sTextFile = @ScriptDir & "\AutoCharts.log"
+; 					$_Run = "notepad.exe " & $sTextFile
+; 					ConsoleWrite("$_Run : " & $_Run & @CRLF)
+; 					Run($_Run, @WindowsDir, @SW_SHOWDEFAULT)
+
+; 				Case $mCheckUpdate
+; 					CheckForUpdate()
+
+; 				Case $mCreateArchive
+; 					CreateFactSheetArchive()
+
+; Case $ACX
+; 	If GUICtrlRead($ACX) = 1 Then $aCatalystCheck[0] = "ACX" ; Sets first slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($ACX) = 4 Then $aCatalystCheck[0] = 0 ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $ATR
+; 	If GUICtrlRead($ATR) = 1 Then $aCatalystCheck[1] = "ATR" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($ATR) = 4 Then $aCatalystCheck[1] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $BUY
+; 	If GUICtrlRead($BUY) = 1 Then $aCatalystCheck[2] = "BUY" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($BUY) = 4 Then $aCatalystCheck[2] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $CAX
+; 	If GUICtrlRead($CAX) = 1 Then $aCatalystCheck[3] = "CAX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($CAX) = 4 Then $aCatalystCheck[3] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $DCX
+; 	If GUICtrlRead($DCX) = 1 Then $aCatalystCheck[4] = "DCX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($DCX) = 4 Then $aCatalystCheck[4] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $CPE
+; 	If GUICtrlRead($CPE) = 1 Then $aCatalystCheck[5] = "CPE" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($CPE) = 4 Then $aCatalystCheck[5] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $CLT
+; 	If GUICtrlRead($CLT) = 1 Then $aCatalystCheck[6] = "CLT" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($CLT) = 4 Then $aCatalystCheck[6] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $CLP
+; 	If GUICtrlRead($CLP) = 1 Then $aCatalystCheck[7] = "CLP" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($CLP) = 4 Then $aCatalystCheck[7] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $CFR
+; 	If GUICtrlRead($CFR) = 1 Then $aCatalystCheck[9] = "CFR" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($CFR) = 4 Then $aCatalystCheck[9] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $IIX
+; 	If GUICtrlRead($IIX) = 1 Then $aCatalystCheck[10] = "IIX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($IIX) = 4 Then $aCatalystCheck[10] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $HII
+; 	If GUICtrlRead($HII) = 1 Then $aCatalystCheck[11] = "HII" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($HII) = 4 Then $aCatalystCheck[11] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $EIX
+; 	If GUICtrlRead($EIX) = 1 Then $aCatalystCheck[12] = "EIX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($EIX) = 4 Then $aCatalystCheck[12] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $CWX
+; 	If GUICtrlRead($CWX) = 1 Then $aCatalystCheck[13] = "CWX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($CWX) = 4 Then $aCatalystCheck[13] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $INS
+; 	If GUICtrlRead($INS) = 1 Then $aCatalystCheck[15] = "INS" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($INS) = 4 Then $aCatalystCheck[15] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $IOX
+; 	If GUICtrlRead($IOX) = 1 Then $aCatalystCheck[16] = "IOX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($IOX) = 4 Then $aCatalystCheck[16] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $MBX
+; 	If GUICtrlRead($MBX) = 1 Then $aCatalystCheck[17] = "MBX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($MBX) = 4 Then $aCatalystCheck[17] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $MLX
+; 	If GUICtrlRead($MLX) = 1 Then $aCatalystCheck[18] = "MLX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($MLX) = 4 Then $aCatalystCheck[18] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $SHI
+; 	If GUICtrlRead($SHI) = 1 Then $aCatalystCheck[20] = "SHI" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($SHI) = 4 Then $aCatalystCheck[20] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $TEZ
+; 	If GUICtrlRead($TEZ) = 1 Then $aCatalystCheck[21] = "TEZ" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($TEZ) = 4 Then $aCatalystCheck[21] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $TRI
+; 	If GUICtrlRead($TRI) = 1 Then $aCatalystCheck[22] = "TRI" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($TRI) = 4 Then $aCatalystCheck[22] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+; Case $TRX
+; 	If GUICtrlRead($TRX) = 1 Then $aCatalystCheck[23] = "TRX" ; Sets  slot of the Catalyst Array to 1 if CHECKED
+; 	If GUICtrlRead($TRX) = 4 Then $aCatalystCheck[23] = 0 ; Sets  slot of the Catalyst Array to 0 if NOT CHECKED
+
+
+; Case $HBA
+; 	If GUICtrlRead($HBA) = 1 Then $aRationalCheck[0] = "HBA" ; Sets  slot of the Rational Array to 1 if CHECKED
+; 	If GUICtrlRead($HBA) = 4 Then $aRationalCheck[0] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
+; Case $HDC
+; 	If GUICtrlRead($HDC) = 1 Then $aRationalCheck[1] = "HDC" ; Sets  slot of the Rational Array to 1 if CHECKED
+; 	If GUICtrlRead($HDC) = 4 Then $aRationalCheck[1] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
+; Case $HRS
+; 	If GUICtrlRead($HRS) = 1 Then $aRationalCheck[2] = "HRS" ; Sets  slot of the Rational Array to 1 if CHECKED
+; 	If GUICtrlRead($HRS) = 4 Then $aRationalCheck[2] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
+; Case $HSU
+; 	If GUICtrlRead($HSU) = 1 Then $aRationalCheck[3] = "HSU" ; Sets  slot of the Rational Array to 1 if CHECKED
+; 	If GUICtrlRead($HSU) = 4 Then $aRationalCheck[3] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
+; Case $PBX
+; 	If GUICtrlRead($PBX) = 1 Then $aRationalCheck[4] = "PBX" ; Sets  slot of the Rational Array to 1 if CHECKED
+; 	If GUICtrlRead($PBX) = 4 Then $aRationalCheck[4] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
+; Case $RDM
+; 	If GUICtrlRead($RDM) = 1 Then $aRationalCheck[5] = "RDM" ; Sets  slot of the Rational Array to 1 if CHECKED
+; 	If GUICtrlRead($RDM) = 4 Then $aRationalCheck[5] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
+; Case $RFX
+; 	If GUICtrlRead($RFX) = 1 Then $aRationalCheck[6] = "RFX" ; Sets  slot of the Rational Array to 1 if CHECKED
+; 	If GUICtrlRead($RFX) = 4 Then $aRationalCheck[6] = 0 ; Sets  slot of the Rational Array to 0 if NOT CHECKED
+
+
+; Case $GLDB
+; 	If GUICtrlRead($GLDB) = 1 Then $aStrategyCheck[0] = "GLDB" ; Sets  slot of the Strategy Shares Array to 1 if CHECKED
+; 	If GUICtrlRead($GLDB) = 4 Then $aStrategyCheck[0] = 0 ; Sets  slot of the Strategy Shares Array to 0 if NOT CHECKED
+; Case $HNDL
+; 	If GUICtrlRead($HNDL) = 1 Then $aStrategyCheck[1] = "HNDL" ; Sets  slot of the Strategy Shares Array to 1 if CHECKED
+; 	If GUICtrlRead($HNDL) = 4 Then $aStrategyCheck[1] = 0 ; Sets  slot of the Strategy Shares Array to 0 if NOT CHECKED
+; Case $ROMO
+; 	If GUICtrlRead($ROMO) = 1 Then $aStrategyCheck[2] = "ROMO" ; Sets  slot of the Strategy Shares Array to 1 if CHECKED
+; 	If GUICtrlRead($ROMO) = 4 Then $aStrategyCheck[2] = 0 ; Sets  slot of the Strategy Shares Array to 0 if NOT CHECKED
+
+
+
+
+
+; Case $BTN_RunCatalyst
+
+; 	MsgBox(32, "Debuggin", $DatabaseDir)
+
+; 	VerifyDropbox()
+; 	If $bDBVerified = True Then
+; 		$FundFamily = "Catalyst"
+; 		$FamilySwitch = $aCatalystCheck
+; 		GUICtrlSetData($ProgressBar, 10)
+; 		ImportDatalinker()
+; 		;PullCatalystData()
+; 		RunCSVConvert()
+; 		CreateCharts()
+
+; 		_LogaInfo("############################### END OF RUN - CATALYST ###############################")
+
+; 		GUICtrlSetData($ProgressBar, 0)
+; 		MsgBox(0, "Finished", "The process has finished.")
+; 		GUICtrlSetData($UpdateLabel, "The process has finished.")
+; 	Else
+; 		If @error = 50 Then
+; 			MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+; 		EndIf
+; 	EndIf
+
+
+; ; Case $BTN_Catalyst_UpdateExpenseRatio
+; 	$FundFamily = "Catalyst"
+; 	$FamilySwitch = $aCatalystCheck
+; 	GUICtrlSetData($ProgressBar, 10)
+; 	ImportDatalinker()
+; 	PullCatalystData()
+; 	RunExpenseRatios()
+
+; 	_LogaInfo("############################### END OF RUN - CATALYST ###############################")     ; Write to the logfile
+
+; 	GUICtrlSetData($ProgressBar, 0)
+; 	MsgBox(0, "Finished", "The process has finished.")
+; 	GUICtrlSetData($UpdateLabel, "The process has finished.")
+; 	If @error = 50 Then
+; 		MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+; 	EndIf
+
+
+; Case $BTN_RunRational
+; 	$FundFamily = "Rational"
+; 	$FamilySwitch = $aRationalCheck
+; 	GUICtrlSetData($ProgressBar, 10)
+; 	ImportDatalinker()
+; 	;PullRationalData()
+; 	RunCSVConvert()
+; 	CreateCharts()
+
+; 	_LogaInfo("############################### END OF RUN - RATIONAL ###############################") ; Write to the logfile
+
+; 	GUICtrlSetData($ProgressBar, 0)
+; 	MsgBox(0, "Finished", "The process has finished.")
+; 	GUICtrlSetData($UpdateLabel, "The process has finished.")
+
+; Case $BTN_Rational_UpdateExpenseRatio
+; 	$FundFamily = "Rational"
+; 	$FamilySwitch = $aRationalCheck
+; 	GUICtrlSetData($ProgressBar, 10)
+; 	ImportDatalinker()
+
+; 	PullRationalData()
+; 	RunExpenseRatios()
+
+; 	_LogaInfo("############################### END OF RUN - RATIONAL ###############################")     ; Write to the logfile
+
+; 	GUICtrlSetData($ProgressBar, 0)
+; 	MsgBox(0, "Finished", "The process has finished.")
+; 	GUICtrlSetData($UpdateLabel, "The process has finished.")
+; 	If @error = 50 Then
+; 		MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.")
+; 	EndIf
+
+; Case $BTN_RunStrategyShares
+; 	$FundFamily = "StrategyShares"
+; 	$FamilySwitch = $aStrategyCheck
+; 	GUICtrlSetData($ProgressBar, 10)
+; 	ImportDatalinker()
+
+; 	;PullStrategySharesData()
+; 	RunCSVConvert()
+; 	CreateCharts()
+
+; 	_LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################") ; Write to the logfile
+
+; 	GUICtrlSetData($ProgressBar, 0)
+; 	MsgBox(0, "Finished", "The process has finished.")
+
+; 	GUICtrlSetData($UpdateLabel, "The process has finished.")
+
+
+
+; 	Case $mSyncFiles
+; 		SyncronizeDataFiles()
+; 		MsgBox(0, "Alert", "Sync Completed. Done in " & TimerDiff($timer) / 1000 & " seconds!")
+
+; EndSwitch
+; Case $GUI_UserSettings
+; 	Switch $aMsg[0] ; Now check for the messages for $GUI_UserSettings
+; 		Case $GUI_EVENT_CLOSE ; If we get the CLOSE message from this GUI - we just delete the GUI
+; 			GUIDelete($GUI_UserSettings)
+; 			;GUICtrlSetState($mEditSettings, $GUI_ENABLE)
+
+
+; 		Case $BTN_Save
+; 			$DATA_UserSettings = GUICtrlRead($INPT_DropboxFolder)
+; 			If $DATA_UserSettings = "" Then
+; 				MsgBox(0, "Error!", "You must select a dropbox directory!")
+; 			Else
+; 				$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $DATA_UserSettings)
+
+; 				$DATA_UserSettings = GUICtrlRead($INPT_Name)
+; 				$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UserName', $DATA_UserSettings)
+
+; 				If GUICtrlRead($Radio_Q1) = 1 Then
+; 					$Select_Quarter = "Q1" ; Checks to see if Radio for Q1 is Checked
+; 					$DATA_UserSettings = "Q1"
+; 					$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+; 				EndIf
+
+; 				If GUICtrlRead($Radio_Q2) = 1 Then
+; 					$Select_Quarter = "Q2" ; Checks to see if Radio for Q2 is Checked
+; 					$DATA_UserSettings = "Q2"
+; 					$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+; 				EndIf
+
+; 				If GUICtrlRead($Radio_Q3) = 1 Then
+; 					$Select_Quarter = "Q3" ; Checks to see if Radio for Q3 is Checked
+; 					$DATA_UserSettings = "Q3"
+; 					$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+; 				EndIf
+
+; 				If GUICtrlRead($Radio_Q4) = 1 Then
+; 					$Select_Quarter = "Q4" ; Checks to see if Radio for Q4 is Checked
+; 					$DATA_UserSettings = "Q4"
+; 					$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+; 				EndIf
+
+
+
+; 				$DATA_UserSettings = GUICtrlRead($INPT_CurYear)
+; 				$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentYear', $DATA_UserSettings)
+
+; 				If $iSettingsConfirm = 1 Then
+
+; 					$DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
+; 					$INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
+; 					$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
+; 					$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
+; 					$bDBVerified = IniRead($ini, 'Settings', 'DBVerified', '')
+
+; 					DetermineDates()
+; 					MsgBox(0, "Success", "Your settings were saved.")
+; 				Else
+; 					MsgBox(0, "Error!", "An error occured")
+; 				EndIf
+; 				VerifyDropbox()
+; 				If @error = 50 Then
+; 					MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.")
+; 				EndIf
+
+
+; 				; Close Settings Window after saving file.
+; 				GUIDelete($GUI_UserSettings)
+; 			EndIf
+; 		Case $BTN_SelectDBPath
+; 			BrowseForDBPath()
+; 		Case $BTN_Cancel
+; 			GUIDelete($GUI_UserSettings)
+; 	EndSwitch
+; 		EndSwitch
+; 	WEnd
+; EndFunc   ;==>RunMainGui
 
 
 
 #Region ### START Koda GUI section ### Form=C:\Users\mrjak\Documents\SublimeProjects\AutoCharts\assets\GUI_UserSettings.kxf
 
 
-Func OpenSettingsGUI()
+; Func OpenSettingsGUI()
 
-	$DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-	$INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
-	$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
-	$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
+; 	$DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
+; 	$INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
+; 	$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
+; 	$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 
-	$GUI_UserSettings = GUICreate("User Settings", 207, 254, -1, -1)
-	$INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 16, 32, 169, 21)
-	$BTN_Save = GUICtrlCreateButton("Save", 16, 208, 75, 25)
-	$BTN_Cancel = GUICtrlCreateButton("Cancel", 112, 208, 75, 25)
-	$Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox Folder:", 16, 15, 116, 17)
-	$BTN_SelectDBPath = GUICtrlCreateButton("Browse", 16, 56, 169, 25)
-	$INPT_Name = GUICtrlCreateInput($INPT_Name, 16, 112, 169, 21)
-	$Label_Name = GUICtrlCreateLabel("Your Name:", 16, 95, 60, 17)
+; 	$GUI_UserSettings = GUICreate("User Settings", 207, 254, -1, -1)
+; 	$INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 16, 32, 169, 21)
+; 	$BTN_Save = GUICtrlCreateButton("Save", 16, 208, 75, 25)
+; 	$BTN_Cancel = GUICtrlCreateButton("Cancel", 112, 208, 75, 25)
+; 	$Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox Folder:", 16, 15, 116, 17)
+; 	$BTN_SelectDBPath = GUICtrlCreateButton("Browse", 16, 56, 169, 25)
+; 	$INPT_Name = GUICtrlCreateInput($INPT_Name, 16, 112, 169, 21)
+; 	$Label_Name = GUICtrlCreateLabel("Your Name:", 16, 95, 60, 17)
 
-	$Radio_Q1 = GUICtrlCreateRadio("Q1", 17, 152, 35, 17)
-	If $Select_Quarter = "Q1" Then
-		GUICtrlSetState($Radio_Q1, 1)
-	EndIf
+; 	$Radio_Q1 = GUICtrlCreateRadio("Q1", 17, 152, 35, 17)
+; 	If $Select_Quarter = "Q1" Then
+; 		GUICtrlSetState($Radio_Q1, 1)
+; 	EndIf
 
-	$Radio_Q2 = GUICtrlCreateRadio("Q2", 56, 152, 35, 17)
-	If $Select_Quarter = "Q2" Then
-		GUICtrlSetState($Radio_Q2, 1)
-	EndIf
-	$Radio_Q3 = GUICtrlCreateRadio("Q3", 17, 176, 35, 17)
-	If $Select_Quarter = "Q3" Then
-		GUICtrlSetState($Radio_Q3, 1)
-	EndIf
-	$Radio_Q4 = GUICtrlCreateRadio("Q4", 56, 176, 35, 17)
-	If $Select_Quarter = "Q4" Then
-		GUICtrlSetState($Radio_Q4, 1)
-	EndIf
+; 	$Radio_Q2 = GUICtrlCreateRadio("Q2", 56, 152, 35, 17)
+; 	If $Select_Quarter = "Q2" Then
+; 		GUICtrlSetState($Radio_Q2, 1)
+; 	EndIf
+; 	$Radio_Q3 = GUICtrlCreateRadio("Q3", 17, 176, 35, 17)
+; 	If $Select_Quarter = "Q3" Then
+; 		GUICtrlSetState($Radio_Q3, 1)
+; 	EndIf
+; 	$Radio_Q4 = GUICtrlCreateRadio("Q4", 56, 176, 35, 17)
+; 	If $Select_Quarter = "Q4" Then
+; 		GUICtrlSetState($Radio_Q4, 1)
+; 	EndIf
 
-	$INPT_CurYear = GUICtrlCreateInput($INPT_CurYear, 120, 168, 63, 21)
-	$Label_Year = GUICtrlCreateLabel("Current Year", 120, 151, 63, 17)
-	GUISetState()
-EndFunc   ;==>OpenSettingsGUI
+; 	$INPT_CurYear = GUICtrlCreateInput($INPT_CurYear, 120, 168, 63, 21)
+; 	$Label_Year = GUICtrlCreateLabel("Current Year", 120, 151, 63, 17)
+; 	GUISetState()
+; EndFunc   ;==>OpenSettingsGUI
 #EndRegion ### END Koda GUI section ###
 
-Func BrowseForDBPath()
-	; Create a constant variable in Local scope of the message to display in FileSelectFolder.
-	Local Const $sMessage = "Select a folder"
 
-	; Display an open dialog to select a file.
-	Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
-	If @error Then
-		; Display the error message.
-		MsgBox($MB_SYSTEMMODAL, "", "No folder was selected.")
-		GUICtrlSetData($INPT_DropboxFolder, "")
-
-	Else
-		GUICtrlSetData($INPT_DropboxFolder, $sFileSelectFolder)
-	EndIf
-EndFunc   ;==>BrowseForDBPath
 
 
 #Region ### Start Main Functions Region
