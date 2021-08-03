@@ -3,7 +3,7 @@
 ; Name:    			Database Sync
 ; Description:      Dropbox Database Sync for AutoCharts
 ; Author(s):        oNevion
-; Version:          v0.4
+; Version:          v0.5
 ;
 ;===============================================================================
 
@@ -52,7 +52,7 @@ Func SyncronizeDataFiles()
 	$destination = $DatabaseDir & "\fin_backup_files"
 	$timer = TimerInit()
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "")
 
 
 	$source = $DatabaseDir & "\fin_backup_files"
