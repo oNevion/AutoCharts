@@ -1,9 +1,31 @@
 ;aiu;
 
 [General]
-MessageTitle = Update for AutoCharts is available
+MessageTitle = Update 3.0.0 for AutoCharts is available
 MessageBody = Notification Message
-MessageExpirationDate = 02/08/2021
+MessageExpirationDate = 01/09/2021
+MessageURI = https://github.com/oNevion/AutoCharts/releases/tag/v3.0.0
+MessageButtonText = Learn More
+
+[3.0.0]
+Name = AutoCharts 3.0.0
+ProductVersion = 3.0.0.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v3.0.0/AutoCharts_3.0.0.exe
+Size = 23602000
+ReleaseDate = 04/08/2021
+SHA256 = D12221EAF7FE1E3AFA6ECD5E6984341FFDAEDD41F4110AA3BF4053F2D17A73AF
+MD5 = 99bbfc3b4c62072dcfca509a664513b0
+ServerFileName = AutoCharts_3.0.0.exe
+Flags = Critical
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 3.0.0.0
+UpdatedApplications = AutoCharts[1.0-3.0]
+Feature = New "Metro" UI Style with 4 user selectable themes
+Feature1 = Data sync validation added when running VBS script that splits .xlsx files to .csv
+Feature2 = Various updates to fund charts for Q2 2021
+Feature3 = GUI functions and variables now separated from main code
+Feature4 = Support for multiple child GUI's added for better program development
+Feature5 = GUI is now resizable, but very janky
 
 [2.4.9]
 Name = AutoCharts 2.4.9
