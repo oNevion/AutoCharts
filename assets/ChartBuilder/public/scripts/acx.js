@@ -15,12 +15,12 @@ body {
 
     #chartdiv {
         width:1330px!important;
-		height:400px!important;
+		height:500px!important;
     }
 
         #chartdiv2 {
         width:800px!important;
-    height:400px!important;
+    height:350px!important;
     }
 `;
 
@@ -85,9 +85,9 @@ series1.tensionX = 0.93;
 series1.stroke = am4core.color("#08da94");
 
 var series2 = chart1.series.push(new am4charts.LineSeries());
-series2.dataFields.valueY = "CSLABMF";
+series2.dataFields.valueY = "LUMSTRUU";
 series2.dataFields.dateX = "Date";
-series2.name = "CSLABMF";
+series2.name = "LUMSTRUU";
 series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 series2.tensionX = 0.93;
@@ -158,7 +158,7 @@ chart2.legend.maxWidth = undefined;
 chart2.legend.labels.template.fontSize = "18px";
 chart2.legend.valueLabels.template.fontSize = "18px";
 chart2.legend.labels.template.minWidth = 250;
-chart2.legend.valueLabels.template.text = "{value.value.formatNumber('#.0')}%";
+chart2.legend.valueLabels.template.text = "{value.value.formatNumber('#.00')}%";
 chart2.legend.labels.template.truncate = false;
 
 
