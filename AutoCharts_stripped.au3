@@ -1,183 +1,171 @@
-Global $aCatalystCheck[24]
-Global $aRationalCheck[8]
-Global $aStrategyCheck[3]
-Global $FamilySwitch
-Global $CurrentFund
-Global $ini = 'settings.ini'
-Global $INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
-Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
-Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
-Global $FundFamily = ""
-Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
-Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
-Global $INPT_DropboxFolder = 9999
-Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups\"
-Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
-Global Const $UBOUND_DIMENSIONS = 0
-Global Const $UBOUND_ROWS = 1
-Global Const $UBOUND_COLUMNS = 2
-Global Const $SWP_NOSIZE = 0x0001
-Global Const $SWP_NOMOVE = 0x0002
-Global Const $SWP_NOZORDER = 0x0004
-Global Const $SWP_NOREDRAW = 0x0008
-Global Const $SWP_NOACTIVATE = 0x0010
-Global Const $SWP_FRAMECHANGED = 0x0020
-Global Const $MB_SYSTEMMODAL = 4096
-Global Const $STR_ENTIRESPLIT = 1
-Global Const $STR_NOCOUNT = 2
-Global Const $_ARRAYCONSTANT_SORTINFOSIZE = 11
-Global $__g_aArrayDisplay_SortInfo[$_ARRAYCONSTANT_SORTINFOSIZE]
-Global Const $_ARRAYCONSTANT_tagLVITEM = "struct;uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;int TextMax;int Image;lparam Param;" & "int Indent;int GroupID;uint Columns;ptr pColumns;ptr piColFmt;int iGroup;endstruct"
+#Au3Stripper_Ignore_Funcs=_iHoverOn,_iHoverOff,_iFullscreenToggleBtn,_cHvr_CSCP_X64,_cHvr_CSCP_X86,_iControlDelete
+Global $0[24]
+Global $1[8]
+Global $2[3]
+Global $3
+Global $4
+Global $5 = 'settings.ini'
+Global $6 = IniRead($5, 'Settings', 'UserName', '')
+Global $7 = IniRead($5, 'Settings', 'CurrentQuarter', '')
+Global $8 = IniRead($5, 'Settings', 'CurrentYear', '')
+Global $9 = ""
+Global $a = IniRead($5, 'Settings', 'DBVerified', 'False')
+Global $b = IniRead($5, 'Settings', 'UITheme', '')
+Global $c = 9999
+Global $d = "\assets\ChartBuilder\public\Data\Backups\"
+Global $e = IniRead($5, 'Settings', 'DropboxDir', '')
+Global $f = $e & "\Marketing Team Files\AutoCharts_Database"
+Global $g[11]
+Global Const $h = "struct;uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;int TextMax;int Image;lparam Param;" & "int Indent;int GroupID;uint Columns;ptr pColumns;ptr piColFmt;int iGroup;endstruct"
 #Au3Stripper_Ignore_Funcs=__ArrayDisplay_SortCallBack
-Func __ArrayDisplay_SortCallBack($nItem1, $nItem2, $hWnd)
-If $__g_aArrayDisplay_SortInfo[3] = $__g_aArrayDisplay_SortInfo[4] Then
-If Not $__g_aArrayDisplay_SortInfo[7] Then
-$__g_aArrayDisplay_SortInfo[5] *= -1
-$__g_aArrayDisplay_SortInfo[7] = 1
+Func __ArrayDisplay_SortCallBack($i, $j, $k)
+If $g[3] = $g[4] Then
+If Not $g[7] Then
+$g[5] *= -1
+$g[7] = 1
 EndIf
 Else
-$__g_aArrayDisplay_SortInfo[7] = 1
+$g[7] = 1
 EndIf
-$__g_aArrayDisplay_SortInfo[6] = $__g_aArrayDisplay_SortInfo[3]
-Local $sVal1 = __ArrayDisplay_GetItemText($hWnd, $nItem1, $__g_aArrayDisplay_SortInfo[3])
-Local $sVal2 = __ArrayDisplay_GetItemText($hWnd, $nItem2, $__g_aArrayDisplay_SortInfo[3])
-If $__g_aArrayDisplay_SortInfo[8] = 1 Then
-If(StringIsFloat($sVal1) Or StringIsInt($sVal1)) Then $sVal1 = Number($sVal1)
-If(StringIsFloat($sVal2) Or StringIsInt($sVal2)) Then $sVal2 = Number($sVal2)
+$g[6] = $g[3]
+Local $l = _a($k, $i, $g[3])
+Local $m = _a($k, $j, $g[3])
+If $g[8] = 1 Then
+If(StringIsFloat($l) Or StringIsInt($l)) Then $l = Number($l)
+If(StringIsFloat($m) Or StringIsInt($m)) Then $m = Number($m)
 EndIf
-Local $nResult
-If $__g_aArrayDisplay_SortInfo[8] < 2 Then
-$nResult = 0
-If $sVal1 < $sVal2 Then
-$nResult = -1
-ElseIf $sVal1 > $sVal2 Then
-$nResult = 1
+Local $n
+If $g[8] < 2 Then
+$n = 0
+If $l < $m Then
+$n = -1
+ElseIf $l > $m Then
+$n = 1
 EndIf
 Else
-$nResult = DllCall('shlwapi.dll', 'int', 'StrCmpLogicalW', 'wstr', $sVal1, 'wstr', $sVal2)[0]
+$n = DllCall('shlwapi.dll', 'int', 'StrCmpLogicalW', 'wstr', $l, 'wstr', $m)[0]
 EndIf
-$nResult = $nResult * $__g_aArrayDisplay_SortInfo[5]
-Return $nResult
+$n = $n * $g[5]
+Return $n
 EndFunc
-Func __ArrayDisplay_GetItemText($hWnd, $iIndex, $iSubItem = 0)
-Local $tBuffer = DllStructCreate("wchar Text[4096]")
-Local $pBuffer = DllStructGetPtr($tBuffer)
-Local $tItem = DllStructCreate($_ARRAYCONSTANT_tagLVITEM)
-DllStructSetData($tItem, "SubItem", $iSubItem)
-DllStructSetData($tItem, "TextMax", 4096)
-DllStructSetData($tItem, "Text", $pBuffer)
-If IsHWnd($hWnd) Then
-DllCall("user32.dll", "lresult", "SendMessageW", "hwnd", $hWnd, "uint", 0x1073, "wparam", $iIndex, "struct*", $tItem)
+Func _a($k, $o, $p = 0)
+Local $q = DllStructCreate("wchar Text[4096]")
+Local $r = DllStructGetPtr($q)
+Local $s = DllStructCreate($h)
+DllStructSetData($s, "SubItem", $p)
+DllStructSetData($s, "TextMax", 4096)
+DllStructSetData($s, "Text", $r)
+If IsHWnd($k) Then
+DllCall("user32.dll", "lresult", "SendMessageW", "hwnd", $k, "uint", 0x1073, "wparam", $o, "struct*", $s)
 Else
-Local $pItem = DllStructGetPtr($tItem)
-GUICtrlSendMsg($hWnd, 0x1073, $iIndex, $pItem)
+Local $t = DllStructGetPtr($s)
+GUICtrlSendMsg($k, 0x1073, $o, $t)
 EndIf
-Return DllStructGetData($tBuffer, "Text")
+Return DllStructGetData($q, "Text")
 EndFunc
-Global Enum $ARRAYFILL_FORCE_DEFAULT, $ARRAYFILL_FORCE_SINGLEITEM, $ARRAYFILL_FORCE_INT, $ARRAYFILL_FORCE_NUMBER, $ARRAYFILL_FORCE_PTR, $ARRAYFILL_FORCE_HWND, $ARRAYFILL_FORCE_STRING, $ARRAYFILL_FORCE_BOOLEAN
-Func _ArrayAdd(ByRef $aArray, $vValue, $iStart = 0, $sDelim_Item = "|", $sDelim_Row = @CRLF, $iForce = $ARRAYFILL_FORCE_DEFAULT)
-If $iStart = Default Then $iStart = 0
-If $sDelim_Item = Default Then $sDelim_Item = "|"
-If $sDelim_Row = Default Then $sDelim_Row = @CRLF
-If $iForce = Default Then $iForce = $ARRAYFILL_FORCE_DEFAULT
-If Not IsArray($aArray) Then Return SetError(1, 0, -1)
-Local $iDim_1 = UBound($aArray, $UBOUND_ROWS)
-Local $hDataType = 0
-Switch $iForce
-Case $ARRAYFILL_FORCE_INT
-$hDataType = Int
-Case $ARRAYFILL_FORCE_NUMBER
-$hDataType = Number
-Case $ARRAYFILL_FORCE_PTR
-$hDataType = Ptr
-Case $ARRAYFILL_FORCE_HWND
-$hDataType = Hwnd
-Case $ARRAYFILL_FORCE_STRING
-$hDataType = String
-Case $ARRAYFILL_FORCE_BOOLEAN
-$hDataType = "Boolean"
+Global Enum $u, $v, $w, $x, $y, $0z, $10, $11
+Func _e(ByRef $12, $13, $14 = 0, $15 = "|", $16 = @CRLF, $17 = $u)
+If $14 = Default Then $14 = 0
+If $15 = Default Then $15 = "|"
+If $16 = Default Then $16 = @CRLF
+If $17 = Default Then $17 = $u
+If Not IsArray($12) Then Return SetError(1, 0, -1)
+Local $18 = UBound($12, 1)
+Local $19 = 0
+Switch $17
+Case $w
+$19 = Int
+Case $x
+$19 = Number
+Case $y
+$19 = Ptr
+Case $0z
+$19 = Hwnd
+Case $10
+$19 = String
+Case $11
+$19 = "Boolean"
 EndSwitch
-Switch UBound($aArray, $UBOUND_DIMENSIONS)
+Switch UBound($12, 0)
 Case 1
-If $iForce = $ARRAYFILL_FORCE_SINGLEITEM Then
-ReDim $aArray[$iDim_1 + 1]
-$aArray[$iDim_1] = $vValue
-Return $iDim_1
+If $17 = $v Then
+ReDim $12[$18 + 1]
+$12[$18] = $13
+Return $18
 EndIf
-If IsArray($vValue) Then
-If UBound($vValue, $UBOUND_DIMENSIONS) <> 1 Then Return SetError(5, 0, -1)
-$hDataType = 0
+If IsArray($13) Then
+If UBound($13, 0) <> 1 Then Return SetError(5, 0, -1)
+$19 = 0
 Else
-Local $aTmp = StringSplit($vValue, $sDelim_Item, $STR_NOCOUNT + $STR_ENTIRESPLIT)
-If UBound($aTmp, $UBOUND_ROWS) = 1 Then
-$aTmp[0] = $vValue
+Local $1a = StringSplit($13, $15, 2 + 1)
+If UBound($1a, 1) = 1 Then
+$1a[0] = $13
 EndIf
-$vValue = $aTmp
+$13 = $1a
 EndIf
-Local $iAdd = UBound($vValue, $UBOUND_ROWS)
-ReDim $aArray[$iDim_1 + $iAdd]
-For $i = 0 To $iAdd - 1
-If String($hDataType) = "Boolean" Then
-Switch $vValue[$i]
+Local $1b = UBound($13, 1)
+ReDim $12[$18 + $1b]
+For $1c = 0 To $1b - 1
+If String($19) = "Boolean" Then
+Switch $13[$1c]
 Case "True", "1"
-$aArray[$iDim_1 + $i] = True
+$12[$18 + $1c] = True
 Case "False", "0", ""
-$aArray[$iDim_1 + $i] = False
+$12[$18 + $1c] = False
 EndSwitch
-ElseIf IsFunc($hDataType) Then
-$aArray[$iDim_1 + $i] = $hDataType($vValue[$i])
+ElseIf IsFunc($19) Then
+$12[$18 + $1c] = $19($13[$1c])
 Else
-$aArray[$iDim_1 + $i] = $vValue[$i]
+$12[$18 + $1c] = $13[$1c]
 EndIf
 Next
-Return $iDim_1 + $iAdd - 1
+Return $18 + $1b - 1
 Case 2
-Local $iDim_2 = UBound($aArray, $UBOUND_COLUMNS)
-If $iStart < 0 Or $iStart > $iDim_2 - 1 Then Return SetError(4, 0, -1)
-Local $iValDim_1, $iValDim_2 = 0, $iColCount
-If IsArray($vValue) Then
-If UBound($vValue, $UBOUND_DIMENSIONS) <> 2 Then Return SetError(5, 0, -1)
-$iValDim_1 = UBound($vValue, $UBOUND_ROWS)
-$iValDim_2 = UBound($vValue, $UBOUND_COLUMNS)
-$hDataType = 0
+Local $1d = UBound($12, 2)
+If $14 < 0 Or $14 > $1d - 1 Then Return SetError(4, 0, -1)
+Local $1e, $1f = 0, $1g
+If IsArray($13) Then
+If UBound($13, 0) <> 2 Then Return SetError(5, 0, -1)
+$1e = UBound($13, 1)
+$1f = UBound($13, 2)
+$19 = 0
 Else
-Local $aSplit_1 = StringSplit($vValue, $sDelim_Row, $STR_NOCOUNT + $STR_ENTIRESPLIT)
-$iValDim_1 = UBound($aSplit_1, $UBOUND_ROWS)
-Local $aTmp[$iValDim_1][0], $aSplit_2
-For $i = 0 To $iValDim_1 - 1
-$aSplit_2 = StringSplit($aSplit_1[$i], $sDelim_Item, $STR_NOCOUNT + $STR_ENTIRESPLIT)
-$iColCount = UBound($aSplit_2)
-If $iColCount > $iValDim_2 Then
-$iValDim_2 = $iColCount
-ReDim $aTmp[$iValDim_1][$iValDim_2]
+Local $1h = StringSplit($13, $16, 2 + 1)
+$1e = UBound($1h, 1)
+Local $1a[$1e][0], $1i
+For $1c = 0 To $1e - 1
+$1i = StringSplit($1h[$1c], $15, 2 + 1)
+$1g = UBound($1i)
+If $1g > $1f Then
+$1f = $1g
+ReDim $1a[$1e][$1f]
 EndIf
-For $j = 0 To $iColCount - 1
-$aTmp[$i][$j] = $aSplit_2[$j]
+For $1j = 0 To $1g - 1
+$1a[$1c][$1j] = $1i[$1j]
 Next
 Next
-$vValue = $aTmp
+$13 = $1a
 EndIf
-If UBound($vValue, $UBOUND_COLUMNS) + $iStart > UBound($aArray, $UBOUND_COLUMNS) Then Return SetError(3, 0, -1)
-ReDim $aArray[$iDim_1 + $iValDim_1][$iDim_2]
-For $iWriteTo_Index = 0 To $iValDim_1 - 1
-For $j = 0 To $iDim_2 - 1
-If $j < $iStart Then
-$aArray[$iWriteTo_Index + $iDim_1][$j] = ""
-ElseIf $j - $iStart > $iValDim_2 - 1 Then
-$aArray[$iWriteTo_Index + $iDim_1][$j] = ""
+If UBound($13, 2) + $14 > UBound($12, 2) Then Return SetError(3, 0, -1)
+ReDim $12[$18 + $1e][$1d]
+For $1k = 0 To $1e - 1
+For $1j = 0 To $1d - 1
+If $1j < $14 Then
+$12[$1k + $18][$1j] = ""
+ElseIf $1j - $14 > $1f - 1 Then
+$12[$1k + $18][$1j] = ""
 Else
-If String($hDataType) = "Boolean" Then
-Switch $vValue[$iWriteTo_Index][$j - $iStart]
+If String($19) = "Boolean" Then
+Switch $13[$1k][$1j - $14]
 Case "True", "1"
-$aArray[$iWriteTo_Index + $iDim_1][$j] = True
+$12[$1k + $18][$1j] = True
 Case "False", "0", ""
-$aArray[$iWriteTo_Index + $iDim_1][$j] = False
+$12[$1k + $18][$1j] = False
 EndSwitch
-ElseIf IsFunc($hDataType) Then
-$aArray[$iWriteTo_Index + $iDim_1][$j] = $hDataType($vValue[$iWriteTo_Index][$j - $iStart])
+ElseIf IsFunc($19) Then
+$12[$1k + $18][$1j] = $19($13[$1k][$1j - $14])
 Else
-$aArray[$iWriteTo_Index + $iDim_1][$j] = $vValue[$iWriteTo_Index][$j - $iStart]
+$12[$1k + $18][$1j] = $13[$1k][$1j - $14]
 EndIf
 EndIf
 Next
@@ -185,147 +173,116 @@ Next
 Case Else
 Return SetError(2, 0, -1)
 EndSwitch
-Return UBound($aArray, $UBOUND_ROWS) - 1
+Return UBound($12, 1) - 1
 EndFunc
-Global Const $FO_OVERWRITE = 2
-Global Const $FO_CREATEPATH = 8
-Func _FileCreate($sFilePath)
-Local $hFileOpen = FileOpen($sFilePath, BitOR($FO_OVERWRITE, $FO_CREATEPATH))
-If $hFileOpen = -1 Then Return SetError(1, 0, 0)
-Local $iFileWrite = FileWrite($hFileOpen, "")
-FileClose($hFileOpen)
-If Not $iFileWrite Then Return SetError(2, 0, 0)
+Func _1j($1l)
+Local $1m = FileOpen($1l, BitOR(2, 8))
+If $1m = -1 Then Return SetError(1, 0, 0)
+Local $1n = FileWrite($1m, "")
+FileClose($1m)
+If Not $1n Then Return SetError(2, 0, 0)
 Return 1
 EndFunc
-Global Const $GUI_EVENT_CLOSE = -3
-Global Const $GUI_RUNDEFMSG = 'GUI_RUNDEFMSG'
-Global Const $SS_CENTER = 0x1
-Global Const $SS_RIGHT = 0x2
-Global Const $SS_NOTIFY = 0x0100
-Global Const $SS_CENTERIMAGE = 0x0200
-Global Const $GUI_SS_DEFAULT_PIC = $SS_NOTIFY
-Global Const $WS_MAXIMIZEBOX = 0x00010000
-Global Const $WS_MINIMIZEBOX = 0x00020000
-Global Const $WS_SIZEBOX = 0x00040000
-Global Const $WS_HSCROLL = 0x00100000
-Global Const $WS_VSCROLL = 0x00200000
-Global Const $WS_POPUP = 0x80000000
-Global Const $WS_EX_MDICHILD = 0x00000040
-Global Const $WS_EX_TOPMOST = 0x00000008
-Global Const $WM_SIZE = 0x0005
-Global Const $WM_SYSCOMMAND = 0x0112
-Global Const $HTCAPTION = 2
-Global Const $ES_MULTILINE = 4
-Global Const $ES_AUTOVSCROLL = 64
-Global Const $ES_READONLY = 2048
-Global Const $ES_WANTRETURN = 4096
-Global Const $EM_SETSEL = 0xB1
-Func _SendMessage($hWnd, $iMsg, $wParam = 0, $lParam = 0, $iReturn = 0, $wParamType = "wparam", $lParamType = "lparam", $sReturnType = "lresult")
-Local $aResult = DllCall("user32.dll", $sReturnType, "SendMessageW", "hwnd", $hWnd, "uint", $iMsg, $wParamType, $wParam, $lParamType, $lParam)
+Global Const $1o = 0xB1
+Func _20($k, $1p, $1q = 0, $1r = 0, $1s = 0, $1t = "wparam", $1u = "lparam", $1v = "lresult")
+Local $1w = DllCall("user32.dll", $1v, "SendMessageW", "hwnd", $k, "uint", $1p, $1t, $1q, $1u, $1r)
 If @error Then Return SetError(@error, @extended, "")
-If $iReturn >= 0 And $iReturn <= 4 Then Return $aResult[$iReturn]
-Return $aResult
+If $1s >= 0 And $1s <= 4 Then Return $1w[$1s]
+Return $1w
 EndFunc
-Global Const $_UDF_GlobalIDs_OFFSET = 2
-Global Const $_UDF_GlobalID_MAX_WIN = 16
-Global Const $_UDF_STARTID = 10000
-Global Const $_UDF_GlobalID_MAX_IDS = 55535
-Global Const $__UDFGUICONSTANT_WS_TABSTOP = 0x00010000
-Global Const $__UDFGUICONSTANT_WS_VISIBLE = 0x10000000
-Global Const $__UDFGUICONSTANT_WS_CHILD = 0x40000000
-Global $__g_aUDF_GlobalIDs_Used[$_UDF_GlobalID_MAX_WIN][$_UDF_GlobalID_MAX_IDS + $_UDF_GlobalIDs_OFFSET + 1]
-Func __UDF_GetNextGlobalID($hWnd)
-Local $nCtrlID, $iUsedIndex = -1, $bAllUsed = True
-If Not WinExists($hWnd) Then Return SetError(-1, -1, 0)
-For $iIndex = 0 To $_UDF_GlobalID_MAX_WIN - 1
-If $__g_aUDF_GlobalIDs_Used[$iIndex][0] <> 0 Then
-If Not WinExists($__g_aUDF_GlobalIDs_Used[$iIndex][0]) Then
-For $x = 0 To UBound($__g_aUDF_GlobalIDs_Used, $UBOUND_COLUMNS) - 1
-$__g_aUDF_GlobalIDs_Used[$iIndex][$x] = 0
+Global $1x[16][55535 + 2 + 1]
+Func _22($k)
+Local $1y, $1z = -1, $20 = True
+If Not WinExists($k) Then Return SetError(-1, -1, 0)
+For $o = 0 To 16 - 1
+If $1x[$o][0] <> 0 Then
+If Not WinExists($1x[$o][0]) Then
+For $21 = 0 To UBound($1x, 2) - 1
+$1x[$o][$21] = 0
 Next
-$__g_aUDF_GlobalIDs_Used[$iIndex][1] = $_UDF_STARTID
-$bAllUsed = False
+$1x[$o][1] = 10000
+$20 = False
 EndIf
 EndIf
 Next
-For $iIndex = 0 To $_UDF_GlobalID_MAX_WIN - 1
-If $__g_aUDF_GlobalIDs_Used[$iIndex][0] = $hWnd Then
-$iUsedIndex = $iIndex
+For $o = 0 To 16 - 1
+If $1x[$o][0] = $k Then
+$1z = $o
 ExitLoop
 EndIf
 Next
-If $iUsedIndex = -1 Then
-For $iIndex = 0 To $_UDF_GlobalID_MAX_WIN - 1
-If $__g_aUDF_GlobalIDs_Used[$iIndex][0] = 0 Then
-$__g_aUDF_GlobalIDs_Used[$iIndex][0] = $hWnd
-$__g_aUDF_GlobalIDs_Used[$iIndex][1] = $_UDF_STARTID
-$bAllUsed = False
-$iUsedIndex = $iIndex
+If $1z = -1 Then
+For $o = 0 To 16 - 1
+If $1x[$o][0] = 0 Then
+$1x[$o][0] = $k
+$1x[$o][1] = 10000
+$20 = False
+$1z = $o
 ExitLoop
 EndIf
 Next
 EndIf
-If $iUsedIndex = -1 And $bAllUsed Then Return SetError(16, 0, 0)
-If $__g_aUDF_GlobalIDs_Used[$iUsedIndex][1] = $_UDF_STARTID + $_UDF_GlobalID_MAX_IDS Then
-For $iIDIndex = $_UDF_GlobalIDs_OFFSET To UBound($__g_aUDF_GlobalIDs_Used, $UBOUND_COLUMNS) - 1
-If $__g_aUDF_GlobalIDs_Used[$iUsedIndex][$iIDIndex] = 0 Then
-$nCtrlID =($iIDIndex - $_UDF_GlobalIDs_OFFSET) + 10000
-$__g_aUDF_GlobalIDs_Used[$iUsedIndex][$iIDIndex] = $nCtrlID
-Return $nCtrlID
+If $1z = -1 And $20 Then Return SetError(16, 0, 0)
+If $1x[$1z][1] = 10000 + 55535 Then
+For $22 = 2 To UBound($1x, 2) - 1
+If $1x[$1z][$22] = 0 Then
+$1y =($22 - 2) + 10000
+$1x[$1z][$22] = $1y
+Return $1y
 EndIf
 Next
-Return SetError(-1, $_UDF_GlobalID_MAX_IDS, 0)
+Return SetError(-1, 55535, 0)
 EndIf
-$nCtrlID = $__g_aUDF_GlobalIDs_Used[$iUsedIndex][1]
-$__g_aUDF_GlobalIDs_Used[$iUsedIndex][1] += 1
-$__g_aUDF_GlobalIDs_Used[$iUsedIndex][($nCtrlID - 10000) + $_UDF_GlobalIDs_OFFSET] = $nCtrlID
-Return $nCtrlID
+$1y = $1x[$1z][1]
+$1x[$1z][1] += 1
+$1x[$1z][($1y - 10000) + 2] = $1y
+Return $1y
 EndFunc
-Global Const $tagRECT = "struct;long Left;long Top;long Right;long Bottom;endstruct"
-Global Const $tagGDIPRECTF = "struct;float X;float Y;float Width;float Height;endstruct"
-Global Const $tagGDIPSTARTUPINPUT = "uint Version;ptr Callback;bool NoThread;bool NoCodecs"
-Global Const $tagWINDOWPLACEMENT = "uint length;uint flags;uint showCmd;long ptMinPosition[2];long ptMaxPosition[2];long rcNormalPosition[4]"
-Global $__g_vEnum, $__g_vExt = 0
-Global Const $tagOSVERSIONINFO = 'struct;dword OSVersionInfoSize;dword MajorVersion;dword MinorVersion;dword BuildNumber;dword PlatformId;wchar CSDVersion[128];endstruct'
-Global Const $__WINVER = __WINVER()
-Func _WinAPI_FreeLibrary($hModule)
-Local $aResult = DllCall("kernel32.dll", "bool", "FreeLibrary", "handle", $hModule)
+Global Const $23 = "struct;long Left;long Top;long Right;long Bottom;endstruct"
+Global Const $24 = "struct;float X;float Y;float Width;float Height;endstruct"
+Global Const $25 = "uint Version;ptr Callback;bool NoThread;bool NoCodecs"
+Global Const $26 = "uint length;uint flags;uint showCmd;long ptMinPosition[2];long ptMaxPosition[2];long rcNormalPosition[4]"
+Global $27, $28 = 0
+Global Const $29 = 'struct;dword OSVersionInfoSize;dword MajorVersion;dword MinorVersion;dword BuildNumber;dword PlatformId;wchar CSDVersion[128];endstruct'
+Global Const $2a = _2p()
+Func _25($2b)
+Local $1w = DllCall("kernel32.dll", "bool", "FreeLibrary", "handle", $2b)
 If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_GetModuleHandle($sModuleName)
-Local $sModuleNameType = "wstr"
-If $sModuleName = "" Then
-$sModuleName = 0
-$sModuleNameType = "ptr"
+Func _28($2c)
+Local $2d = "wstr"
+If $2c = "" Then
+$2c = 0
+$2d = "ptr"
 EndIf
-Local $aResult = DllCall("kernel32.dll", "handle", "GetModuleHandleW", $sModuleNameType, $sModuleName)
+Local $1w = DllCall("kernel32.dll", "handle", "GetModuleHandleW", $2d, $2c)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_LoadLibrary($sFileName)
-Local $aResult = DllCall("kernel32.dll", "handle", "LoadLibraryW", "wstr", $sFileName)
+Func _2c($2e)
+Local $1w = DllCall("kernel32.dll", "handle", "LoadLibraryW", "wstr", $2e)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func __Inc(ByRef $aData, $iIncrement = 100)
+Func _2n(ByRef $2f, $2g = 100)
 Select
-Case UBound($aData, $UBOUND_COLUMNS)
-If $iIncrement < 0 Then
-ReDim $aData[$aData[0][0] + 1][UBound($aData, $UBOUND_COLUMNS)]
+Case UBound($2f, 2)
+If $2g < 0 Then
+ReDim $2f[$2f[0][0] + 1][UBound($2f, 2)]
 Else
-$aData[0][0] += 1
-If $aData[0][0] > UBound($aData) - 1 Then
-ReDim $aData[$aData[0][0] + $iIncrement][UBound($aData, $UBOUND_COLUMNS)]
+$2f[0][0] += 1
+If $2f[0][0] > UBound($2f) - 1 Then
+ReDim $2f[$2f[0][0] + $2g][UBound($2f, 2)]
 EndIf
 EndIf
-Case UBound($aData, $UBOUND_ROWS)
-If $iIncrement < 0 Then
-ReDim $aData[$aData[0] + 1]
+Case UBound($2f, 1)
+If $2g < 0 Then
+ReDim $2f[$2f[0] + 1]
 Else
-$aData[0] += 1
-If $aData[0] > UBound($aData) - 1 Then
-ReDim $aData[$aData[0] + $iIncrement]
+$2f[0] += 1
+If $2f[0] > UBound($2f) - 1 Then
+ReDim $2f[$2f[0] + $2g]
 EndIf
 EndIf
 Case Else
@@ -333,3338 +290,3298 @@ Return 0
 EndSelect
 Return 1
 EndFunc
-Func __WINVER()
-Local $tOSVI = DllStructCreate($tagOSVERSIONINFO)
-DllStructSetData($tOSVI, 1, DllStructGetSize($tOSVI))
-Local $aRet = DllCall('kernel32.dll', 'bool', 'GetVersionExW', 'struct*', $tOSVI)
-If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
-Return BitOR(BitShift(DllStructGetData($tOSVI, 2), -8), DllStructGetData($tOSVI, 3))
+Func _2p()
+Local $2h = DllStructCreate($29)
+DllStructSetData($2h, 1, DllStructGetSize($2h))
+Local $2i = DllCall('kernel32.dll', 'bool', 'GetVersionExW', 'struct*', $2h)
+If @error Or Not $2i[0] Then Return SetError(@error, @extended, 0)
+Return BitOR(BitShift(DllStructGetData($2h, 2), -8), DllStructGetData($2h, 3))
 EndFunc
-Func _WinAPI_HiWord($iLong)
-Return BitShift($iLong, 16)
+Func _33($2j)
+Return BitShift($2j, 16)
 EndFunc
-Func _WinAPI_LoWord($iLong)
-Return BitAND($iLong, 0xFFFF)
+Func _38($2j)
+Return BitAND($2j, 0xFFFF)
 EndFunc
-Global Const $DEFAULT_GUI_FONT = 17
-Func _WinAPI_DeleteObject($hObject)
-Local $aResult = DllCall("gdi32.dll", "bool", "DeleteObject", "handle", $hObject)
+Func _4a($2k)
+Local $1w = DllCall("gdi32.dll", "bool", "DeleteObject", "handle", $2k)
 If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_GetStockObject($iObject)
-Local $aResult = DllCall("gdi32.dll", "handle", "GetStockObject", "int", $iObject)
+Func _4j($2l)
+Local $1w = DllCall("gdi32.dll", "handle", "GetStockObject", "int", $2l)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_IsBadReadPtr($pAddress, $iLength)
-Local $aRet = DllCall('kernel32.dll', 'bool', 'IsBadReadPtr', 'struct*', $pAddress, 'uint_ptr', $iLength)
+Func _4v($2m, $2n)
+Local $2i = DllCall('kernel32.dll', 'bool', 'IsBadReadPtr', 'struct*', $2m, 'uint_ptr', $2n)
 If @error Then Return SetError(@error, @extended, False)
-Return $aRet[0]
+Return $2i[0]
 EndFunc
-Func _WinAPI_IsBadWritePtr($pAddress, $iLength)
-Local $aRet = DllCall('kernel32.dll', 'bool', 'IsBadWritePtr', 'struct*', $pAddress, 'uint_ptr', $iLength)
+Func _4x($2m, $2n)
+Local $2i = DllCall('kernel32.dll', 'bool', 'IsBadWritePtr', 'struct*', $2m, 'uint_ptr', $2n)
 If @error Then Return SetError(@error, @extended, False)
-Return $aRet[0]
+Return $2i[0]
 EndFunc
-Func _WinAPI_MoveMemory($pDestination, $pSource, $iLength)
-If _WinAPI_IsBadReadPtr($pSource, $iLength) Then Return SetError(10, @extended, 0)
-If _WinAPI_IsBadWritePtr($pDestination, $iLength) Then Return SetError(11, @extended, 0)
-DllCall('ntdll.dll', 'none', 'RtlMoveMemory', 'struct*', $pDestination, 'struct*', $pSource, 'ulong_ptr', $iLength)
+Func _50($2o, $2p, $2n)
+If _4v($2p, $2n) Then Return SetError(10, @extended, 0)
+If _4x($2o, $2n) Then Return SetError(11, @extended, 0)
+DllCall('ntdll.dll', 'none', 'RtlMoveMemory', 'struct*', $2o, 'struct*', $2p, 'ulong_ptr', $2n)
 If @error Then Return SetError(@error, @extended, 0)
 Return 1
 EndFunc
-Func _WinAPI_HideCaret($hWnd)
-Local $aRet = DllCall('user32.dll', 'int', 'HideCaret', 'hwnd', $hWnd)
+Func _8a($k)
+Local $2i = DllCall('user32.dll', 'int', 'HideCaret', 'hwnd', $k)
 If @error Then Return SetError(@error, @extended, False)
-Return $aRet[0]
+Return $2i[0]
 EndFunc
-Func _WinAPI_CreateWindowEx($iExStyle, $sClass, $sName, $iStyle, $iX, $iY, $iWidth, $iHeight, $hParent, $hMenu = 0, $hInstance = 0, $pParam = 0)
-If $hInstance = 0 Then $hInstance = _WinAPI_GetModuleHandle("")
-Local $aResult = DllCall("user32.dll", "hwnd", "CreateWindowExW", "dword", $iExStyle, "wstr", $sClass, "wstr", $sName, "dword", $iStyle, "int", $iX, "int", $iY, "int", $iWidth, "int", $iHeight, "hwnd", $hParent, "handle", $hMenu, "handle", $hInstance, "struct*", $pParam)
+Func _90($2q, $2r, $2s, $2t, $2u, $2v, $2w, $2x, $2y, $2z = 0, $30 = 0, $31 = 0)
+If $30 = 0 Then $30 = _28("")
+Local $1w = DllCall("user32.dll", "hwnd", "CreateWindowExW", "dword", $2q, "wstr", $2r, "wstr", $2s, "dword", $2t, "int", $2u, "int", $2v, "int", $2w, "int", $2x, "hwnd", $2y, "handle", $2z, "handle", $30, "struct*", $31)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_GetClassName($hWnd)
-If Not IsHWnd($hWnd) Then $hWnd = GUICtrlGetHandle($hWnd)
-Local $aResult = DllCall("user32.dll", "int", "GetClassNameW", "hwnd", $hWnd, "wstr", "", "int", 4096)
-If @error Or Not $aResult[0] Then Return SetError(@error, @extended, '')
-Return SetExtended($aResult[0], $aResult[2])
+Func _98($k)
+If Not IsHWnd($k) Then $k = GUICtrlGetHandle($k)
+Local $1w = DllCall("user32.dll", "int", "GetClassNameW", "hwnd", $k, "wstr", "", "int", 4096)
+If @error Or Not $1w[0] Then Return SetError(@error, @extended, '')
+Return SetExtended($1w[0], $1w[2])
 EndFunc
-Func _WinAPI_GetParent($hWnd)
-Local $aResult = DllCall("user32.dll", "hwnd", "GetParent", "hwnd", $hWnd)
+Func _9a($k)
+Local $1w = DllCall("user32.dll", "hwnd", "GetParent", "hwnd", $k)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_IsClassName($hWnd, $sClassName)
-Local $sSeparator = Opt("GUIDataSeparatorChar")
-Local $aClassName = StringSplit($sClassName, $sSeparator)
-If Not IsHWnd($hWnd) Then $hWnd = GUICtrlGetHandle($hWnd)
-Local $sClassCheck = _WinAPI_GetClassName($hWnd)
-For $x = 1 To UBound($aClassName) - 1
-If StringUpper(StringMid($sClassCheck, 1, StringLen($aClassName[$x]))) = StringUpper($aClassName[$x]) Then Return True
+Func _9m($k, $32)
+Local $33 = Opt("GUIDataSeparatorChar")
+Local $34 = StringSplit($32, $33)
+If Not IsHWnd($k) Then $k = GUICtrlGetHandle($k)
+Local $35 = _98($k)
+For $21 = 1 To UBound($34) - 1
+If StringUpper(StringMid($35, 1, StringLen($34[$21]))) = StringUpper($34[$21]) Then Return True
 Next
 Return False
 EndFunc
-Func _WinAPI_SetFocus($hWnd)
-Local $aResult = DllCall("user32.dll", "hwnd", "SetFocus", "hwnd", $hWnd)
+Func _9q($k)
+Local $1w = DllCall("user32.dll", "hwnd", "SetFocus", "hwnd", $k)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_SetWindowPos($hWnd, $hAfter, $iX, $iY, $iCX, $iCY, $iFlags)
-Local $aResult = DllCall("user32.dll", "bool", "SetWindowPos", "hwnd", $hWnd, "hwnd", $hAfter, "int", $iX, "int", $iY, "int", $iCX, "int", $iCY, "uint", $iFlags)
+Func _9t($k, $36, $2u, $2v, $37, $38, $39)
+Local $1w = DllCall("user32.dll", "bool", "SetWindowPos", "hwnd", $k, "hwnd", $36, "int", $2u, "int", $2v, "int", $37, "int", $38, "uint", $39)
 If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-If UBound($CMDLine) > 1 Then
-If $CMDLine[1] <> "" Then _Zip_VirtualZipOpen()
+If UBound($cmdline) > 1 Then
+If $cmdline[1] <> "" Then _gi()
 EndIf
-Func _Zip_Create($hFilename)
-$hFp = FileOpen($hFilename, 26)
-$sString = Chr(80) & Chr(75) & Chr(5) & Chr(6) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0)
-FileWrite($hFp, $sString)
+Func _g5($3a)
+$3b = FileOpen($3a, 26)
+$3c = Chr(80) & Chr(75) & Chr(5) & Chr(6) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0)
+FileWrite($3b, $3c)
 If @error Then Return SetError(1,0,0)
-FileClose($hFp)
-While Not FileExists($hFilename)
+FileClose($3b)
+While Not FileExists($3a)
 Sleep(10)
 Wend
-Return $hFilename
+Return $3a
 EndFunc
-Func _Zip_AddFolder($hZipFile, $hFolder, $flag = 1)
-Local $DLLChk = _Zip_DllChk()
-If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
-If not _IsFullPath($hZipFile) then Return SetError(4,0)
-If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
-If StringRight($hFolder, 1) <> "\" Then $hFolder &= "\"
-$files = _Zip_Count($hZipFile)
-$oApp = ObjCreate("Shell.Application")
-$oCopy = $oApp.NameSpace($hZipFile).CopyHere($oApp.Namespace($hFolder))
+Func _g7($3d, $3e, $3f = 1)
+Local $3g = _gk()
+If $3g <> 0 Then Return SetError($3g, 0, 0)
+If not _gm($3d) then Return SetError(4,0)
+If Not FileExists($3d) Then Return SetError(1, 0, 0)
+If StringRight($3e, 1) <> "\" Then $3e &= "\"
+$3h = _gc($3d)
+$3i = ObjCreate("Shell.Application")
+$3j = $3i.NameSpace($3d).CopyHere($3i.Namespace($3e))
 While 1
-If $flag = 1 then _Hide()
-If _Zip_Count($hZipFile) =($files+1) Then ExitLoop
+If $3f = 1 then _gn()
+If _gc($3d) =($3h+1) Then ExitLoop
 Sleep(10)
 WEnd
 Return SetError(0,0,1)
 EndFunc
-Func _Zip_Unzip($hZipFile, $hFilename, $hDestPath, $flag = 1)
-Local $DLLChk = _Zip_DllChk()
-If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
-If not _IsFullPath($hZipFile) then Return SetError(4,0)
-If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
-If Not FileExists($hDestPath) Then DirCreate($hDestPath)
-$oApp = ObjCreate("Shell.Application")
-$hFolderitem = $oApp.NameSpace($hZipFile).Parsename($hFilename)
-$oApp.NameSpace($hDestPath).Copyhere($hFolderitem)
+Func _gb($3d, $3a, $3k, $3f = 1)
+Local $3g = _gk()
+If $3g <> 0 Then Return SetError($3g, 0, 0)
+If not _gm($3d) then Return SetError(4,0)
+If Not FileExists($3d) Then Return SetError(1, 0, 0)
+If Not FileExists($3k) Then DirCreate($3k)
+$3i = ObjCreate("Shell.Application")
+$3l = $3i.NameSpace($3d).Parsename($3a)
+$3i.NameSpace($3k).Copyhere($3l)
 While 1
-If $flag = 1 then _Hide()
-If FileExists($hDestPath & "\" & $hFilename) Then
+If $3f = 1 then _gn()
+If FileExists($3k & "\" & $3a) Then
 return SetError(0, 0, 1)
 ExitLoop
 EndIf
 Sleep(500)
 WEnd
 EndFunc
-Func _Zip_Count($hZipFile)
-Local $DLLChk = _Zip_DllChk()
-If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
-If not _IsFullPath($hZipFile) then Return SetError(4,0)
-If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
-$items = _Zip_List($hZipFile)
-Return UBound($items) - 1
+Func _gc($3d)
+Local $3g = _gk()
+If $3g <> 0 Then Return SetError($3g, 0, 0)
+If not _gm($3d) then Return SetError(4,0)
+If Not FileExists($3d) Then Return SetError(1, 0, 0)
+$3m = _ge($3d)
+Return UBound($3m) - 1
 EndFunc
-Func _Zip_List($hZipFile)
-local $aArray[1]
-Local $DLLChk = _Zip_DllChk()
-If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
-If not _IsFullPath($hZipFile) then Return SetError(4,0)
-If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
-$oApp = ObjCreate("Shell.Application")
-$hList = $oApp.Namespace($hZipFile).Items
-For $item in $hList
-_ArrayAdd($aArray,$item.name)
+Func _ge($3d)
+local $12[1]
+Local $3g = _gk()
+If $3g <> 0 Then Return SetError($3g, 0, 0)
+If not _gm($3d) then Return SetError(4,0)
+If Not FileExists($3d) Then Return SetError(1, 0, 0)
+$3i = ObjCreate("Shell.Application")
+$3n = $3i.Namespace($3d).Items
+For $3o in $3n
+_e($12,$3o.name)
 Next
-$aArray[0] = UBound($aArray) - 1
-Return $aArray
+$12[0] = UBound($12) - 1
+Return $12
 EndFunc
-Func _Zip_VirtualZipOpen()
-$ZipSplit = StringSplit($CMDLine[1], ",")
-$ZipName = $ZipSplit[1]
-$ZipFile = $ZipSplit[2]
-_Zip_Unzip($ZipName, $ZipFile, @TempDir & "\", 4+16)
+Func _gi()
+$3p = StringSplit($cmdline[1], ",")
+$3q = $3p[1]
+$3r = $3p[2]
+_gb($3q, $3r, @TempDir & "\", 4+16)
 If @error Then Return SetError(@error,0,0)
-ShellExecute(@TempDir & "\" & $ZipFile)
+ShellExecute(@TempDir & "\" & $3r)
 EndFunc
-Func _Zip_DllChk()
+Func _gk()
 If Not FileExists(@SystemDir & "\zipfldr.dll") Then Return 2
 If Not RegRead("HKEY_CLASSES_ROOT\CLSID\{E88DCCE0-B7B3-11d1-A9F0-00AA0060FA31}", "") Then Return 3
 Return 0
 EndFunc
-Func _IsFullPath($path)
-if StringInStr($path,":\") then
+Func _gm($3s)
+if StringInStr($3s,":\") then
 Return True
 Else
 Return False
 EndIf
 Endfunc
-Func _Hide()
+Func _gn()
 If ControlGetHandle("[CLASS:#32770]", "", "[CLASS:SysAnimate32; INSTANCE:1]") <> "" And WinGetState("[CLASS:#32770]") <> @SW_HIDE Then
-$hWnd = WinGetHandle("[CLASS:#32770]")
-WinSetState($hWnd, "", @SW_HIDE)
+$k = WinGetHandle("[CLASS:#32770]")
+WinSetState($k, "", @SW_HIDE)
 EndIf
 EndFunc
-Global Const $__RICHEDITCONSTANT_WM_USER = 0x400
-Global Const $EM_FINDWORDBREAK = $__RICHEDITCONSTANT_WM_USER + 76
-Global Const $EM_GETTEXTLENGTHEX = $__RICHEDITCONSTANT_WM_USER + 95
-Global Const $EM_HIDESELECTION = $__RICHEDITCONSTANT_WM_USER + 63
-Global Const $EM_SETBKGNDCOLOR = $__RICHEDITCONSTANT_WM_USER + 67
-Global Const $EM_SETCHARFORMAT = $__RICHEDITCONSTANT_WM_USER + 68
-Global Const $EM_SETTEXTEX = $__RICHEDITCONSTANT_WM_USER + 97
-Global Const $ST_SELECTION = 2
-Global Const $GTL_CLOSE = 4
-Global Const $GTL_DEFAULT = 0
-Global Const $GTL_NUMBYTES = 16
-Global Const $GTL_PRECISE = 2
-Global Const $GTL_USECRLF = 1
-Global Const $CP_ACP = 0
-Global Const $CP_UNICODE = 1200
-Global Const $CFM_BACKCOLOR = 0x4000000
-Global Const $CFM_CHARSET = 0x8000000
-Global Const $CFM_COLOR = 0x40000000
-Global Const $CFM_FACE = 0x20000000
-Global Const $CFM_LCID = 0x2000000
-Global Const $CFM_SIZE = 0x80000000
-Global Const $CFE_AUTOBACKCOLOR = $CFM_BACKCOLOR
-Global Const $CFE_AUTOCOLOR = $CFM_COLOR
-Global Const $SCF_SELECTION = 0x1
-Global Const $LF_FACESIZE = 32
-Global Const $WB_MOVEWORDRIGHT = 5
-Func _ClipBoard_RegisterFormat($sFormat)
-Local $aResult = DllCall("user32.dll", "uint", "RegisterClipboardFormatW", "wstr", $sFormat)
+Global Const $3t = 0x400 + 76
+Global Const $3u = 0x400 + 95
+Global Const $3v = 0x400 + 63
+Global Const $3w = 0x400 + 67
+Global Const $3x = 0x400 + 68
+Global Const $3y = 0x400 + 97
+Func _i2($3z)
+Local $1w = DllCall("user32.dll", "uint", "RegisterClipboardFormatW", "wstr", $3z)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Global $__g_sRTFClassName, $__g_sRTFVersion, $__g_iRTFTwipsPeSpaceUnit = 1440
-Global $__g_sGRE_CF_RTF, $__g_sGRE_CF_RETEXTOBJ
-Global $__g_pGRC_StreamFromFileCallback = DllCallbackRegister("__GCR_StreamFromFileCallback", "dword", "long_ptr;ptr;long;ptr")
-Global $__g_pGRC_StreamFromVarCallback = DllCallbackRegister("__GCR_StreamFromVarCallback", "dword", "long_ptr;ptr;long;ptr")
-Global $__g_pGRC_StreamToFileCallback = DllCallbackRegister("__GCR_StreamToFileCallback", "dword", "long_ptr;ptr;long;ptr")
-Global $__g_pGRC_StreamToVarCallback = DllCallbackRegister("__GCR_StreamToVarCallback", "dword", "long_ptr;ptr;long;ptr")
-Global $__g_pGRC_sStreamVar
-Global $__g_tObj_RichComObject = DllStructCreate("ptr pIntf; dword  Refcount")
-Global $__g_tCall_RichCom, $__g_pObj_RichCom
-Global $__g_hLib_RichCom_OLE32 = DllOpen("OLE32.DLL")
-Global $__g_pRichCom_Object_QueryInterface = DllCallbackRegister("__RichCom_Object_QueryInterface", "long", "ptr;dword;dword")
-Global $__g_pRichCom_Object_AddRef = DllCallbackRegister("__RichCom_Object_AddRef", "long", "ptr")
-Global $__g_pRichCom_Object_Release = DllCallbackRegister("__RichCom_Object_Release", "long", "ptr")
-Global $__g_pRichCom_Object_GetNewStorage = DllCallbackRegister("__RichCom_Object_GetNewStorage", "long", "ptr;ptr")
-Global $__g_pRichCom_Object_GetInPlaceContext = DllCallbackRegister("__RichCom_Object_GetInPlaceContext", "long", "ptr;dword;dword;dword")
-Global $__g_pRichCom_Object_ShowContainerUI = DllCallbackRegister("__RichCom_Object_ShowContainerUI", "long", "ptr;long")
-Global $__g_pRichCom_Object_QueryInsertObject = DllCallbackRegister("__RichCom_Object_QueryInsertObject", "long", "ptr;dword;ptr;long")
-Global $__g_pRichCom_Object_DeleteObject = DllCallbackRegister("__RichCom_Object_DeleteObject", "long", "ptr;ptr")
-Global $__g_pRichCom_Object_QueryAcceptData = DllCallbackRegister("__RichCom_Object_QueryAcceptData", "long", "ptr;ptr;dword;dword;dword;ptr")
-Global $__g_pRichCom_Object_ContextSensitiveHelp = DllCallbackRegister("__RichCom_Object_ContextSensitiveHelp", "long", "ptr;long")
-Global $__g_pRichCom_Object_GetClipboardData = DllCallbackRegister("__RichCom_Object_GetClipboardData", "long", "ptr;ptr;dword;ptr")
-Global $__g_pRichCom_Object_GetDragDropEffect = DllCallbackRegister("__RichCom_Object_GetDragDropEffect", "long", "ptr;dword;dword;dword")
-Global $__g_pRichCom_Object_GetContextMenu = DllCallbackRegister("__RichCom_Object_GetContextMenu", "long", "ptr;short;ptr;ptr;ptr")
-Global Const $__RICHEDITCONSTANT_WM_SETFONT = 0x0030
-Global Const $_GCR_S_OK = 0
-Global Const $_GCR_E_NOTIMPL = 0x80004001
-Global Const $tagCHARFORMAT = "struct;uint cbSize;dword dwMask;dword dwEffects;long yHeight;long yOffset;INT crCharColor;" & "byte bCharSet;byte bPitchAndFamily;wchar szFaceName[32];endstruct"
-Global Const $tagCHARFORMAT2 = $tagCHARFORMAT & ";word wWeight;short sSpacing;INT crBackColor;dword lcid;dword dwReserved;" & "short sStyle;word wKerning;byte bUnderlineType;byte bAnimation;byte bRevAuthor;byte bReserved1"
-Global Const $tagGETTEXTLENGTHEX = "dword flags;uint codepage"
-Global Const $tagSETTEXTEX = "dword flags;uint codepage"
-Func _GUICtrlRichEdit_AppendText($hWnd, $sText)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
-Local $iLength = _GUICtrlRichEdit_GetTextLength($hWnd)
-_GUICtrlRichEdit_SetSel($hWnd, $iLength, $iLength)
-Local $tSetText = DllStructCreate($tagSETTEXTEX)
-DllStructSetData($tSetText, 1, $ST_SELECTION)
-Local $iRet
-If StringLeft($sText, 5) <> "{\rtf" And StringLeft($sText, 5) <> "{urtf" Then
-DllStructSetData($tSetText, 2, $CP_UNICODE)
-$iRet = _SendMessage($hWnd, $EM_SETTEXTEX, $tSetText, $sText, 0, "struct*", "wstr")
+Global $40, $41, $42 = 1440
+Global $43, $44
+Global $45 = DllCallbackRegister("_kx", "dword", "long_ptr;ptr;long;ptr")
+Global $46 = DllCallbackRegister("_ky", "dword", "long_ptr;ptr;long;ptr")
+Global $47 = DllCallbackRegister("_kz", "dword", "long_ptr;ptr;long;ptr")
+Global $48 = DllCallbackRegister("_l0", "dword", "long_ptr;ptr;long;ptr")
+Global $49
+Global $4a = DllStructCreate("ptr pIntf; dword  Refcount")
+Global $4b, $4c
+Global $4d = DllOpen("OLE32.DLL")
+Global $4e = DllCallbackRegister("_l9", "long", "ptr;dword;dword")
+Global $4f = DllCallbackRegister("_la", "long", "ptr")
+Global $4g = DllCallbackRegister("_lb", "long", "ptr")
+Global $4h = DllCallbackRegister("_ll", "long", "ptr;ptr")
+Global $4i = DllCallbackRegister("_lc", "long", "ptr;dword;dword;dword")
+Global $4j = DllCallbackRegister("_ld", "long", "ptr;long")
+Global $4k = DllCallbackRegister("_le", "long", "ptr;dword;ptr;long")
+Global $4l = DllCallbackRegister("_lf", "long", "ptr;ptr")
+Global $4m = DllCallbackRegister("_lg", "long", "ptr;ptr;dword;dword;dword;ptr")
+Global $4n = DllCallbackRegister("_lh", "long", "ptr;long")
+Global $4o = DllCallbackRegister("_li", "long", "ptr;ptr;dword;ptr")
+Global $4p = DllCallbackRegister("_lj", "long", "ptr;dword;dword;dword")
+Global $4q = DllCallbackRegister("_lk", "long", "ptr;short;ptr;ptr;ptr")
+Global Const $4r = "struct;uint cbSize;dword dwMask;dword dwEffects;long yHeight;long yOffset;INT crCharColor;" & "byte bCharSet;byte bPitchAndFamily;wchar szFaceName[32];endstruct"
+Global Const $4s = $4r & ";word wWeight;short sSpacing;INT crBackColor;dword lcid;dword dwReserved;" & "short sStyle;word wKerning;byte bUnderlineType;byte bAnimation;byte bRevAuthor;byte bReserved1"
+Global Const $4t = "dword flags;uint codepage"
+Global Const $4u = "dword flags;uint codepage"
+Func _i6($k, $4v)
+If Not _9m($k, $40) Then Return SetError(101, 0, False)
+Local $2n = _iu($k)
+_kn($k, $2n, $2n)
+Local $4w = DllStructCreate($4u)
+DllStructSetData($4w, 1, 2)
+Local $4x
+If StringLeft($4v, 5) <> "{\rtf" And StringLeft($4v, 5) <> "{urtf" Then
+DllStructSetData($4w, 2, 1200)
+$4x = _20($k, $3y, $4w, $4v, 0, "struct*", "wstr")
 Else
-DllStructSetData($tSetText, 2, $CP_ACP)
-$iRet = _SendMessage($hWnd, $EM_SETTEXTEX, $tSetText, $sText, 0, "struct*", "STR")
+DllStructSetData($4w, 2, 0)
+$4x = _20($k, $3y, $4w, $4v, 0, "struct*", "STR")
 EndIf
-If Not $iRet Then Return SetError(700, 0, False)
+If Not $4x Then Return SetError(700, 0, False)
 Return True
 EndFunc
-Func _GUICtrlRichEdit_Create($hWnd, $sText, $iLeft, $iTop, $iWidth = 150, $iHeight = 150, $iStyle = -1, $iExStyle = -1)
-If Not IsHWnd($hWnd) Then Return SetError(1, 0, 0)
-If Not IsString($sText) Then Return SetError(2, 0, 0)
-If Not __GCR_IsNumeric($iWidth, ">0,-1") Then Return SetError(105, 0, 0)
-If Not __GCR_IsNumeric($iHeight, ">0,-1") Then Return SetError(106, 0, 0)
-If Not __GCR_IsNumeric($iStyle, ">=0,-1") Then Return SetError(107, 0, 0)
-If Not __GCR_IsNumeric($iExStyle, ">=0,-1") Then Return SetError(108, 0, 0)
-If $iWidth = -1 Then $iWidth = 150
-If $iHeight = -1 Then $iHeight = 150
-If $iStyle = -1 Then $iStyle = BitOR($ES_WANTRETURN, $ES_MULTILINE)
-If BitAND($iStyle, $ES_MULTILINE) <> 0 Then $iStyle = BitOR($iStyle, $ES_WANTRETURN)
-If $iExStyle = -1 Then $iExStyle = 0x200
-$iStyle = BitOR($iStyle, $__UDFGUICONSTANT_WS_CHILD, $__UDFGUICONSTANT_WS_VISIBLE)
-If BitAND($iStyle, $ES_READONLY) = 0 Then $iStyle = BitOR($iStyle, $__UDFGUICONSTANT_WS_TABSTOP)
-Local $nCtrlID = __UDF_GetNextGlobalID($hWnd)
+Func _ie($k, $4v, $4y, $4z, $2w = 150, $2x = 150, $2t = -1, $2q = -1)
+If Not IsHWnd($k) Then Return SetError(1, 0, 0)
+If Not IsString($4v) Then Return SetError(2, 0, 0)
+If Not _l2($2w, ">0,-1") Then Return SetError(105, 0, 0)
+If Not _l2($2x, ">0,-1") Then Return SetError(106, 0, 0)
+If Not _l2($2t, ">=0,-1") Then Return SetError(107, 0, 0)
+If Not _l2($2q, ">=0,-1") Then Return SetError(108, 0, 0)
+If $2w = -1 Then $2w = 150
+If $2x = -1 Then $2x = 150
+If $2t = -1 Then $2t = BitOR(4096, 4)
+If BitAND($2t, 4) <> 0 Then $2t = BitOR($2t, 4096)
+If $2q = -1 Then $2q = 0x200
+$2t = BitOR($2t, 0x40000000, 0x10000000)
+If BitAND($2t, 2048) = 0 Then $2t = BitOR($2t, 0x00010000)
+Local $1y = _22($k)
 If @error Then Return SetError(@error, @extended, 0)
-__GCR_Init()
-Local $hRichEdit = _WinAPI_CreateWindowEx($iExStyle, $__g_sRTFClassName, "", $iStyle, $iLeft, $iTop, $iWidth, $iHeight, $hWnd, $nCtrlID)
-If $hRichEdit = 0 Then Return SetError(700, 0, False)
-__GCR_SetOLECallback($hRichEdit)
-_SendMessage($hRichEdit, $__RICHEDITCONSTANT_WM_SETFONT, _WinAPI_GetStockObject($DEFAULT_GUI_FONT), True)
-_GUICtrlRichEdit_AppendText($hRichEdit, $sText)
-Return $hRichEdit
+_kw()
+Local $50 = _90($2q, $40, "", $2t, $4y, $4z, $2w, $2x, $k, $1y)
+If $50 = 0 Then Return SetError(700, 0, False)
+_l8($50)
+_20($50, 0x0030, _4j(17), True)
+_i6($50, $4v)
+Return $50
 EndFunc
-Func _GUICtrlRichEdit_Deselect($hWnd)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
-_SendMessage($hWnd, $EM_SETSEL, -1, 0)
+Func _ig($k)
+If Not _9m($k, $40) Then Return SetError(101, 0, False)
+_20($k, $1o, -1, 0)
 Return True
 EndFunc
-Func _GUICtrlRichEdit_GetCharPosOfNextWord($hWnd, $iCpStart)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, 0)
-If Not __GCR_IsNumeric($iCpStart) Then Return SetError(102, 0, 0)
-Return _SendMessage($hWnd, $EM_FINDWORDBREAK, $WB_MOVEWORDRIGHT, $iCpStart)
+Func _ip($k, $51)
+If Not _9m($k, $40) Then Return SetError(101, 0, 0)
+If Not _l2($51) Then Return SetError(102, 0, 0)
+Return _20($k, $3t, 5, $51)
 EndFunc
-Func _GUICtrlRichEdit_GetTextLength($hWnd, $bExact = True, $bChars = False)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, 0)
-If Not IsBool($bExact) Then Return SetError(102, 0, 0)
-If Not IsBool($bChars) Then Return SetError(103, 0, 0)
-Local $tGetTextLen = DllStructCreate($tagGETTEXTLENGTHEX)
-Local $iFlags = BitOR($GTL_USECRLF,($bExact ? $GTL_PRECISE : $GTL_CLOSE))
-$iFlags = BitOR($iFlags,($bChars ? $GTL_DEFAULT : $GTL_NUMBYTES))
-DllStructSetData($tGetTextLen, 1, $iFlags)
-DllStructSetData($tGetTextLen, 2,($bChars ? $CP_ACP : $CP_UNICODE))
-Local $iRet = _SendMessage($hWnd, $EM_GETTEXTLENGTHEX, $tGetTextLen, 0, 0, "struct*")
-Return $iRet
+Func _iu($k, $52 = True, $53 = False)
+If Not _9m($k, $40) Then Return SetError(101, 0, 0)
+If Not IsBool($52) Then Return SetError(102, 0, 0)
+If Not IsBool($53) Then Return SetError(103, 0, 0)
+Local $54 = DllStructCreate($4t)
+Local $39 = BitOR(1,($52 ? 2 : 4))
+$39 = BitOR($39,($53 ? 0 : 16))
+DllStructSetData($54, 1, $39)
+DllStructSetData($54, 2,($53 ? 0 : 1200))
+Local $4x = _20($k, $3u, $54, 0, 0, "struct*")
+Return $4x
 EndFunc
-Func _GUICtrlRichEdit_InsertText($hWnd, $sText)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
-If $sText = "" Then Return SetError(102, 0, False)
-Local $tSetText = DllStructCreate($tagSETTEXTEX)
-DllStructSetData($tSetText, 1, $ST_SELECTION)
-_GUICtrlRichEdit_Deselect($hWnd)
-Local $iRet
-If StringLeft($sText, 5) <> "{\rtf" And StringLeft($sText, 5) <> "{urtf" Then
-DllStructSetData($tSetText, 2, $CP_UNICODE)
-$iRet = _SendMessage($hWnd, $EM_SETTEXTEX, $tSetText, $sText, 0, "struct*", "wstr")
+Func _jp($k, $4v)
+If Not _9m($k, $40) Then Return SetError(101, 0, False)
+If $4v = "" Then Return SetError(102, 0, False)
+Local $4w = DllStructCreate($4u)
+DllStructSetData($4w, 1, 2)
+_ig($k)
+Local $4x
+If StringLeft($4v, 5) <> "{\rtf" And StringLeft($4v, 5) <> "{urtf" Then
+DllStructSetData($4w, 2, 1200)
+$4x = _20($k, $3y, $4w, $4v, 0, "struct*", "wstr")
 Else
-DllStructSetData($tSetText, 2, $CP_ACP)
-$iRet = _SendMessage($hWnd, $EM_SETTEXTEX, $tSetText, $sText, 0, "struct*", "STR")
+DllStructSetData($4w, 2, 0)
+$4x = _20($k, $3y, $4w, $4v, 0, "struct*", "STR")
 EndIf
-If Not $iRet Then Return SetError(103, 0, False)
+If Not $4x Then Return SetError(103, 0, False)
 Return True
 EndFunc
-Func _GUICtrlRichEdit_SetCharBkColor($hWnd, $iBkColor = Default)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
-Local $tCharFormat = DllStructCreate($tagCHARFORMAT2)
-DllStructSetData($tCharFormat, 1, DllStructGetSize($tCharFormat))
-If $iBkColor = Default Then
-DllStructSetData($tCharFormat, 3, $CFE_AUTOBACKCOLOR)
-$iBkColor = 0
+Func _k2($k, $55 = Default)
+If Not _9m($k, $40) Then Return SetError(101, 0, False)
+Local $56 = DllStructCreate($4s)
+DllStructSetData($56, 1, DllStructGetSize($56))
+If $55 = Default Then
+DllStructSetData($56, 3, 0x4000000)
+$55 = 0
 Else
-If BitAND($iBkColor, 0xff000000) Then Return SetError(1022, 0, False)
+If BitAND($55, 0xff000000) Then Return SetError(1022, 0, False)
 EndIf
-DllStructSetData($tCharFormat, 2, $CFM_BACKCOLOR)
-DllStructSetData($tCharFormat, 12, $iBkColor)
-Return _SendMessage($hWnd, $EM_SETCHARFORMAT, $SCF_SELECTION, $tCharFormat, 0, "wparam", "struct*") <> 0
+DllStructSetData($56, 2, 0x4000000)
+DllStructSetData($56, 12, $55)
+Return _20($k, $3x, 0x1, $56, 0, "wparam", "struct*") <> 0
 EndFunc
-Func _GUICtrlRichEdit_SetCharColor($hWnd, $iColor = Default)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
-Local $tCharFormat = DllStructCreate($tagCHARFORMAT)
-DllStructSetData($tCharFormat, 1, DllStructGetSize($tCharFormat))
-If $iColor = Default Then
-DllStructSetData($tCharFormat, 3, $CFE_AUTOCOLOR)
-$iColor = 0
+Func _k3($k, $57 = Default)
+If Not _9m($k, $40) Then Return SetError(101, 0, False)
+Local $56 = DllStructCreate($4r)
+DllStructSetData($56, 1, DllStructGetSize($56))
+If $57 = Default Then
+DllStructSetData($56, 3, 0x40000000)
+$57 = 0
 Else
-If BitAND($iColor, 0xff000000) Then Return SetError(1022, 0, False)
+If BitAND($57, 0xff000000) Then Return SetError(1022, 0, False)
 EndIf
-DllStructSetData($tCharFormat, 2, $CFM_COLOR)
-DllStructSetData($tCharFormat, 6, $iColor)
-Return _SendMessage($hWnd, $EM_SETCHARFORMAT, $SCF_SELECTION, $tCharFormat, 0, "wparam", "struct*") <> 0
+DllStructSetData($56, 2, 0x40000000)
+DllStructSetData($56, 6, $57)
+Return _20($k, $3x, 0x1, $56, 0, "wparam", "struct*") <> 0
 EndFunc
-Func _GUICtrlRichEdit_SetBkColor($hWnd, $iBngColor = Default)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
-Local $bSysColor = False
-If $iBngColor = Default Then
-$bSysColor = True
-$iBngColor = 0
+Func _k4($k, $58 = Default)
+If Not _9m($k, $40) Then Return SetError(101, 0, False)
+Local $59 = False
+If $58 = Default Then
+$59 = True
+$58 = 0
 Else
-If BitAND($iBngColor, 0xff000000) Then Return SetError(1022, 0, False)
+If BitAND($58, 0xff000000) Then Return SetError(1022, 0, False)
 EndIf
-_SendMessage($hWnd, $EM_SETBKGNDCOLOR, $bSysColor, $iBngColor)
+_20($k, $3w, $59, $58)
 Return True
 EndFunc
-Func _GUICtrlRichEdit_SetFont($hWnd, $iPoints = Default, $sName = Default, $iCharset = Default, $iLcid = Default)
-Local $iDwMask = 0
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
-If Not($iPoints = Default Or __GCR_IsNumeric($iPoints, ">0")) Then Return SetError(102, 0, False)
-If $sName <> Default Then
-Local $aS = StringSplit($sName, " ")
-For $i = 1 To UBound($aS) - 1
-If Not StringIsAlpha($aS[$i]) Then Return SetError(103, 0, False)
+Func _k9($k, $5a = Default, $2s = Default, $5b = Default, $5c = Default)
+Local $5d = 0
+If Not _9m($k, $40) Then Return SetError(101, 0, False)
+If Not($5a = Default Or _l2($5a, ">0")) Then Return SetError(102, 0, False)
+If $2s <> Default Then
+Local $5e = StringSplit($2s, " ")
+For $1c = 1 To UBound($5e) - 1
+If Not StringIsAlpha($5e[$1c]) Then Return SetError(103, 0, False)
 Next
 EndIf
-If Not($iCharset = Default Or __GCR_IsNumeric($iCharset)) Then Return SetError(104, 0, False)
-If Not($iLcid = Default Or __GCR_IsNumeric($iLcid)) Then Return SetError(105, 0, False)
-Local $tCharFormat = DllStructCreate($tagCHARFORMAT2)
-DllStructSetData($tCharFormat, 1, DllStructGetSize($tCharFormat))
-If $iPoints <> Default Then
-$iDwMask = $CFM_SIZE
-DllStructSetData($tCharFormat, 4, Int($iPoints * 20))
+If Not($5b = Default Or _l2($5b)) Then Return SetError(104, 0, False)
+If Not($5c = Default Or _l2($5c)) Then Return SetError(105, 0, False)
+Local $56 = DllStructCreate($4s)
+DllStructSetData($56, 1, DllStructGetSize($56))
+If $5a <> Default Then
+$5d = 0x80000000
+DllStructSetData($56, 4, Int($5a * 20))
 EndIf
-If $sName <> Default Then
-If StringLen($sName) > $LF_FACESIZE - 1 Then SetError(-1, 0, False)
-$iDwMask = BitOR($iDwMask, $CFM_FACE)
-DllStructSetData($tCharFormat, 9, $sName)
+If $2s <> Default Then
+If StringLen($2s) > 32 - 1 Then SetError(-1, 0, False)
+$5d = BitOR($5d, 0x20000000)
+DllStructSetData($56, 9, $2s)
 EndIf
-If $iCharset <> Default Then
-$iDwMask = BitOR($iDwMask, $CFM_CHARSET)
-DllStructSetData($tCharFormat, 7, $iCharset)
+If $5b <> Default Then
+$5d = BitOR($5d, 0x8000000)
+DllStructSetData($56, 7, $5b)
 EndIf
-If $iLcid <> Default Then
-$iDwMask = BitOR($iDwMask, $CFM_LCID)
-DllStructSetData($tCharFormat, 13, $iLcid)
+If $5c <> Default Then
+$5d = BitOR($5d, 0x2000000)
+DllStructSetData($56, 13, $5c)
 EndIf
-DllStructSetData($tCharFormat, 2, $iDwMask)
-Local $iRet = _SendMessage($hWnd, $EM_SETCHARFORMAT, $SCF_SELECTION, $tCharFormat, 0, "wparam", "struct*")
-If Not $iRet Then Return SetError(@error + 200, 0, False)
+DllStructSetData($56, 2, $5d)
+Local $4x = _20($k, $3x, 0x1, $56, 0, "wparam", "struct*")
+If Not $4x Then Return SetError(@error + 200, 0, False)
 Return True
 EndFunc
-Func _GUICtrlRichEdit_SetSel($hWnd, $iAnchor, $iActive, $bHideSel = False)
-If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
-If Not __GCR_IsNumeric($iAnchor, ">=0,-1") Then Return SetError(102, 0, False)
-If Not __GCR_IsNumeric($iActive, ">=0,-1") Then Return SetError(103, 0, False)
-If Not IsBool($bHideSel) Then Return SetError(104, 0, False)
-_SendMessage($hWnd, $EM_SETSEL, $iAnchor, $iActive)
-If $bHideSel Then _SendMessage($hWnd, $EM_HIDESELECTION, $bHideSel)
-_WinAPI_SetFocus($hWnd)
+Func _kn($k, $5f, $5g, $5h = False)
+If Not _9m($k, $40) Then Return SetError(101, 0, False)
+If Not _l2($5f, ">=0,-1") Then Return SetError(102, 0, False)
+If Not _l2($5g, ">=0,-1") Then Return SetError(103, 0, False)
+If Not IsBool($5h) Then Return SetError(104, 0, False)
+_20($k, $1o, $5f, $5g)
+If $5h Then _20($k, $3v, $5h)
+_9q($k)
 Return True
 EndFunc
-Func __GCR_Init()
-Local $ah_GUICtrlRTF_lib = DllCall("kernel32.dll", "ptr", "LoadLibraryW", "wstr", "MSFTEDIT.DLL")
-If $ah_GUICtrlRTF_lib[0] <> 0 Then
-$__g_sRTFClassName = "RichEdit50W"
-$__g_sRTFVersion = 4.1
+Func _kw()
+Local $5i = DllCall("kernel32.dll", "ptr", "LoadLibraryW", "wstr", "MSFTEDIT.DLL")
+If $5i[0] <> 0 Then
+$40 = "RichEdit50W"
+$41 = 4.1
 Else
-$ah_GUICtrlRTF_lib = DllCall("kernel32.dll", "ptr", "LoadLibraryW", "wstr", "RICHED20.DLL")
-$__g_sRTFVersion = FileGetVersion(@SystemDir & "\riched20.dll", "ProductVersion")
-Switch $__g_sRTFVersion
+$5i = DllCall("kernel32.dll", "ptr", "LoadLibraryW", "wstr", "RICHED20.DLL")
+$41 = FileGetVersion(@SystemDir & "\riched20.dll", "ProductVersion")
+Switch $41
 Case 3.0
-$__g_sRTFClassName = "RichEdit20W"
+$40 = "RichEdit20W"
 Case 5.0
-$__g_sRTFClassName = "RichEdit50W"
+$40 = "RichEdit50W"
 Case 6.0
-$__g_sRTFClassName = "RichEdit60W"
+$40 = "RichEdit60W"
 EndSwitch
 EndIf
-$__g_sGRE_CF_RTF = _ClipBoard_RegisterFormat("Rich Text Format")
-$__g_sGRE_CF_RETEXTOBJ = _ClipBoard_RegisterFormat("Rich Text Format with Objects")
+$43 = _i2("Rich Text Format")
+$44 = _i2("Rich Text Format with Objects")
 EndFunc
-Func __GCR_StreamFromFileCallback($hFile, $pBuf, $iBuflen, $pQbytes)
-Local $tQbytes = DllStructCreate("long", $pQbytes)
-DllStructSetData($tQbytes, 1, 0)
-Local $tBuf = DllStructCreate("char[" & $iBuflen & "]", $pBuf)
-Local $sBuf = FileRead($hFile, $iBuflen - 1)
+Func _kx($5j, $5k, $5l, $5m)
+Local $5n = DllStructCreate("long", $5m)
+DllStructSetData($5n, 1, 0)
+Local $5o = DllStructCreate("char[" & $5l & "]", $5k)
+Local $5p = FileRead($5j, $5l - 1)
 If @error Then Return 1
-DllStructSetData($tBuf, 1, $sBuf)
-DllStructSetData($tQbytes, 1, StringLen($sBuf))
+DllStructSetData($5o, 1, $5p)
+DllStructSetData($5n, 1, StringLen($5p))
 Return 0
 EndFunc
-Func __GCR_StreamFromVarCallback($iCookie, $pBuf, $iBuflen, $pQbytes)
-#forceref $iCookie
-Local $tQbytes = DllStructCreate("long", $pQbytes)
-DllStructSetData($tQbytes, 1, 0)
-Local $tCtl = DllStructCreate("char[" & $iBuflen & "]", $pBuf)
-Local $sCtl = StringLeft($__g_pGRC_sStreamVar, $iBuflen - 1)
-If $sCtl = "" Then Return 1
-DllStructSetData($tCtl, 1, $sCtl)
-Local $iLen = StringLen($sCtl)
-DllStructSetData($tQbytes, 1, $iLen)
-$__g_pGRC_sStreamVar = StringMid($__g_pGRC_sStreamVar, $iLen + 1)
+Func _ky($5q, $5k, $5l, $5m)
+#forceref $5q
+Local $5n = DllStructCreate("long", $5m)
+DllStructSetData($5n, 1, 0)
+Local $5r = DllStructCreate("char[" & $5l & "]", $5k)
+Local $5s = StringLeft($49, $5l - 1)
+If $5s = "" Then Return 1
+DllStructSetData($5r, 1, $5s)
+Local $5t = StringLen($5s)
+DllStructSetData($5n, 1, $5t)
+$49 = StringMid($49, $5t + 1)
 Return 0
 EndFunc
-Func __GCR_StreamToFileCallback($hFile, $pBuf, $iBuflen, $pQbytes)
-Local $tQbytes = DllStructCreate("long", $pQbytes)
-DllStructSetData($tQbytes, 1, 0)
-Local $tBuf = DllStructCreate("char[" & $iBuflen & "]", $pBuf)
-Local $s = DllStructGetData($tBuf, 1)
-FileWrite($hFile, $s)
-DllStructSetData($tQbytes, 1, StringLen($s))
+Func _kz($5j, $5k, $5l, $5m)
+Local $5n = DllStructCreate("long", $5m)
+DllStructSetData($5n, 1, 0)
+Local $5o = DllStructCreate("char[" & $5l & "]", $5k)
+Local $5u = DllStructGetData($5o, 1)
+FileWrite($5j, $5u)
+DllStructSetData($5n, 1, StringLen($5u))
 Return 0
 EndFunc
-Func __GCR_StreamToVarCallback($iCookie, $pBuf, $iBuflen, $pQbytes)
-#forceref $iCookie
-Local $tQbytes = DllStructCreate("long", $pQbytes)
-DllStructSetData($tQbytes, 1, 0)
-Local $tBuf = DllStructCreate("char[" & $iBuflen & "]", $pBuf)
-Local $s = DllStructGetData($tBuf, 1)
-$__g_pGRC_sStreamVar &= $s
+Func _l0($5q, $5k, $5l, $5m)
+#forceref $5q
+Local $5n = DllStructCreate("long", $5m)
+DllStructSetData($5n, 1, 0)
+Local $5o = DllStructCreate("char[" & $5l & "]", $5k)
+Local $5u = DllStructGetData($5o, 1)
+$49 &= $5u
 Return 0
 EndFunc
-Func __GCR_IsNumeric($vN, $sRange = "")
-If Not(IsNumber($vN) Or StringIsInt($vN) Or StringIsFloat($vN)) Then Return False
-Switch $sRange
+Func _l2($5v, $5w = "")
+If Not(IsNumber($5v) Or StringIsInt($5v) Or StringIsFloat($5v)) Then Return False
+Switch $5w
 Case ">0"
-If $vN <= 0 Then Return False
+If $5v <= 0 Then Return False
 Case ">=0"
-If $vN < 0 Then Return False
+If $5v < 0 Then Return False
 Case ">0,-1"
-If Not($vN > 0 Or $vN = -1) Then Return False
+If Not($5v > 0 Or $5v = -1) Then Return False
 Case ">=0,-1"
-If Not($vN >= 0 Or $vN = -1) Then Return False
+If Not($5v >= 0 Or $5v = -1) Then Return False
 EndSwitch
 Return True
 EndFunc
-Func __GCR_SetOLECallback($hWnd)
-If Not IsHWnd($hWnd) Then Return SetError(101, 0, False)
-If Not $__g_pObj_RichCom Then
-$__g_tCall_RichCom = DllStructCreate("ptr[20]")
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_QueryInterface), 1)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_AddRef), 2)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_Release), 3)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_GetNewStorage), 4)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_GetInPlaceContext), 5)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_ShowContainerUI), 6)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_QueryInsertObject), 7)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_DeleteObject), 8)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_QueryAcceptData), 9)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_ContextSensitiveHelp), 10)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_GetClipboardData), 11)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_GetDragDropEffect), 12)
-DllStructSetData($__g_tCall_RichCom, 1, DllCallbackGetPtr($__g_pRichCom_Object_GetContextMenu), 13)
-DllStructSetData($__g_tObj_RichComObject, 1, DllStructGetPtr($__g_tCall_RichCom))
-DllStructSetData($__g_tObj_RichComObject, 2, 1)
-$__g_pObj_RichCom = DllStructGetPtr($__g_tObj_RichComObject)
+Func _l8($k)
+If Not IsHWnd($k) Then Return SetError(101, 0, False)
+If Not $4c Then
+$4b = DllStructCreate("ptr[20]")
+DllStructSetData($4b, 1, DllCallbackGetPtr($4e), 1)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4f), 2)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4g), 3)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4h), 4)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4i), 5)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4j), 6)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4k), 7)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4l), 8)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4m), 9)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4n), 10)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4o), 11)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4p), 12)
+DllStructSetData($4b, 1, DllCallbackGetPtr($4q), 13)
+DllStructSetData($4a, 1, DllStructGetPtr($4b))
+DllStructSetData($4a, 2, 1)
+$4c = DllStructGetPtr($4a)
 EndIf
-Local Const $EM_SETOLECALLBACK = 0x400 + 70
-If _SendMessage($hWnd, $EM_SETOLECALLBACK, 0, $__g_pObj_RichCom) = 0 Then Return SetError(700, 0, False)
+Local Const $5x = 0x400 + 70
+If _20($k, $5x, 0, $4c) = 0 Then Return SetError(700, 0, False)
 Return True
 EndFunc
-Func __RichCom_Object_QueryInterface($pObject, $iREFIID, $pPvObj)
-#forceref $pObject, $iREFIID, $pPvObj
-Return $_GCR_S_OK
+Func _l9($5y, $5z, $60)
+#forceref $5y, $5z, $60
+Return 0
 EndFunc
-Func __RichCom_Object_AddRef($pObject)
-Local $tData = DllStructCreate("ptr;dword", $pObject)
-DllStructSetData($tData, 2, DllStructGetData($tData, 2) + 1)
-Return DllStructGetData($tData, 2)
+Func _la($5y)
+Local $61 = DllStructCreate("ptr;dword", $5y)
+DllStructSetData($61, 2, DllStructGetData($61, 2) + 1)
+Return DllStructGetData($61, 2)
 EndFunc
-Func __RichCom_Object_Release($pObject)
-Local $tData = DllStructCreate("ptr;dword", $pObject)
-If DllStructGetData($tData, 2) > 0 Then
-DllStructSetData($tData, 2, DllStructGetData($tData, 2) - 1)
-Return DllStructGetData($tData, 2)
+Func _lb($5y)
+Local $61 = DllStructCreate("ptr;dword", $5y)
+If DllStructGetData($61, 2) > 0 Then
+DllStructSetData($61, 2, DllStructGetData($61, 2) - 1)
+Return DllStructGetData($61, 2)
 EndIf
 EndFunc
-Func __RichCom_Object_GetInPlaceContext($pObject, $pPFrame, $pPDoc, $pFrameInfo)
-#forceref $pObject, $pPFrame, $pPDoc, $pFrameInfo
-Return $_GCR_E_NOTIMPL
+Func _lc($5y, $62, $63, $64)
+#forceref $5y, $62, $63, $64
+Return 0x80004001
 EndFunc
-Func __RichCom_Object_ShowContainerUI($pObject, $bShow)
-#forceref $pObject, $bShow
-Return $_GCR_E_NOTIMPL
+Func _ld($5y, $65)
+#forceref $5y, $65
+Return 0x80004001
 EndFunc
-Func __RichCom_Object_QueryInsertObject($pObject, $pClsid, $tStg, $vCp)
-#forceref $pObject, $pClsid, $tStg, $vCp
-Return $_GCR_S_OK
+Func _le($5y, $66, $67, $68)
+#forceref $5y, $66, $67, $68
+Return 0
 EndFunc
-Func __RichCom_Object_DeleteObject($pObject, $pOleobj)
-#forceref $pObject, $pOleobj
-Return $_GCR_E_NOTIMPL
+Func _lf($5y, $69)
+#forceref $5y, $69
+Return 0x80004001
 EndFunc
-Func __RichCom_Object_QueryAcceptData($pObject, $pDataobj, $pCfFormat, $vReco, $bReally, $hMetaPict)
-#forceref $pObject, $pDataobj, $pCfFormat, $vReco, $bReally, $hMetaPict
-Return $_GCR_S_OK
+Func _lg($5y, $6a, $6b, $6c, $6d, $6e)
+#forceref $5y, $6a, $6b, $6c, $6d, $6e
+Return 0
 EndFunc
-Func __RichCom_Object_ContextSensitiveHelp($pObject, $bEnterMode)
-#forceref $pObject, $bEnterMode
-Return $_GCR_E_NOTIMPL
+Func _lh($5y, $6f)
+#forceref $5y, $6f
+Return 0x80004001
 EndFunc
-Func __RichCom_Object_GetClipboardData($pObject, $pChrg, $vReco, $pPdataobj)
-#forceref $pObject, $pChrg, $vReco, $pPdataobj
-Return $_GCR_E_NOTIMPL
+Func _li($5y, $6g, $6c, $6h)
+#forceref $5y, $6g, $6c, $6h
+Return 0x80004001
 EndFunc
-Func __RichCom_Object_GetDragDropEffect($pObject, $bDrag, $iGrfKeyState, $piEffect)
-#forceref $pObject, $bDrag, $iGrfKeyState, $piEffect
-Return $_GCR_E_NOTIMPL
+Func _lj($5y, $6i, $6j, $6k)
+#forceref $5y, $6i, $6j, $6k
+Return 0x80004001
 EndFunc
-Func __RichCom_Object_GetContextMenu($pObject, $iSeltype, $pOleobj, $pChrg, $pHmenu)
-#forceref $pObject, $iSeltype, $pOleobj, $pChrg, $pHmenu
-Return $_GCR_E_NOTIMPL
+Func _lk($5y, $6l, $69, $6g, $6m)
+#forceref $5y, $6l, $69, $6g, $6m
+Return 0x80004001
 EndFunc
-Func __RichCom_Object_GetNewStorage($pObject, $pPstg)
-#forceref $pObject
-Local $aSc = DllCall($__g_hLib_RichCom_OLE32, "dword", "CreateILockBytesOnHGlobal", "hwnd", 0, "int", 1, "ptr*", 0)
-Local $pLockBytes = $aSc[3]
-$aSc = $aSc[0]
-If $aSc Then Return $aSc
-$aSc = DllCall($__g_hLib_RichCom_OLE32, "dword", "StgCreateDocfileOnILockBytes", "ptr", $pLockBytes, "dword", BitOR(0x10, 2, 0x1000), "dword", 0, "ptr*", 0)
-Local $tStg = DllStructCreate("ptr", $pPstg)
-DllStructSetData($tStg, 1, $aSc[4])
-$aSc = $aSc[0]
-If $aSc Then
-Local $tObj = DllStructCreate("ptr", $pLockBytes)
-Local $tUnknownFuncTable = DllStructCreate("ptr[3]", DllStructGetData($tObj, 1))
-Local $pReleaseFunc = DllStructGetData($tUnknownFuncTable, 3)
-DllCallAddress("long", $pReleaseFunc, "ptr", $pLockBytes)
+Func _ll($5y, $6n)
+#forceref $5y
+Local $6o = DllCall($4d, "dword", "CreateILockBytesOnHGlobal", "hwnd", 0, "int", 1, "ptr*", 0)
+Local $6p = $6o[3]
+$6o = $6o[0]
+If $6o Then Return $6o
+$6o = DllCall($4d, "dword", "StgCreateDocfileOnILockBytes", "ptr", $6p, "dword", BitOR(0x10, 2, 0x1000), "dword", 0, "ptr*", 0)
+Local $67 = DllStructCreate("ptr", $6n)
+DllStructSetData($67, 1, $6o[4])
+$6o = $6o[0]
+If $6o Then
+Local $6q = DllStructCreate("ptr", $6p)
+Local $6r = DllStructCreate("ptr[3]", DllStructGetData($6q, 1))
+Local $6s = DllStructGetData($6r, 3)
+DllCallAddress("long", $6s, "ptr", $6p)
 EndIf
-Return $aSc
+Return $6o
 EndFunc
-Global Const $HGDI_ERROR = Ptr(-1)
-Global Const $INVALID_HANDLE_VALUE = Ptr(-1)
-Global Const $KF_EXTENDED = 0x0100
-Global Const $KF_ALTDOWN = 0x2000
-Global Const $KF_UP = 0x8000
-Global Const $LLKHF_EXTENDED = BitShift($KF_EXTENDED, 8)
-Global Const $LLKHF_ALTDOWN = BitShift($KF_ALTDOWN, 8)
-Global Const $LLKHF_UP = BitShift($KF_UP, 8)
-Func _WinAPI_GetWindowPlacement($hWnd)
-Local $tWindowPlacement = DllStructCreate($tagWINDOWPLACEMENT)
-DllStructSetData($tWindowPlacement, "length", DllStructGetSize($tWindowPlacement))
-Local $aRet = DllCall("user32.dll", "bool", "GetWindowPlacement", "hwnd", $hWnd, "struct*", $tWindowPlacement)
-If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
-Return $tWindowPlacement
+Global Const $6t = Ptr(-1)
+Global Const $6u = Ptr(-1)
+Global Const $6v = BitShift(0x0100, 8)
+Global Const $6w = BitShift(0x2000, 8)
+Global Const $6x = BitShift(0x8000, 8)
+Func _n0($k)
+Local $6y = DllStructCreate($26)
+DllStructSetData($6y, "length", DllStructGetSize($6y))
+Local $2i = DllCall("user32.dll", "bool", "GetWindowPlacement", "hwnd", $k, "struct*", $6y)
+If @error Or Not $2i[0] Then Return SetError(@error + 10, @extended, 0)
+Return $6y
 EndFunc
-Func _WinAPI_SetWindowPlacement($hWnd, $tWindowPlacement)
-Local $aResult = DllCall("user32.dll", "bool", "SetWindowPlacement", "hwnd", $hWnd, "struct*", $tWindowPlacement)
+Func _nm($k, $6y)
+Local $1w = DllCall("user32.dll", "bool", "SetWindowPlacement", "hwnd", $k, "struct*", $6y)
 If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_GetProcAddress($hModule, $vName)
-Local $sType = "str"
-If IsNumber($vName) Then $sType = "word"
-Local $aResult = DllCall("kernel32.dll", "ptr", "GetProcAddress", "handle", $hModule, $sType, $vName)
-If @error Or Not $aResult[0] Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Func _ov($2b, $6z)
+Local $70 = "str"
+If IsNumber($6z) Then $70 = "word"
+Local $1w = DllCall("kernel32.dll", "ptr", "GetProcAddress", "handle", $2b, $70, $6z)
+If @error Or Not $1w[0] Then Return SetError(@error, @extended, 0)
+Return $1w[0]
 EndFunc
-Func _WinAPI_ReleaseCapture()
-Local $aResult = DllCall("user32.dll", "bool", "ReleaseCapture")
+Func _py()
+Local $1w = DllCall("user32.dll", "bool", "ReleaseCapture")
 If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_SetCapture($hWnd)
-Local $aResult = DllCall("user32.dll", "hwnd", "SetCapture", "hwnd", $hWnd)
+Func _q1($k)
+Local $1w = DllCall("user32.dll", "hwnd", "SetCapture", "hwnd", $k)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Return $1w[0]
 EndFunc
-Func _WinAPI_DefSubclassProc($hWnd, $iMsg, $wParam, $lParam)
-Local $aRet = DllCall('comctl32.dll', 'lresult', 'DefSubclassProc', 'hwnd', $hWnd, 'uint', $iMsg, 'wparam', $wParam, 'lparam', $lParam)
+Func _qn($k, $1p, $1q, $1r)
+Local $2i = DllCall('comctl32.dll', 'lresult', 'DefSubclassProc', 'hwnd', $k, 'uint', $1p, 'wparam', $1q, 'lparam', $1r)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
+Return $2i[0]
 EndFunc
-Func _WinAPI_RemoveWindowSubclass($hWnd, $pSubclassProc, $idSubClass)
-Local $aRet = DllCall('comctl32.dll', 'bool', 'RemoveWindowSubclass', 'hwnd', $hWnd, 'ptr', $pSubclassProc, 'uint_ptr', $idSubClass)
+Func _qt($k, $71, $72)
+Local $2i = DllCall('comctl32.dll', 'bool', 'RemoveWindowSubclass', 'hwnd', $k, 'ptr', $71, 'uint_ptr', $72)
 If @error Then Return SetError(@error, @extended, False)
-Return $aRet[0]
+Return $2i[0]
 EndFunc
-Func _WinAPI_SetWindowSubclass($hWnd, $pSubclassProc, $idSubClass, $pData = 0)
-Local $aRet = DllCall('comctl32.dll', 'bool', 'SetWindowSubclass', 'hwnd', $hWnd, 'ptr', $pSubclassProc, 'uint_ptr', $idSubClass, 'dword_ptr', $pData)
+Func _qv($k, $71, $72, $73 = 0)
+Local $2i = DllCall('comctl32.dll', 'bool', 'SetWindowSubclass', 'hwnd', $k, 'ptr', $71, 'uint_ptr', $72, 'dword_ptr', $73)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
+Return $2i[0]
 EndFunc
-Func _WinAPI_EnumDisplayMonitors($hDC = 0, $tRECT = 0)
-Local $hEnumProc = DllCallbackRegister('__EnumDisplayMonitorsProc', 'bool', 'handle;handle;ptr;lparam')
-Dim $__g_vEnum[101][2] = [[0]]
-Local $aRet = DllCall('user32.dll', 'bool', 'EnumDisplayMonitors', 'handle', $hDC, 'struct*', $tRECT, 'ptr', DllCallbackGetPtr($hEnumProc), 'lparam', 0)
-If @error Or Not $aRet[0] Or Not $__g_vEnum[0][0] Then
-$__g_vEnum = @error + 10
+Func _ug($74 = 0, $75 = 0)
+Local $76 = DllCallbackRegister('_ys', 'bool', 'handle;handle;ptr;lparam')
+Dim $27[101][2] = [[0]]
+Local $2i = DllCall('user32.dll', 'bool', 'EnumDisplayMonitors', 'handle', $74, 'struct*', $75, 'ptr', DllCallbackGetPtr($76), 'lparam', 0)
+If @error Or Not $2i[0] Or Not $27[0][0] Then
+$27 = @error + 10
 EndIf
-DllCallbackFree($hEnumProc)
-If $__g_vEnum Then Return SetError($__g_vEnum, 0, 0)
-__Inc($__g_vEnum, -1)
-Return $__g_vEnum
+DllCallbackFree($76)
+If $27 Then Return SetError($27, 0, 0)
+_2n($27, -1)
+Return $27
 EndFunc
-Func _WinAPI_GetPosFromRect($tRECT)
-Local $aResult[4]
-For $i = 0 To 3
-$aResult[$i] = DllStructGetData($tRECT, $i + 1)
+Func _vp($75)
+Local $1w[4]
+For $1c = 0 To 3
+$1w[$1c] = DllStructGetData($75, $1c + 1)
 If @error Then Return SetError(@error, @extended, 0)
 Next
-For $i = 2 To 3
-$aResult[$i] -= $aResult[$i - 2]
+For $1c = 2 To 3
+$1w[$1c] -= $1w[$1c - 2]
 Next
-Return $aResult
+Return $1w
 EndFunc
-Func _WinAPI_MonitorFromWindow($hWnd, $iFlag = 1)
-Local $aRet = DllCall('user32.dll', 'handle', 'MonitorFromWindow', 'hwnd', $hWnd, 'dword', $iFlag)
+Func _wo($k, $77 = 1)
+Local $2i = DllCall('user32.dll', 'handle', 'MonitorFromWindow', 'hwnd', $k, 'dword', $77)
 If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
+Return $2i[0]
 EndFunc
-Func __EnumDisplayMonitorsProc($hMonitor, $hDC, $pRECT, $lParam)
-#forceref $hDC, $lParam
-__Inc($__g_vEnum)
-$__g_vEnum[$__g_vEnum[0][0]][0] = $hMonitor
-If Not $pRECT Then
-$__g_vEnum[$__g_vEnum[0][0]][1] = 0
+Func _ys($78, $74, $79, $1r)
+#forceref $74, $1r
+_2n($27)
+$27[$27[0][0]][0] = $78
+If Not $79 Then
+$27[$27[0][0]][1] = 0
 Else
-$__g_vEnum[$__g_vEnum[0][0]][1] = DllStructCreate($tagRECT)
-If Not _WinAPI_MoveMemory(DllStructGetPtr($__g_vEnum[$__g_vEnum[0][0]][1]), $pRECT, 16) Then Return 0
+$27[$27[0][0]][1] = DllStructCreate($23)
+If Not _50(DllStructGetPtr($27[$27[0][0]][1]), $79, 16) Then Return 0
 EndIf
 Return 1
 EndFunc
-Global $__g_iLogaInstances = 0
-Global $__g_atLogaInstances[0]
-Global $__g_aaLogaInstances[0]
-Global $__g_hLogaCallback = 0
-Global $__g_pLogaCallback = 0
-Global $__g_bShowAllGUIOnCompiled = False
-Global $__g_iLevel = -1
-Global Const $LOGA_ALL = 64
-Global Const $LOGA_TRACE = 32
-Global Const $LOGA_DEBUG = 16
-Global Const $LOGA_INFO = 8
-Global Const $LOGA_WARN = 4
-Global Const $LOGA_ERROR = 2
-Global Const $LOGA_FATAL = 1
-Global Const $LOGA_LEVEL_ALL = BitOR($LOGA_ALL, $LOGA_TRACE, $LOGA_DEBUG, $LOGA_INFO, $LOGA_WARN, $LOGA_ERROR, $LOGA_FATAL)
-Global Const $LOGA_LEVEL_OFF = 0
-Global Const $LOGA_LEVEL_INSTANCE = -1
-Global Const $LOGA_APPEND_END = 1
-Global Const $__g_LogaSubClassID = 76797165
-Global Enum $eLOGA___InstanceIndex, $eLOGA___LogIndex, $eLOGA_Name, $eLOGA_Level, $eLOGA_LogToFile, $eLOGA_LogFileAutoFlush, $eLOGA_hFile, $eLOGA_LogToGUI, $eLOGA_LogToStdError, $eLOGA_ShowGUIOnCompiled, $eLOGA___hGUI, $eLOGA___hRichEdit, $eLOGA_AppendType, $eLOGA_GUIBkColor, $eLOGA_GUIShowLevelSymbol, $eLOGA_Trans, $eLOGA_Left, $eLOGA_Top, $eLOGA_Width, $eLOGA_Height, $eLOGA_FilePath, $eLOGA_Format, $eLOGA_EndOfLine, $eLOGA_TraceSymbol, $eLOGA_TraceFontName, $eLOGA_TraceString, $eLOGA_TraceFontColor, $eLOGA_TraceFontBkColor, $eLOGA_TraceFontSize, $eLOGA_TraceCharSet, $eLOGA_DebugSymbol, $eLOGA_DebugFontName, $eLOGA_DebugString, $eLOGA_DebugFontColor, $eLOGA_DebugFontBkColor, $eLOGA_DebugFontSize, $eLOGA_DebugCharSet, $eLOGA_InfoSymbol, $eLOGA_InfoFontName, $eLOGA_InfoString, $eLOGA_InfoFontColor, $eLOGA_InfoFontBkColor, $eLOGA_InfoFontSize, $eLOGA_InfoCharSet, $eLOGA_WarnSymbol, $eLOGA_WarnFontName, $eLOGA_WarnString, $eLOGA_WarnFontColor, $eLOGA_WarnFontBkColor, $eLOGA_WarnFontSize, $eLOGA_WarnCharSet, $eLOGA_ErrorSymbol, $eLOGA_ErrorFontName, $eLOGA_ErrorString, $eLOGA_ErrorFontColor, $eLOGA_ErrorFontBkColor, $eLOGA_ErrorFontSize, $eLOGA_ErrorCharSet, $eLOGA_FatalSymbol, $eLOGA_FatalFontName, $eLOGA_FatalString, $eLOGA_FatalFontColor, $eLOGA_FatalFontBkColor, $eLOGA_FatalFontSize, $eLOGA_FatalCharSet
-$__g_iLevel = $LOGA_LEVEL_INSTANCE
-OnAutoItExitRegister('__LogaFreeOnExit')
-Func _LogaInfo($sLogaMessage, $iLogaInstance = 1, Const $iCurrentError = @error, Const $iCurrentExtended = @extended)
-SetError($iCurrentError, $iCurrentExtended)
-__LogaWriteMessage($sLogaMessage, $LOGA_INFO, $iLogaInstance)
-SetError($iCurrentError, $iCurrentExtended)
+Global $7a = 0
+Global $7b[0]
+Global $7c[0]
+Global $7d = 0
+Global $7e = 0
+Global $7f = False
+Global $7g = -1
+Global Const $7h = BitOR(64, 32, 16, 8, 4, 2, 1)
+Global Enum $7i, $7j, $7k, $7l, $7m, $7n, $7o, $7p, $7q, $7r, $7s, $7t, $7u, $7v, $7w, $7x, $7y, $7z, $80, $81, $82, $83, $84, $85, $86, $87, $88, $89, $8a, $8b, $8c, $8d, $8e, $8f, $8g, $8h, $8i, $8j, $8k, $8l, $8m, $8n, $8o, $8p, $8q, $8r, $8s, $8t, $8u, $8v, $8w, $8x, $8y, $8z, $90, $91, $92, $93, $94, $95, $96, $97, $98, $99, $9a
+$7g = -1
+OnAutoItExitRegister('_11s')
+Func _119($9b, $9c = 1, Const $9d = @error, Const $9e = @extended)
+SetError($9d, $9e)
+_11v($9b, 8, $9c)
+SetError($9d, $9e)
 EndFunc
-Func _LogaError($sLogaMessage, $iLogaInstance = 1, Const $iCurrentError = @error, Const $iCurrentExtended = @extended)
-SetError($iCurrentError, $iCurrentExtended)
-__LogaWriteMessage($sLogaMessage, $LOGA_ERROR, $iLogaInstance)
-SetError($iCurrentError, $iCurrentExtended)
+Func _11b($9b, $9c = 1, Const $9d = @error, Const $9e = @extended)
+SetError($9d, $9e)
+_11v($9b, 2, $9c)
+SetError($9d, $9e)
 EndFunc
-Func _LogaFileClose($iLogaInstance = 1)
-Local $hFile = 0
-If IsDllStruct($iLogaInstance) Then
-$hFile = $iLogaInstance.hFile
+Func _11k($9c = 1)
+Local $5j = 0
+If IsDllStruct($9c) Then
+$5j = $9c.hFile
 Else
-If $iLogaInstance > $__g_iLogaInstances Or $iLogaInstance <= 0 Then Return
-$hFile =($__g_aaLogaInstances[$iLogaInstance - 1])[$eLOGA_hFile]
+If $9c > $7a Or $9c <= 0 Then Return
+$5j =($7c[$9c - 1])[$7o]
 EndIf
-$hFile = Int($hFile)
-FileFlush($hFile)
-FileClose($hFile)
+$5j = Int($5j)
+FileFlush($5j)
+FileClose($5j)
 EndFunc
-Func _LogaNew($sLogaSettings = "")
-If Not $__g_hLogaCallback Then
-$__g_hLogaCallback = DllCallbackRegister('__LogaCallbackProc', 'lresult', 'hwnd;uint;wparam;lparam;uint_ptr;dword_ptr')
-$__g_pLogaCallback = DllCallbackGetPtr($__g_hLogaCallback)
+Func _11q($9f = "")
+If Not $7d Then
+$7d = DllCallbackRegister('_11r', 'lresult', 'hwnd;uint;wparam;lparam;uint_ptr;dword_ptr')
+$7e = DllCallbackGetPtr($7d)
 EndIf
-Local $tLoga = DllStructCreate("uint __InstanceIndex;ulong __LogIndex;wchar Name[512];uint Level;" & "bool LogToFile;bool LogFileAutoFlush;handle hFile;bool LogToGUI;bool ShowGUIOnCompiled;bool LogToStdError;" & "handle __hGUI;handle __hRichEdit;int AppendType;bool GUIShowLevelSymbol;int GUIBkColor;uint Trans;int Left;int Top;int Width;int Height;" & "wchar FilePath[512];wchar Format[512];wchar EndOfLine[128];" & "wchar TraceSymbol[2];wchar TraceFontName[512];wchar TraceString[512];int TraceFontColor;Int TraceFontBkColor;int TraceFontSize;int TraceCharSet;" & "wchar DebugSymbol[2];wchar DebugFontName[512];wchar DebugString[512];int DebugFontColor;Int DebugFontBkColor;int DebugFontSize;int DebugCharSet;" & "wchar InfoSymbol[2];wchar InfoFontName[512];wchar InfoString[512];int InfoFontColor;Int InfoFontBkColor;int InfoFontSize;int InfoCharSet;" & "wchar WarnSymbol[2];wchar WarnFontName[512];wchar WarnString[512];int WarnFontColor;Int WarnFontBkColor;int WarnFontSize;int WarnCharSet;" & "wchar ErrorSymbol[2];wchar ErrorFontName[512];wchar ErrorString[512];int ErrorFontColor;Int ErrorFontBkColor;int ErrorFontSize;int ErrorCharSet;" & "wchar FatalSymbol[2];wchar FatalFontName[512];wchar FatalString[512];int FatalFontColor;Int FatalFontBkColor;int FatalFontSize;int FatalCharSet;")
-$__g_iLogaInstances += 1
-$tLoga.__InstanceIndex = $__g_iLogaInstances
-$tLoga.__LogIndex = 1
-__LogaSetDefaultSettings($tLoga)
-__LogaLoadSettingsFromString($tLoga, $sLogaSettings)
-Local $aLoga = __LogaCreateSettingsArrayFromStructure($tLoga)
-If IsArray($aLoga) Then
-If $aLoga[$eLOGA_LogToGUI] Then
-Local $aLogGUIInfo = __CreateLogGUI($aLoga[$eLOGA_Name], $aLoga[$eLOGA_Width], $aLoga[$eLOGA_Height], $aLoga[$eLOGA_Left], $aLoga[$eLOGA_Top], $aLoga[$eLOGA_GUIBkColor], $aLoga[$eLOGA_Trans], $aLoga[$eLOGA_ShowGUIOnCompiled])
-$tLoga.__hGUI = $aLogGUIInfo[0]
-$tLoga.__hRichEdit = $aLogGUIInfo[1]
-__LogaRefreshArrayFromStructure($tLoga, $aLoga)
-_WinAPI_SetWindowSubclass($aLoga[$eLOGA___hGUI], $__g_pLogaCallback, $__g_LogaSubClassID, 0)
+Local $9g = DllStructCreate("uint __InstanceIndex;ulong __LogIndex;wchar Name[512];uint Level;" & "bool LogToFile;bool LogFileAutoFlush;handle hFile;bool LogToGUI;bool ShowGUIOnCompiled;bool LogToStdError;" & "handle __hGUI;handle __hRichEdit;int AppendType;bool GUIShowLevelSymbol;int GUIBkColor;uint Trans;int Left;int Top;int Width;int Height;" & "wchar FilePath[512];wchar Format[512];wchar EndOfLine[128];" & "wchar TraceSymbol[2];wchar TraceFontName[512];wchar TraceString[512];int TraceFontColor;Int TraceFontBkColor;int TraceFontSize;int TraceCharSet;" & "wchar DebugSymbol[2];wchar DebugFontName[512];wchar DebugString[512];int DebugFontColor;Int DebugFontBkColor;int DebugFontSize;int DebugCharSet;" & "wchar InfoSymbol[2];wchar InfoFontName[512];wchar InfoString[512];int InfoFontColor;Int InfoFontBkColor;int InfoFontSize;int InfoCharSet;" & "wchar WarnSymbol[2];wchar WarnFontName[512];wchar WarnString[512];int WarnFontColor;Int WarnFontBkColor;int WarnFontSize;int WarnCharSet;" & "wchar ErrorSymbol[2];wchar ErrorFontName[512];wchar ErrorString[512];int ErrorFontColor;Int ErrorFontBkColor;int ErrorFontSize;int ErrorCharSet;" & "wchar FatalSymbol[2];wchar FatalFontName[512];wchar FatalString[512];int FatalFontColor;Int FatalFontBkColor;int FatalFontSize;int FatalCharSet;")
+$7a += 1
+$9g.__InstanceIndex = $7a
+$9g.__LogIndex = 1
+_124($9g)
+_123($9g, $9f)
+Local $9h = _125($9g)
+If IsArray($9h) Then
+If $9h[$7p] Then
+Local $9i = _121($9h[$7k], $9h[$80], $9h[$81], $9h[$7y], $9h[$7z], $9h[$7v], $9h[$7x], $9h[$7r])
+$9g.__hGUI = $9i[0]
+$9g.__hRichEdit = $9i[1]
+_120($9g, $9h)
+_qv($9h[$7s], $7e, 76797165, 0)
 EndIf
-If $aLoga[$eLOGA_LogToFile] Then
-If Not $aLoga[$eLOGA_LogFileAutoFlush] Then $aLoga[$eLOGA_hFile] = FileOpen($aLoga[$eLOGA_FilePath], $FO_OVERWRITE)
-$tLoga.hFile = $aLoga[$eLOGA_hFile]
-__LogaRefreshArrayFromStructure($tLoga, $aLoga)
+If $9h[$7m] Then
+If Not $9h[$7n] Then $9h[$7o] = FileOpen($9h[$82], 2)
+$9g.hFile = $9h[$7o]
+_120($9g, $9h)
 EndIf
 EndIf
-ReDim $__g_atLogaInstances[$__g_iLogaInstances]
-ReDim $__g_aaLogaInstances[$__g_iLogaInstances]
-$__g_atLogaInstances[$__g_iLogaInstances - 1] = $tLoga
-$__g_aaLogaInstances[$__g_iLogaInstances - 1] = $aLoga
-Return $__g_atLogaInstances[$__g_iLogaInstances - 1]
+ReDim $7b[$7a]
+ReDim $7c[$7a]
+$7b[$7a - 1] = $9g
+$7c[$7a - 1] = $9h
+Return $7b[$7a - 1]
 EndFunc
-Func __LogaCallbackProc($hWnd, $iMsg, $wParam, $lParam, $iID, $pData)
-#forceref $iID, $pData
-Local Const $SC_CLOSE = 0xF060
-If $iMsg = $WM_SIZE Then
-Local $hRitchEdit = __LogaGetRichEditHandleFromWindowHandle($hWnd)
-If $hRitchEdit Then
-Local $NewW = _WinAPI_LoWord($lParam)
-Local $NewH = _WinAPI_HiWord($lParam)
-_WinAPI_SetWindowPos($hRitchEdit, 0, 0, 0, $NewW - 1, $NewH - 1, BitOR($SWP_NOACTIVATE, $SWP_NOZORDER))
-Return $GUI_RUNDEFMSG
+Func _11r($k, $1p, $1q, $1r, $9j, $73)
+#forceref $9j, $73
+Local Const $9k = 0xF060
+If $1p = 0x0005 Then
+Local $9l = _122($k)
+If $9l Then
+Local $9m = _38($1r)
+Local $9n = _33($1r)
+_9t($9l, 0, 0, 0, $9m - 1, $9n - 1, BitOR(0x0010, 0x0004))
+Return 'GUI_RUNDEFMSG'
 EndIf
 EndIf
-If $iMsg = $WM_SYSCOMMAND And $wParam = $SC_CLOSE Then
-GUISetState(@SW_HIDE, $hWnd)
-Return $GUI_RUNDEFMSG
+If $1p = 0x0112 And $1q = $9k Then
+GUISetState(@SW_HIDE, $k)
+Return 'GUI_RUNDEFMSG'
 EndIf
-Return _WinAPI_DefSubclassProc($hWnd, $iMsg, $wParam, $lParam)
+Return _qn($k, $1p, $1q, $1r)
 EndFunc
-Func __LogaFreeOnExit()
-Local $hGUI = 0
-For $i = 0 To $__g_iLogaInstances - 1
-_LogaFileClose(($__g_aaLogaInstances[$i])[$eLOGA_hFile])
-$hGUI =($__g_aaLogaInstances[$i])[$eLOGA___hGUI]
-If WinExists($hGUI) Then _WinAPI_RemoveWindowSubclass($hGUI, $__g_pLogaCallback, $__g_LogaSubClassID)
+Func _11s()
+Local $9o = 0
+For $1c = 0 To $7a - 1
+_11k(($7c[$1c])[$7o])
+$9o =($7c[$1c])[$7s]
+If WinExists($9o) Then _qt($9o, $7e, 76797165)
 Next
-If $__g_hLogaCallback Then DllCallbackFree($__g_hLogaCallback)
+If $7d Then DllCallbackFree($7d)
 EndFunc
-Func __LogaFormatMessage($aLoga, $iLogaLevelType, $sLogaMessage, Const $iCurrentError = @error, Const $iCurrentExtended = @extended)
-Local $sFormatedMessage = $aLoga[$eLOGA_Format]
-If StringInStr($sFormatedMessage, "{Symbol}", 2) Then
+Func _11t($9h, $9p, $9b, Const $9d = @error, Const $9e = @extended)
+Local $9q = $9h[$83]
+If StringInStr($9q, "{Symbol}", 2) Then
 Select
-Case $iLogaLevelType = $LOGA_TRACE
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Symbol}", $aLoga[$eLOGA_TraceSymbol])
-Case $iLogaLevelType = $LOGA_DEBUG
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Symbol}", $aLoga[$eLOGA_DebugSymbol])
-Case $iLogaLevelType = $LOGA_INFO
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Symbol}", $aLoga[$eLOGA_InfoSymbol])
-Case $iLogaLevelType = $LOGA_WARN
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Symbol}", $aLoga[$eLOGA_WarnSymbol])
-Case $iLogaLevelType = $LOGA_ERROR
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Symbol}", $aLoga[$eLOGA_ErrorSymbol])
-Case $iLogaLevelType = $LOGA_FATAL
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Symbol}", $aLoga[$eLOGA_FatalSymbol])
+Case $9p = 32
+$9q = StringReplace($9q, "{Symbol}", $9h[$85])
+Case $9p = 16
+$9q = StringReplace($9q, "{Symbol}", $9h[$8c])
+Case $9p = 8
+$9q = StringReplace($9q, "{Symbol}", $9h[$8j])
+Case $9p = 4
+$9q = StringReplace($9q, "{Symbol}", $9h[$8q])
+Case $9p = 2
+$9q = StringReplace($9q, "{Symbol}", $9h[$8x])
+Case $9p = 1
+$9q = StringReplace($9q, "{Symbol}", $9h[$94])
 Case Else
 EndSelect
 EndIf
 Select
-Case StringInStr($sFormatedMessage, "{LongDateTime}", 2)
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LongDateTime}", StringFormat("%02d\\%02d\\%04d %02d:%02d:%02d", @MDAY, @MON, @YEAR, @HOUR, @MIN, @SEC))
-Case StringInStr($sFormatedMessage, "{DateTime}", 2)
-$sFormatedMessage = StringReplace($sFormatedMessage, "{DateTime}", StringFormat("%02d\\%02d\\%04d %02d:%02d", @MDAY, @MON, @YEAR, @HOUR, @MIN))
-Case StringInStr($sFormatedMessage, "{Date}", 2)
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Date}", StringFormat("%02d\\%02d\\%04d", @MDAY, @MON, @YEAR))
-Case StringInStr($sFormatedMessage, "{Time}", 2)
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Time}", StringFormat("%02d:%02d:%02d", @HOUR, @MIN, @SEC))
+Case StringInStr($9q, "{LongDateTime}", 2)
+$9q = StringReplace($9q, "{LongDateTime}", StringFormat("%02d\\%02d\\%04d %02d:%02d:%02d", @MDAY, @MON, @YEAR, @HOUR, @MIN, @SEC))
+Case StringInStr($9q, "{DateTime}", 2)
+$9q = StringReplace($9q, "{DateTime}", StringFormat("%02d\\%02d\\%04d %02d:%02d", @MDAY, @MON, @YEAR, @HOUR, @MIN))
+Case StringInStr($9q, "{Date}", 2)
+$9q = StringReplace($9q, "{Date}", StringFormat("%02d\\%02d\\%04d", @MDAY, @MON, @YEAR))
+Case StringInStr($9q, "{Time}", 2)
+$9q = StringReplace($9q, "{Time}", StringFormat("%02d:%02d:%02d", @HOUR, @MIN, @SEC))
 Case Else
 EndSelect
-If StringInStr($sFormatedMessage, "{LevelName}", 2) Then
+If StringInStr($9q, "{LevelName}", 2) Then
 Select
-Case $iLogaLevelType = $LOGA_TRACE
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LevelName}", $aLoga[$eLOGA_TraceString])
-Case $iLogaLevelType = $LOGA_DEBUG
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LevelName}", $aLoga[$eLOGA_DebugString])
-Case $iLogaLevelType = $LOGA_INFO
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LevelName}", $aLoga[$eLOGA_InfoString])
-Case $iLogaLevelType = $LOGA_WARN
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LevelName}", $aLoga[$eLOGA_WarnString])
-Case $iLogaLevelType = $LOGA_ERROR
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LevelName}", $aLoga[$eLOGA_ErrorString])
-Case $iLogaLevelType = $LOGA_FATAL
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LevelName}", $aLoga[$eLOGA_FatalString])
+Case $9p = 32
+$9q = StringReplace($9q, "{LevelName}", $9h[$87])
+Case $9p = 16
+$9q = StringReplace($9q, "{LevelName}", $9h[$8e])
+Case $9p = 8
+$9q = StringReplace($9q, "{LevelName}", $9h[$8l])
+Case $9p = 4
+$9q = StringReplace($9q, "{LevelName}", $9h[$8s])
+Case $9p = 2
+$9q = StringReplace($9q, "{LevelName}", $9h[$8z])
+Case $9p = 1
+$9q = StringReplace($9q, "{LevelName}", $9h[$96])
 Case Else
 EndSelect
 EndIf
-If StringInStr($sFormatedMessage, "{Message}", 2) Then
-$sFormatedMessage = StringReplace($sFormatedMessage, "{Message}", $sLogaMessage)
+If StringInStr($9q, "{Message}", 2) Then
+$9q = StringReplace($9q, "{Message}", $9b)
 EndIf
-If StringInStr($sFormatedMessage, "{LogaName}", 2) Then
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LogaName}", $aLoga[$eLOGA_Name])
+If StringInStr($9q, "{LogaName}", 2) Then
+$9q = StringReplace($9q, "{LogaName}", $9h[$7k])
 EndIf
-If StringInStr($sFormatedMessage, "{LogIndex}", 2) Then
-$sFormatedMessage = StringReplace($sFormatedMessage, "{LogIndex}", StringFormat("%010s", $aLoga[$eLOGA___LogIndex]))
+If StringInStr($9q, "{LogIndex}", 2) Then
+$9q = StringReplace($9q, "{LogIndex}", StringFormat("%010s", $9h[$7j]))
 EndIf
-If StringInStr($sFormatedMessage, "{error}",2) Then
-$sFormatedMessage = StringReplace($sFormatedMessage, "{error}", $iCurrentError)
+If StringInStr($9q, "{error}",2) Then
+$9q = StringReplace($9q, "{error}", $9d)
 EndIf
-If StringInStr($sFormatedMessage, "{extended}",2) Then
-$sFormatedMessage = StringReplace($sFormatedMessage, "{extended}", $iCurrentExtended)
+If StringInStr($9q, "{extended}",2) Then
+$9q = StringReplace($9q, "{extended}", $9e)
 EndIf
-Return $sFormatedMessage & $aLoga[$eLOGA_EndOfLine]
+Return $9q & $9h[$84]
 EndFunc
-Func __LogaFontInfo($aLoga, $iLogaLevelType)
-Local $aInfo[5] = ["Consolas", 10, 0x000000, 0xFFFFFF, 1]
+Func _11u($9h, $9p)
+Local $9r[5] = ["Consolas", 10, 0x000000, 0xFFFFFF, 1]
 Select
-Case $iLogaLevelType = $LOGA_TRACE
-$aInfo[0] = $aLoga[$eLOGA_TraceFontName]
-$aInfo[1] = $aLoga[$eLOGA_TraceFontSize]
-$aInfo[2] = $aLoga[$eLOGA_TraceFontColor]
-$aInfo[3] = $aLoga[$eLOGA_TraceFontBkColor]
-$aInfo[4] = $aLoga[$eLOGA_TraceCharSet]
-Case $iLogaLevelType = $LOGA_DEBUG
-$aInfo[0] = $aLoga[$eLOGA_DebugFontName]
-$aInfo[1] = $aLoga[$eLOGA_DebugFontSize]
-$aInfo[2] = $aLoga[$eLOGA_DebugFontColor]
-$aInfo[3] = $aLoga[$eLOGA_DebugFontBkColor]
-$aInfo[4] = $aLoga[$eLOGA_DebugCharSet]
-Case $iLogaLevelType = $LOGA_INFO
-$aInfo[0] = $aLoga[$eLOGA_InfoFontName]
-$aInfo[1] = $aLoga[$eLOGA_InfoFontSize]
-$aInfo[2] = $aLoga[$eLOGA_InfoFontColor]
-$aInfo[3] = $aLoga[$eLOGA_InfoFontBkColor]
-$aInfo[4] = $aLoga[$eLOGA_InfoCharSet]
-Case $iLogaLevelType = $LOGA_WARN
-$aInfo[0] = $aLoga[$eLOGA_WarnFontName]
-$aInfo[1] = $aLoga[$eLOGA_WarnFontSize]
-$aInfo[2] = $aLoga[$eLOGA_WarnFontColor]
-$aInfo[3] = $aLoga[$eLOGA_WarnFontBkColor]
-$aInfo[4] = $aLoga[$eLOGA_WarnCharSet]
-Case $iLogaLevelType = $LOGA_ERROR
-$aInfo[0] = $aLoga[$eLOGA_ErrorFontName]
-$aInfo[1] = $aLoga[$eLOGA_ErrorFontSize]
-$aInfo[2] = $aLoga[$eLOGA_ErrorFontColor]
-$aInfo[3] = $aLoga[$eLOGA_ErrorFontBkColor]
-$aInfo[4] = $aLoga[$eLOGA_ErrorCharSet]
-Case $iLogaLevelType = $LOGA_FATAL
-$aInfo[0] = $aLoga[$eLOGA_FatalFontName]
-$aInfo[1] = $aLoga[$eLOGA_FatalFontSize]
-$aInfo[2] = $aLoga[$eLOGA_FatalFontColor]
-$aInfo[3] = $aLoga[$eLOGA_FatalFontBkColor]
-$aInfo[4] = $aLoga[$eLOGA_FatalCharSet]
+Case $9p = 32
+$9r[0] = $9h[$86]
+$9r[1] = $9h[$8a]
+$9r[2] = $9h[$88]
+$9r[3] = $9h[$89]
+$9r[4] = $9h[$8b]
+Case $9p = 16
+$9r[0] = $9h[$8d]
+$9r[1] = $9h[$8h]
+$9r[2] = $9h[$8f]
+$9r[3] = $9h[$8g]
+$9r[4] = $9h[$8i]
+Case $9p = 8
+$9r[0] = $9h[$8k]
+$9r[1] = $9h[$8o]
+$9r[2] = $9h[$8m]
+$9r[3] = $9h[$8n]
+$9r[4] = $9h[$8p]
+Case $9p = 4
+$9r[0] = $9h[$8r]
+$9r[1] = $9h[$8v]
+$9r[2] = $9h[$8t]
+$9r[3] = $9h[$8u]
+$9r[4] = $9h[$8w]
+Case $9p = 2
+$9r[0] = $9h[$8y]
+$9r[1] = $9h[$92]
+$9r[2] = $9h[$90]
+$9r[3] = $9h[$91]
+$9r[4] = $9h[$93]
+Case $9p = 1
+$9r[0] = $9h[$95]
+$9r[1] = $9h[$99]
+$9r[2] = $9h[$97]
+$9r[3] = $9h[$98]
+$9r[4] = $9h[$9a]
 Case Else
 EndSelect
-Return $aInfo
+Return $9r
 EndFunc
-Func __LogaWriteMessage($sLogaMessage, $iLogaLevelType, $iLogaInstance = 1, Const $iCurrentError = @error, Const $iCurrentExtended = @extended)
-If IsDllStruct($iLogaInstance) Then
-$iLogaInstance = $iLogaInstance.__InstanceIndex
+Func _11v($9b, $9p, $9c = 1, Const $9d = @error, Const $9e = @extended)
+If IsDllStruct($9c) Then
+$9c = $9c.__InstanceIndex
 Else
-If $__g_iLogaInstances = 0 Then _LogaNew()
-If $iLogaInstance > $__g_iLogaInstances Then $iLogaInstance = 1
-If $iLogaInstance <= 0 Then $iLogaInstance = 1
+If $7a = 0 Then _11q()
+If $9c > $7a Then $9c = 1
+If $9c <= 0 Then $9c = 1
 EndIf
-Local $aLoga = $__g_aaLogaInstances[$iLogaInstance - 1]
-Local $iLevel = $aLoga[$eLOGA_Level]
-If $aLoga[$eLOGA___InstanceIndex] = -1 Then Return SetError(0, 0, 0)
-If $iLevel = $LOGA_LEVEL_OFF Then Return SetError(0, 0, 0)
-If Not BitAND($__g_iLevel, $iLogaLevelType) Then
+Local $9h = $7c[$9c - 1]
+Local $9s = $9h[$7l]
+If $9h[$7i] = -1 Then Return SetError(0, 0, 0)
+If $9s = 0 Then Return SetError(0, 0, 0)
+If Not BitAND($7g, $9p) Then
 Return SetError(0, 0, 0)
 EndIf
-If $__g_iLevel = $LOGA_LEVEL_INSTANCE Then
-If Not BitAND($iLevel, $iLogaLevelType) Then
+If $7g = -1 Then
+If Not BitAND($9s, $9p) Then
 Return SetError(0, 0, 0)
 EndIf
 EndIf
-SetError($iCurrentError,$iCurrentExtended)
-Local $sFormatedMessage = __LogaFormatMessage($aLoga, $iLogaLevelType, $sLogaMessage)
-ConsoleWrite($sFormatedMessage)
-If $aLoga[$eLOGA_LogToStdError] Then ConsoleWriteError($sFormatedMessage)
-$aLoga[$eLOGA___LogIndex] += 1
-$__g_aaLogaInstances[$iLogaInstance - 1] = $aLoga
-If $aLoga[$eLOGA_LogToGUI] And((Not @Compiled) Or $aLoga[$eLOGA_ShowGUIOnCompiled] Or $__g_bShowAllGUIOnCompiled) Then
-Local $aFontInfo = __LogaFontInfo($aLoga, $iLogaLevelType)
-Local $FontName = $aFontInfo[0]
-Local $FontSize = $aFontInfo[1]
-Local $iFontColor = "0x" & $aFontInfo[2]
-Local $iFontBkColor = "0x" & $aFontInfo[3]
-Local $iFontCharSet = $aFontInfo[4]
-If $aLoga[$eLOGA_GUIShowLevelSymbol] Then
-__LogaGUIAppendText($aLoga[$eLOGA___hRichEdit], $sFormatedMessage, $FontName, $FontSize, $iFontColor, $iFontBkColor, $iFontCharSet, $aLoga[$eLOGA_AppendType])
+SetError($9d,$9e)
+Local $9q = _11t($9h, $9p, $9b)
+ConsoleWrite($9q)
+If $9h[$7q] Then ConsoleWriteError($9q)
+$9h[$7j] += 1
+$7c[$9c - 1] = $9h
+If $9h[$7p] And((Not @Compiled) Or $9h[$7r] Or $7f) Then
+Local $9t = _11u($9h, $9p)
+Local $9u = $9t[0]
+Local $9v = $9t[1]
+Local $9w = "0x" & $9t[2]
+Local $9x = "0x" & $9t[3]
+Local $9y = $9t[4]
+If $9h[$7w] Then
+_11w($9h[$7t], $9q, $9u, $9v, $9w, $9x, $9y, $9h[$7u])
 Else
-Local $sSymbol = StringMid($sFormatedMessage, 1)
-Local $sSymbolToReplace = $aLoga[$eLOGA_DebugSymbol] & "|" & $aLoga[$eLOGA_TraceSymbol] & "|" & $aLoga[$eLOGA_WarnSymbol] & "|" & $aLoga[$eLOGA_InfoSymbol] & "|" & $aLoga[$eLOGA_ErrorSymbol] & "|" & $aLoga[$eLOGA_FatalSymbol]
-$sSymbolToReplace = StringRegExpReplace($sSymbolToReplace, '+', '\+')
-If StringRegExp($sSymbol, $sSymbolToReplace) Then $sFormatedMessage = StringMid($sFormatedMessage, 2)
-__LogaGUIAppendText($aLoga[$eLOGA___hRichEdit], $sFormatedMessage, $FontName, $FontSize, $iFontColor, $iFontBkColor, $iFontCharSet, $aLoga[$eLOGA_AppendType])
+Local $9z = StringMid($9q, 1)
+Local $a0 = $9h[$8c] & "|" & $9h[$85] & "|" & $9h[$8q] & "|" & $9h[$8j] & "|" & $9h[$8x] & "|" & $9h[$94]
+$a0 = StringRegExpReplace($a0, '+', '\+')
+If StringRegExp($9z, $a0) Then $9q = StringMid($9q, 2)
+_11w($9h[$7t], $9q, $9u, $9v, $9w, $9x, $9y, $9h[$7u])
 EndIf
 EndIf
-If $aLoga[$eLOGA_LogToFile] Then
-If $aLoga[$eLOGA_LogFileAutoFlush] Then
-FileWrite($aLoga[$eLOGA_FilePath], $sFormatedMessage)
+If $9h[$7m] Then
+If $9h[$7n] Then
+FileWrite($9h[$82], $9q)
 Else
-FileWrite(Int($aLoga[$eLOGA_hFile]), $sFormatedMessage)
+FileWrite(Int($9h[$7o]), $9q)
 EndIf
 EndIf
 EndFunc
-Func __LogaGUIAppendText($hWnd, $sText, $iFontName, $iFontSize, $iFontColor, $iFontBkColor, $iFontCharSet, $iAppendType)
-ConsoleWrite($iFontName & @CRLF)
-Local $iLength = _GUICtrlRichEdit_GetTextLength($hWnd, True, True)
-Local $iCp = _GUICtrlRichEdit_GetCharPosOfNextWord($hWnd, $iLength)
-If $iAppendType = $LOGA_APPEND_END Then
-_GUICtrlRichEdit_AppendText($hWnd, $sText)
-_GUICtrlRichEdit_SetSel($hWnd, $iCp - 1, $iLength + StringLen($sText), False)
+Func _11w($k, $4v, $a1, $a2, $9w, $9x, $9y, $a3)
+ConsoleWrite($a1 & @CRLF)
+Local $2n = _iu($k, True, True)
+Local $a4 = _ip($k, $2n)
+If $a3 = 1 Then
+_i6($k, $4v)
+_kn($k, $a4 - 1, $2n + StringLen($4v), False)
 Else
-_GUICtrlRichEdit_SetSel($hWnd, 0, 0, True)
-_GUICtrlRichEdit_InsertText($hWnd, $sText)
-_GUICtrlRichEdit_SetSel($hWnd, 0, StringLen($sText) - 1, True)
+_kn($k, 0, 0, True)
+_jp($k, $4v)
+_kn($k, 0, StringLen($4v) - 1, True)
 EndIf
-_GUICtrlRichEdit_SetFont($hWnd, $iFontSize, $iFontName, $iFontCharSet)
-_GUICtrlRichEdit_SetCharColor($hWnd, $iFontColor)
-_GUICtrlRichEdit_SetCharBkColor($hWnd, $iFontBkColor)
-_GUICtrlRichEdit_Deselect($hWnd)
-_WinAPI_HideCaret($hWnd)
+_k9($k, $a2, $a1, $9y)
+_k3($k, $9w)
+_k2($k, $9x)
+_ig($k)
+_8a($k)
 EndFunc
-Func __LogaRefreshArrayFromStructure($tLoga, ByRef $aLoga)
-If IsArray($aLoga) Then
-$aLoga[$eLOGA___InstanceIndex] = $tLoga.__InstanceIndex
-$aLoga[$eLOGA___LogIndex] = $tLoga.__LogIndex
-$aLoga[$eLOGA_Name] = $tLoga.Name
-$aLoga[$eLOGA_Level] = $tLoga.Level
-$aLoga[$eLOGA_LogToFile] = $tLoga.LogToFile
-$aLoga[$eLOGA_LogFileAutoFlush] = $tLoga.LogFileAutoFlush
-$aLoga[$eLOGA_hFile] = $tLoga.hFile
-$aLoga[$eLOGA_LogToGUI] = $tLoga.LogToGUI
-$aLoga[$eLOGA_LogToStdError] = $tLoga.LogToStdError
-$aLoga[$eLOGA_ShowGUIOnCompiled] = $tLoga.ShowGUIOnCompiled
-$aLoga[$eLOGA___hGUI] = $tLoga.__hGUI
-$aLoga[$eLOGA___hRichEdit] = $tLoga.__hRichEdit
-$aLoga[$eLOGA_AppendType] = $tLoga.AppendType
-$aLoga[$eLOGA_GUIShowLevelSymbol] = $tLoga.GUIShowLevelSymbol
-$aLoga[$eLOGA_GUIBkColor] = Hex($tLoga.GUIBkColor)
-$aLoga[$eLOGA_Trans] = $tLoga.Trans
-$aLoga[$eLOGA_Left] = $tLoga.Left
-$aLoga[$eLOGA_Top] = $tLoga.Top
-$aLoga[$eLOGA_Width] = $tLoga.Width
-$aLoga[$eLOGA_Height] = $tLoga.Height
-$aLoga[$eLOGA_FilePath] = $tLoga.FilePath
-$aLoga[$eLOGA_Format] = $tLoga.Format
-$aLoga[$eLOGA_EndOfLine] = $tLoga.EndOfLine
-$aLoga[$eLOGA_TraceSymbol] = $tLoga.TraceSymbol
-$aLoga[$eLOGA_TraceFontName] = $tLoga.TraceFontName
-$aLoga[$eLOGA_TraceString] = $tLoga.TraceString
-$aLoga[$eLOGA_TraceFontColor] = Hex($tLoga.TraceFontColor)
-$aLoga[$eLOGA_TraceFontBkColor] =($tLoga.TraceFontBkColor = -1) ? $aLoga[$eLOGA_GUIBkColor] : Hex($tLoga.TraceFontBkColor)
-$aLoga[$eLOGA_TraceFontSize] = $tLoga.TraceFontSize
-$aLoga[$eLOGA_TraceCharSet] = $tLoga.TraceCharSet
-$aLoga[$eLOGA_DebugSymbol] = $tLoga.DebugSymbol
-$aLoga[$eLOGA_DebugFontName] = $tLoga.DebugFontName
-$aLoga[$eLOGA_DebugString] = $tLoga.DebugString
-$aLoga[$eLOGA_DebugFontColor] = Hex($tLoga.DebugFontColor)
-$aLoga[$eLOGA_DebugFontBkColor] =($tLoga.DebugFontBkColor = -1) ? $aLoga[$eLOGA_GUIBkColor] : Hex($tLoga.DebugFontBkColor)
-$aLoga[$eLOGA_DebugFontSize] = $tLoga.DebugFontSize
-$aLoga[$eLOGA_DebugCharSet] = $tLoga.DebugCharSet
-$aLoga[$eLOGA_InfoSymbol] = $tLoga.InfoSymbol
-$aLoga[$eLOGA_InfoFontName] = $tLoga.InfoFontName
-$aLoga[$eLOGA_InfoString] = $tLoga.InfoString
-$aLoga[$eLOGA_InfoFontColor] = Hex($tLoga.InfoFontColor)
-$aLoga[$eLOGA_InfoFontBkColor] =($tLoga.InfoFontBkColor = -1) ? $aLoga[$eLOGA_GUIBkColor] : Hex($tLoga.InfoFontBkColor)
-$aLoga[$eLOGA_InfoFontSize] = $tLoga.InfoFontSize
-$aLoga[$eLOGA_InfoCharSet] = $tLoga.InfoCharSet
-$aLoga[$eLOGA_WarnSymbol] = $tLoga.WarnSymbol
-$aLoga[$eLOGA_WarnFontName] = $tLoga.WarnFontName
-$aLoga[$eLOGA_WarnString] = $tLoga.WarnString
-$aLoga[$eLOGA_WarnFontColor] = Hex($tLoga.WarnFontColor)
-$aLoga[$eLOGA_WarnFontBkColor] =($tLoga.WarnFontBkColor = -1) ? $aLoga[$eLOGA_GUIBkColor] : Hex($tLoga.WarnFontBkColor)
-$aLoga[$eLOGA_WarnFontSize] = $tLoga.WarnFontSize
-$aLoga[$eLOGA_WarnCharSet] = $tLoga.WarnCharSet
-$aLoga[$eLOGA_ErrorSymbol] = $tLoga.ErrorSymbol
-$aLoga[$eLOGA_ErrorFontName] = $tLoga.ErrorFontName
-$aLoga[$eLOGA_ErrorString] = $tLoga.ErrorString
-$aLoga[$eLOGA_ErrorFontColor] = Hex($tLoga.ErrorFontColor)
-$aLoga[$eLOGA_ErrorFontBkColor] =($tLoga.ErrorFontBkColor = -1) ? $aLoga[$eLOGA_GUIBkColor] : Hex($tLoga.ErrorFontBkColor)
-$aLoga[$eLOGA_ErrorFontSize] = $tLoga.ErrorFontSize
-$aLoga[$eLOGA_ErrorCharSet] = $tLoga.ErrorCharSet
-$aLoga[$eLOGA_FatalSymbol] = $tLoga.FatalSymbol
-$aLoga[$eLOGA_FatalFontName] = $tLoga.FatalFontName
-$aLoga[$eLOGA_FatalString] = $tLoga.FatalString
-$aLoga[$eLOGA_FatalFontColor] = Hex($tLoga.FatalFontColor)
-$aLoga[$eLOGA_FatalFontBkColor] =($tLoga.FatalFontBkColor = -1) ? $aLoga[$eLOGA_GUIBkColor] : Hex($tLoga.FatalFontBkColor)
-$aLoga[$eLOGA_FatalFontSize] = $tLoga.FatalFontSize
-$aLoga[$eLOGA_FatalCharSet] = $tLoga.FatalCharSet
+Func _120($9g, ByRef $9h)
+If IsArray($9h) Then
+$9h[$7i] = $9g.__InstanceIndex
+$9h[$7j] = $9g.__LogIndex
+$9h[$7k] = $9g.Name
+$9h[$7l] = $9g.Level
+$9h[$7m] = $9g.LogToFile
+$9h[$7n] = $9g.LogFileAutoFlush
+$9h[$7o] = $9g.hFile
+$9h[$7p] = $9g.LogToGUI
+$9h[$7q] = $9g.LogToStdError
+$9h[$7r] = $9g.ShowGUIOnCompiled
+$9h[$7s] = $9g.__hGUI
+$9h[$7t] = $9g.__hRichEdit
+$9h[$7u] = $9g.AppendType
+$9h[$7w] = $9g.GUIShowLevelSymbol
+$9h[$7v] = Hex($9g.GUIBkColor)
+$9h[$7x] = $9g.Trans
+$9h[$7y] = $9g.Left
+$9h[$7z] = $9g.Top
+$9h[$80] = $9g.Width
+$9h[$81] = $9g.Height
+$9h[$82] = $9g.FilePath
+$9h[$83] = $9g.Format
+$9h[$84] = $9g.EndOfLine
+$9h[$85] = $9g.TraceSymbol
+$9h[$86] = $9g.TraceFontName
+$9h[$87] = $9g.TraceString
+$9h[$88] = Hex($9g.TraceFontColor)
+$9h[$89] =($9g.TraceFontBkColor = -1) ? $9h[$7v] : Hex($9g.TraceFontBkColor)
+$9h[$8a] = $9g.TraceFontSize
+$9h[$8b] = $9g.TraceCharSet
+$9h[$8c] = $9g.DebugSymbol
+$9h[$8d] = $9g.DebugFontName
+$9h[$8e] = $9g.DebugString
+$9h[$8f] = Hex($9g.DebugFontColor)
+$9h[$8g] =($9g.DebugFontBkColor = -1) ? $9h[$7v] : Hex($9g.DebugFontBkColor)
+$9h[$8h] = $9g.DebugFontSize
+$9h[$8i] = $9g.DebugCharSet
+$9h[$8j] = $9g.InfoSymbol
+$9h[$8k] = $9g.InfoFontName
+$9h[$8l] = $9g.InfoString
+$9h[$8m] = Hex($9g.InfoFontColor)
+$9h[$8n] =($9g.InfoFontBkColor = -1) ? $9h[$7v] : Hex($9g.InfoFontBkColor)
+$9h[$8o] = $9g.InfoFontSize
+$9h[$8p] = $9g.InfoCharSet
+$9h[$8q] = $9g.WarnSymbol
+$9h[$8r] = $9g.WarnFontName
+$9h[$8s] = $9g.WarnString
+$9h[$8t] = Hex($9g.WarnFontColor)
+$9h[$8u] =($9g.WarnFontBkColor = -1) ? $9h[$7v] : Hex($9g.WarnFontBkColor)
+$9h[$8v] = $9g.WarnFontSize
+$9h[$8w] = $9g.WarnCharSet
+$9h[$8x] = $9g.ErrorSymbol
+$9h[$8y] = $9g.ErrorFontName
+$9h[$8z] = $9g.ErrorString
+$9h[$90] = Hex($9g.ErrorFontColor)
+$9h[$91] =($9g.ErrorFontBkColor = -1) ? $9h[$7v] : Hex($9g.ErrorFontBkColor)
+$9h[$92] = $9g.ErrorFontSize
+$9h[$93] = $9g.ErrorCharSet
+$9h[$94] = $9g.FatalSymbol
+$9h[$95] = $9g.FatalFontName
+$9h[$96] = $9g.FatalString
+$9h[$97] = Hex($9g.FatalFontColor)
+$9h[$98] =($9g.FatalFontBkColor = -1) ? $9h[$7v] : Hex($9g.FatalFontBkColor)
+$9h[$99] = $9g.FatalFontSize
+$9h[$9a] = $9g.FatalCharSet
 EndIf
 EndFunc
-Func __CreateLogGUI($sTitle, $iWidth, $iHeight, $ileft, $iTop, $iGUIBkColor, $iTrans, $iShowOnCompiled)
-Local $hGUI = GUICreate($sTitle, $iWidth, $iHeight, $ileft, $iTop, BitOR($WS_SIZEBOX, $WS_MINIMIZEBOX), $WS_EX_TOPMOST)
-Local $hRitchEdit = _GUICtrlRichEdit_Create($hGUI, "", 0, 0, $iWidth, $iHeight, $ES_READONLY + $WS_HSCROLL + $ES_MULTILINE + $WS_VSCROLL + $ES_AUTOVSCROLL)
-_WinAPI_HideCaret($hRitchEdit)
-GUISetBkColor($iGUIBkColor, $hGUI)
-_GUICtrlRichEdit_SetBkColor($hRitchEdit, $iGUIBkColor)
-WinSetTrans($hGUI, "", $iTrans)
-Local $aInfo[2] = [$hGUI, $hRitchEdit]
-If((Not @Compiled) Or $iShowOnCompiled Or $__g_bShowAllGUIOnCompiled) Then
-GUISetState(@SW_SHOW, $hGUI)
+Func _121($a5, $2w, $2x, $4y, $4z, $a6, $a7, $a8)
+Local $9o = GUICreate($a5, $2w, $2x, $4y, $4z, BitOR(0x00040000, 0x00020000), 0x00000008)
+Local $9l = _ie($9o, "", 0, 0, $2w, $2x, 2048 + 0x00100000 + 4 + 0x00200000 + 64)
+_8a($9l)
+GUISetBkColor($a6, $9o)
+_k4($9l, $a6)
+WinSetTrans($9o, "", $a7)
+Local $9r[2] = [$9o, $9l]
+If((Not @Compiled) Or $a8 Or $7f) Then
+GUISetState(@SW_SHOW, $9o)
 EndIf
-Return $aInfo
+Return $9r
 EndFunc
-Func __LogaGetRichEditHandleFromWindowHandle($hWnd)
-Local $hRitchEdit = 0
-For $i = 0 To $__g_iLogaInstances - 1
-If($__g_aaLogaInstances[$i])[$eLOGA___hGUI] = $hWnd Then
-$hRitchEdit =($__g_aaLogaInstances[$i])[$eLOGA___hRichEdit]
+Func _122($k)
+Local $9l = 0
+For $1c = 0 To $7a - 1
+If($7c[$1c])[$7s] = $k Then
+$9l =($7c[$1c])[$7t]
 ExitLoop
 EndIf
 Next
-Return $hRitchEdit
+Return $9l
 EndFunc
-Func __LogaLoadSettingsFromString($tLoga, $sLogaSettings)
-Local Const $sValidVariables = "Name|Level|LogToFile|LogFileAutoFlush|LogToGUI|ShowGUIOnCompiled|LogToStdError|GUIShowLevelSymbol|GUIBkColor|" & "Trans|Left|Top|Width|Height|FilePath|Format|EndOfLine|AppendType|" & "TraceSymbol|TraceFontName|TraceString|TraceFontColor|TraceFontBkColor|TraceFontSize|TraceCharSet|" & "DebugSymbol|DebugFontName|DebugString|DebugFontColor|DebugFontBkColor|DebugFontSize|DebugCharSet|" & "InfoSymbol|InfoFontName|InfoString|InfoFontColor|InfoFontBkColor|InfoFontSize|InfoCharSet|" & "WarnSymbol|WarnFontName|WarnString|WarnFontColor|WarnFontBkColor|WarnFontSize|WarnCharSet|" & "ErrorSymbol|ErrorFontName|ErrorString|ErrorFontColor|ErrorFontBkColor|ErrorFontSize|ErrorCharSet|" & "FatalSymbol|FatalFontName|FatalString|FatalFontColor|FatalFontBkColor|FatalFontSize|FatalCharSet|"
-If $sLogaSettings = "" Then Return
-If IsDllStruct($tLoga) Then
-Local $aRegSettings = StringRegExp($sLogaSettings, '(?>' & $sValidVariables & ')="[^"]*"', 3)
-Local $aSettingName = ""
-Local $sSettingName = ""
-Local $aSettingValue = ""
-Local $sSettingValue = ""
-Local $sExeValue = ""
-For $i = 0 To UBound($aRegSettings) - 1
-$aSettingName = StringRegExp($aRegSettings[$i], '^[^=]+', 3)
-$aSettingValue = StringRegExp($aRegSettings[$i], '"([^"]*)"', 3)
-If IsArray($aSettingName) And IsArray($aSettingValue) Then
-$sSettingName = $aSettingName[0]
-$sSettingValue = $aSettingValue[0]
-$sExeValue = StringRegExp($sSettingValue, "true|false|0[xX][0-9a-fA-F]+|^\d+$|^\$") ? $sSettingValue : '"' & $sSettingValue & '"'
-If StringRegExp($sSettingName, $sValidVariables) Then
-Execute('DllStructSetData($tLoga,"' & $sSettingName & '",' & $sExeValue & ')')
+Func _123($9g, $9f)
+Local Const $a9 = "Name|Level|LogToFile|LogFileAutoFlush|LogToGUI|ShowGUIOnCompiled|LogToStdError|GUIShowLevelSymbol|GUIBkColor|" & "Trans|Left|Top|Width|Height|FilePath|Format|EndOfLine|AppendType|" & "TraceSymbol|TraceFontName|TraceString|TraceFontColor|TraceFontBkColor|TraceFontSize|TraceCharSet|" & "DebugSymbol|DebugFontName|DebugString|DebugFontColor|DebugFontBkColor|DebugFontSize|DebugCharSet|" & "InfoSymbol|InfoFontName|InfoString|InfoFontColor|InfoFontBkColor|InfoFontSize|InfoCharSet|" & "WarnSymbol|WarnFontName|WarnString|WarnFontColor|WarnFontBkColor|WarnFontSize|WarnCharSet|" & "ErrorSymbol|ErrorFontName|ErrorString|ErrorFontColor|ErrorFontBkColor|ErrorFontSize|ErrorCharSet|" & "FatalSymbol|FatalFontName|FatalString|FatalFontColor|FatalFontBkColor|FatalFontSize|FatalCharSet|"
+If $9f = "" Then Return
+If IsDllStruct($9g) Then
+Local $aa = StringRegExp($9f, '(?>' & $a9 & ')="[^"]*"', 3)
+Local $ab = ""
+Local $ac = ""
+Local $ad = ""
+Local $ae = ""
+Local $af = ""
+For $1c = 0 To UBound($aa) - 1
+$ab = StringRegExp($aa[$1c], '^[^=]+', 3)
+$ad = StringRegExp($aa[$1c], '"([^"]*)"', 3)
+If IsArray($ab) And IsArray($ad) Then
+$ac = $ab[0]
+$ae = $ad[0]
+$af = StringRegExp($ae, "true|false|0[xX][0-9a-fA-F]+|^\d+$|^\$") ? $ae : '"' & $ae & '"'
+If StringRegExp($ac, $a9) Then
+Execute('DllStructSetData($tLoga,"' & $ac & '",' & $af & ')')
 EndIf
 EndIf
 Next
 EndIf
 EndFunc
-Func __LogaSetDefaultSettings($tLoga)
-If IsDllStruct($tLoga) Then
-$tLoga.Name = StringFormat("%s%05s", "Loga-", $tLoga.__InstanceIndex)
-$tLoga.Level = $LOGA_LEVEL_ALL
-$tLoga.LogToFile = True
-$tLoga.LogFileAutoFlush = True
-$tLoga.hFile = 0
-$tLoga.LogToGUI = False
-$tLoga.LogToStdError = False
-$tLoga.ShowGUIOnCompiled = False
-$tLoga.__hGUI = 0
-$tLoga.___hRichEdit = 0
-$tLoga.AppendType = $LOGA_APPEND_END
-$tLoga.GUIShowLevelSymbol = False
-$tLoga.GUIBkColor = 0xFFFFFF
-$tLoga.Trans = 255
-$tLoga.Left = 1
-$tLoga.Top = 1
-$tLoga.Width = 600
-$tLoga.Height = 300
-$tLoga.FilePath = @ScriptDir & "\" & @YEAR & @MON & @MDAY & @HOUR & @MIN & "-Loga-" & $tLoga.__InstanceIndex & ".log"
-$tLoga.Format = "{Symbol}{LogIndex} {LevelName} {LongDateTime} {Message}"
-$tLoga.EndOfLine = @CRLF
-$tLoga.TraceSymbol = ">"
-$tLoga.TraceFontName = "Consolas"
-$tLoga.TraceString = StringFormat("%-7s", "[Trace]")
-$tLoga.TraceFontColor = 0x000000
-$tLoga.TraceFontBkColor = -1
-$tLoga.TraceFontSize = 10
-$tLoga.TraceCharSet = 1
-$tLoga.DebugSymbol = ">"
-$tLoga.DebugFontName = "Consolas"
-$tLoga.DebugString = StringFormat("%-7s", "[Debug]")
-$tLoga.DebugFontColor = 0x000000
-$tLoga.DebugFontBkColor = -1
-$tLoga.DebugFontSize = 10
-$tLoga.DebugCharSet = 1
-$tLoga.InfoSymbol = "+"
-$tLoga.InfoFontName = "Consolas"
-$tLoga.InfoString = StringFormat("%-7s", "[Info]")
-$tLoga.InfoFontColor = 0x000000
-$tLoga.InfoFontBkColor = -1
-$tLoga.InfoFontSize = 10
-$tLoga.InfoCharSet = 1
-$tLoga.WarnSymbol = "-"
-$tLoga.WarnFontName = "Consolas"
-$tLoga.WarnString = StringFormat("%-7s", "[Warn]")
-$tLoga.WarnFontColor = 0x000000
-$tLoga.WarnFontBkColor = -1
-$tLoga.WarnFontSize = 10
-$tLoga.WarnCharSet = 1
-$tLoga.ErrorSymbol = "!"
-$tLoga.ErrorFontName = "Consolas"
-$tLoga.ErrorString = StringFormat("%-7s", "[Error]")
-$tLoga.ErrorFontColor = 0x000000
-$tLoga.ErrorFontBkColor = -1
-$tLoga.ErrorFontSize = 10
-$tLoga.ErrorCharSet = 1
-$tLoga.FatalSymbol = "!"
-$tLoga.FatalFontName = "Consolas"
-$tLoga.FatalString = StringFormat("%-7s", "[Fatal]")
-$tLoga.FatalFontColor = 0x000000
-$tLoga.FatalFontBkColor = -1
-$tLoga.FatalFontSize = 10
-$tLoga.FatalCharSet = 1
+Func _124($9g)
+If IsDllStruct($9g) Then
+$9g.Name = StringFormat("%s%05s", "Loga-", $9g.__InstanceIndex)
+$9g.Level = $7h
+$9g.LogToFile = True
+$9g.LogFileAutoFlush = True
+$9g.hFile = 0
+$9g.LogToGUI = False
+$9g.LogToStdError = False
+$9g.ShowGUIOnCompiled = False
+$9g.__hGUI = 0
+$9g.___hRichEdit = 0
+$9g.AppendType = 1
+$9g.GUIShowLevelSymbol = False
+$9g.GUIBkColor = 0xFFFFFF
+$9g.Trans = 255
+$9g.Left = 1
+$9g.Top = 1
+$9g.Width = 600
+$9g.Height = 300
+$9g.FilePath = @ScriptDir & "\" & @YEAR & @MON & @MDAY & @HOUR & @MIN & "-Loga-" & $9g.__InstanceIndex & ".log"
+$9g.Format = "{Symbol}{LogIndex} {LevelName} {LongDateTime} {Message}"
+$9g.EndOfLine = @CRLF
+$9g.TraceSymbol = ">"
+$9g.TraceFontName = "Consolas"
+$9g.TraceString = StringFormat("%-7s", "[Trace]")
+$9g.TraceFontColor = 0x000000
+$9g.TraceFontBkColor = -1
+$9g.TraceFontSize = 10
+$9g.TraceCharSet = 1
+$9g.DebugSymbol = ">"
+$9g.DebugFontName = "Consolas"
+$9g.DebugString = StringFormat("%-7s", "[Debug]")
+$9g.DebugFontColor = 0x000000
+$9g.DebugFontBkColor = -1
+$9g.DebugFontSize = 10
+$9g.DebugCharSet = 1
+$9g.InfoSymbol = "+"
+$9g.InfoFontName = "Consolas"
+$9g.InfoString = StringFormat("%-7s", "[Info]")
+$9g.InfoFontColor = 0x000000
+$9g.InfoFontBkColor = -1
+$9g.InfoFontSize = 10
+$9g.InfoCharSet = 1
+$9g.WarnSymbol = "-"
+$9g.WarnFontName = "Consolas"
+$9g.WarnString = StringFormat("%-7s", "[Warn]")
+$9g.WarnFontColor = 0x000000
+$9g.WarnFontBkColor = -1
+$9g.WarnFontSize = 10
+$9g.WarnCharSet = 1
+$9g.ErrorSymbol = "!"
+$9g.ErrorFontName = "Consolas"
+$9g.ErrorString = StringFormat("%-7s", "[Error]")
+$9g.ErrorFontColor = 0x000000
+$9g.ErrorFontBkColor = -1
+$9g.ErrorFontSize = 10
+$9g.ErrorCharSet = 1
+$9g.FatalSymbol = "!"
+$9g.FatalFontName = "Consolas"
+$9g.FatalString = StringFormat("%-7s", "[Fatal]")
+$9g.FatalFontColor = 0x000000
+$9g.FatalFontBkColor = -1
+$9g.FatalFontSize = 10
+$9g.FatalCharSet = 1
 EndIf
 EndFunc
-Func __LogaCreateSettingsArrayFromStructure($tLoga)
-If IsDllStruct($tLoga) Then
-Local $aLoga[65]
-$aLoga[$eLOGA___InstanceIndex] = $tLoga.__InstanceIndex
-$aLoga[$eLOGA_Name] = $tLoga.Name
-$aLoga[$eLOGA_Level] = $tLoga.Level
-$aLoga[$eLOGA_LogToFile] = $tLoga.LogToFile
-$aLoga[$eLOGA_LogFileAutoFlush] = $tLoga.LogFileAutoFlush
-$aLoga[$eLOGA_hFile] = $tLoga.hFile
-$aLoga[$eLOGA_LogToGUI] = $tLoga.LogToGUI
-$aLoga[$eLOGA_LogToStdError] = $tLoga.LogToStdError
-$aLoga[$eLOGA_ShowGUIOnCompiled] = $tLoga.ShowGUIOnCompiled
-$aLoga[$eLOGA___hGUI] = $tLoga.__hGUI
-$aLoga[$eLOGA___hRichEdit] = $tLoga.__hRichEdit
-$aLoga[$eLOGA_GUIShowLevelSymbol] = $tLoga.GUIShowLevelSymbol
-$aLoga[$eLOGA_GUIBkColor] = $tLoga.GUIBkColor
-$aLoga[$eLOGA_Trans] = $tLoga.Trans
-$aLoga[$eLOGA_Left] = $tLoga.Left
-$aLoga[$eLOGA_Top] = $tLoga.Top
-$aLoga[$eLOGA_Width] = $tLoga.Width
-$aLoga[$eLOGA_Height] = $tLoga.Height
-$aLoga[$eLOGA_FilePath] = $tLoga.FilePath
-$aLoga[$eLOGA_Format] = $tLoga.Format
-$aLoga[$eLOGA_EndOfLine] = $tLoga.EndOfLine
-$aLoga[$eLOGA_TraceSymbol] = $tLoga.TraceSymbol
-$aLoga[$eLOGA_TraceFontName] = $tLoga.TraceFontName
-$aLoga[$eLOGA_TraceString] = $tLoga.TraceString
-$aLoga[$eLOGA_TraceFontColor] = $tLoga.TraceFontColor
-$aLoga[$eLOGA_TraceFontBkColor] = $tLoga.TraceFontBkColor
-$aLoga[$eLOGA_TraceFontSize] = $tLoga.TraceFontSize
-$aLoga[$eLOGA_TraceCharSet] = $tLoga.TraceCharSet
-$aLoga[$eLOGA_DebugSymbol] = $tLoga.DebugSymbol
-$aLoga[$eLOGA_DebugFontName] = $tLoga.DebugFontName
-$aLoga[$eLOGA_DebugString] = $tLoga.DebugString
-$aLoga[$eLOGA_DebugFontColor] = $tLoga.DebugFontColor
-$aLoga[$eLOGA_DebugFontBkColor] = $tLoga.DebugFontBkColor
-$aLoga[$eLOGA_DebugFontSize] = $tLoga.DebugFontSize
-$aLoga[$eLOGA_DebugCharSet] = $tLoga.DebugCharSet
-$aLoga[$eLOGA_InfoSymbol] = $tLoga.InfoSymbol
-$aLoga[$eLOGA_InfoFontName] = $tLoga.InfoFontName
-$aLoga[$eLOGA_InfoString] = $tLoga.InfoString
-$aLoga[$eLOGA_InfoFontColor] = $tLoga.InfoFontColor
-$aLoga[$eLOGA_InfoFontBkColor] = $tLoga.InfoFontBkColor
-$aLoga[$eLOGA_InfoFontSize] = $tLoga.InfoFontSize
-$aLoga[$eLOGA_InfoCharSet] = $tLoga.InfoCharSet
-$aLoga[$eLOGA_WarnSymbol] = $tLoga.WarnSymbol
-$aLoga[$eLOGA_WarnFontName] = $tLoga.WarnFontName
-$aLoga[$eLOGA_WarnString] = $tLoga.WarnString
-$aLoga[$eLOGA_WarnFontColor] = $tLoga.WarnFontColor
-$aLoga[$eLOGA_WarnFontBkColor] = $tLoga.WarnFontBkColor
-$aLoga[$eLOGA_WarnFontSize] = $tLoga.WarnFontSize
-$aLoga[$eLOGA_WarnCharSet] = $tLoga.WarnCharSet
-$aLoga[$eLOGA_ErrorSymbol] = $tLoga.ErrorSymbol
-$aLoga[$eLOGA_ErrorFontName] = $tLoga.ErrorFontName
-$aLoga[$eLOGA_ErrorString] = $tLoga.ErrorString
-$aLoga[$eLOGA_ErrorFontColor] = $tLoga.ErrorFontColor
-$aLoga[$eLOGA_ErrorFontBkColor] = $tLoga.ErrorFontBkColor
-$aLoga[$eLOGA_ErrorFontSize] = $tLoga.ErrorFontSize
-$aLoga[$eLOGA_ErrorCharSet] = $tLoga.ErrorCharSet
-$aLoga[$eLOGA_FatalSymbol] = $tLoga.FatalSymbol
-$aLoga[$eLOGA_FatalFontName] = $tLoga.FatalFontName
-$aLoga[$eLOGA_FatalString] = $tLoga.FatalString
-$aLoga[$eLOGA_FatalFontColor] = $tLoga.FatalFontColor
-$aLoga[$eLOGA_FatalFontBkColor] = $tLoga.FatalFontBkColor
-$aLoga[$eLOGA_FatalFontSize] = $tLoga.FatalFontSize
-$aLoga[$eLOGA_FatalCharSet] = $tLoga.FatalCharSet
+Func _125($9g)
+If IsDllStruct($9g) Then
+Local $9h[65]
+$9h[$7i] = $9g.__InstanceIndex
+$9h[$7k] = $9g.Name
+$9h[$7l] = $9g.Level
+$9h[$7m] = $9g.LogToFile
+$9h[$7n] = $9g.LogFileAutoFlush
+$9h[$7o] = $9g.hFile
+$9h[$7p] = $9g.LogToGUI
+$9h[$7q] = $9g.LogToStdError
+$9h[$7r] = $9g.ShowGUIOnCompiled
+$9h[$7s] = $9g.__hGUI
+$9h[$7t] = $9g.__hRichEdit
+$9h[$7w] = $9g.GUIShowLevelSymbol
+$9h[$7v] = $9g.GUIBkColor
+$9h[$7x] = $9g.Trans
+$9h[$7y] = $9g.Left
+$9h[$7z] = $9g.Top
+$9h[$80] = $9g.Width
+$9h[$81] = $9g.Height
+$9h[$82] = $9g.FilePath
+$9h[$83] = $9g.Format
+$9h[$84] = $9g.EndOfLine
+$9h[$85] = $9g.TraceSymbol
+$9h[$86] = $9g.TraceFontName
+$9h[$87] = $9g.TraceString
+$9h[$88] = $9g.TraceFontColor
+$9h[$89] = $9g.TraceFontBkColor
+$9h[$8a] = $9g.TraceFontSize
+$9h[$8b] = $9g.TraceCharSet
+$9h[$8c] = $9g.DebugSymbol
+$9h[$8d] = $9g.DebugFontName
+$9h[$8e] = $9g.DebugString
+$9h[$8f] = $9g.DebugFontColor
+$9h[$8g] = $9g.DebugFontBkColor
+$9h[$8h] = $9g.DebugFontSize
+$9h[$8i] = $9g.DebugCharSet
+$9h[$8j] = $9g.InfoSymbol
+$9h[$8k] = $9g.InfoFontName
+$9h[$8l] = $9g.InfoString
+$9h[$8m] = $9g.InfoFontColor
+$9h[$8n] = $9g.InfoFontBkColor
+$9h[$8o] = $9g.InfoFontSize
+$9h[$8p] = $9g.InfoCharSet
+$9h[$8q] = $9g.WarnSymbol
+$9h[$8r] = $9g.WarnFontName
+$9h[$8s] = $9g.WarnString
+$9h[$8t] = $9g.WarnFontColor
+$9h[$8u] = $9g.WarnFontBkColor
+$9h[$8v] = $9g.WarnFontSize
+$9h[$8w] = $9g.WarnCharSet
+$9h[$8x] = $9g.ErrorSymbol
+$9h[$8y] = $9g.ErrorFontName
+$9h[$8z] = $9g.ErrorString
+$9h[$90] = $9g.ErrorFontColor
+$9h[$91] = $9g.ErrorFontBkColor
+$9h[$92] = $9g.ErrorFontSize
+$9h[$93] = $9g.ErrorCharSet
+$9h[$94] = $9g.FatalSymbol
+$9h[$95] = $9g.FatalFontName
+$9h[$96] = $9g.FatalString
+$9h[$97] = $9g.FatalFontColor
+$9h[$98] = $9g.FatalFontBkColor
+$9h[$99] = $9g.FatalFontSize
+$9h[$9a] = $9g.FatalCharSet
 EndIf
-Return $aLoga
+Return $9h
 EndFunc
-Global $sLogFilePath = 'FilePath="AutoCharts.log"'
-Global $hLoga1 = _LogaNew($sLogFilePath)
-Local $source
-Local $destination
-Global $timer
-Func VerifyDropbox()
-If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then
-$bDBVerified = True
-IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
+Global $ag = 'FilePath="AutoCharts.log"'
+Global $ah = _11q($ag)
+Local $ai
+Local $aj
+Global $ak
+Func _126()
+If FileExists($e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then
+$a = True
+IniWrite($5, 'Settings', 'DBVerified', $a)
 Else
-$bDBVerified = False
-IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
+$a = False
+IniWrite($5, 'Settings', 'DBVerified', $a)
 SetError(50)
 EndIf
 EndFunc
-Func SyncronizeDataFiles()
+Func _127()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files"
-$destination = $DatabaseDir & "\fin_backup_files"
-$timer = TimerInit()
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "")
-$source = $DatabaseDir & "\fin_backup_files"
-$destination = @ScriptDir & $CSVDataDir
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Synced Dropbox data with Autocharts Data")
-$source = $DatabaseDir & "\amCharts"
-$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Downloaded amChart Scripts from Database")
+$ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files"
+$aj = $f & "\fin_backup_files"
+$ak = TimerInit()
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "")
+$ai = $f & "\fin_backup_files"
+$aj = @ScriptDir & $d
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Synced Dropbox data with Autocharts Data")
+$ai = $f & "\amCharts"
+$aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
-Func PullCatalystData()
+Func _128()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst"
-$destination = $DatabaseDir & "\fin_backup_files\Catalyst"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-$source = $DatabaseDir & "\fin_backup_files\Catalyst"
-$destination = @ScriptDir & $CSVDataDir & "\Catalyst"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Pulled All Catalyst Data from Dropbox")
-$source = $DatabaseDir & "\amCharts"
-$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Downloaded amChart Scripts from Database")
+$ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst"
+$aj = $f & "\fin_backup_files\Catalyst"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$ai = $f & "\fin_backup_files\Catalyst"
+$aj = @ScriptDir & $d & "\Catalyst"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Pulled All Catalyst Data from Dropbox")
+$ai = $f & "\amCharts"
+$aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
-Func PullCatalystFundData()
+Func _129()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $CurrentFund & "\"
-$destination = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-$source = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
-$destination = @ScriptDir & $CSVDataDir & "\Catalyst\" & $CurrentFund & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
-$source = $DatabaseDir & "\amCharts"
-$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Downloaded amChart Scripts from Database")
+$ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $4 & "\"
+$aj = $f & "\fin_backup_files\Catalyst\" & $4 & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$ai = $f & "\fin_backup_files\Catalyst\" & $4 & "\"
+$aj = @ScriptDir & $d & "\Catalyst\" & $4 & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Pulled " & $4 & " Data from Dropbox")
+$ai = $f & "\amCharts"
+$aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
-Func PullRationalData()
+Func _12a()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\"
-$destination = $DatabaseDir & "\fin_backup_files\Rational\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-$source = $DatabaseDir & "\fin_backup_files\Rational\"
-$destination = @ScriptDir & $CSVDataDir & "\Rational\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Pulled Rational Data from Dropbox")
-$source = $DatabaseDir & "\amCharts"
-$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Downloaded amChart Scripts from Database")
+$ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\"
+$aj = $f & "\fin_backup_files\Rational\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$ai = $f & "\fin_backup_files\Rational\"
+$aj = @ScriptDir & $d & "\Rational\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Pulled Rational Data from Dropbox")
+$ai = $f & "\amCharts"
+$aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
-Func PullRationalFundData()
+Func _12b()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $CurrentFund & "\"
-$destination = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-$source = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
-$destination = @ScriptDir & $CSVDataDir & "\Rational\" & $CurrentFund & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
-$source = $DatabaseDir & "\amCharts"
-$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Downloaded amChart Scripts from Database")
+$ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $4 & "\"
+$aj = $f & "\fin_backup_files\Rational\" & $4 & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$ai = $f & "\fin_backup_files\Rational\" & $4 & "\"
+$aj = @ScriptDir & $d & "\Rational\" & $4 & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Pulled " & $4 & " Data from Dropbox")
+$ai = $f & "\amCharts"
+$aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
-Func PullStrategySharesFundData()
+Func _12c()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $CurrentFund & "\"
-$destination = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-$source = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
-$destination = @ScriptDir & $CSVDataDir & "\StrategyShares\" & $CurrentFund & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
-$source = $DatabaseDir & "\amCharts"
-$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
-_LogaInfo("Downloaded amChart Scripts from Database")
+$ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $4 & "\"
+$aj = $f & "\fin_backup_files\StrategyShares\" & $4 & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$ai = $f & "\fin_backup_files\StrategyShares\" & $4 & "\"
+$aj = @ScriptDir & $d & "\StrategyShares\" & $4 & "\"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Pulled " & $4 & " Data from Dropbox")
+$ai = $f & "\amCharts"
+$aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+_119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
-Func UploadamCharts()
+Func _12d()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = "C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\ChartBuilder\public\scripts"
-$destination = $DatabaseDir & "\amCharts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+$ai = "C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\ChartBuilder\public\scripts"
+$aj = $f & "\amCharts"
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
 SplashOff()
-_LogaInfo("Uploaded amCharts Scripts to Database")
+_119("Uploaded amCharts Scripts to Database")
 EndFunc
 #Au3Stripper_Ignore_Funcs=_iHoverOn,_iHoverOff,_iFullscreenToggleBtn,_cHvr_CSCP_X64,_cHvr_CSCP_X86,_iControlDelete
-Global $GUIThemeColor = "0x13161C"
-Global $FontThemeColor = "0xFFFFFF"
-Global $GUIBorderColor = "0x2D2D2D"
-Global $ButtonBKColor = "0x00796b"
-Global $ButtonTextColor = "0xFFFFFF"
-Global $CB_Radio_Color = "0xFFFFFF"
-Global $GUI_Theme_Name = "DarkTealV2"
-Global $CB_Radio_Hover_Color = "0xD8D8D8"
-Global $CB_Radio_CheckMark_Color = "0x1a1a1a"
-Func _SetTheme($ThemeSelect = "DarkTeal")
-$GUI_Theme_Name = $ThemeSelect
-Switch($ThemeSelect)
+Global $al = "0x13161C"
+Global $am = "0xFFFFFF"
+Global $an = "0x2D2D2D"
+Global $ao = "0x00796b"
+Global $ap = "0xFFFFFF"
+Global $aq = "0xFFFFFF"
+Global $ar = "DarkTealV2"
+Global $as = "0xD8D8D8"
+Global $at = "0x1a1a1a"
+Func _12e($au = "DarkTeal")
+$ar = $au
+Switch($au)
 Case "LightTeal"
-$GUIThemeColor = "0xF4F4F4"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0x00796b"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xF4F4F4"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0x00796b"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case "DarkTeal"
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0x00796b"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0x00796b"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkTealV2"
-$GUIThemeColor = "0x13161C"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0x35635B"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x13161C"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0x35635B"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkRuby"
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0x712043"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0x712043"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkMidnightTeal"
-$GUIThemeColor = "0x0A0D16"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x242B47"
-$ButtonBKColor = "0x336058"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x0A0D16"
+$am = "0xFFFFFF"
+$an = "0x242B47"
+$ao = "0x336058"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkMidnightCyan"
-$GUIThemeColor = "0x0A0D16"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x242B47"
-$ButtonBKColor = "0x0D5C63"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x0A0D16"
+$am = "0xFFFFFF"
+$an = "0x242B47"
+$ao = "0x0D5C63"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkMidnightBlue"
-$GUIThemeColor = "0x0A0D16"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x242B47"
-$ButtonBKColor = "0x1A4F70"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x0A0D16"
+$am = "0xFFFFFF"
+$an = "0x242B47"
+$ao = "0x1A4F70"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkMidnight"
-$GUIThemeColor = "0x0A0D16"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x242B47"
-$ButtonBKColor = "0x3C4D66"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x0A0D16"
+$am = "0xFFFFFF"
+$an = "0x242B47"
+$ao = "0x3C4D66"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkBlue"
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x303030"
-$ButtonBKColor = "0x1E648C"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x303030"
+$ao = "0x1E648C"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkBlueV2"
-$GUIThemeColor = "0x040D11"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x303030"
-$ButtonBKColor = "0x1E648C"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x040D11"
+$am = "0xFFFFFF"
+$an = "0x303030"
+$ao = "0x1E648C"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "LightBlue"
-$GUIThemeColor = "0xF4F4F4"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0x244E80"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xF4F4F4"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0x244E80"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case "LightCyan"
-$GUIThemeColor = "0xF4F4F4"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0x00838f"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xF4F4F4"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0x00838f"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case "DarkCyan"
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0x00838f"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0x00838f"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "LightGray"
-$GUIThemeColor = "0xE9E9E9"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0x3F5863"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xE9E9E9"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0x3F5863"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case "LightGreen"
-$GUIThemeColor = "0xF4F4F4"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0x2E7D32"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xF4F4F4"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0x2E7D32"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case "DarkGreen"
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0x5E8763"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0x5E8763"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkGreenV2"
-$GUIThemeColor = "0x061319"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x242B47"
-$ButtonBKColor = "0x5E8763"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x061319"
+$am = "0xFFFFFF"
+$an = "0x242B47"
+$ao = "0x5E8763"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "LightRed"
-$GUIThemeColor = "0xF4F4F4"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0xc62828"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xF4F4F4"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0xc62828"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case "DarkGray"
-$GUIThemeColor = "0x1B2428"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x4F6772"
-$ButtonBKColor = "0x607D8B"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x1B2428"
+$am = "0xFFFFFF"
+$an = "0x4F6772"
+$ao = "0x607D8B"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "DarkAmber"
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0xffa000"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0xffa000"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "LightOrange"
-$GUIThemeColor = "0xF4F4F4"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0xBC5E05"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xF4F4F4"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0xBC5E05"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case "DarkOrange"
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0xC76810"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0xC76810"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "LightPurple"
-$GUIThemeColor = "0xF4F4F4"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0x512DA8"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xF4F4F4"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0x512DA8"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case "DarkPurple"
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0x512DA8"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0x512DA8"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
 Case "LightPink"
-$GUIThemeColor = "0xF4F4F4"
-$FontThemeColor = "0x000000"
-$GUIBorderColor = "0xD8D8D8"
-$ButtonBKColor = "0xE91E63"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xE8E8E8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
+$al = "0xF4F4F4"
+$am = "0x000000"
+$an = "0xD8D8D8"
+$ao = "0xE91E63"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xE8E8E8"
+$at = "0x1a1a1a"
 Case Else
 ConsoleWrite("Metro-UDF-Error: Theme not found, using default theme." & @CRLF)
-$GUIThemeColor = "0x191919"
-$FontThemeColor = "0xFFFFFF"
-$GUIBorderColor = "0x2D2D2D"
-$ButtonBKColor = "0x00796b"
-$ButtonTextColor = "0xFFFFFF"
-$CB_Radio_Color = "0xFFFFFF"
-$CB_Radio_Hover_Color = "0xD8D8D8"
-$CB_Radio_CheckMark_Color = "0x1a1a1a"
-$GUI_Theme_Name = "DarkTealV2"
+$al = "0x191919"
+$am = "0xFFFFFF"
+$an = "0x2D2D2D"
+$ao = "0x00796b"
+$ap = "0xFFFFFF"
+$aq = "0xFFFFFF"
+$as = "0xD8D8D8"
+$at = "0x1a1a1a"
+$ar = "DarkTealV2"
 EndSwitch
 EndFunc
-Func _StringSize($sText, $iSize = 8.5, $iWeight = 400, $iAttrib = 0, $sName = "", $iMaxWidth = 0, $hWnd = 0)
-If $iSize = Default Then $iSize = 8.5
-If $iWeight = Default Then $iWeight = 400
-If $iAttrib = Default Then $iAttrib = 0
-If $sName = "" Or $sName = Default Then $sName = _StringSize_DefaultFontName()
-If Not IsString($sText) Then Return SetError(1, 1, 0)
-If Not IsNumber($iSize) Then Return SetError(1, 2, 0)
-If Not IsInt($iWeight) Then Return SetError(1, 3, 0)
-If Not IsInt($iAttrib) Then Return SetError(1, 4, 0)
-If Not IsString($sName) Then Return SetError(1, 5, 0)
-If Not IsNumber($iMaxWidth) Then Return SetError(1, 6, 0)
-If Not IsHwnd($hWnd) And $hWnd <> 0 Then Return SetError(1, 7, 0)
-Local $aRet, $hDC, $hFont, $hLabel = 0, $hLabel_Handle
-Local $iExpTab = BitAnd($iAttrib, 1)
-$iAttrib = BitAnd($iAttrib, BitNot(1))
-If IsHWnd($hWnd) Then
-$hLabel = GUICtrlCreateLabel("", -10, -10, 10, 10)
-$hLabel_Handle = GUICtrlGetHandle(-1)
-GUICtrlSetFont(-1, $iSize, $iWeight, $iAttrib, $sName)
-$aRet = DllCall("user32.dll", "handle", "GetDC", "hwnd", $hLabel_Handle)
-If @error Or $aRet[0] = 0 Then
-GUICtrlDelete($hLabel)
+Func _12f($4v, $av = 8.5, $aw = 400, $ax = 0, $2s = "", $ay = 0, $k = 0)
+If $av = Default Then $av = 8.5
+If $aw = Default Then $aw = 400
+If $ax = Default Then $ax = 0
+If $2s = "" Or $2s = Default Then $2s = _12h()
+If Not IsString($4v) Then Return SetError(1, 1, 0)
+If Not IsNumber($av) Then Return SetError(1, 2, 0)
+If Not IsInt($aw) Then Return SetError(1, 3, 0)
+If Not IsInt($ax) Then Return SetError(1, 4, 0)
+If Not IsString($2s) Then Return SetError(1, 5, 0)
+If Not IsNumber($ay) Then Return SetError(1, 6, 0)
+If Not IsHwnd($k) And $k <> 0 Then Return SetError(1, 7, 0)
+Local $2i, $74, $az, $b0 = 0, $b1
+Local $b2 = BitAnd($ax, 1)
+$ax = BitAnd($ax, BitNot(1))
+If IsHWnd($k) Then
+$b0 = GUICtrlCreateLabel("", -10, -10, 10, 10)
+$b1 = GUICtrlGetHandle(-1)
+GUICtrlSetFont(-1, $av, $aw, $ax, $2s)
+$2i = DllCall("user32.dll", "handle", "GetDC", "hwnd", $b1)
+If @error Or $2i[0] = 0 Then
+GUICtrlDelete($b0)
 Return SetError(2, 1, 0)
 EndIf
-$hDC = $aRet[0]
-$aRet = DllCall("user32.dll", "lparam", "SendMessage", "hwnd", $hLabel_Handle, "int", 0x0031, "wparam", 0, "lparam", 0)
-If @error Or $aRet[0] = 0 Then
-GUICtrlDelete($hLabel)
-Return SetError(2, _StringSize_Error_Close(2, $hDC), 0)
+$74 = $2i[0]
+$2i = DllCall("user32.dll", "lparam", "SendMessage", "hwnd", $b1, "int", 0x0031, "wparam", 0, "lparam", 0)
+If @error Or $2i[0] = 0 Then
+GUICtrlDelete($b0)
+Return SetError(2, _12g(2, $74), 0)
 EndIf
-$hFont = $aRet[0]
+$az = $2i[0]
 Else
-$aRet = DllCall("user32.dll", "handle", "GetDC", "hwnd", $hWnd)
-If @error Or $aRet[0] = 0 Then Return SetError(2, 1, 0)
-$hDC = $aRet[0]
-$aRet = DllCall("gdi32.dll", "int", "GetDeviceCaps", "handle", $hDC, "int", 90)
-If @error Or $aRet[0] = 0 Then Return SetError(2, _StringSize_Error_Close(3, $hDC), 0)
-Local $iInfo = $aRet[0]
-$aRet = DllCall("gdi32.dll", "handle", "CreateFontW", "int", -$iInfo * $iSize / 72, "int", 0, "int", 0, "int", 0, "int", $iWeight, "dword", BitAND($iAttrib, 2), "dword", BitAND($iAttrib, 4), "dword", BitAND($iAttrib, 8), "dword", 0, "dword", 0, "dword", 0, "dword", 5, "dword", 0, "wstr", $sName)
-If @error Or $aRet[0] = 0 Then Return SetError(2, _StringSize_Error_Close(4, $hDC), 0)
-$hFont = $aRet[0]
+$2i = DllCall("user32.dll", "handle", "GetDC", "hwnd", $k)
+If @error Or $2i[0] = 0 Then Return SetError(2, 1, 0)
+$74 = $2i[0]
+$2i = DllCall("gdi32.dll", "int", "GetDeviceCaps", "handle", $74, "int", 90)
+If @error Or $2i[0] = 0 Then Return SetError(2, _12g(3, $74), 0)
+Local $b3 = $2i[0]
+$2i = DllCall("gdi32.dll", "handle", "CreateFontW", "int", -$b3 * $av / 72, "int", 0, "int", 0, "int", 0, "int", $aw, "dword", BitAND($ax, 2), "dword", BitAND($ax, 4), "dword", BitAND($ax, 8), "dword", 0, "dword", 0, "dword", 0, "dword", 5, "dword", 0, "wstr", $2s)
+If @error Or $2i[0] = 0 Then Return SetError(2, _12g(4, $74), 0)
+$az = $2i[0]
 EndIf
-$aRet = DllCall("gdi32.dll", "handle", "SelectObject", "handle", $hDC, "handle", $hFont)
-If @error Or $aRet[0] = 0 Then Return SetError(2, _StringSize_Error_Close(5, $hDC, $hFont, $hLabel), 0)
-Local $hPrevFont = $aRet[0]
-Local $avSize_Info[4], $iLine_Length, $iLine_Height = 0, $iLine_Count = 0, $iLine_Width = 0, $iWrap_Count, $iLast_Word, $sTest_Line
-Local $tSize = DllStructCreate("int X;int Y")
-DllStructSetData($tSize, "X", 0)
-DllStructSetData($tSize, "Y", 0)
-$sText = StringRegExpReplace($sText, "((?<!\x0d)\x0a|\x0d(?!\x0a))", @CRLF)
-Local $asLines = StringSplit($sText, @CRLF, 1)
-For $i = 1 To $asLines[0]
-If $iExpTab Then
-$asLines[$i] = StringReplace($asLines[$i], @TAB, " XXXXXXXX")
+$2i = DllCall("gdi32.dll", "handle", "SelectObject", "handle", $74, "handle", $az)
+If @error Or $2i[0] = 0 Then Return SetError(2, _12g(5, $74, $az, $b0), 0)
+Local $b4 = $2i[0]
+Local $b5[4], $b6, $b7 = 0, $b8 = 0, $b9 = 0, $ba, $bb, $bc
+Local $bd = DllStructCreate("int X;int Y")
+DllStructSetData($bd, "X", 0)
+DllStructSetData($bd, "Y", 0)
+$4v = StringRegExpReplace($4v, "((?<!\x0d)\x0a|\x0d(?!\x0a))", @CRLF)
+Local $be = StringSplit($4v, @CRLF, 1)
+For $1c = 1 To $be[0]
+If $b2 Then
+$be[$1c] = StringReplace($be[$1c], @TAB, " XXXXXXXX")
 EndIf
-$iLine_Length = StringLen($asLines[$i])
-DllCall("gdi32.dll", "bool", "GetTextExtentPoint32W", "handle", $hDC, "wstr", $asLines[$i], "int", $iLine_Length, "ptr", DllStructGetPtr($tSize))
-If @error Then Return SetError(2, _StringSize_Error_Close(6, $hDC, $hFont, $hLabel), 0)
-If DllStructGetData($tSize, "X") > $iLine_Width Then $iLine_Width = DllStructGetData($tSize, "X")
-If DllStructGetData($tSize, "Y") > $iLine_Height Then $iLine_Height = DllStructGetData($tSize, "Y")
+$b6 = StringLen($be[$1c])
+DllCall("gdi32.dll", "bool", "GetTextExtentPoint32W", "handle", $74, "wstr", $be[$1c], "int", $b6, "ptr", DllStructGetPtr($bd))
+If @error Then Return SetError(2, _12g(6, $74, $az, $b0), 0)
+If DllStructGetData($bd, "X") > $b9 Then $b9 = DllStructGetData($bd, "X")
+If DllStructGetData($bd, "Y") > $b7 Then $b7 = DllStructGetData($bd, "Y")
 Next
-If $iMaxWidth <> 0 And $iLine_Width > $iMaxWidth Then
-For $j = 1 To $asLines[0]
-$iLine_Length = StringLen($asLines[$j])
-DllCall("gdi32.dll", "bool", "GetTextExtentPoint32W", "handle", $hDC, "wstr", $asLines[$j], "int", $iLine_Length, "ptr", DllStructGetPtr($tSize))
-If @error Then Return SetError(2, _StringSize_Error_Close(6, $hDC, $hFont, $hLabel), 0)
-If DllStructGetData($tSize, "X") < $iMaxWidth - 4 Then
-$iLine_Count += 1
-$avSize_Info[0] &= $asLines[$j] & @CRLF
+If $ay <> 0 And $b9 > $ay Then
+For $1j = 1 To $be[0]
+$b6 = StringLen($be[$1j])
+DllCall("gdi32.dll", "bool", "GetTextExtentPoint32W", "handle", $74, "wstr", $be[$1j], "int", $b6, "ptr", DllStructGetPtr($bd))
+If @error Then Return SetError(2, _12g(6, $74, $az, $b0), 0)
+If DllStructGetData($bd, "X") < $ay - 4 Then
+$b8 += 1
+$b5[0] &= $be[$1j] & @CRLF
 Else
-$iWrap_Count = 0
+$ba = 0
 While 1
-$iLine_Width = 0
-$iLast_Word = 0
-For $i = 1 To StringLen($asLines[$j])
-If StringMid($asLines[$j], $i, 1) = " " Then $iLast_Word = $i - 1
-$sTest_Line = StringMid($asLines[$j], 1, $i)
-$iLine_Length = StringLen($sTest_Line)
-DllCall("gdi32.dll", "bool", "GetTextExtentPoint32W", "handle", $hDC, "wstr", $sTest_Line, "int", $iLine_Length, "ptr", DllStructGetPtr($tSize))
-If @error Then Return SetError(2, _StringSize_Error_Close(6, $hDC, $hFont, $hLabel), 0)
-$iLine_Width = DllStructGetData($tSize, "X")
-If $iLine_Width >= $iMaxWidth - 4 Then ExitLoop
+$b9 = 0
+$bb = 0
+For $1c = 1 To StringLen($be[$1j])
+If StringMid($be[$1j], $1c, 1) = " " Then $bb = $1c - 1
+$bc = StringMid($be[$1j], 1, $1c)
+$b6 = StringLen($bc)
+DllCall("gdi32.dll", "bool", "GetTextExtentPoint32W", "handle", $74, "wstr", $bc, "int", $b6, "ptr", DllStructGetPtr($bd))
+If @error Then Return SetError(2, _12g(6, $74, $az, $b0), 0)
+$b9 = DllStructGetData($bd, "X")
+If $b9 >= $ay - 4 Then ExitLoop
 Next
-If $i > StringLen($asLines[$j]) Then
-$iWrap_Count += 1
-$avSize_Info[0] &= $sTest_Line & @CRLF
+If $1c > StringLen($be[$1j]) Then
+$ba += 1
+$b5[0] &= $bc & @CRLF
 ExitLoop
 Else
-$iWrap_Count += 1
-If $iLast_Word = 0 Then Return SetError(3, _StringSize_Error_Close(0, $hDC, $hFont, $hLabel), 0)
-$avSize_Info[0] &= StringLeft($sTest_Line, $iLast_Word) & @CRLF
-$asLines[$j] = StringTrimLeft($asLines[$j], $iLast_Word)
-$asLines[$j] = StringStripWS($asLines[$j], 1)
+$ba += 1
+If $bb = 0 Then Return SetError(3, _12g(0, $74, $az, $b0), 0)
+$b5[0] &= StringLeft($bc, $bb) & @CRLF
+$be[$1j] = StringTrimLeft($be[$1j], $bb)
+$be[$1j] = StringStripWS($be[$1j], 1)
 EndIf
 WEnd
-$iLine_Count += $iWrap_Count
+$b8 += $ba
 EndIf
 Next
-If $iExpTab Then
-$avSize_Info[0] = StringRegExpReplace($avSize_Info[0], "\x20?XXXXXXXX", @TAB)
+If $b2 Then
+$b5[0] = StringRegExpReplace($b5[0], "\x20?XXXXXXXX", @TAB)
 EndIf
-$avSize_Info[1] = $iLine_Height
-$avSize_Info[2] = $iMaxWidth
-$avSize_Info[3] =($iLine_Count * $iLine_Height) + 4
+$b5[1] = $b7
+$b5[2] = $ay
+$b5[3] =($b8 * $b7) + 4
 Else
-Local $avSize_Info[4] = [$sText, $iLine_Height, $iLine_Width,($asLines[0] * $iLine_Height) + 4]
+Local $b5[4] = [$4v, $b7, $b9,($be[0] * $b7) + 4]
 EndIf
-DllCall("gdi32.dll", "handle", "SelectObject", "handle", $hDC, "handle", $hPrevFont)
-DllCall("gdi32.dll", "bool", "DeleteObject", "handle", $hFont)
-DllCall("user32.dll", "int", "ReleaseDC", "hwnd", 0, "handle", $hDC)
-If $hLabel Then GUICtrlDelete($hLabel)
-Return $avSize_Info
+DllCall("gdi32.dll", "handle", "SelectObject", "handle", $74, "handle", $b4)
+DllCall("gdi32.dll", "bool", "DeleteObject", "handle", $az)
+DllCall("user32.dll", "int", "ReleaseDC", "hwnd", 0, "handle", $74)
+If $b0 Then GUICtrlDelete($b0)
+Return $b5
 EndFunc
-Func _StringSize_Error_Close($iExtCode, $hDC = 0, $hFont = 0, $hLabel = 0)
-If $hFont <> 0 Then DllCall("gdi32.dll", "bool", "DeleteObject", "handle", $hFont)
-If $hDC <> 0 Then DllCall("user32.dll", "int", "ReleaseDC", "hwnd", 0, "handle", $hDC)
-If $hLabel Then GUICtrlDelete($hLabel)
-Return $iExtCode
+Func _12g($bf, $74 = 0, $az = 0, $b0 = 0)
+If $az <> 0 Then DllCall("gdi32.dll", "bool", "DeleteObject", "handle", $az)
+If $74 <> 0 Then DllCall("user32.dll", "int", "ReleaseDC", "hwnd", 0, "handle", $74)
+If $b0 Then GUICtrlDelete($b0)
+Return $bf
 EndFunc
-Func _StringSize_DefaultFontName()
-Local $tNONCLIENTMETRICS = DllStructCreate("uint;int;int;int;int;int;byte[60];int;int;byte[60];int;int;byte[60];byte[60];byte[60]")
-DLLStructSetData($tNONCLIENTMETRICS, 1, DllStructGetSize($tNONCLIENTMETRICS))
-DLLCall("user32.dll", "int", "SystemParametersInfo", "int", 41, "int", DllStructGetSize($tNONCLIENTMETRICS), "ptr", DllStructGetPtr($tNONCLIENTMETRICS), "int", 0)
-Local $tLOGFONT = DllStructCreate("long;long;long;long;long;byte;byte;byte;byte;byte;byte;byte;byte;char[32]", DLLStructGetPtr($tNONCLIENTMETRICS, 13))
-If IsString(DllStructGetData($tLOGFONT, 14)) Then
-Return DllStructGetData($tLOGFONT, 14)
+Func _12h()
+Local $bg = DllStructCreate("uint;int;int;int;int;int;byte[60];int;int;byte[60];int;int;byte[60];byte[60];byte[60]")
+DLLStructSetData($bg, 1, DllStructGetSize($bg))
+DLLCall("user32.dll", "int", "SystemParametersInfo", "int", 41, "int", DllStructGetSize($bg), "ptr", DllStructGetPtr($bg), "int", 0)
+Local $bh = DllStructCreate("long;long;long;long;long;byte;byte;byte;byte;byte;byte;byte;byte;char[32]", DLLStructGetPtr($bg, 13))
+If IsString(DllStructGetData($bh, 14)) Then
+Return DllStructGetData($bh, 14)
 Else
 Return "Tahoma"
 EndIf
 EndFunc
-Global Const $GDIP_PXF32ARGB = 0x0026200A
-Global Const $GDIP_SMOOTHINGMODE_DEFAULT = 0
-Global Const $GDIP_SMOOTHINGMODE_ANTIALIAS8X8 = 5
-Global $__g_hGDIPBrush = 0
-Global $__g_hGDIPDll = 0
-Global $__g_hGDIPPen = 0
-Global $__g_iGDIPRef = 0
-Global $__g_iGDIPToken = 0
-Global $__g_bGDIP_V1_0 = True
-Func _GDIPlus_BitmapCreateFromScan0($iWidth, $iHeight, $iPixelFormat = $GDIP_PXF32ARGB, $iStride = 0, $pScan0 = 0)
-Local $aResult = DllCall($__g_hGDIPDll, "uint", "GdipCreateBitmapFromScan0", "int", $iWidth, "int", $iHeight, "int", $iStride, "int", $iPixelFormat, "struct*", $pScan0, "handle*", 0)
+Global Const $bi = 0x0026200A
+Global $bj = 0
+Global $bk = 0
+Global $bl = 0
+Global $bm = 0
+Global $bn = 0
+Global $bo = True
+Func _12z($2w, $2x, $bp = $bi, $bq = 0, $br = 0)
+Local $1w = DllCall($bk, "uint", "GdipCreateBitmapFromScan0", "int", $2w, "int", $2x, "int", $bq, "int", $bp, "struct*", $br, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[6]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[6]
 EndFunc
-Func _GDIPlus_BitmapCreateHBITMAPFromBitmap($hBitmap, $iARGB = 0xFF000000)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipCreateHBITMAPFromBitmap", "handle", $hBitmap, "handle*", 0, "dword", $iARGB)
+Func _131($bs, $bt = 0xFF000000)
+Local $1w = DllCall($bk, "int", "GdipCreateHBITMAPFromBitmap", "handle", $bs, "handle*", 0, "dword", $bt)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[2]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[2]
 EndFunc
-Func _GDIPlus_BitmapDispose($hBitmap)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDisposeImage", "handle", $hBitmap)
+Func _132($bs)
+Local $1w = DllCall($bk, "int", "GdipDisposeImage", "handle", $bs)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_BrushCreateSolid($iARGB = 0xFF000000)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipCreateSolidFill", "int", $iARGB, "handle*", 0)
+Func _13b($bt = 0xFF000000)
+Local $1w = DllCall($bk, "int", "GdipCreateSolidFill", "int", $bt, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[2]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[2]
 EndFunc
-Func _GDIPlus_BrushDispose($hBrush)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDeleteBrush", "handle", $hBrush)
+Func _13c($bu)
+Local $1w = DllCall($bk, "int", "GdipDeleteBrush", "handle", $bu)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_FontCreate($hFamily, $fSize, $iStyle = 0, $iUnit = 3)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipCreateFont", "handle", $hFamily, "float", $fSize, "int", $iStyle, "int", $iUnit, "handle*", 0)
+Func _141($bv, $bw, $2t = 0, $bx = 3)
+Local $1w = DllCall($bk, "int", "GdipCreateFont", "handle", $bv, "float", $bw, "int", $2t, "int", $bx, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[5]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[5]
 EndFunc
-Func _GDIPlus_FontDispose($hFont)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDeleteFont", "handle", $hFont)
+Func _142($az)
+Local $1w = DllCall($bk, "int", "GdipDeleteFont", "handle", $az)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_FontFamilyCreate($sFamily, $pCollection = 0)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipCreateFontFamilyFromName", "wstr", $sFamily, "ptr", $pCollection, "handle*", 0)
+Func _143($by, $bz = 0)
+Local $1w = DllCall($bk, "int", "GdipCreateFontFamilyFromName", "wstr", $by, "ptr", $bz, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[3]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[3]
 EndFunc
-Func _GDIPlus_FontFamilyDispose($hFamily)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDeleteFontFamily", "handle", $hFamily)
+Func _145($bv)
+Local $1w = DllCall($bk, "int", "GdipDeleteFontFamily", "handle", $bv)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsClear($hGraphics, $iARGB = 0xFF000000)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipGraphicsClear", "handle", $hGraphics, "dword", $iARGB)
+Func _14f($c0, $bt = 0xFF000000)
+Local $1w = DllCall($bk, "int", "GdipGraphicsClear", "handle", $c0, "dword", $bt)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsCreateFromHWND($hWnd)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipCreateFromHWND", "hwnd", $hWnd, "handle*", 0)
+Func _14h($k)
+Local $1w = DllCall($bk, "int", "GdipCreateFromHWND", "hwnd", $k, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[2]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[2]
 EndFunc
-Func _GDIPlus_GraphicsDispose($hGraphics)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDeleteGraphics", "handle", $hGraphics)
+Func _14i($c0)
+Local $1w = DllCall($bk, "int", "GdipDeleteGraphics", "handle", $c0)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsDrawLine($hGraphics, $nX1, $nY1, $nX2, $nY2, $hPen = 0)
-__GDIPlus_PenDefCreate($hPen)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDrawLine", "handle", $hGraphics, "handle", $hPen, "float", $nX1, "float", $nY1, "float", $nX2, "float", $nY2)
-__GDIPlus_PenDefDispose()
+Func _14u($c0, $c1, $c2, $c3, $c4, $c5 = 0)
+_1b9($c5)
+Local $1w = DllCall($bk, "int", "GdipDrawLine", "handle", $c0, "handle", $c5, "float", $c1, "float", $c2, "float", $c3, "float", $c4)
+_1ba()
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsDrawPath($hGraphics, $hPath, $hPen = 0)
-__GDIPlus_PenDefCreate($hPen)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDrawPath", "handle", $hGraphics, "handle", $hPen, "handle", $hPath)
-__GDIPlus_PenDefDispose()
+Func _14v($c0, $c6, $c5 = 0)
+_1b9($c5)
+Local $1w = DllCall($bk, "int", "GdipDrawPath", "handle", $c0, "handle", $c5, "handle", $c6)
+_1ba()
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsDrawRect($hGraphics, $nX, $nY, $nWidth, $nHeight, $hPen = 0)
-__GDIPlus_PenDefCreate($hPen)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDrawRectangle", "handle", $hGraphics, "handle", $hPen, "float", $nX, "float", $nY, "float", $nWidth, "float", $nHeight)
-__GDIPlus_PenDefDispose()
+Func _14y($c0, $c7, $c8, $c9, $ca, $c5 = 0)
+_1b9($c5)
+Local $1w = DllCall($bk, "int", "GdipDrawRectangle", "handle", $c0, "handle", $c5, "float", $c7, "float", $c8, "float", $c9, "float", $ca)
+_1ba()
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsDrawStringEx($hGraphics, $sString, $hFont, $tLayout, $hFormat, $hBrush)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDrawString", "handle", $hGraphics, "wstr", $sString, "int", -1, "handle", $hFont, "struct*", $tLayout, "handle", $hFormat, "handle", $hBrush)
+Func _150($c0, $3c, $az, $cb, $cc, $bu)
+Local $1w = DllCall($bk, "int", "GdipDrawString", "handle", $c0, "wstr", $3c, "int", -1, "handle", $az, "struct*", $cb, "handle", $cc, "handle", $bu)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsFillEllipse($hGraphics, $nX, $nY, $nWidth, $nHeight, $hBrush = 0)
-__GDIPlus_BrushDefCreate($hBrush)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipFillEllipse", "handle", $hGraphics, "handle", $hBrush, "float", $nX, "float", $nY, "float", $nWidth, "float", $nHeight)
-__GDIPlus_BrushDefDispose()
+Func _153($c0, $c7, $c8, $c9, $ca, $bu = 0)
+_1b5($bu)
+Local $1w = DllCall($bk, "int", "GdipFillEllipse", "handle", $c0, "handle", $bu, "float", $c7, "float", $c8, "float", $c9, "float", $ca)
+_1b6()
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsFillPath($hGraphics, $hPath, $hBrush = 0)
-__GDIPlus_BrushDefCreate($hBrush)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipFillPath", "handle", $hGraphics, "handle", $hBrush, "handle", $hPath)
-__GDIPlus_BrushDefDispose()
+Func _154($c0, $c6, $bu = 0)
+_1b5($bu)
+Local $1w = DllCall($bk, "int", "GdipFillPath", "handle", $c0, "handle", $bu, "handle", $c6)
+_1b6()
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsFillRect($hGraphics, $nX, $nY, $nWidth, $nHeight, $hBrush = 0)
-__GDIPlus_BrushDefCreate($hBrush)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipFillRectangle", "handle", $hGraphics, "handle", $hBrush, "float", $nX, "float", $nY, "float", $nWidth, "float", $nHeight)
-__GDIPlus_BrushDefDispose()
+Func _157($c0, $c7, $c8, $c9, $ca, $bu = 0)
+_1b5($bu)
+Local $1w = DllCall($bk, "int", "GdipFillRectangle", "handle", $c0, "handle", $bu, "float", $c7, "float", $c8, "float", $c9, "float", $ca)
+_1b6()
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsSetSmoothingMode($hGraphics, $iSmooth)
-If $iSmooth < $GDIP_SMOOTHINGMODE_DEFAULT Or $iSmooth > $GDIP_SMOOTHINGMODE_ANTIALIAS8X8 Then $iSmooth = $GDIP_SMOOTHINGMODE_DEFAULT
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipSetSmoothingMode", "handle", $hGraphics, "int", $iSmooth)
+Func _15v($c0, $cd)
+If $cd < 0 Or $cd > 5 Then $cd = 0
+Local $1w = DllCall($bk, "int", "GdipSetSmoothingMode", "handle", $c0, "int", $cd)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_GraphicsSetTextRenderingHint($hGraphics, $iTextRenderingHint)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipSetTextRenderingHint", "handle", $hGraphics, "int", $iTextRenderingHint)
+Func _15w($c0, $ce)
+Local $1w = DllCall($bk, "int", "GdipSetTextRenderingHint", "handle", $c0, "int", $ce)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_ImageGetGraphicsContext($hImage)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipGetImageGraphicsContext", "handle", $hImage, "handle*", 0)
+Func _16d($cf)
+Local $1w = DllCall($bk, "int", "GdipGetImageGraphicsContext", "handle", $cf, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[2]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[2]
 EndFunc
-Func _GDIPlus_PathAddArc($hPath, $nX, $nY, $nWidth, $nHeight, $fStartAngle, $fSweepAngle)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipAddPathArc", "handle", $hPath, "float", $nX, "float", $nY, "float", $nWidth, "float", $nHeight, "float", $fStartAngle, "float", $fSweepAngle)
+Func _17v($c6, $c7, $c8, $c9, $ca, $cg, $ch)
+Local $1w = DllCall($bk, "int", "GdipAddPathArc", "handle", $c6, "float", $c7, "float", $c8, "float", $c9, "float", $ca, "float", $cg, "float", $ch)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_PathCloseFigure($hPath)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipClosePathFigure", "handle", $hPath)
+Func _18w($c6)
+Local $1w = DllCall($bk, "int", "GdipClosePathFigure", "handle", $c6)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_PathCreate($iFillMode = 0)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipCreatePath", "int", $iFillMode, "handle*", 0)
+Func _18x($ci = 0)
+Local $1w = DllCall($bk, "int", "GdipCreatePath", "int", $ci, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[2]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[2]
 EndFunc
-Func _GDIPlus_PathDispose($hPath)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDeletePath", "handle", $hPath)
+Func _18z($c6)
+Local $1w = DllCall($bk, "int", "GdipDeletePath", "handle", $c6)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_PenCreate($iARGB = 0xFF000000, $nWidth = 1, $iUnit = 2)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipCreatePen1", "dword", $iARGB, "float", $nWidth, "int", $iUnit, "handle*", 0)
+Func _19o($bt = 0xFF000000, $c9 = 1, $bx = 2)
+Local $1w = DllCall($bk, "int", "GdipCreatePen1", "dword", $bt, "float", $c9, "int", $bx, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[4]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[4]
 EndFunc
-Func _GDIPlus_PenDispose($hPen)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDeletePen", "handle", $hPen)
+Func _19q($c5)
+Local $1w = DllCall($bk, "int", "GdipDeletePen", "handle", $c5)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_PenSetStartCap($hPen, $iLineCap)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipSetPenStartCap", "handle", $hPen, "int", $iLineCap)
+Func _1ac($c5, $cj)
+Local $1w = DllCall($bk, "int", "GdipSetPenStartCap", "handle", $c5, "int", $cj)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_RectFCreate($nX = 0, $nY = 0, $nWidth = 0, $nHeight = 0)
-Local $tRECTF = DllStructCreate($tagGDIPRECTF)
-DllStructSetData($tRECTF, "X", $nX)
-DllStructSetData($tRECTF, "Y", $nY)
-DllStructSetData($tRECTF, "Width", $nWidth)
-DllStructSetData($tRECTF, "Height", $nHeight)
-Return $tRECTF
+Func _1af($c7 = 0, $c8 = 0, $c9 = 0, $ca = 0)
+Local $ck = DllStructCreate($24)
+DllStructSetData($ck, "X", $c7)
+DllStructSetData($ck, "Y", $c8)
+DllStructSetData($ck, "Width", $c9)
+DllStructSetData($ck, "Height", $ca)
+Return $ck
 EndFunc
-Func _GDIPlus_Shutdown()
-If $__g_hGDIPDll = 0 Then Return SetError(-1, -1, False)
-$__g_iGDIPRef -= 1
-If $__g_iGDIPRef = 0 Then
-DllCall($__g_hGDIPDll, "none", "GdiplusShutdown", "ulong_ptr", $__g_iGDIPToken)
-DllClose($__g_hGDIPDll)
-$__g_hGDIPDll = 0
+Func _1au()
+If $bk = 0 Then Return SetError(-1, -1, False)
+$bm -= 1
+If $bm = 0 Then
+DllCall($bk, "none", "GdiplusShutdown", "ulong_ptr", $bn)
+DllClose($bk)
+$bk = 0
 EndIf
 Return True
 EndFunc
-Func _GDIPlus_Startup($sGDIPDLL = Default, $bRetDllHandle = False)
-$__g_iGDIPRef += 1
-If $__g_iGDIPRef > 1 Then Return True
-If $sGDIPDLL = Default Then $sGDIPDLL = "gdiplus.dll"
-$__g_hGDIPDll = DllOpen($sGDIPDLL)
-If $__g_hGDIPDll = -1 Then
-$__g_iGDIPRef = 0
+Func _1av($cl = Default, $cm = False)
+$bm += 1
+If $bm > 1 Then Return True
+If $cl = Default Then $cl = "gdiplus.dll"
+$bk = DllOpen($cl)
+If $bk = -1 Then
+$bm = 0
 Return SetError(1, 2, False)
 EndIf
-Local $sVer = FileGetVersion($sGDIPDLL)
-$sVer = StringSplit($sVer, ".")
-If $sVer[1] > 5 Then $__g_bGDIP_V1_0 = False
-Local $tInput = DllStructCreate($tagGDIPSTARTUPINPUT)
-Local $tToken = DllStructCreate("ulong_ptr Data")
-DllStructSetData($tInput, "Version", 1)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdiplusStartup", "struct*", $tToken, "struct*", $tInput, "ptr", 0)
+Local $cn = FileGetVersion($cl)
+$cn = StringSplit($cn, ".")
+If $cn[1] > 5 Then $bo = False
+Local $co = DllStructCreate($25)
+Local $cp = DllStructCreate("ulong_ptr Data")
+DllStructSetData($co, "Version", 1)
+Local $1w = DllCall($bk, "int", "GdiplusStartup", "struct*", $cp, "struct*", $co, "ptr", 0)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
-$__g_iGDIPToken = DllStructGetData($tToken, "Data")
-If $bRetDllHandle Then Return $__g_hGDIPDll
-Return SetExtended($sVer[1], True)
+If $1w[0] Then Return SetError(10, $1w[0], False)
+$bn = DllStructGetData($cp, "Data")
+If $cm Then Return $bk
+Return SetExtended($cn[1], True)
 EndFunc
-Func _GDIPlus_StringFormatCreate($iFormat = 0, $iLangID = 0)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipCreateStringFormat", "int", $iFormat, "word", $iLangID, "handle*", 0)
+Func _1aw($cq = 0, $cr = 0)
+Local $1w = DllCall($bk, "int", "GdipCreateStringFormat", "int", $cq, "word", $cr, "handle*", 0)
 If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return SetError(10, $aResult[0], 0)
-Return $aResult[3]
+If $1w[0] Then Return SetError(10, $1w[0], 0)
+Return $1w[3]
 EndFunc
-Func _GDIPlus_StringFormatDispose($hFormat)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipDeleteStringFormat", "handle", $hFormat)
+Func _1ax($cc)
+Local $1w = DllCall($bk, "int", "GdipDeleteStringFormat", "handle", $cc)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_StringFormatSetAlign($hStringFormat, $iFlag)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipSetStringFormatAlign", "handle", $hStringFormat, "int", $iFlag)
+Func _1az($cs, $77)
+Local $1w = DllCall($bk, "int", "GdipSetStringFormatAlign", "handle", $cs, "int", $77)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func _GDIPlus_StringFormatSetLineAlign($hStringFormat, $iStringAlign)
-Local $aResult = DllCall($__g_hGDIPDll, "int", "GdipSetStringFormatLineAlign", "handle", $hStringFormat, "int", $iStringAlign)
+Func _1b0($cs, $ct)
+Local $1w = DllCall($bk, "int", "GdipSetStringFormatLineAlign", "handle", $cs, "int", $ct)
 If @error Then Return SetError(@error, @extended, False)
-If $aResult[0] Then Return SetError(10, $aResult[0], False)
+If $1w[0] Then Return SetError(10, $1w[0], False)
 Return True
 EndFunc
-Func __GDIPlus_BrushDefCreate(ByRef $hBrush)
-If $hBrush = 0 Then
-$__g_hGDIPBrush = _GDIPlus_BrushCreateSolid()
-$hBrush = $__g_hGDIPBrush
+Func _1b5(ByRef $bu)
+If $bu = 0 Then
+$bj = _13b()
+$bu = $bj
 EndIf
 EndFunc
-Func __GDIPlus_BrushDefDispose($iCurError = @error, $iCurExtended = @extended)
-If $__g_hGDIPBrush <> 0 Then
-_GDIPlus_BrushDispose($__g_hGDIPBrush)
-$__g_hGDIPBrush = 0
+Func _1b6($cu = @error, $cv = @extended)
+If $bj <> 0 Then
+_13c($bj)
+$bj = 0
 EndIf
-Return SetError($iCurError, $iCurExtended)
+Return SetError($cu, $cv)
 EndFunc
-Func __GDIPlus_PenDefCreate(ByRef $hPen)
-If $hPen = 0 Then
-$__g_hGDIPPen = _GDIPlus_PenCreate()
-$hPen = $__g_hGDIPPen
+Func _1b9(ByRef $c5)
+If $c5 = 0 Then
+$bl = _19o()
+$c5 = $bl
 EndIf
 EndFunc
-Func __GDIPlus_PenDefDispose($iCurError = @error, $iCurExtended = @extended)
-If $__g_hGDIPPen <> 0 Then
-_GDIPlus_PenDispose($__g_hGDIPPen)
-$__g_hGDIPPen = 0
+Func _1ba($cu = @error, $cv = @extended)
+If $bl <> 0 Then
+_19q($bl)
+$bl = 0
 EndIf
-Return SetError($iCurError, $iCurExtended)
+Return SetError($cu, $cv)
 EndFunc
-Local $_cHvr_aData[0]
-Local Const $_cHvr_HDLLCOMCTL32 = _WinAPI_LoadLibrary('comctl32.dll')
-Assert($_cHvr_HDLLCOMCTL32 <> 0, 'This UDF requires comctl32.dll')
-Local Const $_cHvr_PDEFSUBCLASSPROC = _WinAPI_GetProcAddress($_cHvr_HDLLCOMCTL32, 'DefSubclassProc')
-Local Const $_cHvr_PINTERNALSUBCLASS_DLL = DllCallbackRegister('_cHvr_iProc', 'NONE', 'HWND;UINT;WPARAM;LPARAM;DWORD')
-Local Const $_cHvr_PINTERNALSUBCLASS = DllCallbackGetPtr($_cHvr_PINTERNALSUBCLASS_DLL)
-OnAutoItExitRegister("_cHvr_Finalize")
-Local Const $_cHvr_TSUBCLASSEXE = Call(@AutoItX64 ? '_cHvr_CSCP_X64' : '_cHvr_CSCP_X86')
-Local Const $_cHvr_HEXECUTABLEHEAP = DllCall('kernel32.dll', 'HANDLE', 'HeapCreate', 'DWORD', 0x00040000, 'ULONG_PTR', 0, 'ULONG_PTR', 0)[0]
-Assert($_cHvr_HEXECUTABLEHEAP <> 0, 'Failed to create executable heap object')
-Local Const $_cHvr_PSUBCLASSEXE = _cHvr_ExecutableFromStruct(Call(@AutoItX64 ? '_cHvr_CSCP_X64' : '_cHvr_CSCP_X86'))
-Func _cHvr_Register($idCtrl, $fnHovOff = '', $fnHoverOn = '', $fnClick = '', $fnDblClk = '', $HoverData = 0,$ClickData = 0,$fnRightClick = '')
-Local $hWnd = GUICtrlGetHandle($idCtrl)
-If(Not(IsHWnd($hWnd))) Then Return SetError(1, 0, -1)
-Local $nIndex = _cHvr_GetNewIndex($hWnd)
-Local $aData[13]
-$aData[0] = $hWnd
-$aData[1] = $idCtrl
-$aData[3] = $fnHovOff
-$aData[4] = $HoverData
-$aData[5] = $fnHoverOn
-$aData[6] = $HoverData
-$aData[7] = $fnRightClick
-$aData[8] = $ClickData
-$aData[9] = $fnClick
-$aData[10] = $ClickData
-$aData[11] = $fnDblClk
-$aData[12] = $ClickData
-$_cHvr_aData[$nIndex] = $aData
-_WinAPI_SetWindowSubclass($hWnd, $_cHvr_PSUBCLASSEXE, $hWnd, $nIndex)
-Return $nIndex
+Local $cw[0]
+Local Const $cx = _2c('comctl32.dll')
+_1ch($cx <> 0, 'This UDF requires comctl32.dll')
+Local Const $cy = _ov($cx, 'DefSubclassProc')
+Local Const $cz = DllCallbackRegister('_1c3', 'NONE', 'HWND;UINT;WPARAM;LPARAM;DWORD')
+Local Const $d0 = DllCallbackGetPtr($cz)
+OnAutoItExitRegister("_1cg")
+Local Const $d1 = Call(@AutoItX64 ? '_cHvr_CSCP_X64' : '_cHvr_CSCP_X86')
+Local Const $d2 = DllCall('kernel32.dll', 'HANDLE', 'HeapCreate', 'DWORD', 0x00040000, 'ULONG_PTR', 0, 'ULONG_PTR', 0)[0]
+_1ch($d2 <> 0, 'Failed to create executable heap object')
+Local Const $d3 = _1ce(Call(@AutoItX64 ? '_cHvr_CSCP_X64' : '_cHvr_CSCP_X86'))
+Func _1c2($d4, $d5 = '', $d6 = '', $d7 = '', $d8 = '', $d9 = 0,$da = 0,$db = '')
+Local $k = GUICtrlGetHandle($d4)
+If(Not(IsHWnd($k))) Then Return SetError(1, 0, -1)
+Local $dc = _1ci($k)
+Local $2f[13]
+$2f[0] = $k
+$2f[1] = $d4
+$2f[3] = $d5
+$2f[4] = $d9
+$2f[5] = $d6
+$2f[6] = $d9
+$2f[7] = $db
+$2f[8] = $da
+$2f[9] = $d7
+$2f[10] = $da
+$2f[11] = $d8
+$2f[12] = $da
+$cw[$dc] = $2f
+_qv($k, $d3, $k, $dc)
+Return $dc
 EndFunc
-Func _cHvr_iProc($hWnd, $uMsg, $wParam, $lParam, $cIndex)
-Switch $uMsg
+Func _1c3($k, $dd, $1q, $1r, $de)
+Switch $dd
 Case 0x0200
 GUISetCursor(2, 1)
-_cHvr_cMove($_cHvr_aData[$cIndex], $hWnd, $uMsg, $wParam, $lParam)
+_1c5($cw[$de], $k, $dd, $1q, $1r)
 Case 0x0201
-_cHvr_cDown($_cHvr_aData[$cIndex], $hWnd, $uMsg, $wParam, $lParam)
+_1c4($cw[$de], $k, $dd, $1q, $1r)
 Case 0x0202
-_cHvr_cUp($_cHvr_aData[$cIndex], $hWnd, $uMsg, $wParam, $lParam)
+_1c6($cw[$de], $k, $dd, $1q, $1r)
 Return False
 Case 0x0203
-_cHvr_cDblClk($_cHvr_aData[$cIndex], $hWnd, $uMsg, $wParam, $lParam)
+_1c7($cw[$de], $k, $dd, $1q, $1r)
 Case 0x0204
-_cHvr_cRightClk($_cHvr_aData[$cIndex], $hWnd, $uMsg, $wParam, $lParam)
+_1c8($cw[$de], $k, $dd, $1q, $1r)
 Case 0x02A3
-_cHvr_cLeave($_cHvr_aData[$cIndex], $hWnd, $uMsg, $wParam, $lParam)
+_1c9($cw[$de], $k, $dd, $1q, $1r)
 Case 0x0082
-_cHvr_UnRegisterInternal($cIndex, $hWnd)
+_1cf($de, $k)
 EndSwitch
 Return True
 EndFunc
-Func _cHvr_cDown(ByRef $aCtrlData, $hWnd, $uMsg, ByRef $wParam, ByRef $lParam)
-_WinAPI_SetCapture($hWnd)
-_cHvr_CallFunc($aCtrlData, 9)
+Func _1c4(ByRef $df, $k, $dd, ByRef $1q, ByRef $1r)
+_q1($k)
+_1ca($df, 9)
 EndFunc
-Func _cHvr_cMove(ByRef $aCtrlData, $hWnd, $uMsg, ByRef $wParam, ByRef $lParam)
-If(_WinAPI_GetCapture() = $hWnd) Then
-Local $bIn = _cHvr_IsInClient($hWnd, $lParam)
-If Not $aCtrlData[2] Then
-If $bIn Then
-$aCtrlData[2] = 1
-_cHvr_CallFunc($aCtrlData, 9)
+Func _1c5(ByRef $df, $k, $dd, ByRef $1q, ByRef $1r)
+If(_1cj() = $k) Then
+Local $dg = _1cc($k, $1r)
+If Not $df[2] Then
+If $dg Then
+$df[2] = 1
+_1ca($df, 9)
 EndIf
 Else
-If Not $bIn Then
-$aCtrlData[2] = 0
-_cHvr_CallFunc($aCtrlData, 3)
+If Not $dg Then
+$df[2] = 0
+_1ca($df, 3)
 EndIf
 EndIf
-ElseIf Not $aCtrlData[2] Then
-$aCtrlData[2] = 1
-_cHvr_CallFunc($aCtrlData, 5)
-Local $tTME = DllStructCreate('DWORD;DWORD;HWND;DWORD')
-DllStructSetData($tTME, 1, DllStructGetSize($tTME))
-DllStructSetData($tTME, 2, 2)
-DllStructSetData($tTME, 3, $hWnd)
-DllCall('user32.dll', 'BOOL', 'TrackMouseEvent', 'STRUCT*', $tTME)
+ElseIf Not $df[2] Then
+$df[2] = 1
+_1ca($df, 5)
+Local $dh = DllStructCreate('DWORD;DWORD;HWND;DWORD')
+DllStructSetData($dh, 1, DllStructGetSize($dh))
+DllStructSetData($dh, 2, 2)
+DllStructSetData($dh, 3, $k)
+DllCall('user32.dll', 'BOOL', 'TrackMouseEvent', 'STRUCT*', $dh)
 EndIf
 EndFunc
-Func _cHvr_cUp(ByRef $aCtrlData, $hWnd, $uMsg, ByRef $wParam, ByRef $lParam)
-Local $lRet = _WinAPI_DefSubclassProc($hWnd, $uMsg, $wParam, $lParam)
-If(_WinAPI_GetCapture() = $hWnd) Then
-_WinAPI_ReleaseCapture()
-If _cHvr_IsInClient($hWnd, $lParam) Then
-_cHvr_CallFunc($aCtrlData, 9)
+Func _1c6(ByRef $df, $k, $dd, ByRef $1q, ByRef $1r)
+Local $di = _qn($k, $dd, $1q, $1r)
+If(_1cj() = $k) Then
+_py()
+If _1cc($k, $1r) Then
+_1ca($df, 9)
 EndIf
 EndIf
-Return $lRet
+Return $di
 EndFunc
-Func _cHvr_cDblClk(ByRef $aCtrlData, $hWnd, $uMsg, ByRef $wParam, ByRef $lParam)
-_cHvr_CallFunc($aCtrlData, 11)
+Func _1c7(ByRef $df, $k, $dd, ByRef $1q, ByRef $1r)
+_1ca($df, 11)
 EndFunc
-Func _cHvr_cRightClk(ByRef $aCtrlData, $hWnd, $uMsg, ByRef $wParam, ByRef $lParam)
-_cHvr_CallFunc($aCtrlData, 7)
+Func _1c8(ByRef $df, $k, $dd, ByRef $1q, ByRef $1r)
+_1ca($df, 7)
 EndFunc
-Func _cHvr_cLeave(ByRef $aCtrlData, $hWnd, $uMsg, ByRef $wParam, ByRef $lParam)
-$aCtrlData[2] = 0
-_cHvr_CallFunc($aCtrlData, 3)
+Func _1c9(ByRef $df, $k, $dd, ByRef $1q, ByRef $1r)
+$df[2] = 0
+_1ca($df, 3)
 EndFunc
-Func _cHvr_CallFunc(ByRef $aCtrlData, $iCallType)
-Call($aCtrlData[$iCallType], $aCtrlData[1], $aCtrlData[$iCallType + 1])
+Func _1ca(ByRef $df, $dj)
+Call($df[$dj], $df[1], $df[$dj + 1])
 EndFunc
-Func _cHvr_ArrayPush(ByRef $aStackArr, Const $vSrc1 = Default, Const $vSrc2 = Default, Const $vSrc3 = Default, Const $vSrc4 = Default, Const $vSrc5 = Default)
-While(UBound($aStackArr) <($aStackArr[0] + @NumParams))
-ReDim $aStackArr[UBound($aStackArr) * 2]
+Func _1cb(ByRef $dk, Const $dl = Default, Const $dm = Default, Const $dn = Default, Const $do = Default, Const $dp = Default)
+While(UBound($dk) <($dk[0] + @NumParams))
+ReDim $dk[UBound($dk) * 2]
 WEnd
-If Not($vSrc1 = Default) Then
-$aStackArr[0] += 1
-$aStackArr[$aStackArr[0]] = $vSrc1
+If Not($dl = Default) Then
+$dk[0] += 1
+$dk[$dk[0]] = $dl
 EndIf
-If Not($vSrc2 = Default) Then
-$aStackArr[0] += 1
-$aStackArr[$aStackArr[0]] = $vSrc2
+If Not($dm = Default) Then
+$dk[0] += 1
+$dk[$dk[0]] = $dm
 EndIf
-If Not($vSrc3 = Default) Then
-$aStackArr[0] += 1
-$aStackArr[$aStackArr[0]] = $vSrc3
+If Not($dn = Default) Then
+$dk[0] += 1
+$dk[$dk[0]] = $dn
 EndIf
-If Not($vSrc4 = Default) Then
-$aStackArr[0] += 1
-$aStackArr[$aStackArr[0]] = $vSrc4
+If Not($do = Default) Then
+$dk[0] += 1
+$dk[$dk[0]] = $do
 EndIf
-If Not($vSrc5 = Default) Then
-$aStackArr[0] += 1
-$aStackArr[$aStackArr[0]] = $vSrc5
+If Not($dp = Default) Then
+$dk[0] += 1
+$dk[$dk[0]] = $dp
 EndIf
 EndFunc
-Func _cHvr_IsInClient($hWnd, $lParam)
-Local $iX = BitShift(BitShift($lParam, -16), 16)
-Local $iY = BitShift($lParam, 16)
-Local $aSize = WinGetClientSize($hWnd)
-Return Not($iX < 0 Or $iY < 0 Or $iX > $aSize[0] Or $iY > $aSize[1])
+Func _1cc($k, $1r)
+Local $2u = BitShift(BitShift($1r, -16), 16)
+Local $2v = BitShift($1r, 16)
+Local $dq = WinGetClientSize($k)
+Return Not($2u < 0 Or $2v < 0 Or $2u > $dq[0] Or $2v > $dq[1])
 EndFunc
 Func _cHvr_CSCP_X86()
-Local $sExe = 'align 1;'
-Local $aOpCode[100]
-$aOpCode[0] = 0
-Local $nAddrOffset[5]
-Local $nElemOffset[5]
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x55)
-_cHvr_ArrayPush($aOpCode, 0x8B, 0xEC)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x53)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8B, 0x5D, 16)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x56)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8B, 0x75, 12)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x57)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8B, 0x7D, 20)
-$sExe &= 'BYTE;BYTE;DWORD;'
-_cHvr_ArrayPush($aOpCode, 0x81, 0xFE, 0x82)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x74, 0)
-$nAddrOffset[0] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[0] = $aOpCode[0]
-$sExe &= 'BYTE;BYTE;DWORD;'
-_cHvr_ArrayPush($aOpCode, 0x81, 0xFE, 0x2A3)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x74, 0)
-$nAddrOffset[1] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[1] = $aOpCode[0]
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8D, 0x86, -0x200)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x83, 0xF8, 3)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x77, 0)
-$nAddrOffset[2] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[2] = $aOpCode[0]
-$aOpCode[$nElemOffset[0]] = $nAddrOffset[2] - $nAddrOffset[0]
-$aOpCode[$nElemOffset[1]] = $nAddrOffset[2] - $nAddrOffset[1]
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8B, 0x4D, 28)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8B, 0x55, 8)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x51)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x57)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x53)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x56)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x52)
-$sExe &= 'BYTE;PTR;'
-_cHvr_ArrayPush($aOpCode, 0xB8, $_cHvr_PINTERNALSUBCLASS)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0xFF, 0xD0)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x85, 0xC0)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x74, 0)
-$nAddrOffset[3] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[3] = $aOpCode[0]
-$aOpCode[$nElemOffset[2]] = $nAddrOffset[3] - $nAddrOffset[2]
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8B, 0x45, 8)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x57)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x53)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x56)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x50)
-$sExe &= 'BYTE;PTR;'
-_cHvr_ArrayPush($aOpCode, 0xB8, $_cHvr_PDEFSUBCLASSPROC)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0xFF, 0xD0)
-$nAddrOffset[4] = DllStructGetSize(DllStructCreate($sExe))
-$aOpCode[$nElemOffset[3]] = $nAddrOffset[4] - $nAddrOffset[3]
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x5F)
-_cHvr_ArrayPush($aOpCode, 0x5E)
-_cHvr_ArrayPush($aOpCode, 0x5B)
-$sExe &= 'BYTE;BYTE;BYTE;WORD'
-_cHvr_ArrayPush($aOpCode, 0x5D)
-_cHvr_ArrayPush($aOpCode, 0xC2, 24)
-Return _cHvr_PopulateOpcode($sExe, $aOpCode)
+Local $dr = 'align 1;'
+Local $ds[100]
+$ds[0] = 0
+Local $dt[5]
+Local $du[5]
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x55)
+_1cb($ds, 0x8B, 0xEC)
+$dr &= 'BYTE;'
+_1cb($ds, 0x53)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x8B, 0x5D, 16)
+$dr &= 'BYTE;'
+_1cb($ds, 0x56)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x8B, 0x75, 12)
+$dr &= 'BYTE;'
+_1cb($ds, 0x57)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x8B, 0x7D, 20)
+$dr &= 'BYTE;BYTE;DWORD;'
+_1cb($ds, 0x81, 0xFE, 0x82)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x74, 0)
+$dt[0] = DllStructGetSize(DllStructCreate($dr))
+$du[0] = $ds[0]
+$dr &= 'BYTE;BYTE;DWORD;'
+_1cb($ds, 0x81, 0xFE, 0x2A3)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x74, 0)
+$dt[1] = DllStructGetSize(DllStructCreate($dr))
+$du[1] = $ds[0]
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x8D, 0x86, -0x200)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x83, 0xF8, 3)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x77, 0)
+$dt[2] = DllStructGetSize(DllStructCreate($dr))
+$du[2] = $ds[0]
+$ds[$du[0]] = $dt[2] - $dt[0]
+$ds[$du[1]] = $dt[2] - $dt[1]
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x8B, 0x4D, 28)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x8B, 0x55, 8)
+$dr &= 'BYTE;'
+_1cb($ds, 0x51)
+$dr &= 'BYTE;'
+_1cb($ds, 0x57)
+$dr &= 'BYTE;'
+_1cb($ds, 0x53)
+$dr &= 'BYTE;'
+_1cb($ds, 0x56)
+$dr &= 'BYTE;'
+_1cb($ds, 0x52)
+$dr &= 'BYTE;PTR;'
+_1cb($ds, 0xB8, $d0)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0xFF, 0xD0)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x85, 0xC0)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x74, 0)
+$dt[3] = DllStructGetSize(DllStructCreate($dr))
+$du[3] = $ds[0]
+$ds[$du[2]] = $dt[3] - $dt[2]
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x8B, 0x45, 8)
+$dr &= 'BYTE;'
+_1cb($ds, 0x57)
+$dr &= 'BYTE;'
+_1cb($ds, 0x53)
+$dr &= 'BYTE;'
+_1cb($ds, 0x56)
+$dr &= 'BYTE;'
+_1cb($ds, 0x50)
+$dr &= 'BYTE;PTR;'
+_1cb($ds, 0xB8, $cy)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0xFF, 0xD0)
+$dt[4] = DllStructGetSize(DllStructCreate($dr))
+$ds[$du[3]] = $dt[4] - $dt[3]
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x5F)
+_1cb($ds, 0x5E)
+_1cb($ds, 0x5B)
+$dr &= 'BYTE;BYTE;BYTE;WORD'
+_1cb($ds, 0x5D)
+_1cb($ds, 0xC2, 24)
+Return _1cd($dr, $ds)
 EndFunc
 Func _cHvr_CSCP_X64()
-Local $sExe = 'align 1;'
-Local $aOpCode[100]
-$aOpCode[0] = 0
-Local $nAddrOffset[5]
-Local $nElemOffset[5]
-$sExe &= 'BYTE;BYTE;DWORD;'
-_cHvr_ArrayPush($aOpCode, 0x81, 0xFA, 0x82)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x74, 0)
-$nAddrOffset[0] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[0] = $aOpCode[0]
-$sExe &= 'BYTE;BYTE;DWORD;'
-_cHvr_ArrayPush($aOpCode, 0x81, 0xFA, 0x2A3)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x74, 0)
-$nAddrOffset[1] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[1] = $aOpCode[0]
-$sExe &= 'BYTE;BYTE;DWORD;'
-_cHvr_ArrayPush($aOpCode, 0x8D, 0x82, -0x200)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x83, 0xF8, 3)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x77, 0)
-$nAddrOffset[2] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[2] = $aOpCode[0]
-$aOpCode[$nElemOffset[0]] = $nAddrOffset[2] - $nAddrOffset[0]
-$aOpCode[$nElemOffset[1]] = $nAddrOffset[2] - $nAddrOffset[1]
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x89, 0x5C, 0x24, 8)
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x89, 0x6C, 0x24, 16)
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x89, 0x74, 0x24, 24)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x57)
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x83, 0xEC, 48)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x49, 0x8B, 0xF9)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x49, 0x8B, 0xF0)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8B, 0xDA)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x8B, 0xE9)
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x8B, 0x44, 0x24, 104)
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x89, 0x44, 0x24, 32)
-$sExe &= 'BYTE;BYTE;PTR;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0xB8, $_cHvr_PINTERNALSUBCLASS)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0xFF, 0xD0)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x85, 0xC0)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x74, 0)
-$nAddrOffset[3] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[3] = $aOpCode[0]
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x4C, 0x8B, 0xCF)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x4C, 0x8B, 0xC6)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x8B, 0xD3)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x8B, 0xCD)
-$aOpCode[$nElemOffset[3]] = DllStructGetSize(DllStructCreate($sExe)) - $nAddrOffset[3]
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x8B, 0x5C, 0x24, 64)
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x8B, 0x6C, 0x24, 72)
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x8B, 0x74, 0x24, 80)
-$sExe &= 'BYTE;BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x83, 0xc4, 48)
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x5F)
-$sExe &= 'BYTE;BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0x85, 0xC0)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0x74, 0)
-$nAddrOffset[4] = DllStructGetSize(DllStructCreate($sExe))
-$nElemOffset[4] = $aOpCode[0]
-$aOpCode[$nElemOffset[2]] = DllStructGetSize(DllStructCreate($sExe)) - $nAddrOffset[2]
-$sExe &= 'BYTE;BYTE;PTR;'
-_cHvr_ArrayPush($aOpCode, 0x48, 0xB8, $_cHvr_PDEFSUBCLASSPROC)
-$sExe &= 'BYTE;BYTE;'
-_cHvr_ArrayPush($aOpCode, 0xFF, 0xE0)
-$aOpCode[$nElemOffset[4]] = DllStructGetSize(DllStructCreate($sExe)) - $nAddrOffset[4]
-$sExe &= 'BYTE;'
-_cHvr_ArrayPush($aOpCode, 0xC3)
-Return _cHvr_PopulateOpcode($sExe, $aOpCode)
+Local $dr = 'align 1;'
+Local $ds[100]
+$ds[0] = 0
+Local $dt[5]
+Local $du[5]
+$dr &= 'BYTE;BYTE;DWORD;'
+_1cb($ds, 0x81, 0xFA, 0x82)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x74, 0)
+$dt[0] = DllStructGetSize(DllStructCreate($dr))
+$du[0] = $ds[0]
+$dr &= 'BYTE;BYTE;DWORD;'
+_1cb($ds, 0x81, 0xFA, 0x2A3)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x74, 0)
+$dt[1] = DllStructGetSize(DllStructCreate($dr))
+$du[1] = $ds[0]
+$dr &= 'BYTE;BYTE;DWORD;'
+_1cb($ds, 0x8D, 0x82, -0x200)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x83, 0xF8, 3)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x77, 0)
+$dt[2] = DllStructGetSize(DllStructCreate($dr))
+$du[2] = $ds[0]
+$ds[$du[0]] = $dt[2] - $dt[0]
+$ds[$du[1]] = $dt[2] - $dt[1]
+$dr &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x89, 0x5C, 0x24, 8)
+$dr &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x89, 0x6C, 0x24, 16)
+$dr &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x89, 0x74, 0x24, 24)
+$dr &= 'BYTE;'
+_1cb($ds, 0x57)
+$dr &= 'BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x83, 0xEC, 48)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x49, 0x8B, 0xF9)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x49, 0x8B, 0xF0)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x8B, 0xDA)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x8B, 0xE9)
+$dr &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x8B, 0x44, 0x24, 104)
+$dr &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x89, 0x44, 0x24, 32)
+$dr &= 'BYTE;BYTE;PTR;'
+_1cb($ds, 0x48, 0xB8, $d0)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0xFF, 0xD0)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x85, 0xC0)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x74, 0)
+$dt[3] = DllStructGetSize(DllStructCreate($dr))
+$du[3] = $ds[0]
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x4C, 0x8B, 0xCF)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x4C, 0x8B, 0xC6)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x8B, 0xD3)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x8B, 0xCD)
+$ds[$du[3]] = DllStructGetSize(DllStructCreate($dr)) - $dt[3]
+$dr &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x8B, 0x5C, 0x24, 64)
+$dr &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x8B, 0x6C, 0x24, 72)
+$dr &= 'BYTE;BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x8B, 0x74, 0x24, 80)
+$dr &= 'BYTE;BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x83, 0xc4, 48)
+$dr &= 'BYTE;'
+_1cb($ds, 0x5F)
+$dr &= 'BYTE;BYTE;BYTE;'
+_1cb($ds, 0x48, 0x85, 0xC0)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0x74, 0)
+$dt[4] = DllStructGetSize(DllStructCreate($dr))
+$du[4] = $ds[0]
+$ds[$du[2]] = DllStructGetSize(DllStructCreate($dr)) - $dt[2]
+$dr &= 'BYTE;BYTE;PTR;'
+_1cb($ds, 0x48, 0xB8, $cy)
+$dr &= 'BYTE;BYTE;'
+_1cb($ds, 0xFF, 0xE0)
+$ds[$du[4]] = DllStructGetSize(DllStructCreate($dr)) - $dt[4]
+$dr &= 'BYTE;'
+_1cb($ds, 0xC3)
+Return _1cd($dr, $ds)
 EndFunc
-Func _cHvr_PopulateOpcode(ByRef $sExe, ByRef $aOpCode)
-Local $tExe = DllStructCreate($sExe)
-Assert(@error = 0, 'DllStrucCreate Failed With Error = ' & @error)
-For $i = 1 To $aOpCode[0]
-DllStructSetData($tExe, $i, $aOpCode[$i])
+Func _1cd(ByRef $dr, ByRef $ds)
+Local $dv = DllStructCreate($dr)
+_1ch(@error = 0, 'DllStrucCreate Failed With Error = ' & @error)
+For $1c = 1 To $ds[0]
+DllStructSetData($dv, $1c, $ds[$1c])
 Next
-Return $tExe
+Return $dv
 EndFunc
-Func _cHvr_ExecutableFromStruct($tExe)
-Local $pExe = DllCall('kernel32.dll', 'PTR', 'HeapAlloc', 'HANDLE', $_cHvr_HEXECUTABLEHEAP, 'DWORD', 8, 'ULONG_PTR', DllStructGetSize($tExe))[0]
-Assert($pExe <> 0, 'Allocate memory failed')
-DllCall("kernel32.dll", "none", "RtlMoveMemory", "PTR", $pExe, "PTR", DllStructGetPtr($tExe), "ULONG_PTR", DllStructGetSize($tExe))
-Assert(@error = 0, 'Failed to copy memory')
-Return $pExe
+Func _1ce($dv)
+Local $dw = DllCall('kernel32.dll', 'PTR', 'HeapAlloc', 'HANDLE', $d2, 'DWORD', 8, 'ULONG_PTR', DllStructGetSize($dv))[0]
+_1ch($dw <> 0, 'Allocate memory failed')
+DllCall("kernel32.dll", "none", "RtlMoveMemory", "PTR", $dw, "PTR", DllStructGetPtr($dv), "ULONG_PTR", DllStructGetSize($dv))
+_1ch(@error = 0, 'Failed to copy memory')
+Return $dw
 EndFunc
-Func _cHvr_UnRegisterInternal($cIndex, $hWnd)
-_WinAPI_RemoveWindowSubclass($hWnd, $_cHvr_PSUBCLASSEXE, $hWnd)
-Local $aData=$_cHvr_aData[$cIndex]
-$_cHvr_aData[$cIndex] = 0
-Call( "_iControlDelete",$aData[1])
+Func _1cf($de, $k)
+_qt($k, $d3, $k)
+Local $2f=$cw[$de]
+$cw[$de] = 0
+Call( "_iControlDelete",$2f[1])
 EndFunc
-Func _cHvr_Finalize()
-DllCallbackFree($_cHvr_PINTERNALSUBCLASS_DLL)
-_WinAPI_FreeLibrary($_cHvr_HDLLCOMCTL32)
-If($_cHvr_HEXECUTABLEHEAP <> 0) Then
-If($_cHvr_PSUBCLASSEXE <> 0) Then
-DllCall('kernel32.dll', 'BOOL', 'HeapFree', 'HANDLE', $_cHvr_HEXECUTABLEHEAP, 'DWORD', 0, 'PTR', $_cHvr_PSUBCLASSEXE)
+Func _1cg()
+DllCallbackFree($cz)
+_25($cx)
+If($d2 <> 0) Then
+If($d3 <> 0) Then
+DllCall('kernel32.dll', 'BOOL', 'HeapFree', 'HANDLE', $d2, 'DWORD', 0, 'PTR', $d3)
 EndIf
-DllCall('kernel32.dll', 'BOOL', 'HeapDestroy', 'HANDLE', $_cHvr_HEXECUTABLEHEAP)
+DllCall('kernel32.dll', 'BOOL', 'HeapDestroy', 'HANDLE', $d2)
 EndIf
 EndFunc
-Func Assert($bExpression, $sMsg = '', $sScript = @ScriptName, $sScriptPath = @ScriptFullPath, $iLine = @ScriptLineNumber, $iError = @error, $iExtend = @extended)
-If(Not($bExpression)) Then
-MsgBox(BitOR(1, 0x10), 'Assertion Error!', @CRLF & 'Script' & @TAB & ': ' & $sScript & @CRLF & 'Path' & @TAB & ': ' & $sScriptPath & @CRLF & 'Line' & @TAB & ': ' & $iLine & @CRLF & 'Error' & @TAB & ': ' &($iError > 0x7FFF ? Hex($iError) : $iError) &($iExtend <> 0 ? '  (Extended : ' &($iExtend > 0x7FFF ? Hex($iExtend) : $iExtend) & ')' : '') & @CRLF & 'Message' & @TAB & ': ' & $sMsg & @CRLF & @CRLF & 'OK: Exit Script' & @TAB & 'Cancel: Continue')
+Func _1ch($dx, $dy = '', $dz = @ScriptName, $e0 = @ScriptFullPath, $e1 = @ScriptLineNumber, $e2 = @error, $e3 = @extended)
+If(Not($dx)) Then
+MsgBox(BitOR(1, 0x10), 'Assertion Error!', @CRLF & 'Script' & @TAB & ': ' & $dz & @CRLF & 'Path' & @TAB & ': ' & $e0 & @CRLF & 'Line' & @TAB & ': ' & $e1 & @CRLF & 'Error' & @TAB & ': ' &($e2 > 0x7FFF ? Hex($e2) : $e2) &($e3 <> 0 ? '  (Extended : ' &($e3 > 0x7FFF ? Hex($e3) : $e3) & ')' : '') & @CRLF & 'Message' & @TAB & ': ' & $dy & @CRLF & @CRLF & 'OK: Exit Script' & @TAB & 'Cancel: Continue')
 Exit
 EndIf
 EndFunc
-Func _cHvr_GetNewIndex($hWnd)
-For $i = 0 To UBound($_cHvr_aData) - 1 Step +1
-If Not IsArray($_cHvr_aData[$i]) Then
-Return $i
+Func _1ci($k)
+For $1c = 0 To UBound($cw) - 1 Step +1
+If Not IsArray($cw[$1c]) Then
+Return $1c
 EndIf
 Next
-ReDim $_cHvr_aData[UBound($_cHvr_aData) + 1]
-Return UBound($_cHvr_aData) - 1
+ReDim $cw[UBound($cw) + 1]
+Return UBound($cw) - 1
 EndFunc
-Func _WinAPI_GetCapture()
+Func _1cj()
 Return DllCall("user32.dll", "HWND", "GetCapture")[0]
 EndFunc
-_GDIPlus_Startup()
+_1av()
 Opt("WinWaitDelay", 0)
-Global $Font_DPI_Ratio = _GetFontDPI_Ratio()[2], $gDPI = _GDIPlus_GraphicsGetDPIRatio()
-Global $iHoverReg[0], $iGUI_LIST[0]
-Global $iMsgBoxTimeout = 0
-Global $GUI_TOP_MARGIN = Number(29 * $gDPI, 1) + Number(10 * $gDPI, 1)
-Global Const $m_hDll = DllCallbackRegister('_iEffectControl', 'lresult', 'hwnd;uint;wparam;lparam;uint_ptr;dword_ptr')
-Global Const $m_pDll = DllCallbackGetPtr($m_hDll)
-OnAutoItExitRegister('_iMExit')
-Global Const $bMarg = 4 * $gDPI
-Global $HIGHDPI_SUPPORT = False
-Global $ControlBtnsAutoMode = True
-Global $mOnEventMode = False
+Global $e4 = _1dx()[2], $e5 = _1e4()
+Global $e6[0], $e7[0]
+Global $e8 = 0
+Global $e9 = Number(29 * $e5, 1) + Number(10 * $e5, 1)
+Global Const $ea = DllCallbackRegister('_1e6', 'lresult', 'hwnd;uint;wparam;lparam;uint_ptr;dword_ptr')
+Global Const $eb = DllCallbackGetPtr($ea)
+OnAutoItExitRegister('_1e7')
+Global Const $ec = 4 * $e5
+Global $ed = False
+Global $ee = True
+Global $ef = False
 If Opt("GUIOnEventMode", 0) Then
 Opt("GUIOnEventMode", 1)
-$mOnEventMode = True
+$ef = True
 EndIf
-Func _Metro_CreateGUI($Title, $Width, $Height, $Left = -1, $Top = -1, $AllowResize = False, $ParentGUI = "")
-Local $GUI_Return
-If $HIGHDPI_SUPPORT Then
-$Width = Round($Width * $gDPI)
-$Height = Round($Height * $gDPI)
+Func _1ck($eg, $eh, $ei, $ej = -1, $ek = -1, $el = False, $em = "")
+Local $en
+If $ed Then
+$eh = Round($eh * $e5)
+$ei = Round($ei * $e5)
 EndIf
-Local $gID
-If $AllowResize Then
+Local $eo
+If $el Then
 DllCall("uxtheme.dll", "none", "SetThemeAppProperties", "int", 0)
-$GUI_Return = GUICreate($Title, $Width, $Height, $Left, $Top, BitOR($WS_SIZEBOX, $WS_MINIMIZEBOX, $WS_MAXIMIZEBOX), -1, $ParentGUI)
-$gID = _Metro_SetGUIOption($GUI_Return, True, True, $Width, $Height)
+$en = GUICreate($eg, $eh, $ei, $ej, $ek, BitOR(0x00040000, 0x00020000, 0x00010000), -1, $em)
+$eo = _1cl($en, True, True, $eh, $ei)
 DllCall("uxtheme.dll", "none", "SetThemeAppProperties", "int", BitOR(1, 2, 4))
 Else
 DllCall("uxtheme.dll", "none", "SetThemeAppProperties", "int", 0)
-$GUI_Return = GUICreate($Title, $Width, $Height, $Left, $Top, -1, -1, $ParentGUI)
-$gID = _Metro_SetGUIOption($GUI_Return, False, False, $Width, $Height)
+$en = GUICreate($eg, $eh, $ei, $ej, $ek, -1, -1, $em)
+$eo = _1cl($en, False, False, $eh, $ei)
 DllCall("uxtheme.dll", "none", "SetThemeAppProperties", "int", BitOR(1, 2, 4))
 EndIf
-_WinAPI_SetWindowSubclass($GUI_Return, $m_pDll, 1010, $gID)
-WinMove($GUI_Return, "", Default, Default, $Width, $Height)
-If Not $ParentGUI Then
-Local $Center_GUI = _GetDesktopWorkArea($GUI_Return)
-If($Left = -1) And($Top = -1) Then
-WinMove($GUI_Return, "",($Center_GUI[2] - $Width) / 2,($Center_GUI[3] - $Height) / 2, $Width, $Height)
+_qv($en, $eb, 1010, $eo)
+WinMove($en, "", Default, Default, $eh, $ei)
+If Not $em Then
+Local $ep = _1e8($en)
+If($ej = -1) And($ek = -1) Then
+WinMove($en, "",($ep[2] - $eh) / 2,($ep[3] - $ei) / 2, $eh, $ei)
 EndIf
 Else
-If($Left = -1) And($Top = -1) Then
-Local $GUI_NewPos = _WinPos($ParentGUI, $Width, $Height)
-WinMove($GUI_Return, "", $GUI_NewPos[0], $GUI_NewPos[1], $Width, $Height)
+If($ej = -1) And($ek = -1) Then
+Local $eq = _1e3($em, $eh, $ei)
+WinMove($en, "", $eq[0], $eq[1], $eh, $ei)
 EndIf
 EndIf
-GUISetBkColor($GUIThemeColor)
-_CreateBorder($GUI_Return, $Width, $Height, $GUIBorderColor)
-Return($GUI_Return)
+GUISetBkColor($al)
+_1e2($en, $eh, $ei, $an)
+Return($en)
 EndFunc
-Func _Metro_SetGUIOption($mGUI, $AllowDragMove = False, $AllowResize = False, $Win_MinWidth = "", $Win_MinHeight = "")
-Local $iGui_Count
-For $iGUIs = 0 To UBound($iGUI_LIST) - 1 Step +1
-If $iGUI_LIST[$iGUIs][0] = $mGUI Then
-$iGui_Count = $iGUIs
+Func _1cl($er, $es = False, $el = False, $et = "", $eu = "")
+Local $ev
+For $ew = 0 To UBound($e7) - 1 Step +1
+If $e7[$ew][0] = $er Then
+$ev = $ew
 ExitLoop
 EndIf
 Next
-If($iGui_Count == "") Then
-$iGui_Count = UBound($iGUI_LIST)
-ReDim $iGUI_LIST[$iGui_Count + 1][16]
+If($ev == "") Then
+$ev = UBound($e7)
+ReDim $e7[$ev + 1][16]
 EndIf
-$iGUI_LIST[$iGui_Count][0] = $mGUI
-$iGUI_LIST[$iGui_Count][1] = $AllowDragMove
-$iGUI_LIST[$iGui_Count][2] = $AllowResize
-If $AllowResize Then
-If $Win_MinWidth = "" Then
-$Win_MinWidth = WinGetPos($mGUI, "")
+$e7[$ev][0] = $er
+$e7[$ev][1] = $es
+$e7[$ev][2] = $el
+If $el Then
+If $et = "" Then
+$et = WinGetPos($er, "")
 If @error Then
-$Win_MinWidth = 80 * $gDPI
+$et = 80 * $e5
 Else
-$Win_MinWidth = $Win_MinWidth[2]
+$et = $et[2]
 EndIf
 EndIf
-If $Win_MinHeight = "" Then
-$Win_MinHeight = WinGetPos($mGUI, "")
+If $eu = "" Then
+$eu = WinGetPos($er, "")
 If @error Then
-$Win_MinHeight = 50 * $gDPI
+$eu = 50 * $e5
 Else
-$Win_MinHeight = $Win_MinHeight[3]
+$eu = $eu[3]
 EndIf
 EndIf
-$iGUI_LIST[$iGui_Count][3] = $Win_MinWidth
-$iGUI_LIST[$iGui_Count][4] = $Win_MinHeight
+$e7[$ev][3] = $et
+$e7[$ev][4] = $eu
 EndIf
-Return $iGui_Count
+Return $ev
 EndFunc
-Func _Metro_GUIDelete($GUI)
-GUISetState(@SW_HIDE, $GUI)
-_WinAPI_RemoveWindowSubclass($GUI, $m_pDll, 1010)
-GUIDelete($GUI)
-Local $CLEANED_GUI_LIST[0]
-For $i_HR = 0 To UBound($iGUI_LIST) - 1 Step +1
-If $iGUI_LIST[$i_HR][0] <> $GUI Then
-ReDim $CLEANED_GUI_LIST[UBound($CLEANED_GUI_LIST) + 1][16]
-For $i_Hx = 0 To 11 Step +1
-$CLEANED_GUI_LIST[UBound($CLEANED_GUI_LIST) - 1][$i_Hx] = $iGUI_LIST[$i_HR][$i_Hx]
+Func _1cm($ex)
+GUISetState(@SW_HIDE, $ex)
+_qt($ex, $eb, 1010)
+GUIDelete($ex)
+Local $ey[0]
+For $ez = 0 To UBound($e7) - 1 Step +1
+If $e7[$ez][0] <> $ex Then
+ReDim $ey[UBound($ey) + 1][16]
+For $f0 = 0 To 11 Step +1
+$ey[UBound($ey) - 1][$f0] = $e7[$ez][$f0]
 Next
 EndIf
 Next
-$iGUI_LIST = $CLEANED_GUI_LIST
+$e7 = $ey
 EndFunc
-Func _iControlDelete($hControl)
-For $i = 0 To UBound($iHoverReg) - 1
-If $iHoverReg[$i][0] = $hControl Then
-Switch($iHoverReg[$i][3])
+Func _iControlDelete($f1)
+For $1c = 0 To UBound($e6) - 1
+If $e6[$1c][0] = $f1 Then
+Switch($e6[$1c][3])
 Case "5", "7"
-_WinAPI_DeleteObject($iHoverReg[$i][5])
-_WinAPI_DeleteObject($iHoverReg[$i][6])
-_WinAPI_DeleteObject($iHoverReg[$i][7])
-_WinAPI_DeleteObject($iHoverReg[$i][8])
+_4a($e6[$1c][5])
+_4a($e6[$1c][6])
+_4a($e6[$1c][7])
+_4a($e6[$1c][8])
 Case "6"
-_WinAPI_DeleteObject($iHoverReg[$i][5])
-_WinAPI_DeleteObject($iHoverReg[$i][6])
-_WinAPI_DeleteObject($iHoverReg[$i][7])
-_WinAPI_DeleteObject($iHoverReg[$i][8])
-_WinAPI_DeleteObject($iHoverReg[$i][9])
-_WinAPI_DeleteObject($iHoverReg[$i][10])
-_WinAPI_DeleteObject($iHoverReg[$i][11])
-_WinAPI_DeleteObject($iHoverReg[$i][12])
-_WinAPI_DeleteObject($iHoverReg[$i][13])
-_WinAPI_DeleteObject($iHoverReg[$i][14])
+_4a($e6[$1c][5])
+_4a($e6[$1c][6])
+_4a($e6[$1c][7])
+_4a($e6[$1c][8])
+_4a($e6[$1c][9])
+_4a($e6[$1c][10])
+_4a($e6[$1c][11])
+_4a($e6[$1c][12])
+_4a($e6[$1c][13])
+_4a($e6[$1c][14])
 Case Else
-_WinAPI_DeleteObject($iHoverReg[$i][5])
-_WinAPI_DeleteObject($iHoverReg[$i][6])
+_4a($e6[$1c][5])
+_4a($e6[$1c][6])
 EndSwitch
-For $i2 = 0 To UBound($iHoverReg, 2) - 1
-$iHoverReg[$i][$i2] = ""
+For $f2 = 0 To UBound($e6, 2) - 1
+$e6[$1c][$f2] = ""
 Next
 ExitLoop
 EndIf
 Next
 EndFunc
-Func _Metro_AddControlButtons($CloseBtn = True, $MaximizeBtn = True, $MinimizeBtn = True, $FullScreenBtn = False, $MenuBtn = False, $GUI_BG_Color = $GUIThemeColor, $GUI_Font_Color = $FontThemeColor, $tMargin = 2)
-Local $ButtonsToCreate_Array[5]
-$ButtonsToCreate_Array[0] = $CloseBtn
-$ButtonsToCreate_Array[1] = $MaximizeBtn
-$ButtonsToCreate_Array[2] = $MinimizeBtn
-$ButtonsToCreate_Array[3] = $FullScreenBtn
-$ButtonsToCreate_Array[4] = $MenuBtn
-$GUI_BG_Color = "0xFF" & Hex($GUI_BG_Color, 6)
-$GUI_Font_Color = "0xFF" & Hex($GUI_Font_Color, 6)
-Return _iCreateControlButtons($ButtonsToCreate_Array, $GUI_BG_Color, $GUI_Font_Color, False, $tMargin)
+Func _1cn($f3 = True, $f4 = True, $f5 = True, $f6 = False, $f7 = False, $f8 = $al, $f9 = $am, $fa = 2)
+Local $fb[5]
+$fb[0] = $f3
+$fb[1] = $f4
+$fb[2] = $f5
+$fb[3] = $f6
+$fb[4] = $f7
+$f8 = "0xFF" & Hex($f8, 6)
+$f9 = "0xFF" & Hex($f9, 6)
+Return _1cv($fb, $f8, $f9, False, $fa)
 EndFunc
-Func _Metro_EnableHighDPIScaling($Enable = True)
-$HIGHDPI_SUPPORT = $Enable
+Func _1co($fc = True)
+$ed = $fc
 EndFunc
-Func _Metro_FullscreenToggle($mGUI)
-GUISetState(@SW_SHOW, $mGUI)
-Local $iGui_Count = _iGetGUIID($mGUI)
-If($iGui_Count == "") Then
+Func _1cq($er)
+GUISetState(@SW_SHOW, $er)
+Local $ev = _1e9($er)
+If($ev == "") Then
 ConsoleWrite("Fullscreen-Toggle failed: GUI not registered. Not created with _Metro_CreateGUI ?" & @CRLF)
 Return SetError(1)
 EndIf
-If Not $iGUI_LIST[$iGui_Count][2] Then
+If Not $e7[$ev][2] Then
 ConsoleWrite("Fullscreen-Toggle failed: GUI is not registered for resizing. Please use _Metro_SetGUIOption to enable resizing." & @CRLF)
 Return SetError(2)
 EndIf
-Local $mWin_State = WinGetState($mGUI)
-Local $tRET = _WinAPI_GetWindowPlacement($mGUI)
-Local $FullScreenPOS = _GetDesktopWorkArea($mGUI, True)
-Local $CurrentPos = WinGetPos($mGUI)
-Local $MaxBtn = _iGetCtrlHandlebyType("3", $mGUI)
-Local $RestoreBtn = _iGetCtrlHandlebyType("4", $mGUI)
-Local $FullScreenBtn = _iGetCtrlHandlebyType("9", $mGUI)
-Local $FullscreenRsBtn = _iGetCtrlHandlebyType("10", $mGUI)
-If $iGUI_LIST[$iGui_Count][11] Then
-$iGUI_LIST[$iGui_Count][11] = False
-If(BitAND($iGUI_LIST[$iGui_Count][9], 32) = 32) Then
+Local $fd = WinGetState($er)
+Local $fe = _n0($er)
+Local $ff = _1e8($er, True)
+Local $fg = WinGetPos($er)
+Local $fh = _1e5("3", $er)
+Local $fi = _1e5("4", $er)
+Local $f6 = _1e5("9", $er)
+Local $fj = _1e5("10", $er)
+If $e7[$ev][11] Then
+$e7[$ev][11] = False
+If(BitAND($e7[$ev][9], 32) = 32) Then
 GUISetState(@SW_MAXIMIZE)
-$tRET = $iGUI_LIST[$iGui_Count][10]
-DllStructSetData($tRET, "rcNormalPosition", $iGUI_LIST[$iGui_Count][5], 1)
-DllStructSetData($tRET, "rcNormalPosition", $iGUI_LIST[$iGui_Count][6], 2)
-DllStructSetData($tRET, "rcNormalPosition", $iGUI_LIST[$iGui_Count][7], 3)
-DllStructSetData($tRET, "rcNormalPosition", $iGUI_LIST[$iGui_Count][8], 4)
-_WinAPI_SetWindowPlacement($mGUI, $tRET)
-If $MaxBtn Then
-GUICtrlSetState($MaxBtn, 32)
-GUICtrlSetState($RestoreBtn, 16)
+$fe = $e7[$ev][10]
+DllStructSetData($fe, "rcNormalPosition", $e7[$ev][5], 1)
+DllStructSetData($fe, "rcNormalPosition", $e7[$ev][6], 2)
+DllStructSetData($fe, "rcNormalPosition", $e7[$ev][7], 3)
+DllStructSetData($fe, "rcNormalPosition", $e7[$ev][8], 4)
+_nm($er, $fe)
+If $fh Then
+GUICtrlSetState($fh, 32)
+GUICtrlSetState($fi, 16)
 EndIf
 Else
-WinMove($mGUI, "", $iGUI_LIST[$iGui_Count][5], $iGUI_LIST[$iGui_Count][6], $iGUI_LIST[$iGui_Count][7], $iGUI_LIST[$iGui_Count][8])
-If $MaxBtn Then
-GUICtrlSetState($RestoreBtn, 32)
-GUICtrlSetState($MaxBtn, 16)
+WinMove($er, "", $e7[$ev][5], $e7[$ev][6], $e7[$ev][7], $e7[$ev][8])
+If $fh Then
+GUICtrlSetState($fi, 32)
+GUICtrlSetState($fh, 16)
 EndIf
 EndIf
-GUICtrlSetState($FullscreenRsBtn, 32)
-GUICtrlSetState($FullScreenBtn, 16)
+GUICtrlSetState($fj, 32)
+GUICtrlSetState($f6, 16)
 Else
-If(BitAND($mWin_State, 32) = 32) Then
-$CurrentPos[0] = DllStructGetData($tRET, "rcNormalPosition", 1)
-$CurrentPos[1] = DllStructGetData($tRET, "rcNormalPosition", 2)
-$CurrentPos[2] = DllStructGetData($tRET, "rcNormalPosition", 3)
-$CurrentPos[3] = DllStructGetData($tRET, "rcNormalPosition", 4)
-DllStructSetData($tRET, "rcNormalPosition", $FullScreenPOS[0], 1)
-DllStructSetData($tRET, "rcNormalPosition", $FullScreenPOS[1], 2)
-DllStructSetData($tRET, "rcNormalPosition", $FullScreenPOS[0] + $FullScreenPOS[2], 3)
-DllStructSetData($tRET, "rcNormalPosition", $FullScreenPOS[1] + $FullScreenPOS[3], 4)
-_WinAPI_SetWindowPlacement($mGUI, $tRET)
+If(BitAND($fd, 32) = 32) Then
+$fg[0] = DllStructGetData($fe, "rcNormalPosition", 1)
+$fg[1] = DllStructGetData($fe, "rcNormalPosition", 2)
+$fg[2] = DllStructGetData($fe, "rcNormalPosition", 3)
+$fg[3] = DllStructGetData($fe, "rcNormalPosition", 4)
+DllStructSetData($fe, "rcNormalPosition", $ff[0], 1)
+DllStructSetData($fe, "rcNormalPosition", $ff[1], 2)
+DllStructSetData($fe, "rcNormalPosition", $ff[0] + $ff[2], 3)
+DllStructSetData($fe, "rcNormalPosition", $ff[1] + $ff[3], 4)
+_nm($er, $fe)
 Sleep(50)
-$iGUI_LIST[$iGui_Count][10] = $tRET
+$e7[$ev][10] = $fe
 GUISetState(@SW_RESTORE)
 Else
 Sleep(50)
-WinMove($mGUI, "", $FullScreenPOS[0], $FullScreenPOS[1], $FullScreenPOS[2], $FullScreenPOS[3])
+WinMove($er, "", $ff[0], $ff[1], $ff[2], $ff[3])
 EndIf
-$iGUI_LIST[$iGui_Count][11] = True
-GUICtrlSetState($FullScreenBtn, 32)
-If $MaxBtn Then
-GUICtrlSetState($MaxBtn, 32)
-GUICtrlSetState($RestoreBtn, 32)
+$e7[$ev][11] = True
+GUICtrlSetState($f6, 32)
+If $fh Then
+GUICtrlSetState($fh, 32)
+GUICtrlSetState($fi, 32)
 EndIf
-GUICtrlSetState($FullscreenRsBtn, 16)
-$iGUI_LIST[$iGui_Count][5] = $CurrentPos[0]
-$iGUI_LIST[$iGui_Count][6] = $CurrentPos[1]
-$iGUI_LIST[$iGui_Count][7] = $CurrentPos[2]
-$iGUI_LIST[$iGui_Count][8] = $CurrentPos[3]
-$iGUI_LIST[$iGui_Count][9] = $mWin_State
+GUICtrlSetState($fj, 16)
+$e7[$ev][5] = $fg[0]
+$e7[$ev][6] = $fg[1]
+$e7[$ev][7] = $fg[2]
+$e7[$ev][8] = $fg[3]
+$e7[$ev][9] = $fd
 WinActivate("[CLASS:Shell_TrayWnd]")
-WinActivate($mGUI)
+WinActivate($er)
 EndIf
 EndFunc
-Func _Metro_AddControlButton_Back($GUI_BG_Color = $GUIThemeColor, $GUI_Font_Color = $FontThemeColor, $tMargin = 2)
-Local $cbDPI = _HighDPICheck()
-Local $CurrentGUI = GetCurrentGUI()
-$GUI_BG_Color = "0xFF" & Hex($GUI_BG_Color, 6)
-$GUI_Font_Color = "0xFF" & Hex($GUI_Font_Color, 6)
-If StringInStr($GUI_Theme_Name, "Light") Then
-Local $Hover_BK_Color = StringReplace(_AlterBrightness($GUI_BG_Color, -20), "0x", "0xFF")
+Func _1cr($f8 = $al, $f9 = $am, $fa = 2)
+Local $fk = _1du()
+Local $fl = _1dt()
+$f8 = "0xFF" & Hex($f8, 6)
+$f9 = "0xFF" & Hex($f9, 6)
+If StringInStr($ar, "Light") Then
+Local $fm = StringReplace(_1e0($f8, -20), "0x", "0xFF")
 Else
-Local $Hover_BK_Color = StringReplace(_AlterBrightness($GUI_BG_Color, +20), "0x", "0xFF")
+Local $fm = StringReplace(_1e0($f8, +20), "0x", "0xFF")
 EndIf
-Local $FrameSize = Round(1 * $cbDPI)
-Local $hPen = _GDIPlus_PenCreate($GUI_Font_Color, Round(1 * $cbDPI))
-If StringInStr($GUI_Theme_Name, "Light") Then
-Local $hPen1 = _GDIPlus_PenCreate(StringReplace(_AlterBrightness($GUI_Font_Color, +60), "0x", "0xFF"), Round(1 * $cbDPI))
+Local $fn = Round(1 * $fk)
+Local $c5 = _19o($f9, Round(1 * $fk))
+If StringInStr($ar, "Light") Then
+Local $fo = _19o(StringReplace(_1e0($f9, +60), "0x", "0xFF"), Round(1 * $fk))
 Else
-Local $hPen1 = _GDIPlus_PenCreate(StringReplace(_AlterBrightness($GUI_Font_Color, -80), "0x", "0xFF"), Round(1 * $cbDPI))
+Local $fo = _19o(StringReplace(_1e0($f9, -80), "0x", "0xFF"), Round(1 * $fk))
 EndIf
-_GDIPlus_PenSetStartCap($hPen, 0x03)
-_GDIPlus_PenSetStartCap($hPen1, 0x03)
-Local $Control_Button_Array[16]
-Local $CBw = Number(45 * $cbDPI, 1)
-Local $CBh = Number(29 * $cbDPI, 1)
-Local $cMarginR = Number($tMargin * $cbDPI, 1)
-$Control_Button_Array[1] = False
-$Control_Button_Array[2] = False
-$Control_Button_Array[3] = "0"
-$Control_Button_Array[15] = GetCurrentGUI()
-Local $Control_Button_Graphic1 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4)
-Local $Control_Button_Graphic2 = _iGraphicCreate($CBw, $CBh, $Hover_BK_Color, 0, 4)
-Local $Control_Button_Graphic3 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4)
-Local $mpX = $CBw / 2.95, $mpY = $CBh / 2.1
-Local $apos1 = cAngle($mpX, $mpY, 135, 12 * $cbDPI)
-Local $apos2 = cAngle($mpX, $mpY, 45, 12 * $cbDPI)
-_GDIPlus_GraphicsDrawLine($Control_Button_Graphic1[0], $mpX, $mpY, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Control_Button_Graphic1[0], $mpX, $mpY, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Control_Button_Graphic2[0], $mpX, $mpY, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Control_Button_Graphic2[0], $mpX, $mpY, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Control_Button_Graphic3[0], $mpX, $mpY, $apos1[0], $apos1[1], $hPen1)
-_GDIPlus_GraphicsDrawLine($Control_Button_Graphic3[0], $mpX, $mpY, $apos2[0], $apos2[1], $hPen1)
-_GDIPlus_PenDispose($hPen)
-_GDIPlus_PenDispose($hPen1)
-$Control_Button_Array[0] = GUICtrlCreatePic("", $cMarginR, $cMarginR, $CBw, $CBh)
-$Control_Button_Array[5] = _iGraphicCreateBitmapHandle($Control_Button_Array[0], $Control_Button_Graphic1)
-$Control_Button_Array[6] = _iGraphicCreateBitmapHandle($Control_Button_Array[0], $Control_Button_Graphic2, False)
-$Control_Button_Array[7] = _iGraphicCreateBitmapHandle($Control_Button_Array[0], $Control_Button_Graphic3, False)
-GUICtrlSetResizing($Control_Button_Array[0], 768 + 32 + 2)
-_cHvr_Register($Control_Button_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Control_Button_Array), $CurrentGUI)
-Return $Control_Button_Array[0]
+_1ac($c5, 0x03)
+_1ac($fo, 0x03)
+Local $fp[16]
+Local $fq = Number(45 * $fk, 1)
+Local $fr = Number(29 * $fk, 1)
+Local $fs = Number($fa * $fk, 1)
+$fp[1] = False
+$fp[2] = False
+$fp[3] = "0"
+$fp[15] = _1dt()
+Local $ft = _1dr($fq, $fr, $f8, 0, 4)
+Local $fu = _1dr($fq, $fr, $fm, 0, 4)
+Local $fv = _1dr($fq, $fr, $f8, 0, 4)
+Local $fw = $fq / 2.95, $fx = $fr / 2.1
+Local $fy = _1dv($fw, $fx, 135, 12 * $fk)
+Local $fz = _1dv($fw, $fx, 45, 12 * $fk)
+_14u($ft[0], $fw, $fx, $fy[0], $fy[1], $c5)
+_14u($ft[0], $fw, $fx, $fz[0], $fz[1], $c5)
+_14u($fu[0], $fw, $fx, $fy[0], $fy[1], $c5)
+_14u($fu[0], $fw, $fx, $fz[0], $fz[1], $c5)
+_14u($fv[0], $fw, $fx, $fy[0], $fy[1], $fo)
+_14u($fv[0], $fw, $fx, $fz[0], $fz[1], $fo)
+_19q($c5)
+_19q($fo)
+$fp[0] = GUICtrlCreatePic("", $fs, $fs, $fq, $fr)
+$fp[5] = _1ds($fp[0], $ft)
+$fp[6] = _1ds($fp[0], $fu, False)
+$fp[7] = _1ds($fp[0], $fv, False)
+GUICtrlSetResizing($fp[0], 768 + 32 + 2)
+_1c2($fp[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($fp), $fl)
+Return $fp[0]
 EndFunc
-Func _Metro_MenuStart($mGUI, $mWidth, $ButtonsArray, $bFont = "Segoe UI", $bFontSize = 9, $bFontStyle = 0)
-Local $Metro_MenuBtn = _iGetCtrlHandlebyType("8", $mGUI)
-If Not $Metro_MenuBtn Then Return SetError(1)
-GUICtrlSetState($Metro_MenuBtn, 128)
-Local $iButtonsArray[UBound($ButtonsArray)]
-Local $cbDPI = _HighDPICheck()
-Local $blockclose = True
-Local $mPos = WinGetPos($mGUI)
-Local $cMarginR = Number(2 * $cbDPI, 1)
-Local $CBh = Number(29 * $cbDPI, 1)
-Local $mGuiHeight = $mPos[3] -($cMarginR * 2) - $CBh
-Local $mGuiWidth = $mWidth * $cbDPI
-Local $mGuiX = $mPos[0] + $cMarginR, $mGuiY = $mPos[1] + $cMarginR + $CBh
-Local $AnimStep = $mGuiWidth / 10, $mGuiWidthAnim = $AnimStep
-Local $MenuForm = GUICreate("", $mGuiWidthAnim, $mGuiHeight, $mGuiX, $mGuiY, $WS_POPUP, $WS_EX_MDICHILD, $mGUI)
-Local $ButtonStep =(30 * $cbDPI)
-If StringInStr($GUI_Theme_Name, "Light") Then
-GUISetBkColor(_AlterBrightness($GUIThemeColor, -10), $MenuForm)
+Func _1cs($er, $g0, $g1, $g2 = "Segoe UI", $g3 = 9, $g4 = 0)
+Local $g5 = _1e5("8", $er)
+If Not $g5 Then Return SetError(1)
+GUICtrlSetState($g5, 128)
+Local $g6[UBound($g1)]
+Local $fk = _1du()
+Local $g7 = True
+Local $g8 = WinGetPos($er)
+Local $fs = Number(2 * $fk, 1)
+Local $fr = Number(29 * $fk, 1)
+Local $g9 = $g8[3] -($fs * 2) - $fr
+Local $ga = $g0 * $fk
+Local $gb = $g8[0] + $fs, $gc = $g8[1] + $fs + $fr
+Local $gd = $ga / 10, $ge = $gd
+Local $gf = GUICreate("", $ge, $g9, $gb, $gc, 0x80000000, 0x00000040, $er)
+Local $gg =(30 * $fk)
+If StringInStr($ar, "Light") Then
+GUISetBkColor(_1e0($al, -10), $gf)
 Else
-GUISetBkColor(_AlterBrightness($GUIThemeColor, +10), $MenuForm)
+GUISetBkColor(_1e0($al, +10), $gf)
 EndIf
-For $iB = 0 To UBound($ButtonsArray) - 1 Step +1
-$iButtonsArray[$iB] = _iCreateMButton($ButtonsArray[$iB], 0, $ButtonStep * $iB +($iB * 2), $mGuiWidth - $cMarginR, 30 * $cbDPI, $GUIThemeColor, $FontThemeColor, $bFont, $bFontSize, $bFontStyle)
+For $gh = 0 To UBound($g1) - 1 Step +1
+$g6[$gh] = _1ct($g1[$gh], 0, $gg * $gh +($gh * 2), $ga - $fs, 30 * $fk, $al, $am, $g2, $g3, $g4)
 Next
-GUISetState(@SW_SHOW, $MenuForm)
-For $i = 0 To 8 Step +1
-$mGuiWidthAnim = $mGuiWidthAnim + $AnimStep
-WinMove($MenuForm, "", $mGuiX, $mGuiY, $mGuiWidthAnim, $mGuiHeight)
+GUISetState(@SW_SHOW, $gf)
+For $1c = 0 To 8 Step +1
+$ge = $ge + $gd
+WinMove($gf, "", $gb, $gc, $ge, $g9)
 Sleep(1)
 Next
-If $mOnEventMode Then Opt("GUIOnEventMode", 0)
+If $ef Then Opt("GUIOnEventMode", 0)
 While 1
-If Not $blockclose Then
-If Not WinActive($MenuForm) Then
-$mPos = WinGetPos($mGUI)
-$mGuiX = $mPos[0] + $cMarginR
-$mGuiY = $mPos[1] + $cMarginR + $CBh
-For $i = 0 To 8 Step +1
-$mGuiWidthAnim = $mGuiWidthAnim - $AnimStep
-WinMove($MenuForm, "", $mGuiX, $mGuiY, $mGuiWidthAnim, $mGuiHeight)
+If Not $g7 Then
+If Not WinActive($gf) Then
+$g8 = WinGetPos($er)
+$gb = $g8[0] + $fs
+$gc = $g8[1] + $fs + $fr
+For $1c = 0 To 8 Step +1
+$ge = $ge - $gd
+WinMove($gf, "", $gb, $gc, $ge, $g9)
 Sleep(1)
 Next
-GUIDelete($MenuForm)
-If $mOnEventMode Then Opt("GUIOnEventMode", 1)
-GUICtrlSetState($Metro_MenuBtn, 64)
+GUIDelete($gf)
+If $ef Then Opt("GUIOnEventMode", 1)
+GUICtrlSetState($g5, 64)
 Return SetError(1, 0, "none")
 EndIf
 Else
-$blockclose = False
+$g7 = False
 EndIf
-Local $imsg = GUIGetMsg()
-For $iB = 0 To UBound($iButtonsArray) - 1 Step +1
-If $imsg = $iButtonsArray[$iB] Then
-$mPos = WinGetPos($mGUI)
-$mGuiX = $mPos[0] + $cMarginR
-$mGuiY = $mPos[1] + $cMarginR + $CBh
-For $if = 0 To 8 Step +2
-$mGuiWidthAnim = $mGuiWidthAnim - $AnimStep
-WinMove($MenuForm, "", $mGuiX, $mGuiY, $mGuiWidthAnim, $mGuiHeight)
+Local $1p = GUIGetMsg()
+For $gh = 0 To UBound($g6) - 1 Step +1
+If $1p = $g6[$gh] Then
+$g8 = WinGetPos($er)
+$gb = $g8[0] + $fs
+$gc = $g8[1] + $fs + $fr
+For $gi = 0 To 8 Step +2
+$ge = $ge - $gd
+WinMove($gf, "", $gb, $gc, $ge, $g9)
 Sleep(1)
 Next
-GUIDelete($MenuForm)
-If $mOnEventMode Then Opt("GUIOnEventMode", 1)
-GUICtrlSetState($Metro_MenuBtn, 64)
-Return $iB
+GUIDelete($gf)
+If $ef Then Opt("GUIOnEventMode", 1)
+GUICtrlSetState($g5, 64)
+Return $gh
 EndIf
 Next
 WEnd
 EndFunc
-Func _iCreateMButton($Text, $Left, $Top, $Width, $Height, $BG_Color = $GUIThemeColor, $Font_Color = $FontThemeColor, $Font = "Arial", $Fontsize = 9, $FontStyle = 1)
-Local $Button_Array[16]
-If Not $HIGHDPI_SUPPORT Then
-$Fontsize =($Fontsize / $Font_DPI_Ratio)
+Func _1ct($gj, $ej, $ek, $eh, $ei, $gk = $al, $gl = $am, $gm = "Arial", $9v = 9, $gn = 1)
+Local $go[16]
+If Not $ed Then
+$9v =($9v / $e4)
 EndIf
-$Button_Array[1] = False
-$Button_Array[3] = "2"
-$Button_Array[15] = GetCurrentGUI()
-$BG_Color = StringReplace($BG_Color, "0x", "0xFF")
-$Font_Color = StringReplace($Font_Color, "0x", "0xFF")
-Local $Brush_BTN_FontColor = _GDIPlus_BrushCreateSolid($Font_Color)
-If StringInStr($GUI_Theme_Name, "Light") Then
-Local $BG_ColorD = StringReplace(_AlterBrightness($GUIThemeColor, -12), "0x", "0xFF")
-$BG_Color = StringReplace(_AlterBrightness($GUIThemeColor, -25), "0x", "0xFF")
+$go[1] = False
+$go[3] = "2"
+$go[15] = _1dt()
+$gk = StringReplace($gk, "0x", "0xFF")
+$gl = StringReplace($gl, "0x", "0xFF")
+Local $gp = _13b($gl)
+If StringInStr($ar, "Light") Then
+Local $gq = StringReplace(_1e0($al, -12), "0x", "0xFF")
+$gk = StringReplace(_1e0($al, -25), "0x", "0xFF")
 Else
-Local $BG_ColorD = StringReplace(_AlterBrightness($GUIThemeColor, +12), "0x", "0xFF")
-$BG_Color = StringReplace(_AlterBrightness($GUIThemeColor, +25), "0x", "0xFF")
+Local $gq = StringReplace(_1e0($al, +12), "0x", "0xFF")
+$gk = StringReplace(_1e0($al, +25), "0x", "0xFF")
 EndIf
-Local $Button_Graphic1 = _iGraphicCreate($Width, $Height, $BG_ColorD, 0, 5)
-Local $Button_Graphic2 = _iGraphicCreate($Width, $Height, $BG_Color, 0, 5)
-Local $hFormat = _GDIPlus_StringFormatCreate(), $hFamily = _GDIPlus_FontFamilyCreate($Font), $hFont = _GDIPlus_FontCreate($hFamily, $Fontsize, $FontStyle)
-Local $tLayout = _GDIPlus_RectFCreate(0, 0, $Width, $Height)
-_GDIPlus_StringFormatSetAlign($hFormat, 1)
-_GDIPlus_StringFormatSetLineAlign($hFormat, 1)
-_GDIPlus_GraphicsDrawStringEx($Button_Graphic1[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Button_Graphic2[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_FontDispose($hFont)
-_GDIPlus_FontFamilyDispose($hFamily)
-_GDIPlus_StringFormatDispose($hFormat)
-_GDIPlus_BrushDispose($Brush_BTN_FontColor)
-$Button_Array[0] = GUICtrlCreatePic("", $Left, $Top, $Width, $Height)
-$Button_Array[5] = _iGraphicCreateBitmapHandle($Button_Array[0], $Button_Graphic1)
-$Button_Array[6] = _iGraphicCreateBitmapHandle($Button_Array[0], $Button_Graphic2, False)
-GUICtrlSetResizing($Button_Array[0], 802)
-_cHvr_Register($Button_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Button_Array))
-Return $Button_Array[0]
+Local $gr = _1dr($eh, $ei, $gq, 0, 5)
+Local $gs = _1dr($eh, $ei, $gk, 0, 5)
+Local $cc = _1aw(), $bv = _143($gm), $az = _141($bv, $9v, $gn)
+Local $cb = _1af(0, 0, $eh, $ei)
+_1az($cc, 1)
+_1b0($cc, 1)
+_150($gr[0], $gj, $az, $cb, $cc, $gp)
+_150($gs[0], $gj, $az, $cb, $cc, $gp)
+_142($az)
+_145($bv)
+_1ax($cc)
+_13c($gp)
+$go[0] = GUICtrlCreatePic("", $ej, $ek, $eh, $ei)
+$go[5] = _1ds($go[0], $gr)
+$go[6] = _1ds($go[0], $gs, False)
+GUICtrlSetResizing($go[0], 802)
+_1c2($go[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($go))
+Return $go[0]
 EndFunc
-Func _iCreateControlButtons($ButtonsToCreate_Array, $GUI_BG_Color = $GUIThemeColor, $GUI_Font_Color = "0xFFFFFF", $CloseButtonOnStyle = False, $tMargin = 2)
-Local $cbDPI = _HighDPICheck()
-Local $FrameSize = Round(1 * $cbDPI), $Hover_BK_Color
-If StringInStr($GUI_Theme_Name, "Light") Then
-$Hover_BK_Color = StringReplace(_AlterBrightness($GUI_BG_Color, -20), "0x", "0xFF")
+Func _1cv($fb, $f8 = $al, $f9 = "0xFFFFFF", $gt = False, $fa = 2)
+Local $fk = _1du()
+Local $fn = Round(1 * $fk), $fm
+If StringInStr($ar, "Light") Then
+$fm = StringReplace(_1e0($f8, -20), "0x", "0xFF")
 Else
-$Hover_BK_Color = StringReplace(_AlterBrightness($GUI_BG_Color, +20), "0x", "0xFF")
+$fm = StringReplace(_1e0($f8, +20), "0x", "0xFF")
 EndIf
-Local $hPen = _GDIPlus_PenCreate($GUI_Font_Color, Round(1 * $cbDPI))
-Local $hPen2 = _GDIPlus_PenCreate($GUI_Font_Color, Round(1 * $cbDPI))
-Local $hPen3 = _GDIPlus_PenCreate("0xFFFFFFFF", Round(1 * $cbDPI))
-If StringInStr($GUI_Theme_Name, "Light") Then
-Local $hPen4 = _GDIPlus_PenCreate(StringReplace(_AlterBrightness($GUI_Font_Color, +90), "0x", "0xFF"), $FrameSize)
+Local $c5 = _19o($f9, Round(1 * $fk))
+Local $gu = _19o($f9, Round(1 * $fk))
+Local $gv = _19o("0xFFFFFFFF", Round(1 * $fk))
+If StringInStr($ar, "Light") Then
+Local $gw = _19o(StringReplace(_1e0($f9, +90), "0x", "0xFF"), $fn)
 Else
-Local $hPen4 = _GDIPlus_PenCreate(StringReplace(_AlterBrightness($GUI_Font_Color, -80), "0x", "0xFF"), $FrameSize)
+Local $gw = _19o(StringReplace(_1e0($f9, -80), "0x", "0xFF"), $fn)
 EndIf
-Local $hPen5 = _GDIPlus_PenCreate(StringReplace(_AlterBrightness("0xFFFFFF", -80), "0x", "0xFF"), $FrameSize)
-If $GUI_BG_Color <> 0 Then
-$GUI_BG_Color = "0xFF" & Hex($GUI_BG_Color, 6)
+Local $gx = _19o(StringReplace(_1e0("0xFFFFFF", -80), "0x", "0xFF"), $fn)
+If $f8 <> 0 Then
+$f8 = "0xFF" & Hex($f8, 6)
 EndIf
-Local $hBrush = _GDIPlus_BrushCreateSolid($GUI_BG_Color), $hBrush2 = _GDIPlus_BrushCreateSolid($Hover_BK_Color)
-Local $Control_Buttons[16]
-Local $Button_Close_Array[16]
-Local $Button_Minimize_Array[16]
-Local $Button_Maximize_Array[16]
-Local $Button_Restore_Array[16]
-Local $Button_Menu_Array[16]
-Local $Button_FullScreen_Array[16]
-Local $Button_FSRestore_Array[16]
-Local $CBw = Number(45 * $cbDPI, 1)
-Local $CBh = Number(29 * $cbDPI, 1)
-Local $cMarginR = Number($tMargin * $cbDPI, 1)
-Local $CurrentGUI = GetCurrentGUI()
-Local $Win_POS = WinGetPos($CurrentGUI)
-Local $PosCount = 0
-If $ButtonsToCreate_Array[0] Then
-$PosCount = $PosCount + 1
-$Button_Close_Array[0] = GUICtrlCreatePic("", $Win_POS[2] - $cMarginR -($CBw * $PosCount), $cMarginR, $CBw, $CBh)
-$Button_Close_Array[1] = False
-$Button_Close_Array[2] = False
-$Button_Close_Array[3] = "0"
-$Button_Close_Array[15] = $CurrentGUI
+Local $bu = _13b($f8), $gy = _13b($fm)
+Local $gz[16]
+Local $h0[16]
+Local $h1[16]
+Local $h2[16]
+Local $h3[16]
+Local $h4[16]
+Local $h5[16]
+Local $h6[16]
+Local $fq = Number(45 * $fk, 1)
+Local $fr = Number(29 * $fk, 1)
+Local $fs = Number($fa * $fk, 1)
+Local $fl = _1dt()
+Local $h7 = WinGetPos($fl)
+Local $h8 = 0
+If $fb[0] Then
+$h8 = $h8 + 1
+$h0[0] = GUICtrlCreatePic("", $h7[2] - $fs -($fq * $h8), $fs, $fq, $fr)
+$h0[1] = False
+$h0[2] = False
+$h0[3] = "0"
+$h0[15] = $fl
 EndIf
-If $ButtonsToCreate_Array[1] Then
-$PosCount = $PosCount + 1
-$Button_Maximize_Array[0] = GUICtrlCreatePic("", $Win_POS[2] - $cMarginR -($CBw * $PosCount), $cMarginR, $CBw, $CBh)
-$Button_Maximize_Array[1] = False
-$Button_Maximize_Array[2] = False
-$Button_Maximize_Array[3] = "3"
-$Button_Maximize_Array[8] = True
-$Button_Maximize_Array[15] = $CurrentGUI
-$Button_Restore_Array[0] = GUICtrlCreatePic("", $Win_POS[2] - $cMarginR -($CBw * $PosCount), $cMarginR, $CBw, $CBh)
-$Button_Restore_Array[1] = False
-$Button_Restore_Array[2] = False
-$Button_Restore_Array[3] = "4"
-$Button_Restore_Array[8] = True
-$Button_Restore_Array[15] = $CurrentGUI
-If $ButtonsToCreate_Array[3] Then
-$Button_FSRestore_Array[0] = GUICtrlCreatePic("", $Win_POS[2] - $cMarginR -($CBw * $PosCount), $cMarginR, $CBw, $CBh)
-$Button_FSRestore_Array[1] = False
-$Button_FSRestore_Array[2] = False
-$Button_FSRestore_Array[3] = "10"
-$Button_FSRestore_Array[15] = $CurrentGUI
-EndIf
-EndIf
-If $ButtonsToCreate_Array[2] Then
-$PosCount = $PosCount + 1
-$Button_Minimize_Array[0] = GUICtrlCreatePic("", $Win_POS[2] - $cMarginR -($CBw * $PosCount), $cMarginR, $CBw, $CBh)
-$Button_Minimize_Array[1] = False
-$Button_Minimize_Array[2] = False
-$Button_Minimize_Array[3] = "0"
-$Button_Minimize_Array[15] = $CurrentGUI
-EndIf
-If $ButtonsToCreate_Array[3] Then
-$PosCount = $PosCount + 1
-$Button_FullScreen_Array[0] = GUICtrlCreatePic("", $Win_POS[2] - $cMarginR -($CBw * $PosCount), $cMarginR, $CBw, $CBh)
-$Button_FullScreen_Array[1] = False
-$Button_FullScreen_Array[2] = False
-$Button_FullScreen_Array[3] = "9"
-$Button_FullScreen_Array[15] = $CurrentGUI
-If $Button_FSRestore_Array[15] <> $CurrentGUI Then
-$Button_FSRestore_Array[0] = GUICtrlCreatePic("", $Win_POS[2] - $cMarginR -($CBw * $PosCount), $cMarginR, $CBw, $CBh)
-$Button_FSRestore_Array[1] = False
-$Button_FSRestore_Array[2] = False
-$Button_FSRestore_Array[3] = "10"
-$Button_FSRestore_Array[15] = $CurrentGUI
+If $fb[1] Then
+$h8 = $h8 + 1
+$h2[0] = GUICtrlCreatePic("", $h7[2] - $fs -($fq * $h8), $fs, $fq, $fr)
+$h2[1] = False
+$h2[2] = False
+$h2[3] = "3"
+$h2[8] = True
+$h2[15] = $fl
+$h3[0] = GUICtrlCreatePic("", $h7[2] - $fs -($fq * $h8), $fs, $fq, $fr)
+$h3[1] = False
+$h3[2] = False
+$h3[3] = "4"
+$h3[8] = True
+$h3[15] = $fl
+If $fb[3] Then
+$h6[0] = GUICtrlCreatePic("", $h7[2] - $fs -($fq * $h8), $fs, $fq, $fr)
+$h6[1] = False
+$h6[2] = False
+$h6[3] = "10"
+$h6[15] = $fl
 EndIf
 EndIf
-If $ButtonsToCreate_Array[4] Then
-$Button_Menu_Array[0] = GUICtrlCreatePic("", $cMarginR, $cMarginR, $CBw, $CBh)
-$Button_Menu_Array[1] = False
-$Button_Menu_Array[2] = False
-$Button_Menu_Array[3] = "8"
-$Button_Menu_Array[15] = $CurrentGUI
+If $fb[2] Then
+$h8 = $h8 + 1
+$h1[0] = GUICtrlCreatePic("", $h7[2] - $fs -($fq * $h8), $fs, $fq, $fr)
+$h1[1] = False
+$h1[2] = False
+$h1[3] = "0"
+$h1[15] = $fl
 EndIf
-If $ButtonsToCreate_Array[0] Then
-Local $Button_Close_Graphic1 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 4, 4), $Button_Close_Graphic2 = _iGraphicCreate($CBw, $CBh, "0xFFE81123", 4, 4), $Button_Close_Graphic3 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 4, 4)
+If $fb[3] Then
+$h8 = $h8 + 1
+$h5[0] = GUICtrlCreatePic("", $h7[2] - $fs -($fq * $h8), $fs, $fq, $fr)
+$h5[1] = False
+$h5[2] = False
+$h5[3] = "9"
+$h5[15] = $fl
+If $h6[15] <> $fl Then
+$h6[0] = GUICtrlCreatePic("", $h7[2] - $fs -($fq * $h8), $fs, $fq, $fr)
+$h6[1] = False
+$h6[2] = False
+$h6[3] = "10"
+$h6[15] = $fl
 EndIf
-If $ButtonsToCreate_Array[1] Then
-Local $Button_Maximize_Graphic1 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4), $Button_Maximize_Graphic2 = _iGraphicCreate($CBw, $CBh, $Hover_BK_Color, 0, 4), $Button_Maximize_Graphic3 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4)
-Local $Button_Restore_Graphic1 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4), $Button_Restore_Graphic2 = _iGraphicCreate($CBw, $CBh, $Hover_BK_Color, 0, 4), $Button_Restore_Graphic3 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4)
 EndIf
-If $ButtonsToCreate_Array[2] Then
-Local $Button_Minimize_Graphic1 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4), $Button_Minimize_Graphic2 = _iGraphicCreate($CBw, $CBh, $Hover_BK_Color, 0, 4), $Button_Minimize_Graphic3 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4)
+If $fb[4] Then
+$h4[0] = GUICtrlCreatePic("", $fs, $fs, $fq, $fr)
+$h4[1] = False
+$h4[2] = False
+$h4[3] = "8"
+$h4[15] = $fl
 EndIf
-If $ButtonsToCreate_Array[3] Then
-Local $Button_FullScreen_Graphic1 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4), $Button_FullScreen_Graphic2 = _iGraphicCreate($CBw, $CBh, $Hover_BK_Color, 0, 4), $Button_FullScreen_Graphic3 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4)
-Local $Button_FSRestore_Graphic1 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4), $Button_FSRestore_Graphic2 = _iGraphicCreate($CBw, $CBh, $Hover_BK_Color, 0, 4), $Button_FSRestore_Graphic3 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4)
+If $fb[0] Then
+Local $h9 = _1dr($fq, $fr, $f8, 4, 4), $ha = _1dr($fq, $fr, "0xFFE81123", 4, 4), $hb = _1dr($fq, $fr, $f8, 4, 4)
 EndIf
-If $ButtonsToCreate_Array[4] Then
-Local $Button_Menu_Graphic1 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4), $Button_Menu_Graphic2 = _iGraphicCreate($CBw, $CBh, $Hover_BK_Color, 0, 4), $Button_Menu_Graphic3 = _iGraphicCreate($CBw, $CBh, $GUI_BG_Color, 0, 4)
+If $fb[1] Then
+Local $hc = _1dr($fq, $fr, $f8, 0, 4), $hd = _1dr($fq, $fr, $fm, 0, 4), $he = _1dr($fq, $fr, $f8, 0, 4)
+Local $hf = _1dr($fq, $fr, $f8, 0, 4), $hg = _1dr($fq, $fr, $fm, 0, 4), $hh = _1dr($fq, $fr, $f8, 0, 4)
 EndIf
-If $CloseButtonOnStyle Then
-_GDIPlus_GraphicsClear($Button_Close_Graphic1[0], "0xFFB52231")
-_GDIPlus_GraphicsClear($Button_Close_Graphic3[0], "0xFFB52231")
+If $fb[2] Then
+Local $hi = _1dr($fq, $fr, $f8, 0, 4), $hj = _1dr($fq, $fr, $fm, 0, 4), $hk = _1dr($fq, $fr, $f8, 0, 4)
 EndIf
-If $ButtonsToCreate_Array[0] Then
-If $CloseButtonOnStyle Then
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic1[0], 17 * $cbDPI, 9 * $cbDPI, 27 * $cbDPI, 19 * $cbDPI, $hPen3)
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic1[0], 27 * $cbDPI, 9 * $cbDPI, 17 * $cbDPI, 19 * $cbDPI, $hPen3)
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic3[0], 17 * $cbDPI, 9 * $cbDPI, 27 * $cbDPI, 19 * $cbDPI, $hPen5)
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic3[0], 27 * $cbDPI, 9 * $cbDPI, 17 * $cbDPI, 19 * $cbDPI, $hPen5)
+If $fb[3] Then
+Local $hl = _1dr($fq, $fr, $f8, 0, 4), $hm = _1dr($fq, $fr, $fm, 0, 4), $hn = _1dr($fq, $fr, $f8, 0, 4)
+Local $ho = _1dr($fq, $fr, $f8, 0, 4), $hp = _1dr($fq, $fr, $fm, 0, 4), $hq = _1dr($fq, $fr, $f8, 0, 4)
+EndIf
+If $fb[4] Then
+Local $hr = _1dr($fq, $fr, $f8, 0, 4), $hs = _1dr($fq, $fr, $fm, 0, 4), $ht = _1dr($fq, $fr, $f8, 0, 4)
+EndIf
+If $gt Then
+_14f($h9[0], "0xFFB52231")
+_14f($hb[0], "0xFFB52231")
+EndIf
+If $fb[0] Then
+If $gt Then
+_14u($h9[0], 17 * $fk, 9 * $fk, 27 * $fk, 19 * $fk, $gv)
+_14u($h9[0], 27 * $fk, 9 * $fk, 17 * $fk, 19 * $fk, $gv)
+_14u($hb[0], 17 * $fk, 9 * $fk, 27 * $fk, 19 * $fk, $gx)
+_14u($hb[0], 27 * $fk, 9 * $fk, 17 * $fk, 19 * $fk, $gx)
 Else
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic1[0], 17 * $cbDPI, 9 * $cbDPI, 27 * $cbDPI, 19 * $cbDPI, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic1[0], 27 * $cbDPI, 9 * $cbDPI, 17 * $cbDPI, 19 * $cbDPI, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic3[0], 17 * $cbDPI, 9 * $cbDPI, 27 * $cbDPI, 19 * $cbDPI, $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic3[0], 27 * $cbDPI, 9 * $cbDPI, 17 * $cbDPI, 19 * $cbDPI, $hPen4)
+_14u($h9[0], 17 * $fk, 9 * $fk, 27 * $fk, 19 * $fk, $c5)
+_14u($h9[0], 27 * $fk, 9 * $fk, 17 * $fk, 19 * $fk, $c5)
+_14u($hb[0], 17 * $fk, 9 * $fk, 27 * $fk, 19 * $fk, $gw)
+_14u($hb[0], 27 * $fk, 9 * $fk, 17 * $fk, 19 * $fk, $gw)
 EndIf
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic2[0], 17 * $cbDPI, 9 * $cbDPI, 27 * $cbDPI, 19 * $cbDPI, $hPen3)
-_GDIPlus_GraphicsDrawLine($Button_Close_Graphic2[0], 27 * $cbDPI, 9 * $cbDPI, 17 * $cbDPI, 19 * $cbDPI, $hPen3)
+_14u($ha[0], 17 * $fk, 9 * $fk, 27 * $fk, 19 * $fk, $gv)
+_14u($ha[0], 27 * $fk, 9 * $fk, 17 * $fk, 19 * $fk, $gv)
 EndIf
-If $ButtonsToCreate_Array[1] Then
-_GDIPlus_GraphicsDrawRect($Button_Maximize_Graphic1[0], Round(17 * $cbDPI), 9 * $cbDPI, 9 * $cbDPI, 9 * $cbDPI, $hPen)
-_GDIPlus_GraphicsDrawRect($Button_Maximize_Graphic2[0], Round(17 * $cbDPI), 9 * $cbDPI, 9 * $cbDPI, 9 * $cbDPI, $hPen2)
-_GDIPlus_GraphicsDrawRect($Button_Maximize_Graphic3[0], Round(17 * $cbDPI), 9 * $cbDPI, 9 * $cbDPI, 9 * $cbDPI, $hPen4)
-Local $kWH = Round(7 * $cbDPI), $resmargin = Round(2 * $cbDPI)
-_GDIPlus_GraphicsDrawRect($Button_Restore_Graphic1[0], Round(17 * $cbDPI) + $resmargin,(11 * $cbDPI) - $resmargin, $kWH, $kWH, $hPen)
-_GDIPlus_GraphicsFillRect($Button_Restore_Graphic1[0], Round(17 * $cbDPI), 11 * $cbDPI, $kWH, $kWH, $hBrush)
-_GDIPlus_GraphicsDrawRect($Button_Restore_Graphic1[0], Round(17 * $cbDPI), 11 * $cbDPI, $kWH, $kWH, $hPen)
-_GDIPlus_GraphicsDrawRect($Button_Restore_Graphic2[0], Round(17 * $cbDPI) + $resmargin,(11 * $cbDPI) - $resmargin, $kWH, $kWH, $hPen2)
-_GDIPlus_GraphicsFillRect($Button_Restore_Graphic2[0], Round(17 * $cbDPI), 11 * $cbDPI, $kWH, $kWH, $hBrush2)
-_GDIPlus_GraphicsDrawRect($Button_Restore_Graphic2[0], Round(17 * $cbDPI), 11 * $cbDPI, $kWH, $kWH, $hPen2)
-_GDIPlus_GraphicsDrawRect($Button_Restore_Graphic3[0], Round(17 * $cbDPI) + $resmargin,(11 * $cbDPI) - $resmargin, $kWH, $kWH, $hPen4)
-_GDIPlus_GraphicsFillRect($Button_Restore_Graphic3[0], Round(17 * $cbDPI), 11 * $cbDPI, $kWH, $kWH, $hBrush)
-_GDIPlus_GraphicsDrawRect($Button_Restore_Graphic3[0], Round(17 * $cbDPI), 11 * $cbDPI, $kWH, $kWH, $hPen4)
+If $fb[1] Then
+_14y($hc[0], Round(17 * $fk), 9 * $fk, 9 * $fk, 9 * $fk, $c5)
+_14y($hd[0], Round(17 * $fk), 9 * $fk, 9 * $fk, 9 * $fk, $gu)
+_14y($he[0], Round(17 * $fk), 9 * $fk, 9 * $fk, 9 * $fk, $gw)
+Local $hu = Round(7 * $fk), $hv = Round(2 * $fk)
+_14y($hf[0], Round(17 * $fk) + $hv,(11 * $fk) - $hv, $hu, $hu, $c5)
+_157($hf[0], Round(17 * $fk), 11 * $fk, $hu, $hu, $bu)
+_14y($hf[0], Round(17 * $fk), 11 * $fk, $hu, $hu, $c5)
+_14y($hg[0], Round(17 * $fk) + $hv,(11 * $fk) - $hv, $hu, $hu, $gu)
+_157($hg[0], Round(17 * $fk), 11 * $fk, $hu, $hu, $gy)
+_14y($hg[0], Round(17 * $fk), 11 * $fk, $hu, $hu, $gu)
+_14y($hh[0], Round(17 * $fk) + $hv,(11 * $fk) - $hv, $hu, $hu, $gw)
+_157($hh[0], Round(17 * $fk), 11 * $fk, $hu, $hu, $bu)
+_14y($hh[0], Round(17 * $fk), 11 * $fk, $hu, $hu, $gw)
 EndIf
-If $ButtonsToCreate_Array[2] Then
-_GDIPlus_GraphicsDrawLine($Button_Minimize_Graphic1[0], 18 * $cbDPI, 14 * $cbDPI, 27 * $cbDPI, 14 * $cbDPI, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Minimize_Graphic2[0], 18 * $cbDPI, 14 * $cbDPI, 27 * $cbDPI, 14 * $cbDPI, $hPen2)
-_GDIPlus_GraphicsDrawLine($Button_Minimize_Graphic3[0], 18 * $cbDPI, 14 * $cbDPI, 27 * $cbDPI, 14 * $cbDPI, $hPen4)
+If $fb[2] Then
+_14u($hi[0], 18 * $fk, 14 * $fk, 27 * $fk, 14 * $fk, $c5)
+_14u($hj[0], 18 * $fk, 14 * $fk, 27 * $fk, 14 * $fk, $gu)
+_14u($hk[0], 18 * $fk, 14 * $fk, 27 * $fk, 14 * $fk, $gw)
 EndIf
-If $ButtonsToCreate_Array[3] Then
-Local $Cutpoint =($FrameSize * 0.3)
-Local $LowerLinePos[2], $UpperLinePos
-$LowerLinePos[0] = Round($CBw / 2.9)
-$LowerLinePos[1] = Round($CBh / 1.5)
-$UpperLinePos = cAngle($LowerLinePos[0], $LowerLinePos[1], 135, $CBw / 2.5)
-$UpperLinePos[0] = Round($UpperLinePos[0])
-$UpperLinePos[1] = Round($UpperLinePos[1])
-Local $apos1 = cAngle($LowerLinePos[0] + $Cutpoint, $LowerLinePos[1] + $Cutpoint, 180, 5 * $cbDPI)
-Local $apos2 = cAngle($LowerLinePos[0] - $Cutpoint, $LowerLinePos[1] - $Cutpoint, 90, 5 * $cbDPI)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic1[0], $LowerLinePos[0] + $Cutpoint, $LowerLinePos[1] + $Cutpoint, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic1[0], $LowerLinePos[0] - $Cutpoint, $LowerLinePos[1] - $Cutpoint, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic2[0], $LowerLinePos[0] + $Cutpoint, $LowerLinePos[1] + $Cutpoint, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic2[0], $LowerLinePos[0] - $Cutpoint, $LowerLinePos[1] - $Cutpoint, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic3[0], $LowerLinePos[0] + $Cutpoint, $LowerLinePos[1] + $Cutpoint, $apos1[0], $apos1[1], $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic3[0], $LowerLinePos[0] - $Cutpoint, $LowerLinePos[1] - $Cutpoint, $apos2[0], $apos2[1], $hPen4)
-$apos1 = cAngle($UpperLinePos[0] + $Cutpoint, $UpperLinePos[1] + $Cutpoint, 270, 5 * $cbDPI)
-$apos2 = cAngle($UpperLinePos[0] - $Cutpoint, $UpperLinePos[1] - $Cutpoint, 0, 5 * $cbDPI)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic1[0], $UpperLinePos[0] + $Cutpoint, $UpperLinePos[1] + $Cutpoint, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic1[0], $UpperLinePos[0] - $Cutpoint, $UpperLinePos[1] - $Cutpoint, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic2[0], $UpperLinePos[0] + $Cutpoint, $UpperLinePos[1] + $Cutpoint, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic2[0], $UpperLinePos[0] - $Cutpoint, $UpperLinePos[1] - $Cutpoint, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic3[0], $UpperLinePos[0] + $Cutpoint, $UpperLinePos[1] + $Cutpoint, $apos1[0], $apos1[1], $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic3[0], $UpperLinePos[0] - $Cutpoint, $UpperLinePos[1] - $Cutpoint, $apos2[0], $apos2[1], $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic1[0], $LowerLinePos[0] + $Cutpoint, $LowerLinePos[1] - $Cutpoint, $UpperLinePos[0], $UpperLinePos[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic2[0], $LowerLinePos[0] + $Cutpoint, $LowerLinePos[1] - $Cutpoint, $UpperLinePos[0], $UpperLinePos[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FullScreen_Graphic3[0], $LowerLinePos[0] + $Cutpoint, $LowerLinePos[1] - $Cutpoint, $UpperLinePos[0], $UpperLinePos[1], $hPen4)
-$Cutpoint =($FrameSize * 0.3)
-Local $mpX = Round($CBw / 2, 0), $mpY = Round($CBh / 2.35, 0)
-$apos1 = cAngle($mpX - $Cutpoint, $mpY - $Cutpoint, 90, 4 * $cbDPI)
-$apos2 = cAngle($mpX + $Cutpoint, $mpY + $Cutpoint, 180, 4 * $cbDPI)
-Local $apos4 = cAngle($mpX + $Cutpoint, $mpY - $Cutpoint, 135, 8 * $cbDPI)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic1[0], $mpX - $Cutpoint, $mpY - $Cutpoint, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic1[0], $mpX + $Cutpoint, $mpY + $Cutpoint, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic2[0], $mpX - $Cutpoint, $mpY - $Cutpoint, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic2[0], $mpX + $Cutpoint, $mpY + $Cutpoint, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic3[0], $mpX - $Cutpoint, $mpY - $Cutpoint, $apos1[0], $apos1[1], $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic3[0], $mpX + $Cutpoint, $mpY + $Cutpoint, $apos2[0], $apos2[1], $hPen4)
-$Cutpoint =($FrameSize * 0.3)
-Local $mpX1 = Round($CBw / 2.2, 0), $mpY1 = Round($CBh / 2, 0)
-$apos1 = cAngle($mpX1 - $Cutpoint, $mpY1 - $Cutpoint, 360, 4 * $cbDPI)
-$apos2 = cAngle($mpX1 + $Cutpoint, $mpY1 + $Cutpoint, 270, 4 * $cbDPI)
-Local $apos3 = cAngle($mpX1 - $Cutpoint, $mpY1 + $Cutpoint, 315, 8 * $cbDPI)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic1[0], $mpX1 - $Cutpoint, $mpY1 - $Cutpoint, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic1[0], $mpX1 + $Cutpoint, $mpY1 + $Cutpoint, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic2[0], $mpX1 - $Cutpoint, $mpY1 - $Cutpoint, $apos1[0], $apos1[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic2[0], $mpX1 + $Cutpoint, $mpY1 + $Cutpoint, $apos2[0], $apos2[1], $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic3[0], $mpX1 - $Cutpoint, $mpY1 - $Cutpoint, $apos1[0], $apos1[1], $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic3[0], $mpX1 + $Cutpoint, $mpY1 + $Cutpoint, $apos2[0], $apos2[1], $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic1[0], $mpX1 - $Cutpoint, $mpY1 + $Cutpoint, $apos3[0] + $Cutpoint, $apos3[1] - $Cutpoint, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic1[0], $mpX + $Cutpoint, $mpY - $Cutpoint, $apos4[0] - $Cutpoint, $apos4[1] + $Cutpoint, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic2[0], $mpX1 - $Cutpoint, $mpY1 + $Cutpoint, $apos3[0] + $Cutpoint, $apos3[1] - $Cutpoint, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic2[0], $mpX + $Cutpoint, $mpY - $Cutpoint, $apos4[0] - $Cutpoint, $apos4[1] + $Cutpoint, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic3[0], $mpX1 - $Cutpoint, $mpY1 + $Cutpoint, $apos3[0] + $Cutpoint, $apos3[1] - $Cutpoint, $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_FSRestore_Graphic3[0], $mpX + $Cutpoint, $mpY - $Cutpoint, $apos4[0] - $Cutpoint, $apos4[1] + $Cutpoint, $hPen4)
+If $fb[3] Then
+Local $hw =($fn * 0.3)
+Local $hx[2], $hy
+$hx[0] = Round($fq / 2.9)
+$hx[1] = Round($fr / 1.5)
+$hy = _1dv($hx[0], $hx[1], 135, $fq / 2.5)
+$hy[0] = Round($hy[0])
+$hy[1] = Round($hy[1])
+Local $fy = _1dv($hx[0] + $hw, $hx[1] + $hw, 180, 5 * $fk)
+Local $fz = _1dv($hx[0] - $hw, $hx[1] - $hw, 90, 5 * $fk)
+_14u($hl[0], $hx[0] + $hw, $hx[1] + $hw, $fy[0], $fy[1], $c5)
+_14u($hl[0], $hx[0] - $hw, $hx[1] - $hw, $fz[0], $fz[1], $c5)
+_14u($hm[0], $hx[0] + $hw, $hx[1] + $hw, $fy[0], $fy[1], $c5)
+_14u($hm[0], $hx[0] - $hw, $hx[1] - $hw, $fz[0], $fz[1], $c5)
+_14u($hn[0], $hx[0] + $hw, $hx[1] + $hw, $fy[0], $fy[1], $gw)
+_14u($hn[0], $hx[0] - $hw, $hx[1] - $hw, $fz[0], $fz[1], $gw)
+$fy = _1dv($hy[0] + $hw, $hy[1] + $hw, 270, 5 * $fk)
+$fz = _1dv($hy[0] - $hw, $hy[1] - $hw, 0, 5 * $fk)
+_14u($hl[0], $hy[0] + $hw, $hy[1] + $hw, $fy[0], $fy[1], $c5)
+_14u($hl[0], $hy[0] - $hw, $hy[1] - $hw, $fz[0], $fz[1], $c5)
+_14u($hm[0], $hy[0] + $hw, $hy[1] + $hw, $fy[0], $fy[1], $c5)
+_14u($hm[0], $hy[0] - $hw, $hy[1] - $hw, $fz[0], $fz[1], $c5)
+_14u($hn[0], $hy[0] + $hw, $hy[1] + $hw, $fy[0], $fy[1], $gw)
+_14u($hn[0], $hy[0] - $hw, $hy[1] - $hw, $fz[0], $fz[1], $gw)
+_14u($hl[0], $hx[0] + $hw, $hx[1] - $hw, $hy[0], $hy[1], $c5)
+_14u($hm[0], $hx[0] + $hw, $hx[1] - $hw, $hy[0], $hy[1], $c5)
+_14u($hn[0], $hx[0] + $hw, $hx[1] - $hw, $hy[0], $hy[1], $gw)
+$hw =($fn * 0.3)
+Local $fw = Round($fq / 2, 0), $fx = Round($fr / 2.35, 0)
+$fy = _1dv($fw - $hw, $fx - $hw, 90, 4 * $fk)
+$fz = _1dv($fw + $hw, $fx + $hw, 180, 4 * $fk)
+Local $hz = _1dv($fw + $hw, $fx - $hw, 135, 8 * $fk)
+_14u($ho[0], $fw - $hw, $fx - $hw, $fy[0], $fy[1], $c5)
+_14u($ho[0], $fw + $hw, $fx + $hw, $fz[0], $fz[1], $c5)
+_14u($hp[0], $fw - $hw, $fx - $hw, $fy[0], $fy[1], $c5)
+_14u($hp[0], $fw + $hw, $fx + $hw, $fz[0], $fz[1], $c5)
+_14u($hq[0], $fw - $hw, $fx - $hw, $fy[0], $fy[1], $gw)
+_14u($hq[0], $fw + $hw, $fx + $hw, $fz[0], $fz[1], $gw)
+$hw =($fn * 0.3)
+Local $i0 = Round($fq / 2.2, 0), $i1 = Round($fr / 2, 0)
+$fy = _1dv($i0 - $hw, $i1 - $hw, 360, 4 * $fk)
+$fz = _1dv($i0 + $hw, $i1 + $hw, 270, 4 * $fk)
+Local $i2 = _1dv($i0 - $hw, $i1 + $hw, 315, 8 * $fk)
+_14u($ho[0], $i0 - $hw, $i1 - $hw, $fy[0], $fy[1], $c5)
+_14u($ho[0], $i0 + $hw, $i1 + $hw, $fz[0], $fz[1], $c5)
+_14u($hp[0], $i0 - $hw, $i1 - $hw, $fy[0], $fy[1], $c5)
+_14u($hp[0], $i0 + $hw, $i1 + $hw, $fz[0], $fz[1], $c5)
+_14u($hq[0], $i0 - $hw, $i1 - $hw, $fy[0], $fy[1], $gw)
+_14u($hq[0], $i0 + $hw, $i1 + $hw, $fz[0], $fz[1], $gw)
+_14u($ho[0], $i0 - $hw, $i1 + $hw, $i2[0] + $hw, $i2[1] - $hw, $c5)
+_14u($ho[0], $fw + $hw, $fx - $hw, $hz[0] - $hw, $hz[1] + $hw, $c5)
+_14u($hp[0], $i0 - $hw, $i1 + $hw, $i2[0] + $hw, $i2[1] - $hw, $c5)
+_14u($hp[0], $fw + $hw, $fx - $hw, $hz[0] - $hw, $hz[1] + $hw, $c5)
+_14u($hq[0], $i0 - $hw, $i1 + $hw, $i2[0] + $hw, $i2[1] - $hw, $gw)
+_14u($hq[0], $fw + $hw, $fx - $hw, $hz[0] - $hw, $hz[1] + $hw, $gw)
 EndIf
-If $ButtonsToCreate_Array[4] Then
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic1[0], $CBw / 3, $CBh / 2.9,($CBw / 3) * 2, $CBh / 2.9, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic1[0], $CBw / 3, $CBh / 2.9 +($FrameSize * 4),($CBw / 3) * 2, $CBh / 2.9 +($FrameSize * 4), $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic1[0], $CBw / 3, $CBh / 2.9 +($FrameSize * 8),($CBw / 3) * 2, $CBh / 2.9 +($FrameSize * 8), $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic2[0], $CBw / 3, $CBh / 2.9,($CBw / 3) * 2, $CBh / 2.9, $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic2[0], $CBw / 3, $CBh / 2.9 +($FrameSize * 4),($CBw / 3) * 2, $CBh / 2.9 +($FrameSize * 4), $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic2[0], $CBw / 3, $CBh / 2.9 +($FrameSize * 8),($CBw / 3) * 2, $CBh / 2.9 +($FrameSize * 8), $hPen)
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic3[0], $CBw / 3, $CBh / 2.9,($CBw / 3) * 2, $CBh / 2.9, $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic3[0], $CBw / 3, $CBh / 2.9 +($FrameSize * 4),($CBw / 3) * 2, $CBh / 2.9 +($FrameSize * 4), $hPen4)
-_GDIPlus_GraphicsDrawLine($Button_Menu_Graphic3[0], $CBw / 3, $CBh / 2.9 +($FrameSize * 8),($CBw / 3) * 2, $CBh / 2.9 +($FrameSize * 8), $hPen4)
+If $fb[4] Then
+_14u($hr[0], $fq / 3, $fr / 2.9,($fq / 3) * 2, $fr / 2.9, $c5)
+_14u($hr[0], $fq / 3, $fr / 2.9 +($fn * 4),($fq / 3) * 2, $fr / 2.9 +($fn * 4), $c5)
+_14u($hr[0], $fq / 3, $fr / 2.9 +($fn * 8),($fq / 3) * 2, $fr / 2.9 +($fn * 8), $c5)
+_14u($hs[0], $fq / 3, $fr / 2.9,($fq / 3) * 2, $fr / 2.9, $c5)
+_14u($hs[0], $fq / 3, $fr / 2.9 +($fn * 4),($fq / 3) * 2, $fr / 2.9 +($fn * 4), $c5)
+_14u($hs[0], $fq / 3, $fr / 2.9 +($fn * 8),($fq / 3) * 2, $fr / 2.9 +($fn * 8), $c5)
+_14u($ht[0], $fq / 3, $fr / 2.9,($fq / 3) * 2, $fr / 2.9, $gw)
+_14u($ht[0], $fq / 3, $fr / 2.9 +($fn * 4),($fq / 3) * 2, $fr / 2.9 +($fn * 4), $gw)
+_14u($ht[0], $fq / 3, $fr / 2.9 +($fn * 8),($fq / 3) * 2, $fr / 2.9 +($fn * 8), $gw)
 EndIf
-_GDIPlus_PenDispose($hPen)
-_GDIPlus_PenDispose($hPen2)
-_GDIPlus_PenDispose($hPen3)
-_GDIPlus_PenDispose($hPen4)
-_GDIPlus_PenDispose($hPen5)
-_GDIPlus_BrushDispose($hBrush)
-_GDIPlus_BrushDispose($hBrush2)
-If $ButtonsToCreate_Array[0] Then
-$Button_Close_Array[5] = _iGraphicCreateBitmapHandle($Button_Close_Array[0], $Button_Close_Graphic1)
-$Button_Close_Array[6] = _iGraphicCreateBitmapHandle($Button_Close_Array[0], $Button_Close_Graphic2, False)
-$Button_Close_Array[7] = _iGraphicCreateBitmapHandle($Button_Close_Array[0], $Button_Close_Graphic3, False)
-GUICtrlSetResizing($Button_Close_Array[0], 768 + 32 + 4)
-$Control_Buttons[0] = $Button_Close_Array[0]
-_cHvr_Register($Button_Close_Array[0], "_iHoverOff", "_iHoverOn", '', "", _iAddHover($Button_Close_Array), $CurrentGUI)
+_19q($c5)
+_19q($gu)
+_19q($gv)
+_19q($gw)
+_19q($gx)
+_13c($bu)
+_13c($gy)
+If $fb[0] Then
+$h0[5] = _1ds($h0[0], $h9)
+$h0[6] = _1ds($h0[0], $ha, False)
+$h0[7] = _1ds($h0[0], $hb, False)
+GUICtrlSetResizing($h0[0], 768 + 32 + 4)
+$gz[0] = $h0[0]
+_1c2($h0[0], "_iHoverOff", "_iHoverOn", '', "", _1dq($h0), $fl)
 EndIf
-If $ButtonsToCreate_Array[1] Then
-$Button_Maximize_Array[5] = _iGraphicCreateBitmapHandle($Button_Maximize_Array[0], $Button_Maximize_Graphic1)
-$Button_Maximize_Array[6] = _iGraphicCreateBitmapHandle($Button_Maximize_Array[0], $Button_Maximize_Graphic2, False)
-$Button_Maximize_Array[7] = _iGraphicCreateBitmapHandle($Button_Maximize_Array[0], $Button_Maximize_Graphic3, False)
-$Button_Restore_Array[5] = _iGraphicCreateBitmapHandle($Button_Restore_Array[0], $Button_Restore_Graphic1)
-$Button_Restore_Array[6] = _iGraphicCreateBitmapHandle($Button_Restore_Array[0], $Button_Restore_Graphic2, False)
-$Button_Restore_Array[7] = _iGraphicCreateBitmapHandle($Button_Restore_Array[0], $Button_Restore_Graphic3, False)
-GUICtrlSetResizing($Button_Maximize_Array[0], 768 + 32 + 4)
-GUICtrlSetResizing($Button_Restore_Array[0], 768 + 32 + 4)
-$Control_Buttons[1] = $Button_Maximize_Array[0]
-$Control_Buttons[2] = $Button_Restore_Array[0]
-GUICtrlSetState($Button_Restore_Array[0], 32)
-_cHvr_Register($Button_Maximize_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Button_Maximize_Array), $CurrentGUI)
-_cHvr_Register($Button_Restore_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Button_Restore_Array), $CurrentGUI)
+If $fb[1] Then
+$h2[5] = _1ds($h2[0], $hc)
+$h2[6] = _1ds($h2[0], $hd, False)
+$h2[7] = _1ds($h2[0], $he, False)
+$h3[5] = _1ds($h3[0], $hf)
+$h3[6] = _1ds($h3[0], $hg, False)
+$h3[7] = _1ds($h3[0], $hh, False)
+GUICtrlSetResizing($h2[0], 768 + 32 + 4)
+GUICtrlSetResizing($h3[0], 768 + 32 + 4)
+$gz[1] = $h2[0]
+$gz[2] = $h3[0]
+GUICtrlSetState($h3[0], 32)
+_1c2($h2[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($h2), $fl)
+_1c2($h3[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($h3), $fl)
 EndIf
-If $ButtonsToCreate_Array[2] Then
-$Button_Minimize_Array[5] = _iGraphicCreateBitmapHandle($Button_Minimize_Array[0], $Button_Minimize_Graphic1)
-$Button_Minimize_Array[6] = _iGraphicCreateBitmapHandle($Button_Minimize_Array[0], $Button_Minimize_Graphic2, False)
-$Button_Minimize_Array[7] = _iGraphicCreateBitmapHandle($Button_Minimize_Array[0], $Button_Minimize_Graphic3, False)
-GUICtrlSetResizing($Button_Minimize_Array[0], 768 + 32 + 4)
-$Control_Buttons[3] = $Button_Minimize_Array[0]
-_cHvr_Register($Button_Minimize_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Button_Minimize_Array), $CurrentGUI)
+If $fb[2] Then
+$h1[5] = _1ds($h1[0], $hi)
+$h1[6] = _1ds($h1[0], $hj, False)
+$h1[7] = _1ds($h1[0], $hk, False)
+GUICtrlSetResizing($h1[0], 768 + 32 + 4)
+$gz[3] = $h1[0]
+_1c2($h1[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($h1), $fl)
 EndIf
-If $ButtonsToCreate_Array[3] Then
-$Button_FullScreen_Array[5] = _iGraphicCreateBitmapHandle($Button_FullScreen_Array[0], $Button_FullScreen_Graphic1)
-$Button_FullScreen_Array[6] = _iGraphicCreateBitmapHandle($Button_FullScreen_Array[0], $Button_FullScreen_Graphic2, False)
-$Button_FullScreen_Array[7] = _iGraphicCreateBitmapHandle($Button_FullScreen_Array[0], $Button_FullScreen_Graphic3, False)
-$Button_FSRestore_Array[5] = _iGraphicCreateBitmapHandle($Button_FSRestore_Array[0], $Button_FSRestore_Graphic1)
-$Button_FSRestore_Array[6] = _iGraphicCreateBitmapHandle($Button_FSRestore_Array[0], $Button_FSRestore_Graphic2, False)
-$Button_FSRestore_Array[7] = _iGraphicCreateBitmapHandle($Button_FSRestore_Array[0], $Button_FSRestore_Graphic3, False)
-GUICtrlSetResizing($Button_FullScreen_Array[0], 768 + 32 + 4)
-GUICtrlSetResizing($Button_FSRestore_Array[0], 768 + 32 + 4)
-GUICtrlSetState($Button_FSRestore_Array[0], 32)
-$Control_Buttons[4] = $Button_FullScreen_Array[0]
-$Control_Buttons[5] = $Button_FSRestore_Array[0]
-_cHvr_Register($Button_FullScreen_Array[0], "_iHoverOff", "_iHoverOn", "_iFullscreenToggleBtn", "", _iAddHover($Button_FullScreen_Array), $CurrentGUI)
-_cHvr_Register($Button_FSRestore_Array[0], "_iHoverOff", "_iHoverOn", "_iFullscreenToggleBtn", "", _iAddHover($Button_FSRestore_Array), $CurrentGUI)
+If $fb[3] Then
+$h5[5] = _1ds($h5[0], $hl)
+$h5[6] = _1ds($h5[0], $hm, False)
+$h5[7] = _1ds($h5[0], $hn, False)
+$h6[5] = _1ds($h6[0], $ho)
+$h6[6] = _1ds($h6[0], $hp, False)
+$h6[7] = _1ds($h6[0], $hq, False)
+GUICtrlSetResizing($h5[0], 768 + 32 + 4)
+GUICtrlSetResizing($h6[0], 768 + 32 + 4)
+GUICtrlSetState($h6[0], 32)
+$gz[4] = $h5[0]
+$gz[5] = $h6[0]
+_1c2($h5[0], "_iHoverOff", "_iHoverOn", "_iFullscreenToggleBtn", "", _1dq($h5), $fl)
+_1c2($h6[0], "_iHoverOff", "_iHoverOn", "_iFullscreenToggleBtn", "", _1dq($h6), $fl)
 EndIf
-If $ButtonsToCreate_Array[4] Then
-$Button_Menu_Array[5] = _iGraphicCreateBitmapHandle($Button_Menu_Array[0], $Button_Menu_Graphic1)
-$Button_Menu_Array[6] = _iGraphicCreateBitmapHandle($Button_Menu_Array[0], $Button_Menu_Graphic2, False)
-$Button_Menu_Array[7] = _iGraphicCreateBitmapHandle($Button_Menu_Array[0], $Button_Menu_Graphic3, False)
-GUICtrlSetResizing($Button_Menu_Array[0], 768 + 32 + 2)
-$Control_Buttons[6] = $Button_Menu_Array[0]
-_cHvr_Register($Button_Menu_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Button_Menu_Array), $CurrentGUI)
+If $fb[4] Then
+$h4[5] = _1ds($h4[0], $hr)
+$h4[6] = _1ds($h4[0], $hs, False)
+$h4[7] = _1ds($h4[0], $ht, False)
+GUICtrlSetResizing($h4[0], 768 + 32 + 2)
+$gz[6] = $h4[0]
+_1c2($h4[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($h4), $fl)
 EndIf
-Return $Control_Buttons
+Return $gz
 EndFunc
-Func _Metro_CreateButton($Text, $Left, $Top, $Width, $Height, $BG_Color = $ButtonBKColor, $Font_Color = $ButtonTextColor, $Font = "Arial", $Fontsize = 10, $FontStyle = 1, $FrameColor = "0xFFFFFF")
-Local $Button_Array[16]
-Local $btnDPI = _HighDPICheck()
-If $HIGHDPI_SUPPORT Then
-$Left = Round($Left * $gDPI)
-$Top = Round($Top * $gDPI)
-$Width = Round($Width * $gDPI)
-$Height = Round($Height * $gDPI)
+Func _1cw($gj, $ej, $ek, $eh, $ei, $gk = $ao, $gl = $ap, $gm = "Arial", $9v = 10, $gn = 1, $i3 = "0xFFFFFF")
+Local $go[16]
+Local $i4 = _1du()
+If $ed Then
+$ej = Round($ej * $e5)
+$ek = Round($ek * $e5)
+$eh = Round($eh * $e5)
+$ei = Round($ei * $e5)
 Else
-$Fontsize =($Fontsize / $Font_DPI_Ratio)
+$9v =($9v / $e4)
 EndIf
-$Button_Array[1] = False
-$Button_Array[3] = "2"
-$Button_Array[15] = GetCurrentGUI()
-Local $FrameSize = Round(4 * $btnDPI)
-If Not(Mod($FrameSize, 2) = 0) Then $FrameSize = $FrameSize - 1
-$BG_Color = "0xFF" & Hex($BG_Color, 6)
-$Font_Color = "0xFF" & Hex($Font_Color, 6)
-$FrameColor = "0xFF" & Hex($FrameColor, 6)
-Local $Brush_BTN_FontColor = _GDIPlus_BrushCreateSolid($Font_Color)
-Local $Brush_BTN_FontColorDis = _GDIPlus_BrushCreateSolid(StringReplace(_AlterBrightness($Font_Color, -30), "0x", "0xFF"))
-Local $Pen_BTN_FrameHoverColor = _GDIPlus_PenCreate($FrameColor, $FrameSize)
-Local $Button_Graphic1 = _iGraphicCreate($Width, $Height, $BG_Color, 0, 5)
-Local $Button_Graphic2 = _iGraphicCreate($Width, $Height, $BG_Color, 0, 5)
-Local $Button_Graphic3 = _iGraphicCreate($Width, $Height, $BG_Color, 0, 5)
-Local $hFormat = _GDIPlus_StringFormatCreate(), $hFamily = _GDIPlus_FontFamilyCreate($Font), $hFont = _GDIPlus_FontCreate($hFamily, $Fontsize, $FontStyle)
-Local $tLayout = _GDIPlus_RectFCreate(0, 0, $Width, $Height)
-_GDIPlus_StringFormatSetAlign($hFormat, 1)
-_GDIPlus_StringFormatSetLineAlign($hFormat, 1)
-_GDIPlus_GraphicsDrawStringEx($Button_Graphic1[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Button_Graphic2[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Button_Graphic3[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColorDis)
-_GDIPlus_GraphicsDrawRect($Button_Graphic2[0], 0, 0, $Width, $Height, $Pen_BTN_FrameHoverColor)
-_GDIPlus_FontDispose($hFont)
-_GDIPlus_FontFamilyDispose($hFamily)
-_GDIPlus_StringFormatDispose($hFormat)
-_GDIPlus_BrushDispose($Brush_BTN_FontColor)
-_GDIPlus_BrushDispose($Brush_BTN_FontColorDis)
-_GDIPlus_PenDispose($Pen_BTN_FrameHoverColor)
-$Button_Array[0] = GUICtrlCreatePic("", $Left, $Top, $Width, $Height)
-$Button_Array[5] = _iGraphicCreateBitmapHandle($Button_Array[0], $Button_Graphic1)
-$Button_Array[6] = _iGraphicCreateBitmapHandle($Button_Array[0], $Button_Graphic2, False)
-$Button_Array[7] = _iGraphicCreateBitmapHandle($Button_Array[0], $Button_Graphic3, False)
-GUICtrlSetResizing($Button_Array[0], 768)
-_cHvr_Register($Button_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Button_Array))
-Return $Button_Array[0]
+$go[1] = False
+$go[3] = "2"
+$go[15] = _1dt()
+Local $fn = Round(4 * $i4)
+If Not(Mod($fn, 2) = 0) Then $fn = $fn - 1
+$gk = "0xFF" & Hex($gk, 6)
+$gl = "0xFF" & Hex($gl, 6)
+$i3 = "0xFF" & Hex($i3, 6)
+Local $gp = _13b($gl)
+Local $i5 = _13b(StringReplace(_1e0($gl, -30), "0x", "0xFF"))
+Local $i6 = _19o($i3, $fn)
+Local $gr = _1dr($eh, $ei, $gk, 0, 5)
+Local $gs = _1dr($eh, $ei, $gk, 0, 5)
+Local $i7 = _1dr($eh, $ei, $gk, 0, 5)
+Local $cc = _1aw(), $bv = _143($gm), $az = _141($bv, $9v, $gn)
+Local $cb = _1af(0, 0, $eh, $ei)
+_1az($cc, 1)
+_1b0($cc, 1)
+_150($gr[0], $gj, $az, $cb, $cc, $gp)
+_150($gs[0], $gj, $az, $cb, $cc, $gp)
+_150($i7[0], $gj, $az, $cb, $cc, $i5)
+_14y($gs[0], 0, 0, $eh, $ei, $i6)
+_142($az)
+_145($bv)
+_1ax($cc)
+_13c($gp)
+_13c($i5)
+_19q($i6)
+$go[0] = GUICtrlCreatePic("", $ej, $ek, $eh, $ei)
+$go[5] = _1ds($go[0], $gr)
+$go[6] = _1ds($go[0], $gs, False)
+$go[7] = _1ds($go[0], $i7, False)
+GUICtrlSetResizing($go[0], 768)
+_1c2($go[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($go))
+Return $go[0]
 EndFunc
-Func _Metro_CreateButtonEx($Text, $Left, $Top, $Width, $Height, $BG_Color = $ButtonBKColor, $Font_Color = $ButtonTextColor, $Font = "Arial", $Fontsize = 10, $FontStyle = 1, $FrameColor = "0xFFFFFF")
-Local $Button_Array[16]
-Local $btnDPI = _HighDPICheck()
-If $HIGHDPI_SUPPORT Then
-$Left = Round($Left * $gDPI)
-$Top = Round($Top * $gDPI)
-$Width = Round($Width * $gDPI)
-$Height = Round($Height * $gDPI)
+Func _1cx($gj, $ej, $ek, $eh, $ei, $gk = $ao, $gl = $ap, $gm = "Arial", $9v = 10, $gn = 1, $i3 = "0xFFFFFF")
+Local $go[16]
+Local $i4 = _1du()
+If $ed Then
+$ej = Round($ej * $e5)
+$ek = Round($ek * $e5)
+$eh = Round($eh * $e5)
+$ei = Round($ei * $e5)
 Else
-$Fontsize =($Fontsize / $Font_DPI_Ratio)
+$9v =($9v / $e4)
 EndIf
-$Button_Array[1] = False
-$Button_Array[3] = "2"
-$Button_Array[15] = GetCurrentGUI()
-Local $FrameSize = Round(2 * $btnDPI)
-If Not(Mod($FrameSize, 2) = 0) Then $FrameSize = $FrameSize - 1
-$BG_Color = "0xFF" & Hex($BG_Color, 6)
-$Font_Color = "0xFF" & Hex($Font_Color, 6)
-$FrameColor = "0xFF" & Hex($FrameColor, 6)
-Local $Brush_BTN_FontColor = _GDIPlus_BrushCreateSolid($Font_Color)
-Local $Pen_BTN_FrameHoverColor = _GDIPlus_PenCreate($FrameColor, $FrameSize)
-Local $Pen_BTN_FrameHoverColorDis = _GDIPlus_PenCreate(StringReplace(_AlterBrightness($Font_Color, -30), "0x", "0xFF"), $FrameSize)
-Local $Brush_BTN_FontColorDis = _GDIPlus_BrushCreateSolid(StringReplace(_AlterBrightness($Font_Color, -30), "0x", "0xFF"))
-Local $Button_Graphic1 = _iGraphicCreate($Width, $Height, $BG_Color, 0, 5)
-Local $Button_Graphic2 = _iGraphicCreate($Width, $Height, StringReplace(_AlterBrightness($BG_Color, 25), "0x", "0xFF"), 0, 5)
-Local $Button_Graphic3 = _iGraphicCreate($Width, $Height, $BG_Color, 0, 5)
-Local $hFormat = _GDIPlus_StringFormatCreate(), $hFamily = _GDIPlus_FontFamilyCreate($Font), $hFont = _GDIPlus_FontCreate($hFamily, $Fontsize, $FontStyle)
-Local $tLayout = _GDIPlus_RectFCreate(0, 0, $Width, $Height)
-_GDIPlus_StringFormatSetAlign($hFormat, 1)
-_GDIPlus_StringFormatSetLineAlign($hFormat, 1)
-_GDIPlus_GraphicsDrawStringEx($Button_Graphic1[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Button_Graphic2[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Button_Graphic3[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColorDis)
-_GDIPlus_GraphicsDrawRect($Button_Graphic1[0], 0, 0, $Width, $Height, $Pen_BTN_FrameHoverColor)
-_GDIPlus_GraphicsDrawRect($Button_Graphic2[0], 0, 0, $Width, $Height, $Pen_BTN_FrameHoverColor)
-_GDIPlus_GraphicsDrawRect($Button_Graphic3[0], 0, 0, $Width, $Height, $Pen_BTN_FrameHoverColorDis)
-_GDIPlus_FontDispose($hFont)
-_GDIPlus_FontFamilyDispose($hFamily)
-_GDIPlus_StringFormatDispose($hFormat)
-_GDIPlus_BrushDispose($Brush_BTN_FontColor)
-_GDIPlus_BrushDispose($Brush_BTN_FontColorDis)
-_GDIPlus_PenDispose($Pen_BTN_FrameHoverColor)
-_GDIPlus_PenDispose($Pen_BTN_FrameHoverColorDis)
-$Button_Array[0] = GUICtrlCreatePic("", $Left, $Top, $Width, $Height)
-$Button_Array[5] = _iGraphicCreateBitmapHandle($Button_Array[0], $Button_Graphic1)
-$Button_Array[6] = _iGraphicCreateBitmapHandle($Button_Array[0], $Button_Graphic2, False)
-$Button_Array[7] = _iGraphicCreateBitmapHandle($Button_Array[0], $Button_Graphic3, False)
-GUICtrlSetResizing($Button_Array[0], 768)
-_cHvr_Register($Button_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Button_Array))
-Return $Button_Array[0]
+$go[1] = False
+$go[3] = "2"
+$go[15] = _1dt()
+Local $fn = Round(2 * $i4)
+If Not(Mod($fn, 2) = 0) Then $fn = $fn - 1
+$gk = "0xFF" & Hex($gk, 6)
+$gl = "0xFF" & Hex($gl, 6)
+$i3 = "0xFF" & Hex($i3, 6)
+Local $gp = _13b($gl)
+Local $i6 = _19o($i3, $fn)
+Local $i8 = _19o(StringReplace(_1e0($gl, -30), "0x", "0xFF"), $fn)
+Local $i5 = _13b(StringReplace(_1e0($gl, -30), "0x", "0xFF"))
+Local $gr = _1dr($eh, $ei, $gk, 0, 5)
+Local $gs = _1dr($eh, $ei, StringReplace(_1e0($gk, 25), "0x", "0xFF"), 0, 5)
+Local $i7 = _1dr($eh, $ei, $gk, 0, 5)
+Local $cc = _1aw(), $bv = _143($gm), $az = _141($bv, $9v, $gn)
+Local $cb = _1af(0, 0, $eh, $ei)
+_1az($cc, 1)
+_1b0($cc, 1)
+_150($gr[0], $gj, $az, $cb, $cc, $gp)
+_150($gs[0], $gj, $az, $cb, $cc, $gp)
+_150($i7[0], $gj, $az, $cb, $cc, $i5)
+_14y($gr[0], 0, 0, $eh, $ei, $i6)
+_14y($gs[0], 0, 0, $eh, $ei, $i6)
+_14y($i7[0], 0, 0, $eh, $ei, $i8)
+_142($az)
+_145($bv)
+_1ax($cc)
+_13c($gp)
+_13c($i5)
+_19q($i6)
+_19q($i8)
+$go[0] = GUICtrlCreatePic("", $ej, $ek, $eh, $ei)
+$go[5] = _1ds($go[0], $gr)
+$go[6] = _1ds($go[0], $gs, False)
+$go[7] = _1ds($go[0], $i7, False)
+GUICtrlSetResizing($go[0], 768)
+_1c2($go[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($go))
+Return $go[0]
 EndFunc
-Func _Metro_CreateToggle($Text, $Left, $Top, $Width, $Height, $BG_Color = $GUIThemeColor, $Font_Color = $FontThemeColor, $Font = "Segoe UI", $Fontsize = "11")
-Local $Text1 = $Text
-If $Height < 20 Then
+Func _1d1($gj, $ej, $ek, $eh, $ei, $gk = $al, $gl = $am, $gm = "Segoe UI", $9v = "11")
+Local $i9 = $gj
+If $ei < 20 Then
 If(@Compiled = 0) Then MsgBox(48, "Metro UDF", "The min. height is 20px for metro toggles.")
 EndIf
-If $Width < 46 Then
+If $eh < 46 Then
 If(@Compiled = 0) Then MsgBox(48, "Metro UDF", "The min. width for metro toggles must be at least 46px without any text!")
 EndIf
-If Not(Mod($Height, 2) = 0) Then
+If Not(Mod($ei, 2) = 0) Then
 If(@Compiled = 0) Then MsgBox(48, "Metro UDF", "The toggle height should be an even number to prevent any misplacing.")
 EndIf
-Local $pDPI = _HighDPICheck()
-If $HIGHDPI_SUPPORT Then
-$Left = Round($Left * $gDPI)
-$Top = Round($Top * $gDPI)
-$Width = Round($Width * $gDPI)
-$Height = Round($Height * $gDPI)
-If Not(Mod($Height, 2) = 0) Then $Height = $Height + 1
+Local $ia = _1du()
+If $ed Then
+$ej = Round($ej * $e5)
+$ek = Round($ek * $e5)
+$eh = Round($eh * $e5)
+$ei = Round($ei * $e5)
+If Not(Mod($ei, 2) = 0) Then $ei = $ei + 1
 Else
-$Fontsize =($Fontsize / $Font_DPI_Ratio)
+$9v =($9v / $e4)
 EndIf
-Local $Toggle_Array[16]
-$Toggle_Array[1] = False
-$Toggle_Array[2] = False
-$Toggle_Array[3] = "6"
-$Toggle_Array[15] = GetCurrentGUI()
-Local $TopMargCalc = Number(20 * $pDPI, 1)
-If Not(Mod($TopMargCalc, 2) = 0) Then $TopMargCalc = $TopMargCalc + 1
-Local $TopMargCalc1 = Number(12 * $pDPI, 1)
-If Not(Mod($TopMargCalc1, 2) = 0) Then $TopMargCalc1 = $TopMargCalc1 + 1
-Local $TopMargin = Number((($Height - $TopMargCalc) / 2), 1)
-Local $TopMarginCircle = Number((($Height - $TopMargCalc1) / 2), 1)
-Local $iRadius = 10 * $pDPI
-Local $hFWidth = Number(50 * $pDPI, 1)
-If Not(Mod($hFWidth, 2) = 0) Then $hFWidth = $hFWidth + 1
-Local $togSizeW = Number(46 * $pDPI, 1)
-If Not(Mod($togSizeW, 2) = 0) Then $togSizeW = $togSizeW + 1
-Local $togSizeH = Number(20 * $pDPI, 1)
-If Not(Mod($togSizeH, 2) = 0) Then $togSizeH = $togSizeH + 1
-Local $tog_calc1 = Number(2 * $pDPI, 1)
-Local $tog_calc2 = Number(3 * $pDPI, 1)
-Local $tog_calc3 = Number(11 * $pDPI, 1)
-Local $tog_calc5 = Number(6 * $pDPI, 1)
-$BG_Color = "0xFF" & Hex($BG_Color, 6)
-$Font_Color = "0xFF" & Hex($Font_Color, 6)
-Local $Brush_BTN_FontColor = _GDIPlus_BrushCreateSolid($Font_Color)
-Local $Brush_BTN_FontColor1 = _GDIPlus_BrushCreateSolid(StringReplace($CB_Radio_Color, "0x", "0xFF"))
-If StringInStr($GUI_Theme_Name, "Light") Then
-Local $BoxFrameCol = StringReplace(_AlterBrightness($Font_Color, +65), "0x", "0xFF")
-Local $BoxFrameCol1 = StringReplace(_AlterBrightness($Font_Color, +65), "0x", "0xFF")
-Local $Font_Color1 = StringReplace(_AlterBrightness($Font_Color, +70), "0x", "0xFF")
+Local $ib[16]
+$ib[1] = False
+$ib[2] = False
+$ib[3] = "6"
+$ib[15] = _1dt()
+Local $ic = Number(20 * $ia, 1)
+If Not(Mod($ic, 2) = 0) Then $ic = $ic + 1
+Local $id = Number(12 * $ia, 1)
+If Not(Mod($id, 2) = 0) Then $id = $id + 1
+Local $ie = Number((($ei - $ic) / 2), 1)
+Local $if = Number((($ei - $id) / 2), 1)
+Local $ig = 10 * $ia
+Local $ih = Number(50 * $ia, 1)
+If Not(Mod($ih, 2) = 0) Then $ih = $ih + 1
+Local $ii = Number(46 * $ia, 1)
+If Not(Mod($ii, 2) = 0) Then $ii = $ii + 1
+Local $ij = Number(20 * $ia, 1)
+If Not(Mod($ij, 2) = 0) Then $ij = $ij + 1
+Local $ik = Number(2 * $ia, 1)
+Local $il = Number(3 * $ia, 1)
+Local $im = Number(11 * $ia, 1)
+Local $in = Number(6 * $ia, 1)
+$gk = "0xFF" & Hex($gk, 6)
+$gl = "0xFF" & Hex($gl, 6)
+Local $gp = _13b($gl)
+Local $io = _13b(StringReplace($aq, "0x", "0xFF"))
+If StringInStr($ar, "Light") Then
+Local $ip = StringReplace(_1e0($gl, +65), "0x", "0xFF")
+Local $iq = StringReplace(_1e0($gl, +65), "0x", "0xFF")
+Local $ir = StringReplace(_1e0($gl, +70), "0x", "0xFF")
 Else
-Local $BoxFrameCol = StringReplace(_AlterBrightness($Font_Color, -45), "0x", "0xFF")
-Local $BoxFrameCol1 = StringReplace(_AlterBrightness($Font_Color, -45), "0x", "0xFF")
-Local $Font_Color1 = StringReplace(_AlterBrightness($Font_Color, -30), "0x", "0xFF")
+Local $ip = StringReplace(_1e0($gl, -45), "0x", "0xFF")
+Local $iq = StringReplace(_1e0($gl, -45), "0x", "0xFF")
+Local $ir = StringReplace(_1e0($gl, -30), "0x", "0xFF")
 EndIf
-Local $BrushInnerUC = _GDIPlus_BrushCreateSolid($BG_Color)
-Local $BrushCircleUC = _GDIPlus_BrushCreateSolid($Font_Color)
-Local $BrushCircleHoverUC = _GDIPlus_BrushCreateSolid($BoxFrameCol1)
-Local $hPenDefaultUC = _GDIPlus_PenCreate($Font_Color, 2 * $pDPI)
-Local $hPenHoverUC = _GDIPlus_PenCreate($BoxFrameCol1, 2 * $pDPI)
-Local $BrushInnerC = _GDIPlus_BrushCreateSolid(StringReplace($ButtonBKColor, "0x", "0xFF"))
-Local $BrushInnerCHover = _GDIPlus_BrushCreateSolid(StringReplace(_AlterBrightness($ButtonBKColor, +15), "0x", "0xFF"))
-Local $BrushCircleC = _GDIPlus_BrushCreateSolid(StringReplace($ButtonTextColor, "0x", "0xFF"))
-Local $hPenDefaultC = _GDIPlus_PenCreate(StringReplace($ButtonBKColor, "0x", "0xFF"), 2 * $pDPI)
-Local $hPenHoverC = _GDIPlus_PenCreate(StringReplace(_AlterBrightness($ButtonBKColor, +15), "0x", "0xFF"), 2 * $pDPI)
-Local $Toggle_Graphic1 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic2 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic3 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic4 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic5 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic6 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic7 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic8 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic9 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5), $Toggle_Graphic10 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $hFormat = _GDIPlus_StringFormatCreate(), $hFamily = _GDIPlus_FontFamilyCreate($Font), $hFont = _GDIPlus_FontCreate($hFamily, $Fontsize, 0)
-Local $tLayout = _GDIPlus_RectFCreate($hFWidth +(10 * $pDPI), 0, $Width - $hFWidth, $Height)
-_GDIPlus_StringFormatSetAlign($hFormat, 0)
-_GDIPlus_StringFormatSetLineAlign($hFormat, 1)
-If StringInStr($Text, "|@|") Then
-$Text1 = StringRegExp($Text, "\|@\|(.+)", 1)
-If Not @error Then $Text1 = $Text1[0]
-$Text = StringRegExp($Text, "^(.+)\|@\|", 1)
-If Not @error Then $Text = $Text[0]
+Local $is = _13b($gk)
+Local $it = _13b($gl)
+Local $iu = _13b($iq)
+Local $iv = _19o($gl, 2 * $ia)
+Local $iw = _19o($iq, 2 * $ia)
+Local $ix = _13b(StringReplace($ao, "0x", "0xFF"))
+Local $iy = _13b(StringReplace(_1e0($ao, +15), "0x", "0xFF"))
+Local $iz = _13b(StringReplace($ap, "0x", "0xFF"))
+Local $j0 = _19o(StringReplace($ao, "0x", "0xFF"), 2 * $ia)
+Local $j1 = _19o(StringReplace(_1e0($ao, +15), "0x", "0xFF"), 2 * $ia)
+Local $j2 = _1dr($eh, $ei, $gk, 5, 5), $j3 = _1dr($eh, $ei, $gk, 5, 5), $j4 = _1dr($eh, $ei, $gk, 5, 5), $j5 = _1dr($eh, $ei, $gk, 5, 5), $j6 = _1dr($eh, $ei, $gk, 5, 5), $j7 = _1dr($eh, $ei, $gk, 5, 5), $j8 = _1dr($eh, $ei, $gk, 5, 5), $j9 = _1dr($eh, $ei, $gk, 5, 5), $ja = _1dr($eh, $ei, $gk, 5, 5), $jb = _1dr($eh, $ei, $gk, 5, 5)
+Local $cc = _1aw(), $bv = _143($gm), $az = _141($bv, $9v, 0)
+Local $cb = _1af($ih +(10 * $ia), 0, $eh - $ih, $ei)
+_1az($cc, 0)
+_1b0($cc, 1)
+If StringInStr($gj, "|@|") Then
+$i9 = StringRegExp($gj, "\|@\|(.+)", 1)
+If Not @error Then $i9 = $i9[0]
+$gj = StringRegExp($gj, "^(.+)\|@\|", 1)
+If Not @error Then $gj = $gj[0]
 EndIf
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic1[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic2[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic3[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic4[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic5[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic6[0], $Text1, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic7[0], $Text1, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic8[0], $Text1, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic9[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Toggle_Graphic10[0], $Text1, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-Local $hPath1 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath1, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath1, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath1, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath1, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath1)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic1[0], $hPath1, $BrushInnerUC)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic1[0], $hPath1, $hPenDefaultUC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic1[0], 6 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleUC)
-Local $hPath2 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath2, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath2, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath2, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath2, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath2)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic9[0], $hPath2, $BrushInnerUC)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic9[0], $hPath2, $hPenHoverUC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic9[0], 6 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleHoverUC)
-Local $hPath3 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath3, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath3, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath3, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath3, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath3)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic2[0], $hPath3, $BrushInnerUC)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic2[0], $hPath3, $hPenHoverUC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic2[0], 10 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleHoverUC)
-Local $hPath4 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath4, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath4, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath4, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath4, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath4)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic3[0], $hPath4, $BrushInnerUC)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic3[0], $hPath4, $hPenHoverUC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic3[0], 14 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleHoverUC)
-Local $hPath5 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath5, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath5, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath5, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath5, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath5)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic4[0], $hPath5, $BrushInnerUC)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic4[0], $hPath5, $hPenHoverUC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic4[0], 18 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleHoverUC)
-Local $hPath6 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath6, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath6, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath6, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath6, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath6)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic5[0], $hPath6, $BrushInnerUC)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic5[0], $hPath6, $hPenHoverUC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic5[0], 22 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleHoverUC)
-Local $hPath7 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath7, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath7, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath7, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath7, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath7)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic6[0], $hPath7, $BrushInnerCHover)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic6[0], $hPath7, $hPenHoverC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic6[0], 26 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleC)
-Local $hPath8 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath8, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath8, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath8, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath8, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath8)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic7[0], $hPath8, $BrushInnerCHover)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic7[0], $hPath8, $hPenHoverC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic7[0], 30 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleC)
-Local $hPath9 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath9, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath9, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath9, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath9, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath9)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic8[0], $hPath9, $BrushInnerC)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic8[0], $hPath9, $hPenDefaultC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic8[0], 34 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleC)
-Local $hPath10 = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath10, 0 + $hFWidth -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath10, 0 + $hFWidth -($iRadius * 2), $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath10, 1 * $pDPI, $TopMargin +(20 * $pDPI) -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath10, 1 * $pDPI, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath10)
-_GDIPlus_GraphicsFillPath($Toggle_Graphic10[0], $hPath10, $BrushInnerCHover)
-_GDIPlus_GraphicsDrawPath($Toggle_Graphic10[0], $hPath10, $hPenHoverC)
-_GDIPlus_GraphicsFillEllipse($Toggle_Graphic10[0], 34 * $pDPI, $TopMarginCircle, 12 * $pDPI, 12 * $pDPI, $BrushCircleC)
-_GDIPlus_FontDispose($hFont)
-_GDIPlus_FontFamilyDispose($hFamily)
-_GDIPlus_StringFormatDispose($hFormat)
-_GDIPlus_BrushDispose($Brush_BTN_FontColor)
-_GDIPlus_BrushDispose($Brush_BTN_FontColor1)
-_GDIPlus_BrushDispose($BrushInnerUC)
-_GDIPlus_BrushDispose($BrushCircleUC)
-_GDIPlus_BrushDispose($BrushCircleHoverUC)
-_GDIPlus_BrushDispose($BrushInnerC)
-_GDIPlus_BrushDispose($BrushInnerCHover)
-_GDIPlus_BrushDispose($BrushCircleC)
-_GDIPlus_PenDispose($hPenDefaultUC)
-_GDIPlus_PenDispose($hPenHoverUC)
-_GDIPlus_PenDispose($hPenDefaultC)
-_GDIPlus_PenDispose($hPenHoverC)
-_GDIPlus_PathDispose($hPath1)
-_GDIPlus_PathDispose($hPath2)
-_GDIPlus_PathDispose($hPath3)
-_GDIPlus_PathDispose($hPath4)
-_GDIPlus_PathDispose($hPath5)
-_GDIPlus_PathDispose($hPath6)
-_GDIPlus_PathDispose($hPath7)
-_GDIPlus_PathDispose($hPath8)
-_GDIPlus_PathDispose($hPath9)
-_GDIPlus_PathDispose($hPath10)
-$Toggle_Array[0] = GUICtrlCreatePic("", $Left, $Top, $Width, $Height)
-$Toggle_Array[5] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic1)
-$Toggle_Array[6] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic2, False)
-$Toggle_Array[7] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic3, False)
-$Toggle_Array[8] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic4, False)
-$Toggle_Array[9] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic5, False)
-$Toggle_Array[10] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic6, False)
-$Toggle_Array[11] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic7, False)
-$Toggle_Array[12] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic8, False)
-$Toggle_Array[13] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic9, False)
-$Toggle_Array[14] = _iGraphicCreateBitmapHandle($Toggle_Array[0], $Toggle_Graphic10, False)
-GUICtrlSetResizing($Toggle_Array[0], 768)
-_cHvr_Register($Toggle_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Toggle_Array))
-Return $Toggle_Array[0]
+_150($j2[0], $gj, $az, $cb, $cc, $gp)
+_150($j3[0], $gj, $az, $cb, $cc, $gp)
+_150($j4[0], $gj, $az, $cb, $cc, $gp)
+_150($j5[0], $gj, $az, $cb, $cc, $gp)
+_150($j6[0], $gj, $az, $cb, $cc, $gp)
+_150($j7[0], $i9, $az, $cb, $cc, $gp)
+_150($j8[0], $i9, $az, $cb, $cc, $gp)
+_150($j9[0], $i9, $az, $cb, $cc, $gp)
+_150($ja[0], $gj, $az, $cb, $cc, $gp)
+_150($jb[0], $i9, $az, $cb, $cc, $gp)
+Local $jc = _18x()
+_17v($jc, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($jc, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($jc, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($jc, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($jc)
+_154($j2[0], $jc, $is)
+_14v($j2[0], $jc, $iv)
+_153($j2[0], 6 * $ia, $if, 12 * $ia, 12 * $ia, $it)
+Local $jd = _18x()
+_17v($jd, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($jd, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($jd, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($jd, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($jd)
+_154($ja[0], $jd, $is)
+_14v($ja[0], $jd, $iw)
+_153($ja[0], 6 * $ia, $if, 12 * $ia, 12 * $ia, $iu)
+Local $je = _18x()
+_17v($je, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($je, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($je, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($je, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($je)
+_154($j3[0], $je, $is)
+_14v($j3[0], $je, $iw)
+_153($j3[0], 10 * $ia, $if, 12 * $ia, 12 * $ia, $iu)
+Local $jf = _18x()
+_17v($jf, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($jf, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($jf, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($jf, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($jf)
+_154($j4[0], $jf, $is)
+_14v($j4[0], $jf, $iw)
+_153($j4[0], 14 * $ia, $if, 12 * $ia, 12 * $ia, $iu)
+Local $jg = _18x()
+_17v($jg, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($jg, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($jg, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($jg, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($jg)
+_154($j5[0], $jg, $is)
+_14v($j5[0], $jg, $iw)
+_153($j5[0], 18 * $ia, $if, 12 * $ia, 12 * $ia, $iu)
+Local $jh = _18x()
+_17v($jh, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($jh, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($jh, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($jh, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($jh)
+_154($j6[0], $jh, $is)
+_14v($j6[0], $jh, $iw)
+_153($j6[0], 22 * $ia, $if, 12 * $ia, 12 * $ia, $iu)
+Local $ji = _18x()
+_17v($ji, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($ji, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($ji, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($ji, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($ji)
+_154($j7[0], $ji, $iy)
+_14v($j7[0], $ji, $j1)
+_153($j7[0], 26 * $ia, $if, 12 * $ia, 12 * $ia, $iz)
+Local $jj = _18x()
+_17v($jj, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($jj, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($jj, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($jj, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($jj)
+_154($j8[0], $jj, $iy)
+_14v($j8[0], $jj, $j1)
+_153($j8[0], 30 * $ia, $if, 12 * $ia, 12 * $ia, $iz)
+Local $jk = _18x()
+_17v($jk, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($jk, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($jk, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($jk, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($jk)
+_154($j9[0], $jk, $ix)
+_14v($j9[0], $jk, $j0)
+_153($j9[0], 34 * $ia, $if, 12 * $ia, 12 * $ia, $iz)
+Local $jl = _18x()
+_17v($jl, 0 + $ih -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($jl, 0 + $ih -($ig * 2), $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($jl, 1 * $ia, $ie +(20 * $ia) -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($jl, 1 * $ia, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($jl)
+_154($jb[0], $jl, $iy)
+_14v($jb[0], $jl, $j1)
+_153($jb[0], 34 * $ia, $if, 12 * $ia, 12 * $ia, $iz)
+_142($az)
+_145($bv)
+_1ax($cc)
+_13c($gp)
+_13c($io)
+_13c($is)
+_13c($it)
+_13c($iu)
+_13c($ix)
+_13c($iy)
+_13c($iz)
+_19q($iv)
+_19q($iw)
+_19q($j0)
+_19q($j1)
+_18z($jc)
+_18z($jd)
+_18z($je)
+_18z($jf)
+_18z($jg)
+_18z($jh)
+_18z($ji)
+_18z($jj)
+_18z($jk)
+_18z($jl)
+$ib[0] = GUICtrlCreatePic("", $ej, $ek, $eh, $ei)
+$ib[5] = _1ds($ib[0], $j2)
+$ib[6] = _1ds($ib[0], $j3, False)
+$ib[7] = _1ds($ib[0], $j4, False)
+$ib[8] = _1ds($ib[0], $j5, False)
+$ib[9] = _1ds($ib[0], $j6, False)
+$ib[10] = _1ds($ib[0], $j7, False)
+$ib[11] = _1ds($ib[0], $j8, False)
+$ib[12] = _1ds($ib[0], $j9, False)
+$ib[13] = _1ds($ib[0], $ja, False)
+$ib[14] = _1ds($ib[0], $jb, False)
+GUICtrlSetResizing($ib[0], 768)
+_1c2($ib[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($ib))
+Return $ib[0]
 EndFunc
-Func _Metro_ToggleIsChecked($Toggle)
-For $i = 0 To(UBound($iHoverReg) - 1) Step +1
-If $iHoverReg[$i][0] = $Toggle Then
-If $iHoverReg[$i][2] Then
+Func _1d5($jm)
+For $1c = 0 To(UBound($e6) - 1) Step +1
+If $e6[$1c][0] = $jm Then
+If $e6[$1c][2] Then
 Return True
 Else
 Return False
@@ -3672,145 +3589,145 @@ EndIf
 EndIf
 Next
 EndFunc
-Func _Metro_ToggleUnCheck($Toggle, $NoAnimation = False)
-For $i = 0 To(UBound($iHoverReg) - 1) Step +1
-If $iHoverReg[$i][0] = $Toggle Then
-If $iHoverReg[$i][2] Then
-If Not $NoAnimation Then
-For $i2 = 12 To 6 Step -1
-_WinAPI_DeleteObject(GUICtrlSendMsg($Toggle, 0x0172, 0, $iHoverReg[$i][$i2]))
+Func _1d7($jm, $jn = False)
+For $1c = 0 To(UBound($e6) - 1) Step +1
+If $e6[$1c][0] = $jm Then
+If $e6[$1c][2] Then
+If Not $jn Then
+For $f2 = 12 To 6 Step -1
+_4a(GUICtrlSendMsg($jm, 0x0172, 0, $e6[$1c][$f2]))
 Sleep(1)
 Next
-_WinAPI_DeleteObject(GUICtrlSendMsg($Toggle, 0x0172, 0, $iHoverReg[$i][13]))
+_4a(GUICtrlSendMsg($jm, 0x0172, 0, $e6[$1c][13]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($Toggle, 0x0172, 0, $iHoverReg[$i][13]))
+_4a(GUICtrlSendMsg($jm, 0x0172, 0, $e6[$1c][13]))
 EndIf
-$iHoverReg[$i][1] = True
-$iHoverReg[$i][2] = False
+$e6[$1c][1] = True
+$e6[$1c][2] = False
 ExitLoop
 EndIf
 EndIf
 Next
 EndFunc
-Func _Metro_ToggleCheck($Toggle, $NoAnimation = False)
-For $i = 0 To(UBound($iHoverReg) - 1) Step +1
-If $iHoverReg[$i][0] = $Toggle Then
-If Not $iHoverReg[$i][2] Then
-If Not $NoAnimation Then
-For $i2 = 6 To 11 Step +1
-_WinAPI_DeleteObject(GUICtrlSendMsg($Toggle, 0x0172, 0, $iHoverReg[$i][$i2]))
+Func _1d8($jm, $jn = False)
+For $1c = 0 To(UBound($e6) - 1) Step +1
+If $e6[$1c][0] = $jm Then
+If Not $e6[$1c][2] Then
+If Not $jn Then
+For $f2 = 6 To 11 Step +1
+_4a(GUICtrlSendMsg($jm, 0x0172, 0, $e6[$1c][$f2]))
 Sleep(1)
 Next
-_WinAPI_DeleteObject(GUICtrlSendMsg($Toggle, 0x0172, 0, $iHoverReg[$i][12]))
+_4a(GUICtrlSendMsg($jm, 0x0172, 0, $e6[$1c][12]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($Toggle, 0x0172, 0, $iHoverReg[$i][12]))
+_4a(GUICtrlSendMsg($jm, 0x0172, 0, $e6[$1c][12]))
 EndIf
-$iHoverReg[$i][2] = True
-$iHoverReg[$i][1] = True
+$e6[$1c][2] = True
+$e6[$1c][1] = True
 ExitLoop
 EndIf
 EndIf
 Next
 EndFunc
-Func _Metro_CreateRadio($RadioGroup, $Text, $Left, $Top, $Width, $Height, $BG_Color = $GUIThemeColor, $Font_Color = $FontThemeColor, $Font = "Segoe UI", $Fontsize = "11", $FontStyle = 0, $RadioCircleSize = 22, $ExStyle = False)
-If $Height < 22 And $RadioCircleSize > 21 Then
+Func _1d9($jo, $gj, $ej, $ek, $eh, $ei, $gk = $al, $gl = $am, $gm = "Segoe UI", $9v = "11", $gn = 0, $jp = 22, $jq = False)
+If $ei < 22 And $jp > 21 Then
 If(@Compiled = 0) Then MsgBox(48, "Metro UDF", "The min. height is 22px for metro radios.")
 EndIf
-Local $rDPI = _HighDPICheck()
-If $HIGHDPI_SUPPORT Then
-$Left = Round($Left * $gDPI)
-$Top = Round($Top * $gDPI)
-$Width = Round($Width * $gDPI)
-$Height = Round($Height * $gDPI)
-If Mod($Width, 2) <> 0 Then $Width = $Width - 1
-If Mod($Height, 2) <> 0 Then $Height = $Height - 1
-$RadioCircleSize = $RadioCircleSize * $gDPI
-If Mod($RadioCircleSize, 2) <> 0 Then $RadioCircleSize = $RadioCircleSize - 1
+Local $jr = _1du()
+If $ed Then
+$ej = Round($ej * $e5)
+$ek = Round($ek * $e5)
+$eh = Round($eh * $e5)
+$ei = Round($ei * $e5)
+If Mod($eh, 2) <> 0 Then $eh = $eh - 1
+If Mod($ei, 2) <> 0 Then $ei = $ei - 1
+$jp = $jp * $e5
+If Mod($jp, 2) <> 0 Then $jp = $jp - 1
 Else
-$Fontsize =($Fontsize / $Font_DPI_Ratio)
+$9v =($9v / $e4)
 EndIf
-Local $Radio_Array[16]
-$Radio_Array[1] = False
-$Radio_Array[2] = False
-$Radio_Array[3] = "7"
-$Radio_Array[4] = $RadioGroup
-$Radio_Array[15] = GetCurrentGUI()
-Local $TopMargin =($Height - $RadioCircleSize) / 2
-If $BG_Color <> 0 Then $BG_Color = "0xFF" & Hex($BG_Color, 6)
-$Font_Color = "0xFF" & Hex($Font_Color, 6)
-Local $Brush_BTN_FontColor = _GDIPlus_BrushCreateSolid($Font_Color)
-Local $BoxFrameCol = StringReplace($CB_Radio_Hover_Color, "0x", "0xFF")
-Local $Brush1 = _GDIPlus_BrushCreateSolid(StringReplace($CB_Radio_Color, "0x", "0xFF"))
-If $ExStyle Then
-Local $Brush2 = _GDIPlus_BrushCreateSolid(StringReplace($ButtonBKColor, "0x", "0xFF"))
+Local $js[16]
+$js[1] = False
+$js[2] = False
+$js[3] = "7"
+$js[4] = $jo
+$js[15] = _1dt()
+Local $ie =($ei - $jp) / 2
+If $gk <> 0 Then $gk = "0xFF" & Hex($gk, 6)
+$gl = "0xFF" & Hex($gl, 6)
+Local $gp = _13b($gl)
+Local $ip = StringReplace($as, "0x", "0xFF")
+Local $jt = _13b(StringReplace($aq, "0x", "0xFF"))
+If $jq Then
+Local $ju = _13b(StringReplace($ao, "0x", "0xFF"))
 Else
-Local $Brush2 = _GDIPlus_BrushCreateSolid(StringReplace($CB_Radio_CheckMark_Color, "0x", "0xFF"))
+Local $ju = _13b(StringReplace($at, "0x", "0xFF"))
 EndIf
-Local $Brush3 = _GDIPlus_BrushCreateSolid(StringReplace($CB_Radio_Hover_Color, "0x", "0xFF"))
-Local $Radio_Graphic1 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $Radio_Graphic2 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $Radio_Graphic3 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $Radio_Graphic4 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $hFormat = _GDIPlus_StringFormatCreate(), $hFamily = _GDIPlus_FontFamilyCreate($Font), $hFont = _GDIPlus_FontCreate($hFamily, $Fontsize, $FontStyle)
-Local $tLayout = _GDIPlus_RectFCreate($RadioCircleSize +(4 * $rDPI), 0, $Width - $RadioCircleSize +(4 * $rDPI), $Height)
-_GDIPlus_StringFormatSetAlign($hFormat, 0)
-_GDIPlus_StringFormatSetLineAlign($hFormat, 1)
-$tLayout.Y = 1
-_GDIPlus_GraphicsDrawStringEx($Radio_Graphic1[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Radio_Graphic2[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Radio_Graphic3[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Radio_Graphic4[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-Local $radSize1 = 1 * $rDPI
-Local $radSize2 = 5 * $rDPI
-Local $radSize3 = 11 * $rDPI
-_GDIPlus_GraphicsFillEllipse($Radio_Graphic1[0], 0, $TopMargin, $RadioCircleSize - $radSize1, $RadioCircleSize - $radSize1, $Brush1)
-_GDIPlus_GraphicsFillEllipse($Radio_Graphic3[0], 0, $TopMargin, $RadioCircleSize - $radSize1, $RadioCircleSize - $radSize1, $Brush3)
-_GDIPlus_GraphicsFillEllipse($Radio_Graphic2[0], 0, $TopMargin, $RadioCircleSize - $radSize1, $RadioCircleSize - $radSize1, $Brush1)
-_GDIPlus_GraphicsFillEllipse($Radio_Graphic2[0], $radSize2, $TopMargin + $radSize2, $RadioCircleSize - $radSize3, $RadioCircleSize - $radSize3, $Brush2)
-_GDIPlus_GraphicsFillEllipse($Radio_Graphic4[0], 0, $TopMargin, $RadioCircleSize - $radSize1, $RadioCircleSize - $radSize1, $Brush3)
-_GDIPlus_GraphicsFillEllipse($Radio_Graphic4[0], $radSize2, $TopMargin + $radSize2, $RadioCircleSize - $radSize3, $RadioCircleSize - $radSize3, $Brush2)
-_GDIPlus_FontDispose($hFont)
-_GDIPlus_FontFamilyDispose($hFamily)
-_GDIPlus_StringFormatDispose($hFormat)
-_GDIPlus_BrushDispose($Brush_BTN_FontColor)
-_GDIPlus_BrushDispose($Brush1)
-_GDIPlus_BrushDispose($Brush2)
-_GDIPlus_BrushDispose($Brush3)
-$Radio_Array[0] = GUICtrlCreatePic("", $Left, $Top, $Width, $Height)
-$Radio_Array[5] = _iGraphicCreateBitmapHandle($Radio_Array[0], $Radio_Graphic1)
-$Radio_Array[7] = _iGraphicCreateBitmapHandle($Radio_Array[0], $Radio_Graphic2, False)
-$Radio_Array[6] = _iGraphicCreateBitmapHandle($Radio_Array[0], $Radio_Graphic3, False)
-$Radio_Array[8] = _iGraphicCreateBitmapHandle($Radio_Array[0], $Radio_Graphic4, False)
-GUICtrlSetResizing($Radio_Array[0], 768)
-_cHvr_Register($Radio_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Radio_Array))
-Return $Radio_Array[0]
+Local $jv = _13b(StringReplace($as, "0x", "0xFF"))
+Local $jw = _1dr($eh, $ei, $gk, 5, 5)
+Local $jx = _1dr($eh, $ei, $gk, 5, 5)
+Local $jy = _1dr($eh, $ei, $gk, 5, 5)
+Local $jz = _1dr($eh, $ei, $gk, 5, 5)
+Local $cc = _1aw(), $bv = _143($gm), $az = _141($bv, $9v, $gn)
+Local $cb = _1af($jp +(4 * $jr), 0, $eh - $jp +(4 * $jr), $ei)
+_1az($cc, 0)
+_1b0($cc, 1)
+$cb.Y = 1
+_150($jw[0], $gj, $az, $cb, $cc, $gp)
+_150($jx[0], $gj, $az, $cb, $cc, $gp)
+_150($jy[0], $gj, $az, $cb, $cc, $gp)
+_150($jz[0], $gj, $az, $cb, $cc, $gp)
+Local $k0 = 1 * $jr
+Local $k1 = 5 * $jr
+Local $k2 = 11 * $jr
+_153($jw[0], 0, $ie, $jp - $k0, $jp - $k0, $jt)
+_153($jy[0], 0, $ie, $jp - $k0, $jp - $k0, $jv)
+_153($jx[0], 0, $ie, $jp - $k0, $jp - $k0, $jt)
+_153($jx[0], $k1, $ie + $k1, $jp - $k2, $jp - $k2, $ju)
+_153($jz[0], 0, $ie, $jp - $k0, $jp - $k0, $jv)
+_153($jz[0], $k1, $ie + $k1, $jp - $k2, $jp - $k2, $ju)
+_142($az)
+_145($bv)
+_1ax($cc)
+_13c($gp)
+_13c($jt)
+_13c($ju)
+_13c($jv)
+$js[0] = GUICtrlCreatePic("", $ej, $ek, $eh, $ei)
+$js[5] = _1ds($js[0], $jw)
+$js[7] = _1ds($js[0], $jx, False)
+$js[6] = _1ds($js[0], $jy, False)
+$js[8] = _1ds($js[0], $jz, False)
+GUICtrlSetResizing($js[0], 768)
+_1c2($js[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($js))
+Return $js[0]
 EndFunc
-Func _Metro_CreateRadioEx($RadioGroup, $Text, $Left, $Top, $Width, $Height, $BG_Color = $GUIThemeColor, $Font_Color = $FontThemeColor, $Font = "Segoe UI", $Fontsize = "11", $FontStyle = 0, $RadioCircleSize = 22)
-Return _Metro_CreateRadio($RadioGroup, $Text, $Left, $Top, $Width, $Height, $BG_Color, $Font_Color, $Font, $Fontsize, $FontStyle, $RadioCircleSize, True)
+Func _1da($jo, $gj, $ej, $ek, $eh, $ei, $gk = $al, $gl = $am, $gm = "Segoe UI", $9v = "11", $gn = 0, $jp = 22)
+Return _1d9($jo, $gj, $ej, $ek, $eh, $ei, $gk, $gl, $gm, $9v, $gn, $jp, True)
 EndFunc
-Func _Metro_RadioCheck($RadioGroup, $Radio, $NoHoverEffect = False)
-For $i = 0 To(UBound($iHoverReg) - 1) Step +1
-If $iHoverReg[$i][0] = $Radio Then
-$iHoverReg[$i][1] = True
-$iHoverReg[$i][2] = True
-If $NoHoverEffect Then
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$i][0], 0x0172, 0, $iHoverReg[$i][7]))
+Func _1db($jo, $k3, $k4 = False)
+For $1c = 0 To(UBound($e6) - 1) Step +1
+If $e6[$1c][0] = $k3 Then
+$e6[$1c][1] = True
+$e6[$1c][2] = True
+If $k4 Then
+_4a(GUICtrlSendMsg($e6[$1c][0], 0x0172, 0, $e6[$1c][7]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$i][0], 0x0172, 0, $iHoverReg[$i][8]))
+_4a(GUICtrlSendMsg($e6[$1c][0], 0x0172, 0, $e6[$1c][8]))
 EndIf
 Else
-If $iHoverReg[$i][4] = $RadioGroup Then
-$iHoverReg[$i][2] = False
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$i][0], 0x0172, 0, $iHoverReg[$i][5]))
+If $e6[$1c][4] = $jo Then
+$e6[$1c][2] = False
+_4a(GUICtrlSendMsg($e6[$1c][0], 0x0172, 0, $e6[$1c][5]))
 EndIf
 EndIf
 Next
 EndFunc
-Func _Metro_RadioIsChecked($RadioGroup, $Radio)
-For $i = 0 To(UBound($iHoverReg) - 1) Step +1
-If $iHoverReg[$i][0] = $Radio Then
-If $iHoverReg[$i][4] = $RadioGroup Then
-If $iHoverReg[$i][2] Then
+Func _1dc($jo, $k3)
+For $1c = 0 To(UBound($e6) - 1) Step +1
+If $e6[$1c][0] = $k3 Then
+If $e6[$1c][4] = $jo Then
+If $e6[$1c][2] Then
 Return True
 Else
 Return False
@@ -3820,107 +3737,107 @@ EndIf
 Next
 Return False
 EndFunc
-Func _Metro_CreateCheckbox($Text, $Left, $Top, $Width, $Height, $BG_Color = $GUIThemeColor, $Font_Color = $FontThemeColor, $Font = "Segoe UI", $Fontsize = "11", $FontStyle = 0, $cb_style = 1)
-If $Height < 24 Then
+Func _1dd($gj, $ej, $ek, $eh, $ei, $gk = $al, $gl = $am, $gm = "Segoe UI", $9v = "11", $gn = 0, $k5 = 1)
+If $ei < 24 Then
 If(@Compiled = 0) Then MsgBox(48, "Metro UDF", "The min. height is 24px for metro checkboxes.")
 EndIf
-Local $chDPI = _HighDPICheck()
-If $HIGHDPI_SUPPORT Then
-$Left = Round($Left * $gDPI)
-$Top = Round($Top * $gDPI)
-$Width = Round($Width * $gDPI)
-$Height = Round($Height * $gDPI)
-If Mod($Width, 2) <> 0 Then $Width = $Width + 1
+Local $k6 = _1du()
+If $ed Then
+$ej = Round($ej * $e5)
+$ek = Round($ek * $e5)
+$eh = Round($eh * $e5)
+$ei = Round($ei * $e5)
+If Mod($eh, 2) <> 0 Then $eh = $eh + 1
 Else
-$Fontsize =($Fontsize / $Font_DPI_Ratio)
+$9v =($9v / $e4)
 EndIf
-Local $Checkbox_Array[16]
-$Checkbox_Array[1] = False
-$Checkbox_Array[2] = False
-$Checkbox_Array[3] = "5"
-$Checkbox_Array[15] = GetCurrentGUI()
-Local $chbh = Round(22 * $chDPI)
-Local $TopMargin =($Height - $chbh) / 2
-Local $CheckBox_Text_Margin = $chbh +($TopMargin * 1.3)
-Local $FrameSize
-If $cb_style = 0 Then
-$FrameSize = $chbh / 7
+Local $k7[16]
+$k7[1] = False
+$k7[2] = False
+$k7[3] = "5"
+$k7[15] = _1dt()
+Local $k8 = Round(22 * $k6)
+Local $ie =($ei - $k8) / 2
+Local $k9 = $k8 +($ie * 1.3)
+Local $fn
+If $k5 = 0 Then
+$fn = $k8 / 7
 Else
-$FrameSize = $chbh / 8
+$fn = $k8 / 8
 EndIf
-If $BG_Color <> 0 Then
-$BG_Color = "0xFF" & Hex($BG_Color, 6)
+If $gk <> 0 Then
+$gk = "0xFF" & Hex($gk, 6)
 EndIf
-$Font_Color = "0xFF" & Hex($Font_Color, 6)
-Local $Brush_BTN_FontColor = _GDIPlus_BrushCreateSolid($Font_Color)
-If $cb_style = 0 Then
-Local $Brush1 = _GDIPlus_BrushCreateSolid(StringReplace($CB_Radio_Color, "0x", "0xFF"))
-Local $Brush3 = $Brush1
-Local $Brush2 = _GDIPlus_BrushCreateSolid(StringReplace($CB_Radio_Hover_Color, "0x", "0xFF"))
-Local $Brush4 = $Brush2
-Local $PenX = _GDIPlus_PenCreate(StringReplace($CB_Radio_CheckMark_Color, "0x", "0xFF"), $FrameSize)
+$gl = "0xFF" & Hex($gl, 6)
+Local $gp = _13b($gl)
+If $k5 = 0 Then
+Local $jt = _13b(StringReplace($aq, "0x", "0xFF"))
+Local $jv = $jt
+Local $ju = _13b(StringReplace($as, "0x", "0xFF"))
+Local $ka = $ju
+Local $kb = _19o(StringReplace($at, "0x", "0xFF"), $fn)
 Else
-Local $Brush1 = _GDIPlus_BrushCreateSolid(StringReplace($CB_Radio_Color, "0x", "0xFF"))
-Local $Brush2 = _GDIPlus_BrushCreateSolid(StringReplace($CB_Radio_Hover_Color, "0x", "0xFF"))
-Local $Brush3 = _GDIPlus_BrushCreateSolid(StringReplace($ButtonBKColor, "0x", "0xFF"))
-Local $Brush4 = _GDIPlus_BrushCreateSolid(StringReplace(_AlterBrightness($ButtonBKColor, +10), "0x", "0xFF"))
-Local $PenX = _GDIPlus_PenCreate(StringReplace($CB_Radio_Color, "0x", "0xFF"), $FrameSize)
+Local $jt = _13b(StringReplace($aq, "0x", "0xFF"))
+Local $ju = _13b(StringReplace($as, "0x", "0xFF"))
+Local $jv = _13b(StringReplace($ao, "0x", "0xFF"))
+Local $ka = _13b(StringReplace(_1e0($ao, +10), "0x", "0xFF"))
+Local $kb = _19o(StringReplace($aq, "0x", "0xFF"), $fn)
 EndIf
-Local $Checkbox_Graphic1 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $Checkbox_Graphic2 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $Checkbox_Graphic3 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $Checkbox_Graphic4 = _iGraphicCreate($Width, $Height, $BG_Color, 5, 5)
-Local $hFormat = _GDIPlus_StringFormatCreate(), $hFamily = _GDIPlus_FontFamilyCreate($Font), $hFont = _GDIPlus_FontCreate($hFamily, $Fontsize, $FontStyle)
-Local $tLayout = _GDIPlus_RectFCreate($CheckBox_Text_Margin, 0, $Width - $CheckBox_Text_Margin, $Height)
-_GDIPlus_StringFormatSetAlign($hFormat, 1)
-_GDIPlus_StringFormatSetLineAlign($hFormat, 1)
-$tLayout.Y = 1
-_GDIPlus_GraphicsDrawStringEx($Checkbox_Graphic1[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Checkbox_Graphic2[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Checkbox_Graphic3[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-_GDIPlus_GraphicsDrawStringEx($Checkbox_Graphic4[0], $Text, $hFont, $tLayout, $hFormat, $Brush_BTN_FontColor)
-Local $iRadius = Round(2 * $chDPI)
-Local $hPath = _GDIPlus_PathCreate()
-_GDIPlus_PathAddArc($hPath, $chbh -($iRadius * 2), $TopMargin, $iRadius * 2, $iRadius * 2, 270, 90)
-_GDIPlus_PathAddArc($hPath, $chbh -($iRadius * 2), $TopMargin + $chbh -($iRadius * 2), $iRadius * 2, $iRadius * 2, 0, 90)
-_GDIPlus_PathAddArc($hPath, 0, $TopMargin + $chbh -($iRadius * 2), $iRadius * 2, $iRadius * 2, 90, 90)
-_GDIPlus_PathAddArc($hPath, 0, $TopMargin, $iRadius * 2, $iRadius * 2, 180, 90)
-_GDIPlus_PathCloseFigure($hPath)
-_GDIPlus_GraphicsFillPath($Checkbox_Graphic1[0], $hPath, $Brush1)
-_GDIPlus_GraphicsFillPath($Checkbox_Graphic3[0], $hPath, $Brush2)
-_GDIPlus_GraphicsFillPath($Checkbox_Graphic2[0], $hPath, $Brush3)
-_GDIPlus_GraphicsFillPath($Checkbox_Graphic4[0], $hPath, $Brush4)
-Local $Cutpoint =($FrameSize * 0.70) / 2
-Local $mpX = $chbh / 2.60
-Local $mpY = $TopMargin + $chbh / 1.3
-Local $apos1 = cAngle($mpX - $Cutpoint, $mpY, 135, $chbh / 1.35)
-Local $apos2 = cAngle($mpX, $mpY - $Cutpoint, 225, $chbh / 3)
-_GDIPlus_GraphicsDrawLine($Checkbox_Graphic2[0], $mpX - $Cutpoint, $mpY, $apos1[0], $apos1[1], $PenX)
-_GDIPlus_GraphicsDrawLine($Checkbox_Graphic2[0], $mpX, $mpY - $Cutpoint, $apos2[0], $apos2[1], $PenX)
-_GDIPlus_GraphicsDrawLine($Checkbox_Graphic4[0], $mpX - $Cutpoint, $mpY, $apos1[0], $apos1[1], $PenX)
-_GDIPlus_GraphicsDrawLine($Checkbox_Graphic4[0], $mpX, $mpY - $Cutpoint, $apos2[0], $apos2[1], $PenX)
-_GDIPlus_FontDispose($hFont)
-_GDIPlus_FontFamilyDispose($hFamily)
-_GDIPlus_StringFormatDispose($hFormat)
-_GDIPlus_BrushDispose($Brush_BTN_FontColor)
-_GDIPlus_BrushDispose($Brush1)
-_GDIPlus_BrushDispose($Brush2)
-_GDIPlus_BrushDispose($Brush3)
-_GDIPlus_BrushDispose($Brush4)
-_GDIPlus_PenDispose($PenX)
-$Checkbox_Array[0] = GUICtrlCreatePic("", $Left, $Top, $Width, $Height)
-$Checkbox_Array[5] = _iGraphicCreateBitmapHandle($Checkbox_Array[0], $Checkbox_Graphic1)
-$Checkbox_Array[7] = _iGraphicCreateBitmapHandle($Checkbox_Array[0], $Checkbox_Graphic2, False)
-$Checkbox_Array[6] = _iGraphicCreateBitmapHandle($Checkbox_Array[0], $Checkbox_Graphic3, False)
-$Checkbox_Array[8] = _iGraphicCreateBitmapHandle($Checkbox_Array[0], $Checkbox_Graphic4, False)
-GUICtrlSetResizing($Checkbox_Array[0], 768)
-_cHvr_Register($Checkbox_Array[0], "_iHoverOff", "_iHoverOn", "", "", _iAddHover($Checkbox_Array))
-Return $Checkbox_Array[0]
+Local $kc = _1dr($eh, $ei, $gk, 5, 5)
+Local $kd = _1dr($eh, $ei, $gk, 5, 5)
+Local $ke = _1dr($eh, $ei, $gk, 5, 5)
+Local $kf = _1dr($eh, $ei, $gk, 5, 5)
+Local $cc = _1aw(), $bv = _143($gm), $az = _141($bv, $9v, $gn)
+Local $cb = _1af($k9, 0, $eh - $k9, $ei)
+_1az($cc, 1)
+_1b0($cc, 1)
+$cb.Y = 1
+_150($kc[0], $gj, $az, $cb, $cc, $gp)
+_150($kd[0], $gj, $az, $cb, $cc, $gp)
+_150($ke[0], $gj, $az, $cb, $cc, $gp)
+_150($kf[0], $gj, $az, $cb, $cc, $gp)
+Local $ig = Round(2 * $k6)
+Local $c6 = _18x()
+_17v($c6, $k8 -($ig * 2), $ie, $ig * 2, $ig * 2, 270, 90)
+_17v($c6, $k8 -($ig * 2), $ie + $k8 -($ig * 2), $ig * 2, $ig * 2, 0, 90)
+_17v($c6, 0, $ie + $k8 -($ig * 2), $ig * 2, $ig * 2, 90, 90)
+_17v($c6, 0, $ie, $ig * 2, $ig * 2, 180, 90)
+_18w($c6)
+_154($kc[0], $c6, $jt)
+_154($ke[0], $c6, $ju)
+_154($kd[0], $c6, $jv)
+_154($kf[0], $c6, $ka)
+Local $hw =($fn * 0.70) / 2
+Local $fw = $k8 / 2.60
+Local $fx = $ie + $k8 / 1.3
+Local $fy = _1dv($fw - $hw, $fx, 135, $k8 / 1.35)
+Local $fz = _1dv($fw, $fx - $hw, 225, $k8 / 3)
+_14u($kd[0], $fw - $hw, $fx, $fy[0], $fy[1], $kb)
+_14u($kd[0], $fw, $fx - $hw, $fz[0], $fz[1], $kb)
+_14u($kf[0], $fw - $hw, $fx, $fy[0], $fy[1], $kb)
+_14u($kf[0], $fw, $fx - $hw, $fz[0], $fz[1], $kb)
+_142($az)
+_145($bv)
+_1ax($cc)
+_13c($gp)
+_13c($jt)
+_13c($ju)
+_13c($jv)
+_13c($ka)
+_19q($kb)
+$k7[0] = GUICtrlCreatePic("", $ej, $ek, $eh, $ei)
+$k7[5] = _1ds($k7[0], $kc)
+$k7[7] = _1ds($k7[0], $kd, False)
+$k7[6] = _1ds($k7[0], $ke, False)
+$k7[8] = _1ds($k7[0], $kf, False)
+GUICtrlSetResizing($k7[0], 768)
+_1c2($k7[0], "_iHoverOff", "_iHoverOn", "", "", _1dq($k7))
+Return $k7[0]
 EndFunc
-Func _Metro_CheckboxIsChecked($Checkbox)
-For $i = 0 To(UBound($iHoverReg) - 1) Step +1
-If $iHoverReg[$i][0] = $Checkbox Then
-If $iHoverReg[$i][2] Then
+Func _1dg($kg)
+For $1c = 0 To(UBound($e6) - 1) Step +1
+If $e6[$1c][0] = $kg Then
+If $e6[$1c][2] Then
 Return True
 Else
 Return False
@@ -3928,468 +3845,468 @@ EndIf
 EndIf
 Next
 EndFunc
-Func _Metro_CheckboxUnCheck($Checkbox)
-For $i = 0 To(UBound($iHoverReg) - 1) Step +1
-If $iHoverReg[$i][0] = $Checkbox Then
-$iHoverReg[$i][2] = False
-$iHoverReg[$i][1] = True
-_WinAPI_DeleteObject(GUICtrlSendMsg($Checkbox, 0x0172, 0, $iHoverReg[$i][6]))
+Func _1dh($kg)
+For $1c = 0 To(UBound($e6) - 1) Step +1
+If $e6[$1c][0] = $kg Then
+$e6[$1c][2] = False
+$e6[$1c][1] = True
+_4a(GUICtrlSendMsg($kg, 0x0172, 0, $e6[$1c][6]))
 EndIf
 Next
 EndFunc
-Func _Metro_CheckboxCheck($Checkbox, $NoHoverEffect = False)
-For $i = 0 To(UBound($iHoverReg) - 1) Step +1
-If $iHoverReg[$i][0] = $Checkbox Then
-$iHoverReg[$i][2] = True
-$iHoverReg[$i][1] = True
-If $NoHoverEffect Then
-_WinAPI_DeleteObject(GUICtrlSendMsg($Checkbox, 0x0172, 0, $iHoverReg[$i][7]))
+Func _1di($kg, $k4 = False)
+For $1c = 0 To(UBound($e6) - 1) Step +1
+If $e6[$1c][0] = $kg Then
+$e6[$1c][2] = True
+$e6[$1c][1] = True
+If $k4 Then
+_4a(GUICtrlSendMsg($kg, 0x0172, 0, $e6[$1c][7]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($Checkbox, 0x0172, 0, $iHoverReg[$i][8]))
+_4a(GUICtrlSendMsg($kg, 0x0172, 0, $e6[$1c][8]))
 EndIf
 EndIf
 Next
 EndFunc
-Func _Metro_MsgBox($Flag, $Title, $Text, $mWidth = 600, $Fontsize = 11, $ParentGUI = "", $Timeout = 0)
-Local $1stButton, $2ndButton, $3rdButton, $1stButtonText = "-", $2ndButtonText = "-", $3rdButtonText = "-", $Buttons_Count = 1
-Switch $Flag
+Func _1dk($3f, $eg, $gj, $g0 = 600, $9v = 11, $em = "", $kh = 0)
+Local $ki, $kj, $kk, $kl = "-", $km = "-", $kn = "-", $ko = 1
+Switch $3f
 Case 0
-$Buttons_Count = 1
-$1stButtonText = "OK"
+$ko = 1
+$kl = "OK"
 Case 1
-$Buttons_Count = 2
-$1stButtonText = "OK"
-$2ndButtonText = "Cancel"
+$ko = 2
+$kl = "OK"
+$km = "Cancel"
 Case 2
-$Buttons_Count = 3
-$1stButtonText = "Abort"
-$2ndButtonText = "Retry"
-$3rdButtonText = "Ignore"
+$ko = 3
+$kl = "Abort"
+$km = "Retry"
+$kn = "Ignore"
 Case 3
-$Buttons_Count = 3
-$1stButtonText = "Yes"
-$2ndButtonText = "No"
-$3rdButtonText = "Cancel"
+$ko = 3
+$kl = "Yes"
+$km = "No"
+$kn = "Cancel"
 Case 4
-$Buttons_Count = 2
-$1stButtonText = "Yes"
-$2ndButtonText = "No"
+$ko = 2
+$kl = "Yes"
+$km = "No"
 Case 5
-$Buttons_Count = 2
-$1stButtonText = "Retry"
-$2ndButtonText = "Cancel"
+$ko = 2
+$kl = "Retry"
+$km = "Cancel"
 Case 6
-$Buttons_Count = 3
-$1stButtonText = "Cancel"
-$2ndButtonText = "Retry"
-$3rdButtonText = "Continue"
+$ko = 3
+$kl = "Cancel"
+$km = "Retry"
+$kn = "Continue"
 Case Else
-$Buttons_Count = 1
-$1stButtonText = "OK"
+$ko = 1
+$kl = "OK"
 EndSwitch
-If($Buttons_Count = 1) And($mWidth < 180) Then MsgBox(16, "MetroUDF", "Error: Messagebox width has to be at least 180px for the selected message style/flag.")
-If($Buttons_Count = 2) And($mWidth < 240) Then MsgBox(16, "MetroUDF", "Error: Messagebox width has to be at least 240px for the selected message style/flag.")
-If($Buttons_Count = 3) And($mWidth < 360) Then MsgBox(16, "MetroUDF", "Error: Messagebox width has to be at least 360px for the selected message style/flag.")
-Local $msgbDPI = _HighDPICheck()
-If $HIGHDPI_SUPPORT Then
-$mWidth = Round($mWidth * $gDPI)
+If($ko = 1) And($g0 < 180) Then MsgBox(16, "MetroUDF", "Error: Messagebox width has to be at least 180px for the selected message style/flag.")
+If($ko = 2) And($g0 < 240) Then MsgBox(16, "MetroUDF", "Error: Messagebox width has to be at least 240px for the selected message style/flag.")
+If($ko = 3) And($g0 < 360) Then MsgBox(16, "MetroUDF", "Error: Messagebox width has to be at least 360px for the selected message style/flag.")
+Local $kp = _1du()
+If $ed Then
+$g0 = Round($g0 * $e5)
 Else
-$Fontsize =($Fontsize / $Font_DPI_Ratio)
+$9v =($9v / $e4)
 EndIf
-Local $LabelSize = _StringSize($Text, $Fontsize, 400, 0, "Arial", $mWidth -(30 * $msgbDPI))
-Local $mHeight = 120 +($LabelSize[3] / $msgbDPI)
-Local $MsgBox_Form = _Metro_CreateGUI($Title, $mWidth / $msgbDPI, $mHeight, -1, -1, False, $ParentGUI)
-$mHeight = $mHeight * $msgbDPI
-GUICtrlCreateLabel(" " & $Title, 2 * $msgbDPI, 2 * $msgbDPI, $mWidth -(4 * $msgbDPI), 30 * $msgbDPI, 0x0200, 0x00100000)
-GUICtrlSetBkColor(-1, _AlterBrightness($GUIThemeColor, 30))
-GUICtrlSetColor(-1, $FontThemeColor)
-_GUICtrlSetFont(-1, 11, 600, 0, "Arial", 5)
-GUICtrlCreateLabel($Text, 15 * $msgbDPI, 50 * $msgbDPI, $LabelSize[2], $LabelSize[3], -1, 0x00100000)
-GUICtrlSetBkColor(-1, $GUIThemeColor)
-GUICtrlSetColor(-1, $FontThemeColor)
-GUICtrlSetFont(-1, $Fontsize, 400, 0, "Arial", 5)
-Local $1stButton_Left =(($mWidth / $msgbDPI) -($Buttons_Count * 100) -(($Buttons_Count - 1) * 20)) / 2
-Local $1stButton_Left1 =($mWidth -($Buttons_Count *(100 * $msgbDPI)) -(($Buttons_Count - 1) *(20 * $msgbDPI))) / 2
-Local $2ndButton_Left = $1stButton_Left + 120
-Local $3rdButton_Left = $2ndButton_Left + 120
-GUICtrlCreateLabel("", 2 * $msgbDPI, $mHeight -(53 * $msgbDPI), $1stButton_Left1 -(4 * $msgbDPI),(50 * $msgbDPI), -1, 0x00100000)
-GUICtrlCreateLabel("", $mWidth - $1stButton_Left1 +(2 * $msgbDPI), $mHeight -(53 * $msgbDPI), $1stButton_Left1 -(4 * $msgbDPI),(50 * $msgbDPI), -1, 0x00100000)
-Local $cEnter = GUICtrlCreateDummy()
-Local $aAccelKeys[1][2] = [["{ENTER}", $cEnter]]
-Local $1stButton = _Metro_CreateButton($1stButtonText, $1stButton_Left,($mHeight / $msgbDPI) - 50, 100, 34, $ButtonBKColor, $ButtonTextColor)
-Local $2ndButton = _Metro_CreateButton($2ndButtonText, $2ndButton_Left,($mHeight / $msgbDPI) - 50, 100, 34, $ButtonBKColor, $ButtonTextColor)
-If $Buttons_Count < 2 Then GUICtrlSetState($2ndButton, 32)
-Local $3rdButton = _Metro_CreateButton($3rdButtonText, $3rdButton_Left,($mHeight / $msgbDPI) - 50, 100, 34, $ButtonBKColor, $ButtonTextColor)
-If $Buttons_Count < 3 Then GUICtrlSetState($3rdButton, 32)
-Switch $Flag
+Local $kq = _12f($gj, $9v, 400, 0, "Arial", $g0 -(30 * $kp))
+Local $kr = 120 +($kq[3] / $kp)
+Local $ks = _1ck($eg, $g0 / $kp, $kr, -1, -1, False, $em)
+$kr = $kr * $kp
+GUICtrlCreateLabel(" " & $eg, 2 * $kp, 2 * $kp, $g0 -(4 * $kp), 30 * $kp, 0x0200, 0x00100000)
+GUICtrlSetBkColor(-1, _1e0($al, 30))
+GUICtrlSetColor(-1, $am)
+_1dw(-1, 11, 600, 0, "Arial", 5)
+GUICtrlCreateLabel($gj, 15 * $kp, 50 * $kp, $kq[2], $kq[3], -1, 0x00100000)
+GUICtrlSetBkColor(-1, $al)
+GUICtrlSetColor(-1, $am)
+GUICtrlSetFont(-1, $9v, 400, 0, "Arial", 5)
+Local $kt =(($g0 / $kp) -($ko * 100) -(($ko - 1) * 20)) / 2
+Local $ku =($g0 -($ko *(100 * $kp)) -(($ko - 1) *(20 * $kp))) / 2
+Local $kv = $kt + 120
+Local $kw = $kv + 120
+GUICtrlCreateLabel("", 2 * $kp, $kr -(53 * $kp), $ku -(4 * $kp),(50 * $kp), -1, 0x00100000)
+GUICtrlCreateLabel("", $g0 - $ku +(2 * $kp), $kr -(53 * $kp), $ku -(4 * $kp),(50 * $kp), -1, 0x00100000)
+Local $kx = GUICtrlCreateDummy()
+Local $ky[1][2] = [["{ENTER}", $kx]]
+Local $ki = _1cw($kl, $kt,($kr / $kp) - 50, 100, 34, $ao, $ap)
+Local $kj = _1cw($km, $kv,($kr / $kp) - 50, 100, 34, $ao, $ap)
+If $ko < 2 Then GUICtrlSetState($kj, 32)
+Local $kk = _1cw($kn, $kw,($kr / $kp) - 50, 100, 34, $ao, $ap)
+If $ko < 3 Then GUICtrlSetState($kk, 32)
+Switch $3f
 Case 0, 1, 5
-GUICtrlSetState($1stButton, 512)
+GUICtrlSetState($ki, 512)
 Case 2, 4, 6
-GUICtrlSetState($2ndButton, 512)
+GUICtrlSetState($kj, 512)
 Case 3
-GUICtrlSetState($3rdButton, 512)
+GUICtrlSetState($kk, 512)
 Case Else
-GUICtrlSetState($1stButton, 512)
+GUICtrlSetState($ki, 512)
 EndSwitch
-GUISetAccelerators($aAccelKeys, $MsgBox_Form)
+GUISetAccelerators($ky, $ks)
 GUISetState(@SW_SHOW)
-If $Timeout <> 0 Then
-$iMsgBoxTimeout = $Timeout
-AdlibRegister("_iMsgBoxTimeout", 1000)
+If $kh <> 0 Then
+$e8 = $kh
+AdlibRegister("_1dy", 1000)
 EndIf
-If $mOnEventMode Then Opt("GUIOnEventMode", 0)
+If $ef Then Opt("GUIOnEventMode", 0)
 While 1
-If $Timeout <> 0 Then
-If $iMsgBoxTimeout <= 0 Then
-AdlibUnRegister("_iMsgBoxTimeout")
-_Metro_GUIDelete($MsgBox_Form)
-If $mOnEventMode Then Opt("GUIOnEventMode", 1)
+If $kh <> 0 Then
+If $e8 <= 0 Then
+AdlibUnRegister("_1dy")
+_1cm($ks)
+If $ef Then Opt("GUIOnEventMode", 1)
 Return SetError(1)
 EndIf
 EndIf
-Local $nMsg = GUIGetMsg()
-Switch $nMsg
-Case -3, $1stButton
-_Metro_GUIDelete($MsgBox_Form)
-If $mOnEventMode Then Opt("GUIOnEventMode", 1)
-Return $1stButtonText
-Case $2ndButton
-_Metro_GUIDelete($MsgBox_Form)
-If $mOnEventMode Then Opt("GUIOnEventMode", 1)
-Return $2ndButtonText
-Case $3rdButton
-_Metro_GUIDelete($MsgBox_Form)
-If $mOnEventMode Then Opt("GUIOnEventMode", 1)
-Return $3rdButtonText
-Case $cEnter
-_Metro_GUIDelete($MsgBox_Form)
-Local $ReturnText
-Switch $Flag
+Local $kz = GUIGetMsg()
+Switch $kz
+Case -3, $ki
+_1cm($ks)
+If $ef Then Opt("GUIOnEventMode", 1)
+Return $kl
+Case $kj
+_1cm($ks)
+If $ef Then Opt("GUIOnEventMode", 1)
+Return $km
+Case $kk
+_1cm($ks)
+If $ef Then Opt("GUIOnEventMode", 1)
+Return $kn
+Case $kx
+_1cm($ks)
+Local $l0
+Switch $3f
 Case 0, 1, 5
-$ReturnText = $1stButtonText
+$l0 = $kl
 Case 2, 4, 6
-$ReturnText = $2ndButtonText
+$l0 = $km
 Case 3
-$ReturnText = $3rdButtonText
+$l0 = $kn
 Case Else
-$ReturnText = $1stButtonText
+$l0 = $kl
 EndSwitch
-If $mOnEventMode Then Opt("GUIOnEventMode", 1)
-Return $ReturnText
+If $ef Then Opt("GUIOnEventMode", 1)
+Return $l0
 EndSwitch
 WEnd
 EndFunc
-Func _Metro_CreateProgress($Left, $Top, $Width, $Height, $EnableBorder = False, $Backgroud_Color = $CB_Radio_Color, $Progress_Color = $ButtonBKColor)
-Local $Progress_Array[8]
-If $HIGHDPI_SUPPORT Then
-$Left = Round($Left * $gDPI)
-$Top = Round($Top * $gDPI)
-$Width = Round($Width * $gDPI)
-$Height = Round($Height * $gDPI)
+Func _1dm($ej, $ek, $eh, $ei, $l1 = False, $l2 = $aq, $l3 = $ao)
+Local $l4[8]
+If $ed Then
+$ej = Round($ej * $e5)
+$ek = Round($ek * $e5)
+$eh = Round($eh * $e5)
+$ei = Round($ei * $e5)
 EndIf
-$Progress_Array[1] = $Width
-$Progress_Array[2] = $Height
-$Progress_Array[3] = "0xFF" & Hex($Backgroud_Color, 6)
-$Progress_Array[4] = "0xFF" & Hex($Progress_Color, 6)
-$Progress_Array[5] = StringReplace($CB_Radio_Hover_Color, "0x", "0xFF")
-$Progress_Array[7] = $EnableBorder
-Local $ProgressBGPen = _GDIPlus_PenCreate($Progress_Array[5], 2)
-Local $Progress_Graphic = _iGraphicCreate($Width, $Height, $Progress_Array[3], 1, 5)
-If $EnableBorder Then
-_GDIPlus_GraphicsDrawRect($Progress_Graphic[0], 0, 0, $Width, $Height, $ProgressBGPen)
+$l4[1] = $eh
+$l4[2] = $ei
+$l4[3] = "0xFF" & Hex($l2, 6)
+$l4[4] = "0xFF" & Hex($l3, 6)
+$l4[5] = StringReplace($as, "0x", "0xFF")
+$l4[7] = $l1
+Local $l5 = _19o($l4[5], 2)
+Local $l6 = _1dr($eh, $ei, $l4[3], 1, 5)
+If $l1 Then
+_14y($l6[0], 0, 0, $eh, $ei, $l5)
 EndIf
-_GDIPlus_PenDispose($ProgressBGPen)
-$Progress_Array[0] = GUICtrlCreatePic("", $Left, $Top, $Width, $Height)
-$Progress_Array[6] = _iGraphicCreateBitmapHandle($Progress_Array[0], $Progress_Graphic)
-GUICtrlSetResizing($Progress_Array[0], 768)
-Return $Progress_Array
+_19q($l5)
+$l4[0] = GUICtrlCreatePic("", $ej, $ek, $eh, $ei)
+$l4[6] = _1ds($l4[0], $l6)
+GUICtrlSetResizing($l4[0], 768)
+Return $l4
 EndFunc
-Func _Metro_SetProgress(ByRef $Progress, $Percent)
-Local $ProgressBGPen = _GDIPlus_PenCreate($Progress[5], 2)
-Local $ProgressBGBrush = _GDIPlus_BrushCreateSolid($Progress[4])
-Local $Progress_Graphic = _iGraphicCreate($Progress[1], $Progress[2], $Progress[3], 1, 5)
-If $Percent > 100 Then $Percent = 100
-If $Progress[7] Then
-Local $ProgressWidth =(($Progress[1] - 2) / 100) * $Percent
-_GDIPlus_GraphicsDrawRect($Progress_Graphic[0], 0, 0, $Progress[1], $Progress[2], $ProgressBGPen)
-_GDIPlus_GraphicsFillRect($Progress_Graphic[0], 1, 1, $ProgressWidth, $Progress[2] - 2, $ProgressBGBrush)
+Func _1dn(ByRef $l7, $l8)
+Local $l5 = _19o($l7[5], 2)
+Local $l9 = _13b($l7[4])
+Local $l6 = _1dr($l7[1], $l7[2], $l7[3], 1, 5)
+If $l8 > 100 Then $l8 = 100
+If $l7[7] Then
+Local $la =(($l7[1] - 2) / 100) * $l8
+_14y($l6[0], 0, 0, $l7[1], $l7[2], $l5)
+_157($l6[0], 1, 1, $la, $l7[2] - 2, $l9)
 Else
-Local $ProgressWidth =(($Progress[1]) / 100) * $Percent
-_GDIPlus_GraphicsFillRect($Progress_Graphic[0], 0, 0, $ProgressWidth, $Progress[2], $ProgressBGBrush)
+Local $la =(($l7[1]) / 100) * $l8
+_157($l6[0], 0, 0, $la, $l7[2], $l9)
 EndIf
-_GDIPlus_PenDispose($ProgressBGPen)
-_GDIPlus_BrushDispose($ProgressBGBrush)
-Local $SetProgress = _iGraphicCreateBitmapHandle($Progress[0], $Progress_Graphic)
-_WinAPI_DeleteObject($Progress[6])
-$Progress[6] = $SetProgress
+_19q($l5)
+_13c($l9)
+Local $lb = _1ds($l7[0], $l6)
+_4a($l7[6])
+$l7[6] = $lb
 EndFunc
-Func _Metro_AddHSeperator($Left, $Top, $Width, $Size, $Color = $GUIBorderColor)
-If $HIGHDPI_SUPPORT Then
-$Left = Round($Left * $gDPI)
-$Top = Round($Top * $gDPI)
-$Width = Round($Width * $gDPI)
-$Size = Round($Size * $gDPI)
+Func _1do($ej, $ek, $eh, $lc, $ld = $an)
+If $ed Then
+$ej = Round($ej * $e5)
+$ek = Round($ek * $e5)
+$eh = Round($eh * $e5)
+$lc = Round($lc * $e5)
 EndIf
-Local $Seperator = GUICtrlCreateLabel("", $Left, $Top, $Width, $Size)
-GUICtrlSetBkColor(-1, $Color)
+Local $le = GUICtrlCreateLabel("", $ej, $ek, $eh, $lc)
+GUICtrlSetBkColor(-1, $ld)
 GUICtrlSetState(-1, 128)
 GUICtrlSetResizing(-1, 2 + 4 + 32 + 512)
-Return $Seperator
+Return $le
 EndFunc
-Func _Metro_AddVSeperator($Left, $Top, $Height, $Size, $Color = $GUIBorderColor)
-If $HIGHDPI_SUPPORT Then
-$Left = Round($Left * $gDPI)
-$Top = Round($Top * $gDPI)
-$Height = Round($Height * $gDPI)
-$Size = Round($Size * $gDPI)
+Func _1dp($ej, $ek, $ei, $lc, $ld = $an)
+If $ed Then
+$ej = Round($ej * $e5)
+$ek = Round($ek * $e5)
+$ei = Round($ei * $e5)
+$lc = Round($lc * $e5)
 EndIf
-Local $Seperator = GUICtrlCreateLabel("", $Left, $Top, $Size, $Height)
-GUICtrlSetBkColor(-1, $Color)
+Local $le = GUICtrlCreateLabel("", $ej, $ek, $lc, $ei)
+GUICtrlSetBkColor(-1, $ld)
 GUICtrlSetState(-1, 128)
 GUICtrlSetResizing(-1, 32 + 64 + 256 + 2)
-Return $Seperator
+Return $le
 EndFunc
-Func _iAddHover($Button_ADD)
-Local $HRS
-For $i = 0 To UBound($iHoverReg) - 1 Step +1
-If $iHoverReg[$i][0] = "" Then
-$HRS = $i
+Func _1dq($lf)
+Local $lg
+For $1c = 0 To UBound($e6) - 1 Step +1
+If $e6[$1c][0] = "" Then
+$lg = $1c
 ExitLoop
 EndIf
 Next
-If $HRS == "" Then
-$HRS = UBound($iHoverReg)
-ReDim $iHoverReg[$HRS + 1][16]
+If $lg == "" Then
+$lg = UBound($e6)
+ReDim $e6[$lg + 1][16]
 EndIf
-For $i = 0 To 15
-$iHoverReg[$HRS][$i] = $Button_ADD[$i]
+For $1c = 0 To 15
+$e6[$lg][$1c] = $lf[$1c]
 Next
-Return $HRS
+Return $lg
 EndFunc
-Func _iGraphicCreate($hWidth, $hHeight, $BackgroundColor = 0, $Smoothingmode = 4, $TextCleartype = 0)
-Local $Picture_Array[2]
-$Picture_Array[1] = _GDIPlus_BitmapCreateFromScan0($hWidth, $hHeight, $GDIP_PXF32ARGB)
-$Picture_Array[0] = _GDIPlus_ImageGetGraphicsContext($Picture_Array[1])
-_GDIPlus_GraphicsSetSmoothingMode($Picture_Array[0], $Smoothingmode)
-_GDIPlus_GraphicsSetTextRenderingHint($Picture_Array[0], $TextCleartype)
-If $BackgroundColor <> 0 Then _GDIPlus_GraphicsClear($Picture_Array[0], $BackgroundColor)
-Return $Picture_Array
+Func _1dr($lh, $li, $lj = 0, $lk = 4, $ll = 0)
+Local $lm[2]
+$lm[1] = _12z($lh, $li, $bi)
+$lm[0] = _16d($lm[1])
+_15v($lm[0], $lk)
+_15w($lm[0], $ll)
+If $lj <> 0 Then _14f($lm[0], $lj)
+Return $lm
 EndFunc
-Func _iGraphicCreateBitmapHandle($hPicture, $Picture_Array, $hVisible = True)
-Local $cBitmap = _GDIPlus_BitmapCreateHBITMAPFromBitmap($Picture_Array[1])
-If $hVisible Then _WinAPI_DeleteObject(GUICtrlSendMsg($hPicture, 0x0172, 0, $cBitmap))
-_GDIPlus_GraphicsDispose($Picture_Array[0])
-_GDIPlus_BitmapDispose($Picture_Array[1])
-Return $cBitmap
+Func _1ds($ln, $lm, $lo = True)
+Local $lp = _131($lm[1])
+If $lo Then _4a(GUICtrlSendMsg($ln, 0x0172, 0, $lp))
+_14i($lm[0])
+_132($lm[1])
+Return $lp
 EndFunc
-Func GetCurrentGUI()
-Local $dummyCtrl = GUICtrlCreateLabel("", 0, 0, 0, 0)
-Local $hCurrent = _WinAPI_GetParent(GUICtrlGetHandle($dummyCtrl))
-GUICtrlDelete($dummyCtrl)
-Return $hCurrent
+Func _1dt()
+Local $lq = GUICtrlCreateLabel("", 0, 0, 0, 0)
+Local $lr = _9a(GUICtrlGetHandle($lq))
+GUICtrlDelete($lq)
+Return $lr
 EndFunc
-Func _HighDPICheck()
-If $HIGHDPI_SUPPORT Then
-Return $gDPI
+Func _1du()
+If $ed Then
+Return $e5
 Else
 Return 1
 EndIf
 EndFunc
-Func cAngle($x1, $y1, $Ang, $Length)
-Local $Return[2]
-$Return[0] = $x1 +($Length * Sin($Ang / 180 * 3.14159265358979))
-$Return[1] = $y1 +($Length * Cos($Ang / 180 * 3.14159265358979))
-Return $Return
+Func _1dv($ls, $lt, $lu, $lv)
+Local $lw[2]
+$lw[0] = $ls +($lv * Sin($lu / 180 * 3.14159265358979))
+$lw[1] = $lt +($lv * Cos($lu / 180 * 3.14159265358979))
+Return $lw
 EndFunc
-Func _GUICtrlSetFont($icontrolID, $iSize, $iweight = 400, $iattribute = 0, $sfontname = "", $iquality = 5)
-If $HIGHDPI_SUPPORT Then
-GUICtrlSetFont($icontrolID, $iSize, $iweight, $iattribute, $sfontname, $iquality)
+Func _1dw($lx, $av, $aw = 400, $ly = 0, $lz = "", $m0 = 5)
+If $ed Then
+GUICtrlSetFont($lx, $av, $aw, $ly, $lz, $m0)
 Else
-GUICtrlSetFont($icontrolID, $iSize / $Font_DPI_Ratio, $iweight, $iattribute, $sfontname, $iquality)
+GUICtrlSetFont($lx, $av / $e4, $aw, $ly, $lz, $m0)
 EndIf
 EndFunc
-Func _GetFontDPI_Ratio()
-Local $a1[3]
-Local $iDPI, $iDPIRat, $Logpixelsy = 90, $hWnd = 0
-Local $hDC = DllCall("user32.dll", "long", "GetDC", "long", $hWnd)
-Local $aRet = DllCall("gdi32.dll", "long", "GetDeviceCaps", "long", $hDC[0], "long", $Logpixelsy)
-$hDC = DllCall("user32.dll", "long", "ReleaseDC", "long", $hWnd, "long", $hDC)
-$iDPI = $aRet[0]
+Func _1dx()
+Local $m1[3]
+Local $m2, $m3, $m4 = 90, $k = 0
+Local $74 = DllCall("user32.dll", "long", "GetDC", "long", $k)
+Local $2i = DllCall("gdi32.dll", "long", "GetDeviceCaps", "long", $74[0], "long", $m4)
+$74 = DllCall("user32.dll", "long", "ReleaseDC", "long", $k, "long", $74)
+$m2 = $2i[0]
 Select
-Case $iDPI = 0
-$iDPI = 96
-$iDPIRat = 94
-Case $iDPI < 84
-$iDPIRat = $iDPI / 105
-Case $iDPI < 121
-$iDPIRat = $iDPI / 96
-Case $iDPI < 145
-$iDPIRat = $iDPI / 95
+Case $m2 = 0
+$m2 = 96
+$m3 = 94
+Case $m2 < 84
+$m3 = $m2 / 105
+Case $m2 < 121
+$m3 = $m2 / 96
+Case $m2 < 145
+$m3 = $m2 / 95
 Case Else
-$iDPIRat = $iDPI / 94
+$m3 = $m2 / 94
 EndSelect
-$a1[0] = 2
-$a1[1] = $iDPI
-$a1[2] = $iDPIRat
-Return $a1
+$m1[0] = 2
+$m1[1] = $m2
+$m1[2] = $m3
+Return $m1
 EndFunc
-Func _iMsgBoxTimeout()
-$iMsgBoxTimeout -= 1
+Func _1dy()
+$e8 -= 1
 EndFunc
-Func _AlterBrightness($StartCol, $adjust, $Select = 7)
-Local $red = $adjust *(BitAND(1, $Select) <> 0) + BitAND($StartCol, 0xff0000) / 0x10000
-Local $grn = $adjust *(BitAND(2, $Select) <> 0) + BitAND($StartCol, 0x00ff00) / 0x100
-Local $blu = $adjust *(BitAND(4, $Select) <> 0) + BitAND($StartCol, 0x0000FF)
-Return "0x" & Hex(String(limitCol($red) * 0x10000 + limitCol($grn) * 0x100 + limitCol($blu)), 6)
+Func _1e0($m5, $m6, $m7 = 7)
+Local $m8 = $m6 *(BitAND(1, $m7) <> 0) + BitAND($m5, 0xff0000) / 0x10000
+Local $m9 = $m6 *(BitAND(2, $m7) <> 0) + BitAND($m5, 0x00ff00) / 0x100
+Local $ma = $m6 *(BitAND(4, $m7) <> 0) + BitAND($m5, 0x0000FF)
+Return "0x" & Hex(String(_1e1($m8) * 0x10000 + _1e1($m9) * 0x100 + _1e1($ma)), 6)
 EndFunc
-Func limitCol($cc)
-If $cc > 255 Then Return 255
-If $cc < 0 Then Return 0
-Return $cc
+Func _1e1($mb)
+If $mb > 255 Then Return 255
+If $mb < 0 Then Return 0
+Return $mb
 EndFunc
-Func _CreateBorder($mGUI, $guiW, $guiH, $bordercolor = 0xFFFFFF)
-Local $cLeft, $cRight, $cTop, $cBottom
-Local $gID = _iGetGUIID($mGUI)
-$cTop = GUICtrlCreateLabel("", 0, 0, $guiW, 1)
-GUICtrlSetColor(-1, $bordercolor)
-GUICtrlSetBkColor(-1, $bordercolor)
+Func _1e2($er, $mc, $md, $me = 0xFFFFFF)
+Local $mf, $mg, $mh, $mi
+Local $eo = _1e9($er)
+$mh = GUICtrlCreateLabel("", 0, 0, $mc, 1)
+GUICtrlSetColor(-1, $me)
+GUICtrlSetBkColor(-1, $me)
 GUICtrlSetResizing(-1, 544)
 GUICtrlSetState(-1, 128)
-$cBottom = GUICtrlCreateLabel("", 0, $guiH - 1, $guiW, 1)
-GUICtrlSetColor(-1, $bordercolor)
-GUICtrlSetBkColor(-1, $bordercolor)
+$mi = GUICtrlCreateLabel("", 0, $md - 1, $mc, 1)
+GUICtrlSetColor(-1, $me)
+GUICtrlSetBkColor(-1, $me)
 GUICtrlSetResizing(-1, 576)
 GUICtrlSetState(-1, 128)
-$cLeft = GUICtrlCreateLabel("", 0, 1, 1, $guiH - 1)
-GUICtrlSetColor(-1, $bordercolor)
-GUICtrlSetBkColor(-1, $bordercolor)
+$mf = GUICtrlCreateLabel("", 0, 1, 1, $md - 1)
+GUICtrlSetColor(-1, $me)
+GUICtrlSetBkColor(-1, $me)
 GUICtrlSetResizing(-1, 256 + 2)
 GUICtrlSetState(-1, 128)
-$cRight = GUICtrlCreateLabel("", $guiW - 1, 1, 1, $guiH - 1)
-GUICtrlSetColor(-1, $bordercolor)
-GUICtrlSetBkColor(-1, $bordercolor)
+$mg = GUICtrlCreateLabel("", $mc - 1, 1, 1, $md - 1)
+GUICtrlSetColor(-1, $me)
+GUICtrlSetBkColor(-1, $me)
 GUICtrlSetResizing(-1, 256 + 4)
 GUICtrlSetState(-1, 128)
-If $gID <> "" Then
-$iGUI_LIST[$gID][12] = $cTop
-$iGUI_LIST[$gID][13] = $cBottom
-$iGUI_LIST[$gID][14] = $cLeft
-$iGUI_LIST[$gID][15] = $cRight
+If $eo <> "" Then
+$e7[$eo][12] = $mh
+$e7[$eo][13] = $mi
+$e7[$eo][14] = $mf
+$e7[$eo][15] = $mg
 EndIf
 EndFunc
-Func _WinPos($ParentWin, $Win_Wi, $Win_Hi)
-Local $Win_SetPos[2]
-$Win_SetPos[0] = "-1"
-$Win_SetPos[1] = "-1"
-Local $Win_POS = WinGetPos($ParentWin)
+Func _1e3($mj, $mk, $ml)
+Local $mm[2]
+$mm[0] = "-1"
+$mm[1] = "-1"
+Local $h7 = WinGetPos($mj)
 If Not @error Then
-$Win_SetPos[0] =($Win_POS[0] +(($Win_POS[2] - $Win_Wi) / 2))
-$Win_SetPos[1] =($Win_POS[1] +(($Win_POS[3] - $Win_Hi) / 2))
+$mm[0] =($h7[0] +(($h7[2] - $mk) / 2))
+$mm[1] =($h7[1] +(($h7[3] - $ml) / 2))
 EndIf
-Return $Win_SetPos
+Return $mm
 EndFunc
-Func _GDIPlus_GraphicsGetDPIRatio($iDPIDef = 96)
-_GDIPlus_Startup()
-Local $hGfx = _GDIPlus_GraphicsCreateFromHWND(0)
+Func _1e4($mn = 96)
+_1av()
+Local $mo = _14h(0)
 If @error Then Return SetError(1, @extended, 0)
-Local $aResult
-#forcedef $__g_hGDIPDll, $ghGDIPDll
-$aResult = DllCall($__g_hGDIPDll, "int", "GdipGetDpiX", "handle", $hGfx, "float*", 0)
+Local $1w
+#forcedef $bk, $mp
+$1w = DllCall($bk, "int", "GdipGetDpiX", "handle", $mo, "float*", 0)
 If @error Then Return SetError(2, @extended, 0)
-Local $iDPI = $aResult[2]
-_GDIPlus_GraphicsDispose($hGfx)
-_GDIPlus_Shutdown()
-Return $iDPI / $iDPIDef
+Local $m2 = $1w[2]
+_14i($mo)
+_1au()
+Return $m2 / $mn
 EndFunc
-Func _iHoverOn($idCtrl, $vData)
-Switch $iHoverReg[$vData][3]
+Func _iHoverOn($d4, $mq)
+Switch $e6[$mq][3]
 Case 5, 7
-If $iHoverReg[$vData][2] Then
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$vData][0], 0x0172, 0, $iHoverReg[$vData][8]))
+If $e6[$mq][2] Then
+_4a(GUICtrlSendMsg($e6[$mq][0], 0x0172, 0, $e6[$mq][8]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$vData][0], 0x0172, 0, $iHoverReg[$vData][6]))
+_4a(GUICtrlSendMsg($e6[$mq][0], 0x0172, 0, $e6[$mq][6]))
 EndIf
 Case "6"
-If $iHoverReg[$vData][2] Then
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$vData][0], 0x0172, 0, $iHoverReg[$vData][14]))
+If $e6[$mq][2] Then
+_4a(GUICtrlSendMsg($e6[$mq][0], 0x0172, 0, $e6[$mq][14]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$vData][0], 0x0172, 0, $iHoverReg[$vData][13]))
+_4a(GUICtrlSendMsg($e6[$mq][0], 0x0172, 0, $e6[$mq][13]))
 EndIf
 Case Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($idCtrl, 0x0172, 0, $iHoverReg[$vData][6]))
+_4a(GUICtrlSendMsg($d4, 0x0172, 0, $e6[$mq][6]))
 EndSwitch
 EndFunc
-Func _iHoverOff($idCtrl, $vData)
-Switch $iHoverReg[$vData][3]
+Func _iHoverOff($d4, $mq)
+Switch $e6[$mq][3]
 Case 0, 3, 4, 8, 9, 10
-If WinActive($iHoverReg[$vData][15]) Then
-_WinAPI_DeleteObject(GUICtrlSendMsg($idCtrl, 0x0172, 0, $iHoverReg[$vData][5]))
+If WinActive($e6[$mq][15]) Then
+_4a(GUICtrlSendMsg($d4, 0x0172, 0, $e6[$mq][5]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($idCtrl, 0x0172, 0, $iHoverReg[$vData][7]))
+_4a(GUICtrlSendMsg($d4, 0x0172, 0, $e6[$mq][7]))
 EndIf
 Case 5, 7
-If $iHoverReg[$vData][2] Then
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$vData][0], 0x0172, 0, $iHoverReg[$vData][7]))
+If $e6[$mq][2] Then
+_4a(GUICtrlSendMsg($e6[$mq][0], 0x0172, 0, $e6[$mq][7]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$vData][0], 0x0172, 0, $iHoverReg[$vData][5]))
+_4a(GUICtrlSendMsg($e6[$mq][0], 0x0172, 0, $e6[$mq][5]))
 EndIf
 Case "6"
-If $iHoverReg[$vData][2] Then
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$vData][0], 0x0172, 0, $iHoverReg[$vData][12]))
+If $e6[$mq][2] Then
+_4a(GUICtrlSendMsg($e6[$mq][0], 0x0172, 0, $e6[$mq][12]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$vData][0], 0x0172, 0, $iHoverReg[$vData][5]))
+_4a(GUICtrlSendMsg($e6[$mq][0], 0x0172, 0, $e6[$mq][5]))
 EndIf
 Case Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($idCtrl, 0x0172, 0, $iHoverReg[$vData][5]))
+_4a(GUICtrlSendMsg($d4, 0x0172, 0, $e6[$mq][5]))
 EndSwitch
 EndFunc
-Func _iGetCtrlHandlebyType($Type, $hWnd)
-For $i = 0 To UBound($iHoverReg) - 1
-If($Type = $iHoverReg[$i][3]) And($hWnd = $iHoverReg[$i][15]) Then Return $iHoverReg[$i][0]
+Func _1e5($mr, $k)
+For $1c = 0 To UBound($e6) - 1
+If($mr = $e6[$1c][3]) And($k = $e6[$1c][15]) Then Return $e6[$1c][0]
 Next
 Return False
 EndFunc
-Func _iEffectControl($hWnd, $imsg, $wParam, $lParam, $iID, $gID)
-Switch $imsg
+Func _1e6($k, $1p, $1q, $1r, $9j, $eo)
+Switch $1p
 Case 0x00AF, 0x0085, 0x00AE, 0x0083, 0x0086
 Return -1
 Case 0x031A
 DllCall("uxtheme.dll", "none", "SetThemeAppProperties", "int", BitOR(2, 4))
-_WinAPI_SetWindowPos($hWnd, 0, 0, 0, 0, 0, $SWP_FRAMECHANGED + $SWP_NOMOVE + $SWP_NOSIZE + $SWP_NOREDRAW)
+_9t($k, 0, 0, 0, 0, 0, 0x0020 + 0x0002 + 0x0001 + 0x0008)
 DllCall("uxtheme.dll", "none", "SetThemeAppProperties", "int", BitOR(1, 2, 4))
 Return 0
 Case 0x0005
-If Not $iGUI_LIST[$gID][11] Then
-Switch $wParam
+If Not $e7[$eo][11] Then
+Switch $1q
 Case 2
-Local $wSize = _GetDesktopWorkArea($hWnd)
-Local $wPos = WinGetPos($hWnd)
-WinMove($hWnd, "", $wPos[0] - 1, $wPos[1] - 1, $wSize[2], $wSize[3])
-For $iC = 0 To UBound($iHoverReg) - 1
-If $hWnd = $iHoverReg[$iC][15] Then
-Switch $iHoverReg[$iC][3]
+Local $ms = _1e8($k)
+Local $mt = WinGetPos($k)
+WinMove($k, "", $mt[0] - 1, $mt[1] - 1, $ms[2], $ms[3])
+For $mu = 0 To UBound($e6) - 1
+If $k = $e6[$mu][15] Then
+Switch $e6[$mu][3]
 Case 3
-GUICtrlSetState($iHoverReg[$iC][0], 32)
-$iHoverReg[$iC][8] = False
+GUICtrlSetState($e6[$mu][0], 32)
+$e6[$mu][8] = False
 Case 4
-GUICtrlSetState($iHoverReg[$iC][0], 16)
-$iHoverReg[$iC][8] = True
+GUICtrlSetState($e6[$mu][0], 16)
+$e6[$mu][8] = True
 EndSwitch
 EndIf
 Next
 Case 0
-For $iC = 0 To UBound($iHoverReg) - 1
-If $hWnd = $iHoverReg[$iC][15] Then
-Switch $iHoverReg[$iC][3]
+For $mu = 0 To UBound($e6) - 1
+If $k = $e6[$mu][15] Then
+Switch $e6[$mu][3]
 Case 3
-If Not $iHoverReg[$iC][8] Then
-GUICtrlSetState($iHoverReg[$iC][0], 16)
-$iHoverReg[$iC][8] = True
+If Not $e6[$mu][8] Then
+GUICtrlSetState($e6[$mu][0], 16)
+$e6[$mu][8] = True
 EndIf
 Case 4
-If $iHoverReg[$iC][8] Then
-GUICtrlSetState($iHoverReg[$iC][0], 32)
-$iHoverReg[$iC][8] = False
+If $e6[$mu][8] Then
+GUICtrlSetState($e6[$mu][0], 32)
+$e6[$mu][8] = False
 EndIf
 EndSwitch
 EndIf
@@ -4397,1490 +4314,1495 @@ Next
 EndSwitch
 EndIf
 Case 0x0024
-Local $tMinMax = DllStructCreate("int;int;int;int;int;int;int;int;int;dword", $lParam)
-Local $WrkSize = _GetDesktopWorkArea($hWnd)
-DllStructSetData($tMinMax, 3, $WrkSize[2])
-DllStructSetData($tMinMax, 4, $WrkSize[3])
-DllStructSetData($tMinMax, 5, $WrkSize[0] + 1)
-DllStructSetData($tMinMax, 6, $WrkSize[1] + 1)
-DllStructSetData($tMinMax, 7, $iGUI_LIST[$gID][3])
-DllStructSetData($tMinMax, 8, $iGUI_LIST[$gID][4])
+Local $mv = DllStructCreate("int;int;int;int;int;int;int;int;int;dword", $1r)
+Local $mw = _1e8($k)
+DllStructSetData($mv, 3, $mw[2])
+DllStructSetData($mv, 4, $mw[3])
+DllStructSetData($mv, 5, $mw[0] + 1)
+DllStructSetData($mv, 6, $mw[1] + 1)
+DllStructSetData($mv, 7, $e7[$eo][3])
+DllStructSetData($mv, 8, $e7[$eo][4])
 Case 0x0084
-If $iGUI_LIST[$gID][2] And Not $iGUI_LIST[$gID][11] Then
-Local $iSide = 0, $iTopBot = 0, $Cur
-Local $wPos = WinGetPos($hWnd)
-Local $curInf = GUIGetCursorInfo($hWnd)
+If $e7[$eo][2] And Not $e7[$eo][11] Then
+Local $mx = 0, $my = 0, $mz
+Local $mt = WinGetPos($k)
+Local $n0 = GUIGetCursorInfo($k)
 If Not @error Then
-If $curInf[0] < $bMarg Then $iSide = 1
-If $curInf[0] > $wPos[2] - $bMarg Then $iSide = 2
-If $curInf[1] < $bMarg Then $iTopBot = 3
-If $curInf[1] > $wPos[3] - $bMarg Then $iTopBot = 6
-$Cur = $iSide + $iTopBot
+If $n0[0] < $ec Then $mx = 1
+If $n0[0] > $mt[2] - $ec Then $mx = 2
+If $n0[1] < $ec Then $my = 3
+If $n0[1] > $mt[3] - $ec Then $my = 6
+$mz = $mx + $my
 Else
-$Cur = 0
+$mz = 0
 EndIf
-If WinGetState($hWnd) <> 47 Then
-Local $Return_HT = 2, $Set_Cur = 2
-Switch $Cur
+If WinGetState($k) <> 47 Then
+Local $n1 = 2, $n2 = 2
+Switch $mz
 Case 1
-$Set_Cur = 13
-$Return_HT = 10
+$n2 = 13
+$n1 = 10
 Case 2
-$Set_Cur = 13
-$Return_HT = 11
+$n2 = 13
+$n1 = 11
 Case 3
-$Set_Cur = 11
-$Return_HT = 12
+$n2 = 11
+$n1 = 12
 Case 4
-$Set_Cur = 12
-$Return_HT = 13
+$n2 = 12
+$n1 = 13
 Case 5
-$Set_Cur = 10
-$Return_HT = 14
+$n2 = 10
+$n1 = 14
 Case 6
-$Set_Cur = 11
-$Return_HT = 15
+$n2 = 11
+$n1 = 15
 Case 7
-$Set_Cur = 10
-$Return_HT = 16
+$n2 = 10
+$n1 = 16
 Case 8
-$Set_Cur = 12
-$Return_HT = 17
+$n2 = 12
+$n1 = 17
 EndSwitch
-GUISetCursor($Set_Cur, 1)
-If $Return_HT <> 2 Then Return $Return_HT
+GUISetCursor($n2, 1)
+If $n1 <> 2 Then Return $n1
 EndIf
-If Abs(BitAND(BitShift($lParam, 16), 0xFFFF) - $wPos[1]) <(28 * $gDPI) Then Return $HTCAPTION
+If Abs(BitAND(BitShift($1r, 16), 0xFFFF) - $mt[1]) <(28 * $e5) Then Return 2
 EndIf
 Case 0x0201
-If $iGUI_LIST[$gID][1] And Not $iGUI_LIST[$gID][11] And Not(WinGetState($hWnd) = 47) Then
-Local $aCurInfo = GUIGetCursorInfo($hWnd)
-If($aCurInfo[4] = 0) Then
+If $e7[$eo][1] And Not $e7[$eo][11] And Not(WinGetState($k) = 47) Then
+Local $n3 = GUIGetCursorInfo($k)
+If($n3[4] = 0) Then
 DllCall("user32.dll", "int", "ReleaseCapture")
-DllCall("user32.dll", "long", "SendMessageA", "hwnd", $hWnd, "int", 0x00A1, "int", 2, "int", 0)
+DllCall("user32.dll", "long", "SendMessageA", "hwnd", $k, "int", 0x00A1, "int", 2, "int", 0)
 Return 0
 EndIf
 EndIf
 Case 0x001C
-For $iC = 0 To UBound($iHoverReg) - 1
-Switch $iHoverReg[$iC][3]
+For $mu = 0 To UBound($e6) - 1
+Switch $e6[$mu][3]
 Case 0, 3, 4, 8, 9, 10
-If $wParam Then
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$iC][0], 0x0172, 0, $iHoverReg[$iC][5]))
+If $1q Then
+_4a(GUICtrlSendMsg($e6[$mu][0], 0x0172, 0, $e6[$mu][5]))
 Else
-_WinAPI_DeleteObject(GUICtrlSendMsg($iHoverReg[$iC][0], 0x0172, 0, $iHoverReg[$iC][7]))
+_4a(GUICtrlSendMsg($e6[$mu][0], 0x0172, 0, $e6[$mu][7]))
 EndIf
 EndSwitch
 Next
 Case 0x0020
 If MouseGetCursor() <> 2 Then
-Local $curInf = GUIGetCursorInfo($hWnd)
-If Not @error And $curInf[4] <> 0 Then
-Local $iSide = 0, $iTopBot = 0, $Cur = 0
-Local $wPos = WinGetPos($hWnd)
-If $curInf[0] < $bMarg Then $iSide = 1
-If $curInf[0] > $wPos[2] - $bMarg Then $iSide = 2
-If $curInf[1] < $bMarg Then $iTopBot = 3
-If $curInf[1] > $wPos[3] - $bMarg Then $iTopBot = 6
-$Cur = $iSide + $iTopBot
-If $Cur = 0 Then
-If $curInf[4] <> $iGUI_LIST[$gID][12] And $curInf[4] <> $iGUI_LIST[$gID][13] And $curInf[4] <> $iGUI_LIST[$gID][14] And $curInf[4] <> $iGUI_LIST[$gID][15] Then
-GUISetCursor(2, 0, $hWnd)
+Local $n0 = GUIGetCursorInfo($k)
+If Not @error And $n0[4] <> 0 Then
+Local $mx = 0, $my = 0, $mz = 0
+Local $mt = WinGetPos($k)
+If $n0[0] < $ec Then $mx = 1
+If $n0[0] > $mt[2] - $ec Then $mx = 2
+If $n0[1] < $ec Then $my = 3
+If $n0[1] > $mt[3] - $ec Then $my = 6
+$mz = $mx + $my
+If $mz = 0 Then
+If $n0[4] <> $e7[$eo][12] And $n0[4] <> $e7[$eo][13] And $n0[4] <> $e7[$eo][14] And $n0[4] <> $e7[$eo][15] Then
+GUISetCursor(2, 0, $k)
 EndIf
 EndIf
 EndIf
 EndIf
 EndSwitch
-Return DllCall("comctl32.dll", "lresult", "DefSubclassProc", "hwnd", $hWnd, "uint", $imsg, "wparam", $wParam, "lparam", $lParam)[0]
+Return DllCall("comctl32.dll", "lresult", "DefSubclassProc", "hwnd", $k, "uint", $1p, "wparam", $1q, "lparam", $1r)[0]
 EndFunc
-Func _iMExit()
-For $i_HR = 0 To UBound($iGUI_LIST) - 1 Step +1
-_Metro_GUIDelete($iGUI_LIST[$i_HR][0])
+Func _1e7()
+For $ez = 0 To UBound($e7) - 1 Step +1
+_1cm($e7[$ez][0])
 Next
-DllCallbackFree($m_hDll)
-_GDIPlus_Shutdown()
+DllCallbackFree($ea)
+_1au()
 EndFunc
-Func _GetDesktopWorkArea($hWnd, $FullScreen = False)
-Local $MonSizePos[4], $MonNumb = 1
-$MonSizePos[0] = 0
-$MonSizePos[1] = 0
-$MonSizePos[2] = @DesktopWidth
-$MonSizePos[3] = @DesktopHeight
-Local $aPos, $MonList = _WinAPI_EnumDisplayMonitors()
-If @error Then Return $MonSizePos
-ReDim $MonList[$MonList[0][0] + 1][5]
-For $i = 1 To $MonList[0][0]
-$aPos = _WinAPI_GetPosFromRect($MonList[$i][1])
-For $j = 0 To 3
-$MonList[$i][$j + 1] = $aPos[$j]
+Func _1e8($k, $n4 = False)
+Local $n5[4], $n6 = 1
+$n5[0] = 0
+$n5[1] = 0
+$n5[2] = @DesktopWidth
+$n5[3] = @DesktopHeight
+Local $n7, $n8 = _ug()
+If @error Then Return $n5
+ReDim $n8[$n8[0][0] + 1][5]
+For $1c = 1 To $n8[0][0]
+$n7 = _vp($n8[$1c][1])
+For $1j = 0 To 3
+$n8[$1c][$1j + 1] = $n7[$1j]
 Next
 Next
-Local $GUI_Monitor = _WinAPI_MonitorFromWindow($hWnd)
-Local $TaskbarMon = _WinAPI_MonitorFromWindow(WinGetHandle("[CLASS:Shell_TrayWnd]"))
-For $iM = 1 To $MonList[0][0] Step +1
-If $MonList[$iM][0] = $GUI_Monitor Then
-If $FullScreen Then
-$MonSizePos[0] = $MonList[$iM][1]
-$MonSizePos[1] = $MonList[$iM][2]
+Local $n9 = _wo($k)
+Local $na = _wo(WinGetHandle("[CLASS:Shell_TrayWnd]"))
+For $nb = 1 To $n8[0][0] Step +1
+If $n8[$nb][0] = $n9 Then
+If $n4 Then
+$n5[0] = $n8[$nb][1]
+$n5[1] = $n8[$nb][2]
 Else
-$MonSizePos[0] = 0
-$MonSizePos[1] = 0
+$n5[0] = 0
+$n5[1] = 0
 EndIf
-$MonSizePos[2] = $MonList[$iM][3]
-$MonSizePos[3] = $MonList[$iM][4]
-$MonNumb = $iM
+$n5[2] = $n8[$nb][3]
+$n5[3] = $n8[$nb][4]
+$n6 = $nb
 EndIf
 Next
-Local $TaskBarAH = DllCall("shell32.dll", "int", "SHAppBarMessage", "int", 0x00000004, "ptr*", 0)
+Local $nc = DllCall("shell32.dll", "int", "SHAppBarMessage", "int", 0x00000004, "ptr*", 0)
 If Not @error Then
-$TaskBarAH = $TaskBarAH[0]
+$nc = $nc[0]
 Else
-$TaskBarAH = 0
+$nc = 0
 EndIf
-If $TaskbarMon = $GUI_Monitor Then
-Local $TaskBarPos = WinGetPos("[CLASS:Shell_TrayWnd]")
-If @error Then Return $MonSizePos
-If $FullScreen Then Return $MonSizePos
-If($TaskBarPos[0] = $MonList[$MonNumb][1] - 2) Or($TaskBarPos[1] = $MonList[$MonNumb][2] - 2) Then
-$TaskBarPos[0] += 2
-$TaskBarPos[1] += 2
-$TaskBarPos[2] -= 4
-$TaskBarPos[3] -= 4
+If $na = $n9 Then
+Local $nd = WinGetPos("[CLASS:Shell_TrayWnd]")
+If @error Then Return $n5
+If $n4 Then Return $n5
+If($nd[0] = $n8[$n6][1] - 2) Or($nd[1] = $n8[$n6][2] - 2) Then
+$nd[0] += 2
+$nd[1] += 2
+$nd[2] -= 4
+$nd[3] -= 4
 EndIf
-If $TaskBarPos[2] = $MonSizePos[2] Then
-If $TaskBarAH = 1 Then
-If($TaskBarPos[1] > 0) Then
-$MonSizePos[3] -= 1
+If $nd[2] = $n5[2] Then
+If $nc = 1 Then
+If($nd[1] > 0) Then
+$n5[3] -= 1
 Else
-$MonSizePos[1] += 1
-$MonSizePos[3] -= 1
+$n5[1] += 1
+$n5[3] -= 1
 EndIf
-Return $MonSizePos
+Return $n5
 EndIf
-$MonSizePos[3] = $MonSizePos[3] - $TaskBarPos[3]
-If($TaskBarPos[0] = $MonList[$MonNumb][1]) And($TaskBarPos[1] = $MonList[$MonNumb][2]) Then $MonSizePos[1] = $TaskBarPos[3]
+$n5[3] = $n5[3] - $nd[3]
+If($nd[0] = $n8[$n6][1]) And($nd[1] = $n8[$n6][2]) Then $n5[1] = $nd[3]
 Else
-If $TaskBarAH = 1 Then
-If($TaskBarPos[0] > 0) Then
-$MonSizePos[2] -= 1
+If $nc = 1 Then
+If($nd[0] > 0) Then
+$n5[2] -= 1
 Else
-$MonSizePos[0] += 1
-$MonSizePos[2] -= 1
+$n5[0] += 1
+$n5[2] -= 1
 EndIf
-Return $MonSizePos
+Return $n5
 EndIf
-$MonSizePos[2] = $MonSizePos[2] - $TaskBarPos[2]
-If($TaskBarPos[0] = $MonList[$MonNumb][1]) And($TaskBarPos[1] = $MonList[$MonNumb][2]) Then $MonSizePos[0] = $TaskBarPos[2]
+$n5[2] = $n5[2] - $nd[2]
+If($nd[0] = $n8[$n6][1]) And($nd[1] = $n8[$n6][2]) Then $n5[0] = $nd[2]
 EndIf
 EndIf
-Return $MonSizePos
+Return $n5
 EndFunc
-Func _iGetGUIID($mGUI)
-For $iG = 0 To UBound($iGUI_LIST) - 1
-If $iGUI_LIST[$iG][0] = $mGUI Then
-Return $iG
+Func _1e9($er)
+For $ne = 0 To UBound($e7) - 1
+If $e7[$ne][0] = $er Then
+Return $ne
 EndIf
 Next
 Return SetError(1, 0, "")
 EndFunc
-Func _iFullscreenToggleBtn($idCtrl, $hWnd)
-If $ControlBtnsAutoMode Then _Metro_FullscreenToggle($hWnd)
+Func _iFullscreenToggleBtn($d4, $k)
+If $ee Then _1cq($k)
 EndFunc
-Global Enum $__hGUIDisableHWnd, $__hGUIDisableHWndPrevious, $__iGUIDisableMax
-Global $__aGUIDisable[$__iGUIDisableMax]
-Func _GUIDisable($hWnd, $iAnimate = Default, $iBrightness = Default, $bColor = 0x000000)
-If $iAnimate = Default Then
-$iAnimate = 1
+Global Enum $nf, $ng, $nh
+Global $ni[$nh]
+Func _1ea($k, $nj = Default, $nk = Default, $nl = 0x000000)
+If $nj = Default Then
+$nj = 1
 EndIf
-If $iBrightness = Default Then
-$iBrightness = 5
+If $nk = Default Then
+$nk = 5
 EndIf
-If $hWnd = -1 And $__aGUIDisable[$__hGUIDisableHWnd] = 0 Then
-Local $iLabel = GUICtrlCreateLabel('', -99, -99, 1, 1)
-$hWnd = _WinAPI_GetParent(GUICtrlGetHandle($iLabel))
+If $k = -1 And $ni[$nf] = 0 Then
+Local $nm = GUICtrlCreateLabel('', -99, -99, 1, 1)
+$k = _9a(GUICtrlGetHandle($nm))
 If @error Then
-Return SetError(1, 0 * GUICtrlDelete($iLabel), 0)
+Return SetError(1, 0 * GUICtrlDelete($nm), 0)
 EndIf
-GUICtrlDelete($iLabel)
+GUICtrlDelete($nm)
 EndIf
-If IsHWnd($__aGUIDisable[$__hGUIDisableHWnd]) Then
-GUIDelete($__aGUIDisable[$__hGUIDisableHWnd])
-GUISwitch($__aGUIDisable[$__hGUIDisableHWndPrevious])
-$__aGUIDisable[$__hGUIDisableHWnd] = 0
-$__aGUIDisable[$__hGUIDisableHWndPrevious] = 0
+If IsHWnd($ni[$nf]) Then
+GUIDelete($ni[$nf])
+GUISwitch($ni[$ng])
+$ni[$nf] = 0
+$ni[$ng] = 0
 Else
-$__aGUIDisable[$__hGUIDisableHWndPrevious] = $hWnd
-Local $iLeft = 0, $iTop = 0
-Local $iStyle = GUIGetStyle($__aGUIDisable[$__hGUIDisableHWndPrevious])
-Local $sCurrentTheme = RegRead('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes', 'CurrentTheme')
-Local $iIsClassicTheme = Number(StringInStr($sCurrentTheme, 'Basic.theme', 2) = 0 And StringInStr($sCurrentTheme, 'Ease of Access Themes', 2) > 0)
-Local $aWinGetPos = WinGetClientSize($__aGUIDisable[$__hGUIDisableHWndPrevious])
-$__aGUIDisable[$__hGUIDisableHWnd] = GUICreate('', $aWinGetPos[0], $aWinGetPos[1], $iLeft + 3, $iTop + 3, $WS_POPUP, $WS_EX_MDICHILD, $__aGUIDisable[$__hGUIDisableHWndPrevious])
-GUISetBkColor($bColor, $__aGUIDisable[$__hGUIDisableHWnd])
-WinSetTrans($__aGUIDisable[$__hGUIDisableHWnd], '', Round($iBrightness *(255 / 100)))
-If not $iAnimate Then
-GUISetState(@SW_SHOW, $__aGUIDisable[$__hGUIDisableHWnd])
+$ni[$ng] = $k
+Local $4y = 0, $4z = 0
+Local $2t = GUIGetStyle($ni[$ng])
+Local $nn = RegRead('HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes', 'CurrentTheme')
+Local $no = Number(StringInStr($nn, 'Basic.theme', 2) = 0 And StringInStr($nn, 'Ease of Access Themes', 2) > 0)
+Local $np = WinGetClientSize($ni[$ng])
+$ni[$nf] = GUICreate('', $np[0], $np[1], $4y + 3, $4z + 3, 0x80000000, 0x00000040, $ni[$ng])
+GUISetBkColor($nl, $ni[$nf])
+WinSetTrans($ni[$nf], '', Round($nk *(255 / 100)))
+If not $nj Then
+GUISetState(@SW_SHOW, $ni[$nf])
 EndIf
-GUISetState(@SW_DISABLE, $__aGUIDisable[$__hGUIDisableHWnd])
-GUISwitch($__aGUIDisable[$__hGUIDisableHWndPrevious])
+GUISetState(@SW_DISABLE, $ni[$nf])
+GUISwitch($ni[$ng])
 EndIf
-Return $__aGUIDisable[$__hGUIDisableHWnd]
+Return $ni[$nf]
 EndFunc
-_Metro_EnableHighDPIScaling()
+_1co()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-CheckForSettingsMigrate()
-OpenMainGUI()
-Func OpenMainGUI()
-_SetTheme($Select_Theme)
-Global $Form1 = _Metro_CreateGUI("AutoCharts 3.0.0", 540, 700, -1, -1, True)
+_1en()
+_1ec()
+Func _1ec()
+_12e($b)
+Global $nq = _1ck("AutoCharts 3.0.0", 540, 700, -1, -1, True)
 GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
-$Control_Buttons = _Metro_AddControlButtons(True, True, True, True, True)
-$GUI_CLOSE_BUTTON = $Control_Buttons[0]
-$GUI_MAXIMIZE_BUTTON = $Control_Buttons[1]
-$GUI_RESTORE_BUTTON = $Control_Buttons[2]
-$GUI_MINIMIZE_BUTTON = $Control_Buttons[3]
-$GUI_FULLSCREEN_BUTTON = $Control_Buttons[4]
-$GUI_FSRestore_BUTTON = $Control_Buttons[5]
-$GUI_MENU_BUTTON = $Control_Buttons[6]
-$Pic1 = GUICtrlCreatePic(@ScriptDir & "\assets\GUI_Menus\main-img.bmp", 0, 35, 540, 158, BitOR($GUI_SS_DEFAULT_PIC, $SS_CENTERIMAGE))
-_Metro_AddHSeperator(50, 240, 440, 1)
-Local $Label_Main = GUICtrlCreateLabel("Please Select a Fund Family", 50, 275, 440, 50)
-GUICtrlSetColor(-1, $FontThemeColor)
+$gz = _1cn(True, True, True, True, True)
+$nr = $gz[0]
+$ns = $gz[1]
+$nt = $gz[2]
+$nu = $gz[3]
+$nv = $gz[4]
+$nw = $gz[5]
+$nx = $gz[6]
+$ny = GUICtrlCreatePic(@ScriptDir & "\assets\GUI_Menus\main-img.bmp", 0, 35, 540, 158, BitOR(0x0100, 0x0200))
+_1do(50, 240, 440, 1)
+Local $nz = GUICtrlCreateLabel("Please Select a Fund Family", 50, 275, 440, 50)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 20, 400, 0, "Segoe UI")
-$TAB_Catalyst = _Metro_CreateButton("Catalyst Funds", 50, 350, 140, 40)
-$TAB_Rational = _Metro_CreateButton("Rational Funds", 200, 350, 140, 40)
-$TAB_StrategyShares = _Metro_CreateButton("Strategy Shares", 350, 350, 140, 40)
-_Metro_AddHSeperator(50, 570, 440, 1)
-Local $BTN_Settings = _Metro_CreateButton("Settings", 50, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $Label_Version = GUICtrlCreateLabel("v3.0.0", 450, 620, 50, 50, $SS_RIGHT)
-GUICtrlSetColor(-1, $FontThemeColor)
+$o0 = _1cw("Catalyst Funds", 50, 350, 140, 40)
+$o1 = _1cw("Rational Funds", 200, 350, 140, 40)
+$o2 = _1cw("Strategy Shares", 350, 350, 140, 40)
+_1do(50, 570, 440, 1)
+Local $o3 = _1cw("Settings", 50, 600, 100, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $o4 = _1cw("About", 170, 600, 100, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $o5 = GUICtrlCreateLabel("v3.0.0", 450, 620, 50, 50, 0x2)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 15, 400, 0, "Segoe UI")
-GUICtrlSetResizing($TAB_Catalyst, 768 + 8)
-GUICtrlSetResizing($TAB_Rational, 768 + 8)
-GUICtrlSetResizing($TAB_StrategyShares, 768 + 8)
+GUICtrlSetResizing($o0, 768 + 8)
+GUICtrlSetResizing($o1, 768 + 8)
+GUICtrlSetResizing($o2, 768 + 8)
 GUISetState(@SW_SHOW)
 While 1
-$nMsg = GUIGetMsg()
-Switch $nMsg
-Case $GUI_EVENT_CLOSE, $GUI_CLOSE_BUTTON
-_Metro_GUIDelete($Form1)
+$kz = GUIGetMsg()
+Switch $kz
+Case -3, $nr
+_1cm($nq)
 Exit
-Case $GUI_MAXIMIZE_BUTTON
-GUISetState(@SW_MAXIMIZE, $Form1)
-Case $GUI_MINIMIZE_BUTTON
-GUISetState(@SW_MINIMIZE, $Form1)
-Case $GUI_RESTORE_BUTTON
-GUISetState(@SW_RESTORE, $Form1)
-Case $GUI_FULLSCREEN_BUTTON, $GUI_FSRestore_BUTTON
+Case $ns
+GUISetState(@SW_MAXIMIZE, $nq)
+Case $nu
+GUISetState(@SW_MINIMIZE, $nq)
+Case $nt
+GUISetState(@SW_RESTORE, $nq)
+Case $nv, $nw
 ConsoleWrite("Fullscreen toggled" & @CRLF)
-Case $GUI_MENU_BUTTON
-Local $MenuButtonsArray[5] = ["Archive Factsheets", "Settings", "Sync Options", "Help", "Exit"]
-Local $MenuSelect = _Metro_MenuStart($Form1, 150, $MenuButtonsArray)
-Switch $MenuSelect
+Case $nx
+Local $o6[5] = ["Archive Factsheets", "Settings", "Sync Options", "Help", "Exit"]
+Local $o7 = _1cs($nq, 150, $o6)
+Switch $o7
 Case "0"
-CreateFactSheetArchive()
+_1ey()
 Case "1"
-_GUIDisable($Form1, 0, 50)
-_SettingsGUI()
-_GUIDisable($Form1)
+_1ea($nq, 0, 50)
+_1eg()
+_1ea($nq)
 Case "2"
-_GUIDisable($Form1, 0, 50)
-_SyncGUI()
-_GUIDisable($Form1)
+_1ea($nq, 0, 50)
+_1ei()
+_1ea($nq)
 Case "3"
-_GUIDisable($Form1, 0, 50)
-_HelpGUI()
-_GUIDisable($Form1)
+_1ea($nq, 0, 50)
+_1eh()
+_1ea($nq)
 Case "4"
-_Metro_GUIDelete($Form1)
+_1cm($nq)
 Exit
 EndSwitch
-Case $TAB_Catalyst
-_GUIDisable($Form1, 0, 50)
-_CatalystFundsGUI()
-_GUIDisable($Form1)
-Case $TAB_Rational
-_GUIDisable($Form1, 0, 50)
-_RationalFundsGUI()
-_GUIDisable($Form1)
-Case $TAB_StrategyShares
-_GUIDisable($Form1, 0, 50)
-_StrategySharesFundsGUI()
-_GUIDisable($Form1)
-Case $BTN_Settings
-_GUIDisable($Form1, 0, 50)
-_SettingsGUI()
-_GUIDisable($Form1)
-Case $BTN_About
+Case $o0
+_1ea($nq, 0, 50)
+_1ed()
+_1ea($nq)
+Case $o1
+_1ea($nq, 0, 50)
+_1ee()
+_1ea($nq)
+Case $o2
+_1ea($nq, 0, 50)
+_1ef()
+_1ea($nq)
+Case $o3
+_1ea($nq, 0, 50)
+_1eg()
+_1ea($nq)
+Case $o4
 ShellExecute("https://onevion.github.io/AutoCharts/")
 EndSwitch
 WEnd
 EndFunc
-Func _CatalystFundsGUI()
-Local $Form2 = _Metro_CreateGUI("Catalyst Funds GUI", 540, 620, -1, -1, False, $Form1)
-Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
-Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
-Local $ACX = _Metro_CreateToggle("ACX", 50, 70, 130, 30)
-Local $ATR = _Metro_CreateToggle("ATR", 50, 120, 130, 30)
-Local $BUY = _Metro_CreateToggle("BUY", 50, 170, 130, 30)
-Local $CAX = _Metro_CreateToggle("CAX", 50, 220, 130, 30)
-Local $CFR = _Metro_CreateToggle("CFR", 50, 270, 130, 30)
-Local $CLP = _Metro_CreateToggle("CLP", 50, 320, 130, 30)
-Local $CLT = _Metro_CreateToggle("CLT", 50, 370, 130, 30)
-Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
-Local $CPE = _Metro_CreateToggle("CPE", 220, 70, 130, 30)
-Local $CWX = _Metro_CreateToggle("CWX", 220, 120, 130, 30)
-Local $DCX = _Metro_CreateToggle("DCX", 220, 170, 130, 30)
-Local $EIX = _Metro_CreateToggle("EIX", 220, 220, 130, 30)
-Local $HII = _Metro_CreateToggle("HII", 220, 270, 130, 30)
-Local $IIX = _Metro_CreateToggle("IIX", 220, 320, 130, 30)
-Local $INS = _Metro_CreateToggle("INS", 220, 370, 130, 30)
-Local $vSeperator2 = _Metro_AddVSeperator(350, 85, 300, 1)
-Local $IOX = _Metro_CreateToggle("IOX", 390, 70, 130, 30)
-Local $MBX = _Metro_CreateToggle("MBX", 390, 120, 130, 30)
-Local $MLX = _Metro_CreateToggle("MLX", 390, 170, 130, 30)
-Local $SHI = _Metro_CreateToggle("SHI", 390, 220, 130, 30)
-Local $TEZ = _Metro_CreateToggle("TEZ", 390, 270, 130, 30)
-Local $TRI = _Metro_CreateToggle("TRI", 390, 320, 130, 30)
-Local $TRX = _Metro_CreateToggle("TRX", 390, 370, 130, 30)
-Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
-GUICtrlSetColor(-1, $FontThemeColor)
+Func _1ed()
+Local $o8 = _1ck("Catalyst Funds GUI", 540, 620, -1, -1, False, $nq)
+Local $o9 = _1cn(True, False, False, False)
+Local $nr = $o9[0]
+Local $oa = _1d1("ACX", 50, 70, 130, 30)
+Local $ob = _1d1("ATR", 50, 120, 130, 30)
+Local $oc = _1d1("BUY", 50, 170, 130, 30)
+Local $od = _1d1("CAX", 50, 220, 130, 30)
+Local $oe = _1d1("CFR", 50, 270, 130, 30)
+Local $of = _1d1("CLP", 50, 320, 130, 30)
+Local $og = _1d1("CLT", 50, 370, 130, 30)
+Local $oh = _1dp(180, 85, 300, 1)
+Local $oi = _1d1("CPE", 220, 70, 130, 30)
+Local $oj = _1d1("CWX", 220, 120, 130, 30)
+Local $ok = _1d1("DCX", 220, 170, 130, 30)
+Local $ol = _1d1("EIX", 220, 220, 130, 30)
+Local $om = _1d1("HII", 220, 270, 130, 30)
+Local $on = _1d1("IIX", 220, 320, 130, 30)
+Local $oo = _1d1("INS", 220, 370, 130, 30)
+Local $op = _1dp(350, 85, 300, 1)
+Local $oq = _1d1("IOX", 390, 70, 130, 30)
+Local $or = _1d1("MBX", 390, 120, 130, 30)
+Local $os = _1d1("MLX", 390, 170, 130, 30)
+Local $ot = _1d1("SHI", 390, 220, 130, 30)
+Local $ou = _1d1("TEZ", 390, 270, 130, 30)
+Local $ov = _1d1("TRI", 390, 320, 130, 30)
+Local $ow = _1d1("TRX", 390, 370, 130, 30)
+Global $ox = GUICtrlCreateLabel("", 50, 420, 440, 20)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $CB_FactSheet = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
-Local $CB_Brochure = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
-Local $CB_Presentation = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
-_Metro_CheckboxCheck($CB_FactSheet, True)
-Global $BTN_RunCatalyst = _Metro_CreateButton("Process Updates", 50, 550, 210, 40)
-Global $BTN_Catalyst_UpdateExpenseRatio = _Metro_CreateButtonEx("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $BTN_Back = _Metro_AddControlButton_Back()
-Global $ProgressBar = _Metro_CreateProgress(50, 500, 440, 26)
-GUICtrlSetResizing($BTN_RunCatalyst, 768 + 8)
-GUICtrlSetResizing($ACX, 768 + 8)
+Local $oy = _1dd("Factsheet", 60, 450, 105, 30)
+Local $oz = _1dd("Brochure", 210, 450, 105, 30)
+Local $p0 = _1dd("Presentation", 350, 450, 115, 30)
+_1di($oy, True)
+Global $p1 = _1cw("Process Updates", 50, 550, 210, 40)
+Global $p2 = _1cx("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $p3 = _1cr()
+Global $p4 = _1dm(50, 500, 440, 26)
+GUICtrlSetResizing($p1, 768 + 8)
+GUICtrlSetResizing($oa, 768 + 8)
 GUISetState(@SW_SHOW)
 While 1
-$nMsg = GUIGetMsg()
-Switch $nMsg
-Case $GUI_EVENT_CLOSE, $BTN_Back, $GUI_CLOSE_BUTTON
-_Metro_GUIDelete($Form2)
+$kz = GUIGetMsg()
+Switch $kz
+Case -3, $p3, $nr
+_1cm($o8)
 Return 0
-Case $ACX
-If _Metro_ToggleIsChecked($ACX) Then
-_Metro_ToggleUnCheck($ACX)
-$aCatalystCheck[0] = 0
+Case $oa
+If _1d5($oa) Then
+_1d7($oa)
+$0[0] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($ACX)
-$aCatalystCheck[0] = "ACX"
-ConsoleWrite($aCatalystCheck[0] & " Toggle checked!" & @CRLF)
+_1d8($oa)
+$0[0] = "ACX"
+ConsoleWrite($0[0] & " Toggle checked!" & @CRLF)
 EndIf
-Case $ATR
-If _Metro_ToggleIsChecked($ATR) Then
-_Metro_ToggleUnCheck($ATR)
-$aCatalystCheck[1] = 0
+Case $ob
+If _1d5($ob) Then
+_1d7($ob)
+$0[1] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($ATR)
-$aCatalystCheck[1] = "ATR"
-ConsoleWrite($aCatalystCheck[1] & " Toggle checked!" & @CRLF)
+_1d8($ob)
+$0[1] = "ATR"
+ConsoleWrite($0[1] & " Toggle checked!" & @CRLF)
 EndIf
-Case $BUY
-If _Metro_ToggleIsChecked($BUY) Then
-_Metro_ToggleUnCheck($BUY)
-$aCatalystCheck[2] = 0
+Case $oc
+If _1d5($oc) Then
+_1d7($oc)
+$0[2] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($BUY)
-$aCatalystCheck[2] = "BUY"
-ConsoleWrite($aCatalystCheck[2] & " Toggle checked!" & @CRLF)
+_1d8($oc)
+$0[2] = "BUY"
+ConsoleWrite($0[2] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CAX
-If _Metro_ToggleIsChecked($CAX) Then
-_Metro_ToggleUnCheck($CAX)
-$aCatalystCheck[3] = 0
+Case $od
+If _1d5($od) Then
+_1d7($od)
+$0[3] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($CAX)
-$aCatalystCheck[3] = "CAX"
-ConsoleWrite($aCatalystCheck[3] & " Toggle checked!" & @CRLF)
+_1d8($od)
+$0[3] = "CAX"
+ConsoleWrite($0[3] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CFR
-If _Metro_ToggleIsChecked($CFR) Then
-_Metro_ToggleUnCheck($CFR)
-$aCatalystCheck[4] = 0
+Case $oe
+If _1d5($oe) Then
+_1d7($oe)
+$0[4] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($CFR)
-$aCatalystCheck[4] = "CFR"
-ConsoleWrite($aCatalystCheck[4] & " Toggle checked!" & @CRLF)
+_1d8($oe)
+$0[4] = "CFR"
+ConsoleWrite($0[4] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CLP
-If _Metro_ToggleIsChecked($CLP) Then
-_Metro_ToggleUnCheck($CLP)
-$aCatalystCheck[5] = 0
+Case $of
+If _1d5($of) Then
+_1d7($of)
+$0[5] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($CLP)
-$aCatalystCheck[5] = "CLP"
-ConsoleWrite($aCatalystCheck[5] & " Toggle checked!" & @CRLF)
+_1d8($of)
+$0[5] = "CLP"
+ConsoleWrite($0[5] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CLT
-If _Metro_ToggleIsChecked($CLT) Then
-_Metro_ToggleUnCheck($CLT)
-$aCatalystCheck[6] = 0
+Case $og
+If _1d5($og) Then
+_1d7($og)
+$0[6] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($CLT)
-$aCatalystCheck[6] = "CLT"
-ConsoleWrite($aCatalystCheck[6] & " Toggle checked!" & @CRLF)
+_1d8($og)
+$0[6] = "CLT"
+ConsoleWrite($0[6] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CPE
-If _Metro_ToggleIsChecked($CPE) Then
-_Metro_ToggleUnCheck($CPE)
-$aCatalystCheck[7] = 0
+Case $oi
+If _1d5($oi) Then
+_1d7($oi)
+$0[7] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($CPE)
-$aCatalystCheck[7] = "CPE"
-ConsoleWrite($aCatalystCheck[7] & " Toggle checked!" & @CRLF)
+_1d8($oi)
+$0[7] = "CPE"
+ConsoleWrite($0[7] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CWX
-If _Metro_ToggleIsChecked($CWX) Then
-_Metro_ToggleUnCheck($CWX)
-$aCatalystCheck[8] = 0
+Case $oj
+If _1d5($oj) Then
+_1d7($oj)
+$0[8] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($CWX)
-$aCatalystCheck[8] = "CWX"
-ConsoleWrite($aCatalystCheck[8] & " Toggle checked!" & @CRLF)
+_1d8($oj)
+$0[8] = "CWX"
+ConsoleWrite($0[8] & " Toggle checked!" & @CRLF)
 EndIf
-Case $DCX
-If _Metro_ToggleIsChecked($DCX) Then
-_Metro_ToggleUnCheck($DCX)
-$aCatalystCheck[9] = 0
+Case $ok
+If _1d5($ok) Then
+_1d7($ok)
+$0[9] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($DCX)
-$aCatalystCheck[9] = "DCX"
-ConsoleWrite($aCatalystCheck[9] & " Toggle checked!" & @CRLF)
+_1d8($ok)
+$0[9] = "DCX"
+ConsoleWrite($0[9] & " Toggle checked!" & @CRLF)
 EndIf
-Case $EIX
-If _Metro_ToggleIsChecked($EIX) Then
-_Metro_ToggleUnCheck($EIX)
-$aCatalystCheck[10] = 0
+Case $ol
+If _1d5($ol) Then
+_1d7($ol)
+$0[10] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($EIX)
-$aCatalystCheck[10] = "EIX"
-ConsoleWrite($aCatalystCheck[10] & " Toggle checked!" & @CRLF)
+_1d8($ol)
+$0[10] = "EIX"
+ConsoleWrite($0[10] & " Toggle checked!" & @CRLF)
 EndIf
-Case $HII
-If _Metro_ToggleIsChecked($HII) Then
-_Metro_ToggleUnCheck($HII)
-$aCatalystCheck[11] = 0
+Case $om
+If _1d5($om) Then
+_1d7($om)
+$0[11] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($HII)
-$aCatalystCheck[11] = "HII"
-ConsoleWrite($aCatalystCheck[11] & " Toggle checked!" & @CRLF)
+_1d8($om)
+$0[11] = "HII"
+ConsoleWrite($0[11] & " Toggle checked!" & @CRLF)
 EndIf
-Case $IIX
-If _Metro_ToggleIsChecked($IIX) Then
-_Metro_ToggleUnCheck($IIX)
-$aCatalystCheck[12] = 0
+Case $on
+If _1d5($on) Then
+_1d7($on)
+$0[12] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($IIX)
-$aCatalystCheck[12] = "IIX"
-ConsoleWrite($aCatalystCheck[12] & " Toggle checked!" & @CRLF)
+_1d8($on)
+$0[12] = "IIX"
+ConsoleWrite($0[12] & " Toggle checked!" & @CRLF)
 EndIf
-Case $INS
-If _Metro_ToggleIsChecked($INS) Then
-_Metro_ToggleUnCheck($INS)
-$aCatalystCheck[13] = 0
+Case $oo
+If _1d5($oo) Then
+_1d7($oo)
+$0[13] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($INS)
-$aCatalystCheck[13] = "INS"
-ConsoleWrite($aCatalystCheck[13] & " Toggle checked!" & @CRLF)
+_1d8($oo)
+$0[13] = "INS"
+ConsoleWrite($0[13] & " Toggle checked!" & @CRLF)
 EndIf
-Case $IOX
-If _Metro_ToggleIsChecked($IOX) Then
-_Metro_ToggleUnCheck($IOX)
-$aCatalystCheck[14] = 0
+Case $oq
+If _1d5($oq) Then
+_1d7($oq)
+$0[14] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($IOX)
-$aCatalystCheck[14] = "IOX"
-ConsoleWrite($aCatalystCheck[14] & " Toggle checked!" & @CRLF)
+_1d8($oq)
+$0[14] = "IOX"
+ConsoleWrite($0[14] & " Toggle checked!" & @CRLF)
 EndIf
-Case $MBX
-If _Metro_ToggleIsChecked($MBX) Then
-_Metro_ToggleUnCheck($MBX)
-$aCatalystCheck[15] = 0
+Case $or
+If _1d5($or) Then
+_1d7($or)
+$0[15] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($MBX)
-$aCatalystCheck[15] = "MBX"
-ConsoleWrite($aCatalystCheck[15] & " Toggle checked!" & @CRLF)
+_1d8($or)
+$0[15] = "MBX"
+ConsoleWrite($0[15] & " Toggle checked!" & @CRLF)
 EndIf
-Case $MLX
-If _Metro_ToggleIsChecked($MLX) Then
-_Metro_ToggleUnCheck($MLX)
-$aCatalystCheck[16] = 0
+Case $os
+If _1d5($os) Then
+_1d7($os)
+$0[16] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($MLX)
-$aCatalystCheck[16] = "MLX"
-ConsoleWrite($aCatalystCheck[16] & " Toggle checked!" & @CRLF)
+_1d8($os)
+$0[16] = "MLX"
+ConsoleWrite($0[16] & " Toggle checked!" & @CRLF)
 EndIf
-Case $SHI
-If _Metro_ToggleIsChecked($SHI) Then
-_Metro_ToggleUnCheck($SHI)
-$aCatalystCheck[17] = 0
+Case $ot
+If _1d5($ot) Then
+_1d7($ot)
+$0[17] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($SHI)
-$aCatalystCheck[17] = "SHI"
-ConsoleWrite($aCatalystCheck[17] & " Toggle checked!" & @CRLF)
+_1d8($ot)
+$0[17] = "SHI"
+ConsoleWrite($0[17] & " Toggle checked!" & @CRLF)
 EndIf
-Case $TEZ
-If _Metro_ToggleIsChecked($TEZ) Then
-_Metro_ToggleUnCheck($TEZ)
-$aCatalystCheck[18] = 0
+Case $ou
+If _1d5($ou) Then
+_1d7($ou)
+$0[18] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($TEZ)
-$aCatalystCheck[18] = "TEZ"
-ConsoleWrite($aCatalystCheck[18] & " Toggle checked!" & @CRLF)
+_1d8($ou)
+$0[18] = "TEZ"
+ConsoleWrite($0[18] & " Toggle checked!" & @CRLF)
 EndIf
-Case $TRI
-If _Metro_ToggleIsChecked($TRI) Then
-_Metro_ToggleUnCheck($TRI)
-$aCatalystCheck[19] = 0
+Case $ov
+If _1d5($ov) Then
+_1d7($ov)
+$0[19] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($TRI)
-$aCatalystCheck[19] = "TRI"
-ConsoleWrite($aCatalystCheck[19] & " Toggle checked!" & @CRLF)
+_1d8($ov)
+$0[19] = "TRI"
+ConsoleWrite($0[19] & " Toggle checked!" & @CRLF)
 EndIf
-Case $TRX
-If _Metro_ToggleIsChecked($TRX) Then
-_Metro_ToggleUnCheck($TRX)
-$aCatalystCheck[20] = 0
+Case $ow
+If _1d5($ow) Then
+_1d7($ow)
+$0[20] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($TRX)
-$aCatalystCheck[20] = "TRX"
-ConsoleWrite($aCatalystCheck[20] & " Toggle checked!" & @CRLF)
+_1d8($ow)
+$0[20] = "TRX"
+ConsoleWrite($0[20] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CB_FactSheet
-If _Metro_CheckboxIsChecked($CB_FactSheet) Then
-_Metro_CheckboxUnCheck($CB_FactSheet)
+Case $oy
+If _1dg($oy) Then
+_1dh($oy)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_FactSheet)
+_1di($oy)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $CB_Brochure
-If _Metro_CheckboxIsChecked($CB_Brochure) Then
-_Metro_CheckboxUnCheck($CB_Brochure)
+Case $oz
+If _1dg($oz) Then
+_1dh($oz)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_Brochure)
+_1di($oz)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $CB_Presentation
-If _Metro_CheckboxIsChecked($CB_Presentation) Then
-_Metro_CheckboxUnCheck($CB_Presentation)
+Case $p0
+If _1dg($p0) Then
+_1dh($p0)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_Presentation)
+_1di($p0)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $BTN_RunCatalyst
-VerifyDropbox()
-If $bDBVerified = True Then
-$FundFamily = "Catalyst"
-$FamilySwitch = $aCatalystCheck
-ImportDatalinker()
-RunCSVConvert()
-CreateCharts()
-_LogaInfo("############################### END OF RUN - CATALYST ###############################")
-_GUIDisable($Form2, 0, 30)
-_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
-_GUIDisable($Form2)
-_Metro_GUIDelete($Form2)
+Case $p1
+_126()
+If $a = True Then
+$9 = "Catalyst"
+$3 = $0
+_1em()
+_1er()
+_1ew()
+_119("############################### END OF RUN - CATALYST ###############################")
+_1ea($o8, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $o8)
+_1ea($o8)
+_1cm($o8)
 Return 0
 Else
 If @error = 50 Then
-_GUIDisable($Form2, 0, 30)
-_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form2)
-_GUIDisable($Form2)
+_1ea($o8, 0, 30)
+_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $o8)
+_1ea($o8)
 EndIf
 EndIf
-Case $BTN_Catalyst_UpdateExpenseRatio
-$FundFamily = "Catalyst"
-$FamilySwitch = $aCatalystCheck
-GUICtrlSetData($ProgressBar, 10)
-ImportDatalinker()
-PullCatalystData()
-RunExpenseRatios()
-_LogaInfo("############################### END OF RUN - CATALYST ###############################")
-GUICtrlSetData($ProgressBar, 0)
-_GUIDisable($Form2, 0, 30)
-_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
-_GUIDisable($Form2)
+Case $p2
+$9 = "Catalyst"
+$3 = $0
+GUICtrlSetData($p4, 10)
+_1em()
+_128()
+_1ex()
+_119("############################### END OF RUN - CATALYST ###############################")
+GUICtrlSetData($p4, 0)
+_1ea($o8, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $o8)
+_1ea($o8)
 If @error = 50 Then
-_GUIDisable($Form2, 0, 30)
-_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form2)
-_GUIDisable($Form2)
+_1ea($o8, 0, 30)
+_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $o8)
+_1ea($o8)
 EndIf
 EndSwitch
 WEnd
 EndFunc
-Func _RationalFundsGUI()
-Local $Form3 = _Metro_CreateGUI("Rational Funds GUI", 540, 620, -1, -1, False, $Form1)
-Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
-Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
-Local $HBA = _Metro_CreateToggle("HBA", 50, 70, 130, 30)
-Local $HDC = _Metro_CreateToggle("HDC", 50, 120, 130, 30)
-Local $HRS = _Metro_CreateToggle("HRS", 50, 170, 130, 30)
-Local $HSU = _Metro_CreateToggle("HSU", 50, 220, 130, 30)
-Local $PBX = _Metro_CreateToggle("PBX", 50, 270, 130, 30)
-Local $RDM = _Metro_CreateToggle("RDM", 50, 320, 130, 30)
-Local $RFX = _Metro_CreateToggle("RFX", 50, 370, 130, 30)
-Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
-Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
-GUICtrlSetColor(-1, $FontThemeColor)
+Func _1ee()
+Local $p5 = _1ck("Rational Funds GUI", 540, 620, -1, -1, False, $nq)
+Local $o9 = _1cn(True, False, False, False)
+Local $nr = $o9[0]
+Local $p6 = _1d1("HBA", 50, 70, 130, 30)
+Local $74 = _1d1("HDC", 50, 120, 130, 30)
+Local $lg = _1d1("HRS", 50, 170, 130, 30)
+Local $p7 = _1d1("HSU", 50, 220, 130, 30)
+Local $p8 = _1d1("PBX", 50, 270, 130, 30)
+Local $p9 = _1d1("RDM", 50, 320, 130, 30)
+Local $pa = _1d1("RFX", 50, 370, 130, 30)
+Local $oh = _1dp(180, 85, 300, 1)
+Global $ox = GUICtrlCreateLabel("", 50, 420, 440, 20)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $CB_FactSheet = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
-Local $CB_Brochure = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
-Local $CB_Presentation = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
-_Metro_CheckboxCheck($CB_FactSheet, True)
-Local $BTN_RunRational = _Metro_CreateButton("Process Updates", 50, 550, 210, 40)
-Local $BTN_Rational_UpdateExpenseRatio = _Metro_CreateButton("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $BTN_Back = _Metro_AddControlButton_Back()
-Global $ProgressBar = _Metro_CreateProgress(50, 500, 440, 26)
-GUICtrlSetResizing($BTN_RunRational, 768 + 8)
-GUICtrlSetResizing($HBA, 768 + 8)
+Local $oy = _1dd("Factsheet", 60, 450, 105, 30)
+Local $oz = _1dd("Brochure", 210, 450, 105, 30)
+Local $p0 = _1dd("Presentation", 350, 450, 115, 30)
+_1di($oy, True)
+Local $pb = _1cw("Process Updates", 50, 550, 210, 40)
+Local $pc = _1cw("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $p3 = _1cr()
+Global $p4 = _1dm(50, 500, 440, 26)
+GUICtrlSetResizing($pb, 768 + 8)
+GUICtrlSetResizing($p6, 768 + 8)
 GUISetState(@SW_SHOW)
 While 1
-$nMsg = GUIGetMsg()
-Switch $nMsg
-Case $GUI_EVENT_CLOSE, $BTN_Back, $GUI_CLOSE_BUTTON
-_Metro_GUIDelete($Form3)
+$kz = GUIGetMsg()
+Switch $kz
+Case -3, $p3, $nr
+_1cm($p5)
 Return 0
-Case $HBA
-If _Metro_ToggleIsChecked($HBA) Then
-_Metro_ToggleUnCheck($HBA)
-$aRationalCheck[0] = 0
+Case $p6
+If _1d5($p6) Then
+_1d7($p6)
+$1[0] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($HBA)
-$aRationalCheck[0] = "HBA"
-ConsoleWrite($aRationalCheck[0] & " Toggle checked!" & @CRLF)
+_1d8($p6)
+$1[0] = "HBA"
+ConsoleWrite($1[0] & " Toggle checked!" & @CRLF)
 EndIf
-Case $HDC
-If _Metro_ToggleIsChecked($HDC) Then
-_Metro_ToggleUnCheck($HDC)
-$aRationalCheck[1] = 0
+Case $74
+If _1d5($74) Then
+_1d7($74)
+$1[1] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($HDC)
-$aRationalCheck[1] = "HDC"
-ConsoleWrite($aRationalCheck[1] & " Toggle checked!" & @CRLF)
+_1d8($74)
+$1[1] = "HDC"
+ConsoleWrite($1[1] & " Toggle checked!" & @CRLF)
 EndIf
-Case $HRS
-If _Metro_ToggleIsChecked($HRS) Then
-_Metro_ToggleUnCheck($HRS)
-$aRationalCheck[2] = 0
+Case $lg
+If _1d5($lg) Then
+_1d7($lg)
+$1[2] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($HRS)
-$aRationalCheck[2] = "HRS"
-ConsoleWrite($aRationalCheck[2] & " Toggle checked!" & @CRLF)
+_1d8($lg)
+$1[2] = "HRS"
+ConsoleWrite($1[2] & " Toggle checked!" & @CRLF)
 EndIf
-Case $HSU
-If _Metro_ToggleIsChecked($HSU) Then
-_Metro_ToggleUnCheck($HSU)
-$aRationalCheck[3] = 0
+Case $p7
+If _1d5($p7) Then
+_1d7($p7)
+$1[3] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($HSU)
-$aRationalCheck[3] = "HSU"
-ConsoleWrite($aRationalCheck[3] & " Toggle checked!" & @CRLF)
+_1d8($p7)
+$1[3] = "HSU"
+ConsoleWrite($1[3] & " Toggle checked!" & @CRLF)
 EndIf
-Case $PBX
-If _Metro_ToggleIsChecked($PBX) Then
-_Metro_ToggleUnCheck($PBX)
-$aRationalCheck[4] = 0
+Case $p8
+If _1d5($p8) Then
+_1d7($p8)
+$1[4] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($PBX)
-$aRationalCheck[4] = "PBX"
-ConsoleWrite($aRationalCheck[4] & " Toggle checked!" & @CRLF)
+_1d8($p8)
+$1[4] = "PBX"
+ConsoleWrite($1[4] & " Toggle checked!" & @CRLF)
 EndIf
-Case $RDM
-If _Metro_ToggleIsChecked($RDM) Then
-_Metro_ToggleUnCheck($RDM)
-$aRationalCheck[5] = 0
+Case $p9
+If _1d5($p9) Then
+_1d7($p9)
+$1[5] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($RDM)
-$aRationalCheck[5] = "RDM"
-ConsoleWrite($aRationalCheck[5] & " Toggle checked!" & @CRLF)
+_1d8($p9)
+$1[5] = "RDM"
+ConsoleWrite($1[5] & " Toggle checked!" & @CRLF)
 EndIf
-Case $RFX
-If _Metro_ToggleIsChecked($RFX) Then
-_Metro_ToggleUnCheck($RFX)
-$aRationalCheck[6] = 0
+Case $pa
+If _1d5($pa) Then
+_1d7($pa)
+$1[6] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($RFX)
-$aRationalCheck[6] = "RFX"
-ConsoleWrite($aRationalCheck[6] & " Toggle checked!" & @CRLF)
+_1d8($pa)
+$1[6] = "RFX"
+ConsoleWrite($1[6] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CB_FactSheet
-If _Metro_CheckboxIsChecked($CB_FactSheet) Then
-_Metro_CheckboxUnCheck($CB_FactSheet)
+Case $oy
+If _1dg($oy) Then
+_1dh($oy)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_FactSheet)
+_1di($oy)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $CB_Brochure
-If _Metro_CheckboxIsChecked($CB_Brochure) Then
-_Metro_CheckboxUnCheck($CB_Brochure)
+Case $oz
+If _1dg($oz) Then
+_1dh($oz)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_Brochure)
+_1di($oz)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $CB_Presentation
-If _Metro_CheckboxIsChecked($CB_Presentation) Then
-_Metro_CheckboxUnCheck($CB_Presentation)
+Case $p0
+If _1dg($p0) Then
+_1dh($p0)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_Presentation)
+_1di($p0)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $BTN_RunRational
-$FundFamily = "Rational"
-$FamilySwitch = $aRationalCheck
-GUICtrlSetData($ProgressBar, 10)
-ImportDatalinker()
-RunCSVConvert()
-CreateCharts()
-_LogaInfo("############################### END OF RUN - RATIONAL ###############################")
-GUICtrlSetData($ProgressBar, 0)
-_GUIDisable($Form3, 0, 30)
-_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
-_GUIDisable($Form3)
-_Metro_GUIDelete($Form3)
+Case $pb
+$9 = "Rational"
+$3 = $1
+GUICtrlSetData($p4, 10)
+_1em()
+_1er()
+_1ew()
+_119("############################### END OF RUN - RATIONAL ###############################")
+GUICtrlSetData($p4, 0)
+_1ea($p5, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $p5)
+_1ea($p5)
+_1cm($p5)
 Return 0
-Case $BTN_Rational_UpdateExpenseRatio
-$FundFamily = "Rational"
-$FamilySwitch = $aRationalCheck
-GUICtrlSetData($ProgressBar, 10)
-ImportDatalinker()
-PullRationalData()
-RunExpenseRatios()
-_LogaInfo("############################### END OF RUN - RATIONAL ###############################")
-GUICtrlSetData($ProgressBar, 0)
-_GUIDisable($Form3, 0, 30)
-_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
-_GUIDisable($Form3)
+Case $pc
+$9 = "Rational"
+$3 = $1
+GUICtrlSetData($p4, 10)
+_1em()
+_12a()
+_1ex()
+_119("############################### END OF RUN - RATIONAL ###############################")
+GUICtrlSetData($p4, 0)
+_1ea($p5, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $p5)
+_1ea($p5)
 If @error = 50 Then
-_GUIDisable($Form3, 0, 30)
-_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form3)
-_GUIDisable($Form3)
+_1ea($p5, 0, 30)
+_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $p5)
+_1ea($p5)
 EndIf
 EndSwitch
 WEnd
 EndFunc
-Func _StrategySharesFundsGUI()
-Local $Form4 = _Metro_CreateGUI("Strategy Shares Funds GUI", 540, 620, -1, -1, False, $Form1)
-Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
-Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
-Local $GLDB = _Metro_CreateToggle("GLDB", 50, 70, 130, 30)
-Local $HNDL = _Metro_CreateToggle("HNDL", 50, 120, 130, 30)
-Local $ROMO = _Metro_CreateToggle("ROMO", 50, 170, 130, 30)
-Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
-Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
-GUICtrlSetColor(-1, $FontThemeColor)
+Func _1ef()
+Local $pd = _1ck("Strategy Shares Funds GUI", 540, 620, -1, -1, False, $nq)
+Local $o9 = _1cn(True, False, False, False)
+Local $nr = $o9[0]
+Local $pe = _1d1("GLDB", 50, 70, 130, 30)
+Local $pf = _1d1("HNDL", 50, 120, 130, 30)
+Local $pg = _1d1("ROMO", 50, 170, 130, 30)
+Local $oh = _1dp(180, 85, 300, 1)
+Global $ox = GUICtrlCreateLabel("", 50, 420, 440, 20)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $CB_FactSheet = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
-Local $CB_Brochure = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
-Local $CB_Presentation = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
-_Metro_CheckboxCheck($CB_FactSheet, True)
-Local $BTN_RunStrategyShares = _Metro_CreateButton("Process Updates", 50, 550, 210, 40)
-Local $BTN_Back = _Metro_AddControlButton_Back()
-Global $ProgressBar = _Metro_CreateProgress(50, 500, 440, 26)
-GUICtrlSetResizing($BTN_RunStrategyShares, 768 + 8)
-GUICtrlSetResizing($GLDB, 768 + 8)
+Local $oy = _1dd("Factsheet", 60, 450, 105, 30)
+Local $oz = _1dd("Brochure", 210, 450, 105, 30)
+Local $p0 = _1dd("Presentation", 350, 450, 115, 30)
+_1di($oy, True)
+Local $ph = _1cw("Process Updates", 50, 550, 210, 40)
+Local $p3 = _1cr()
+Global $p4 = _1dm(50, 500, 440, 26)
+GUICtrlSetResizing($ph, 768 + 8)
+GUICtrlSetResizing($pe, 768 + 8)
 GUISetState(@SW_SHOW)
 While 1
-$nMsg = GUIGetMsg()
-Switch $nMsg
-Case $GUI_EVENT_CLOSE, $BTN_Back, $GUI_CLOSE_BUTTON
-_Metro_GUIDelete($Form4)
+$kz = GUIGetMsg()
+Switch $kz
+Case -3, $p3, $nr
+_1cm($pd)
 Return 0
-Case $GLDB
-If _Metro_ToggleIsChecked($GLDB) Then
-_Metro_ToggleUnCheck($GLDB)
-$aStrategyCheck[0] = 0
+Case $pe
+If _1d5($pe) Then
+_1d7($pe)
+$2[0] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($GLDB)
-$aStrategyCheck[0] = "GLDB"
-ConsoleWrite($aStrategyCheck[0] & " Toggle checked!" & @CRLF)
+_1d8($pe)
+$2[0] = "GLDB"
+ConsoleWrite($2[0] & " Toggle checked!" & @CRLF)
 EndIf
-Case $HNDL
-If _Metro_ToggleIsChecked($HNDL) Then
-_Metro_ToggleUnCheck($HNDL)
-$aStrategyCheck[1] = 0
+Case $pf
+If _1d5($pf) Then
+_1d7($pf)
+$2[1] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($HNDL)
-$aStrategyCheck[1] = "HNDL"
-ConsoleWrite($aStrategyCheck[1] & " Toggle checked!" & @CRLF)
+_1d8($pf)
+$2[1] = "HNDL"
+ConsoleWrite($2[1] & " Toggle checked!" & @CRLF)
 EndIf
-Case $ROMO
-If _Metro_ToggleIsChecked($ROMO) Then
-_Metro_ToggleUnCheck($ROMO)
-$aStrategyCheck[2] = 0
+Case $pg
+If _1d5($pg) Then
+_1d7($pg)
+$2[2] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_Metro_ToggleCheck($ROMO)
-$aStrategyCheck[2] = "ROMO"
-ConsoleWrite($aStrategyCheck[2] & " Toggle checked!" & @CRLF)
+_1d8($pg)
+$2[2] = "ROMO"
+ConsoleWrite($2[2] & " Toggle checked!" & @CRLF)
 EndIf
-Case $CB_FactSheet
-If _Metro_CheckboxIsChecked($CB_FactSheet) Then
-_Metro_CheckboxUnCheck($CB_FactSheet)
+Case $oy
+If _1dg($oy) Then
+_1dh($oy)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_FactSheet)
+_1di($oy)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $CB_Brochure
-If _Metro_CheckboxIsChecked($CB_Brochure) Then
-_Metro_CheckboxUnCheck($CB_Brochure)
+Case $oz
+If _1dg($oz) Then
+_1dh($oz)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_Brochure)
+_1di($oz)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $CB_Presentation
-If _Metro_CheckboxIsChecked($CB_Presentation) Then
-_Metro_CheckboxUnCheck($CB_Presentation)
+Case $p0
+If _1dg($p0) Then
+_1dh($p0)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_Metro_CheckboxCheck($CB_Presentation)
+_1di($p0)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $BTN_RunStrategyShares
-$FundFamily = "StrategyShares"
-$FamilySwitch = $aStrategyCheck
-GUICtrlSetData($ProgressBar, 10)
-ImportDatalinker()
-RunCSVConvert()
-CreateCharts()
-_LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################")
-GUICtrlSetData($ProgressBar, 0)
-_GUIDisable($Form4, 0, 30)
-_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form4)
-_GUIDisable($Form4)
-_Metro_GUIDelete($Form4)
+Case $ph
+$9 = "StrategyShares"
+$3 = $2
+GUICtrlSetData($p4, 10)
+_1em()
+_1er()
+_1ew()
+_119("############################### END OF RUN - STRATEGY SHARES ###############################")
+GUICtrlSetData($p4, 0)
+_1ea($pd, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $pd)
+_1ea($pd)
+_1cm($pd)
 Return 0
 EndSwitch
 WEnd
 EndFunc
-Func _SettingsGUI()
-$DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-$INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
-$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
-$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
-Global $Form5 = _Metro_CreateGUI("AutoCharts Settings", 540, 620, -1, -1, False, $Form1)
-Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
-Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
-Local $Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox Folder:", 50, 50, 440, 20)
-GUICtrlSetColor(-1, $FontThemeColor)
+Func _1eg()
+$e = IniRead($5, 'Settings', 'DropboxDir', '')
+$6 = IniRead($5, 'Settings', 'UserName', '')
+$7 = IniRead($5, 'Settings', 'CurrentQuarter', '')
+$8 = IniRead($5, 'Settings', 'CurrentYear', '')
+Global $pi = _1ck("AutoCharts Settings", 540, 620, -1, -1, False, $nq)
+Local $o9 = _1cn(True, False, False, False)
+Local $nr = $o9[0]
+Local $pj = GUICtrlCreateLabel("Path to Dropbox Folder:", 50, 50, 440, 20)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Global $INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 50, 75, 440, 30)
+Global $c = GUICtrlCreateInput($e, 50, 75, 440, 30)
 GUICtrlSetFont(-1, 11, 500, 0, "Segoe UI")
-Local $BTN_SelectDBPath = _Metro_CreateButton("Browse", 280, 110, 210, 40)
-Local $Label_Name = GUICtrlCreateLabel("Your Name:", 50, 175, 440, 40)
-GUICtrlSetColor(-1, $FontThemeColor)
+Local $pk = _1cw("Browse", 280, 110, 210, 40)
+Local $pl = GUICtrlCreateLabel("Your Name:", 50, 175, 440, 40)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $INPT_Name_BOX = GUICtrlCreateInput($INPT_Name, 50, 200, 440, 30)
+Local $pm = GUICtrlCreateInput($6, 50, 200, 440, 30)
 GUICtrlSetFont(-1, 11, 500, 0, "Segoe UI")
-Local $Label_CurQuarter = GUICtrlCreateLabel("Current Quarter:", 50, 275, 440, 40)
-GUICtrlSetColor(-1, $FontThemeColor)
+Local $pn = GUICtrlCreateLabel("Current Quarter:", 50, 275, 440, 40)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $Radio_Q1 = _Metro_CreateRadioEx("1", "Q1", 50, 300, 100, 30)
-If $Select_Quarter = "Q1" Then
-_Metro_RadioCheck("1", $Radio_Q1)
+Local $po = _1da("1", "Q1", 50, 300, 100, 30)
+If $7 = "Q1" Then
+_1db("1", $po)
 EndIf
-Local $Radio_Q2 = _Metro_CreateRadioEx("1", "Q2", 160, 300, 100, 30)
-If $Select_Quarter = "Q2" Then
-_Metro_RadioCheck("1", $Radio_Q2)
+Local $pp = _1da("1", "Q2", 160, 300, 100, 30)
+If $7 = "Q2" Then
+_1db("1", $pp)
 EndIf
-Local $Radio_Q3 = _Metro_CreateRadioEx("1", "Q3", 270, 300, 100, 30)
-If $Select_Quarter = "Q3" Then
-_Metro_RadioCheck("1", $Radio_Q3)
+Local $pq = _1da("1", "Q3", 270, 300, 100, 30)
+If $7 = "Q3" Then
+_1db("1", $pq)
 EndIf
-Local $Radio_Q4 = _Metro_CreateRadioEx("1", "Q4", 380, 300, 100, 30)
-If $Select_Quarter = "Q4" Then
-_Metro_RadioCheck("1", $Radio_Q4)
+Local $pr = _1da("1", "Q4", 380, 300, 100, 30)
+If $7 = "Q4" Then
+_1db("1", $pr)
 EndIf
-Local $Label_CurYear = GUICtrlCreateLabel("Current Year:", 50, 375, 440, 40)
-GUICtrlSetColor(-1, $FontThemeColor)
+Local $ps = GUICtrlCreateLabel("Current Year:", 50, 375, 440, 40)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $INPT_CurYear_BOX = GUICtrlCreateInput($INPT_CurYear, 50, 400, 440, 30)
+Local $pt = GUICtrlCreateInput($8, 50, 400, 440, 30)
 GUICtrlSetFont(-1, 11, 500, 0, "Segoe UI")
-Local $Radio_DarkBlue = _Metro_CreateRadioEx("2", "Blue", 50, 480, 100, 30)
-If $Select_Theme = "DarkBlue" Then
-_Metro_RadioCheck("2", $Radio_DarkBlue)
+Local $pu = _1da("2", "Blue", 50, 480, 100, 30)
+If $b = "DarkBlue" Then
+_1db("2", $pu)
 EndIf
-Local $Radio_LightBlue = _Metro_CreateRadioEx("2", "Blue 2", 160, 480, 100, 30)
-If $Select_Theme = "LightBlue" Then
-_Metro_RadioCheck("2", $Radio_LightBlue)
+Local $pv = _1da("2", "Blue 2", 160, 480, 100, 30)
+If $b = "LightBlue" Then
+_1db("2", $pv)
 EndIf
-Local $Radio_DarkPurple = _Metro_CreateRadioEx("2", "Purple", 270, 480, 100, 30)
-If $Select_Theme = "DarkPurple" Then
-_Metro_RadioCheck("2", $Radio_DarkPurple)
+Local $pw = _1da("2", "Purple", 270, 480, 100, 30)
+If $b = "DarkPurple" Then
+_1db("2", $pw)
 EndIf
-Local $Radio_LightPurple = _Metro_CreateRadioEx("2", "Purple 2", 380, 480, 100, 30)
-If $Select_Theme = "LightPurple" Then
-_Metro_RadioCheck("2", $Radio_LightPurple)
+Local $px = _1da("2", "Purple 2", 380, 480, 100, 30)
+If $b = "LightPurple" Then
+_1db("2", $px)
 EndIf
-Local $BTN_Save = _Metro_CreateButton("Save Settings", 50, 550, 210, 40)
-Local $BTN_Cancel = _Metro_CreateButton("Cancel", 280, 550, 210, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $BTN_Back = _Metro_AddControlButton_Back()
+Local $py = _1cw("Save Settings", 50, 550, 210, 40)
+Local $pz = _1cw("Cancel", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $p3 = _1cr()
 GUISetState(@SW_SHOW)
 While 1
-$nMsg = GUIGetMsg()
-Switch $nMsg
-Case $GUI_EVENT_CLOSE, $BTN_Back, $GUI_CLOSE_BUTTON, $BTN_Cancel
-_Metro_GUIDelete($Form5)
+$kz = GUIGetMsg()
+Switch $kz
+Case -3, $p3, $nr, $pz
+_1cm($pi)
 Return 0
-Case $BTN_SelectDBPath
-BrowseForDBPath()
-Case $Radio_Q1
-_Metro_RadioCheck(1, $Radio_Q1)
+Case $pk
+_1ej()
+Case $po
+_1db(1, $po)
 ConsoleWrite("Radio 1 selected!" & @CRLF)
-Case $Radio_Q2
-_Metro_RadioCheck(1, $Radio_Q2)
+Case $pp
+_1db(1, $pp)
 ConsoleWrite("Radio 4 selected!" & @CRLF)
-Case $Radio_Q3
-_Metro_RadioCheck(1, $Radio_Q3)
+Case $pq
+_1db(1, $pq)
 ConsoleWrite("Radio 3 selected!" & @CRLF)
-Case $Radio_Q4
-_Metro_RadioCheck(1, $Radio_Q4)
+Case $pr
+_1db(1, $pr)
 ConsoleWrite("Radio 4 selected!" & @CRLF)
-Case $Radio_DarkBlue
-_Metro_RadioCheck(2, $Radio_DarkBlue)
+Case $pu
+_1db(2, $pu)
 ConsoleWrite("Dark Blue Theme selected!" & @CRLF)
-Case $Radio_LightBlue
-_Metro_RadioCheck(2, $Radio_LightBlue)
+Case $pv
+_1db(2, $pv)
 ConsoleWrite("Light Blue Theme selected!" & @CRLF)
-Case $Radio_DarkPurple
-_Metro_RadioCheck(2, $Radio_DarkPurple)
+Case $pw
+_1db(2, $pw)
 ConsoleWrite("Dark Purple Theme selected!" & @CRLF)
-Case $Radio_LightPurple
-_Metro_RadioCheck(2, $Radio_LightPurple)
+Case $px
+_1db(2, $px)
 ConsoleWrite("Light Purple Theme selected!" & @CRLF)
-Case $BTN_Save
-$DATA_UserSettings = GUICtrlRead($INPT_DropboxFolder)
-If $DATA_UserSettings = "" Then
-_GUIDisable($Form5, 0, 30)
-_Metro_MsgBox(0, "Error!", "You must select a dropbox directory!", 500, 11, $Form5)
-_GUIDisable($Form5)
+Case $py
+$q0 = GUICtrlRead($c)
+If $q0 = "" Then
+_1ea($pi, 0, 30)
+_1dk(0, "Error!", "You must select a dropbox directory!", 500, 11, $pi)
+_1ea($pi)
 Else
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $DATA_UserSettings)
-$DATA_UserSettings = GUICtrlRead($INPT_Name_BOX)
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UserName', $DATA_UserSettings)
-If _Metro_RadioIsChecked(1, $Radio_Q1) Then
-$Select_Quarter = "Q1"
-$DATA_UserSettings = "Q1"
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $q0)
+$q0 = GUICtrlRead($pm)
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UserName', $q0)
+If _1dc(1, $po) Then
+$7 = "Q1"
+$q0 = "Q1"
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q0)
 EndIf
-If _Metro_RadioIsChecked(1, $Radio_Q2) Then
-$Select_Quarter = "Q2"
-$DATA_UserSettings = "Q2"
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+If _1dc(1, $pp) Then
+$7 = "Q2"
+$q0 = "Q2"
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q0)
 EndIf
-If _Metro_RadioIsChecked(1, $Radio_Q3) Then
-$Select_Quarter = "Q3"
-$DATA_UserSettings = "Q3"
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+If _1dc(1, $pq) Then
+$7 = "Q3"
+$q0 = "Q3"
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q0)
 EndIf
-If _Metro_RadioIsChecked(1, $Radio_Q4) Then
-$Select_Quarter = "Q4"
-$DATA_UserSettings = "Q4"
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $DATA_UserSettings)
+If _1dc(1, $pr) Then
+$7 = "Q4"
+$q0 = "Q4"
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q0)
 EndIf
-If _Metro_RadioIsChecked(2, $Radio_DarkBlue) Then
-$Select_Theme = "DarkBlue"
-_SetTheme("DarkBlue")
-$DATA_UserSettings = "DarkBlue"
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $DATA_UserSettings)
+If _1dc(2, $pu) Then
+$b = "DarkBlue"
+_12e("DarkBlue")
+$q0 = "DarkBlue"
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q0)
 EndIf
-If _Metro_RadioIsChecked(2, $Radio_LightBlue) Then
-$Select_Theme = "LightBlue"
-_SetTheme("LightBlue")
-$DATA_UserSettings = "LightBlue"
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $DATA_UserSettings)
+If _1dc(2, $pv) Then
+$b = "LightBlue"
+_12e("LightBlue")
+$q0 = "LightBlue"
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q0)
 EndIf
-If _Metro_RadioIsChecked(2, $Radio_DarkPurple) Then
-$Select_Theme = "DarkPurple"
-_SetTheme("DarkPurple")
-$DATA_UserSettings = "DarkPurple"
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $DATA_UserSettings)
+If _1dc(2, $pw) Then
+$b = "DarkPurple"
+_12e("DarkPurple")
+$q0 = "DarkPurple"
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q0)
 EndIf
-If _Metro_RadioIsChecked(2, $Radio_LightPurple) Then
-$Select_Theme = "LightPurple"
-_SetTheme("LightPurple")
-$DATA_UserSettings = "LightPurple"
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $DATA_UserSettings)
+If _1dc(2, $px) Then
+$b = "LightPurple"
+_12e("LightPurple")
+$q0 = "LightPurple"
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q0)
 EndIf
-$DATA_UserSettings = GUICtrlRead($INPT_CurYear_BOX)
-$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentYear', $DATA_UserSettings)
-If $iSettingsConfirm = 1 Then
-$DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-$INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
-$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
-$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
-$bDBVerified = IniRead($ini, 'Settings', 'DBVerified', '')
-$Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
-DetermineDates()
-_GUIDisable($Form5, 0, 30)
-_Metro_MsgBox(0, "Success!", "Your settings were saved.", 500, 11, $Form5)
-_GUIDisable($Form5)
+$q0 = GUICtrlRead($pt)
+$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentYear', $q0)
+If $q1 = 1 Then
+$e = IniRead($5, 'Settings', 'DropboxDir', '')
+$6 = IniRead($5, 'Settings', 'UserName', '')
+$7 = IniRead($5, 'Settings', 'CurrentQuarter', '')
+$8 = IniRead($5, 'Settings', 'CurrentYear', '')
+$a = IniRead($5, 'Settings', 'DBVerified', '')
+$b = IniRead($5, 'Settings', 'UITheme', '')
+_1ep()
+_1ea($pi, 0, 30)
+_1dk(0, "Success!", "Your settings were saved.", 500, 11, $pi)
+_1ea($pi)
 Else
-_GUIDisable($Form5, 0, 30)
-_Metro_MsgBox(0, "Error!", "An error occured", 500, 11, $Form5)
-_GUIDisable($Form5)
+_1ea($pi, 0, 30)
+_1dk(0, "Error!", "An error occured", 500, 11, $pi)
+_1ea($pi)
 EndIf
-VerifyDropbox()
+_126()
 If @error = 50 Then
-_GUIDisable($Form5, 0, 30)
-_Metro_MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.", 500, 11, $Form5)
-_GUIDisable($Form5)
+_1ea($pi, 0, 30)
+_1dk(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.", 500, 11, $pi)
+_1ea($pi)
 EndIf
-_Metro_GUIDelete($Form5)
-_Metro_GUIDelete($Form1)
-OpenMainGUI()
+_1cm($pi)
+_1cm($nq)
+_1ec()
 EndIf
 EndSwitch
 WEnd
 EndFunc
-Func _HelpGUI()
-Global $Form6 = _Metro_CreateGUI("AutoCharts Help", 540, 500, -1, -1, False, $Form1)
-Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
-Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
-Local $BTN_About = _Metro_CreateButton("About AutoCharts", 50, 100, 440, 40)
-Local $BTN_OpenLog = _Metro_CreateButton("Open Log File", 50, 160, 440, 40)
-Local $BTN_ClearLog = _Metro_CreateButton("Clear Log File", 50, 220, 440, 40)
-Local $BTN_CheckForUpdate = _Metro_CreateButton("Check for Update", 50, 280, 440, 40)
-Local $BTN_Back = _Metro_AddControlButton_Back()
+Func _1eh()
+Global $q2 = _1ck("AutoCharts Help", 540, 500, -1, -1, False, $nq)
+Local $o9 = _1cn(True, False, False, False)
+Local $nr = $o9[0]
+Local $o4 = _1cw("About AutoCharts", 50, 100, 440, 40)
+Local $q3 = _1cw("Open Log File", 50, 160, 440, 40)
+Local $q4 = _1cw("Clear Log File", 50, 220, 440, 40)
+Local $q5 = _1cw("Check for Update", 50, 280, 440, 40)
+Local $p3 = _1cr()
 GUISetState(@SW_SHOW)
 While 1
-$nMsg = GUIGetMsg()
-Switch $nMsg
-Case $GUI_EVENT_CLOSE, $BTN_Back, $GUI_CLOSE_BUTTON
-_Metro_GUIDelete($Form6)
+$kz = GUIGetMsg()
+Switch $kz
+Case -3, $p3, $nr
+_1cm($q2)
 Return 0
-Case $BTN_About
+Case $o4
 ShellExecute("https://onevion.github.io/AutoCharts/")
-Case $BTN_OpenLog
-$sTextFile = @ScriptDir & "\AutoCharts.log"
-$_Run = "notepad.exe " & $sTextFile
-ConsoleWrite("$_Run : " & $_Run & @CRLF)
-Run($_Run, @WindowsDir, @SW_SHOWDEFAULT)
-Case $BTN_ClearLog
-ClearLog()
-Case $BTN_CheckForUpdate
-CheckForUpdate()
+Case $q3
+$q6 = @ScriptDir & "\AutoCharts.log"
+$q7 = "notepad.exe " & $q6
+ConsoleWrite("$_Run : " & $q7 & @CRLF)
+Run($q7, @WindowsDir, @SW_SHOWDEFAULT)
+Case $q4
+_1eq()
+Case $q5
+_1eo()
 EndSwitch
 WEnd
 EndFunc
-Func _SyncGUI()
-Global $Form7 = _Metro_CreateGUI("AutoCharts Sync Options", 540, 500, -1, -1, False, $Form1)
-Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
-Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
-Local $BTN_SyncAll = _Metro_CreateButton("Pull Data from Dropbox", 50, 100, 440, 40)
-Local $BTN_DL_Import = _Metro_CreateButton("Import Datalinker from Database", 50, 160, 440, 40)
-_Metro_AddHSeperator(50, 240, 440, 1)
-Local $Label_AdminSettings = GUICtrlCreateLabel("Admin Settings", 200, 230, 150, 40, $SS_CENTER)
-GUICtrlSetColor(-1, $FontThemeColor)
+Func _1ei()
+Global $q8 = _1ck("AutoCharts Sync Options", 540, 500, -1, -1, False, $nq)
+Local $o9 = _1cn(True, False, False, False)
+Local $nr = $o9[0]
+Local $q9 = _1cw("Pull Data from Dropbox", 50, 100, 440, 40)
+Local $qa = _1cw("Import Datalinker from Database", 50, 160, 440, 40)
+_1do(50, 240, 440, 1)
+Local $qb = GUICtrlCreateLabel("Admin Settings", 200, 230, 150, 40, 0x1)
+GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 12, 400, 0, "Segoe UI")
-Local $BTN_UploadAMCharts = _Metro_CreateButton("Upload amCharts to Database", 50, 280, 440, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $BTN_UploadDatalinker = _Metro_CreateButton("Upload DataLinker to Database", 50, 340, 440, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $BTN_Back = _Metro_AddControlButton_Back()
+Local $qc = _1cw("Upload amCharts to Database", 50, 280, 440, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $qd = _1cw("Upload DataLinker to Database", 50, 340, 440, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $p3 = _1cr()
 GUISetState(@SW_SHOW)
 While 1
-$nMsg = GUIGetMsg()
-Switch $nMsg
-Case $GUI_EVENT_CLOSE, $BTN_Back, $GUI_CLOSE_BUTTON
-_Metro_GUIDelete($Form7)
+$kz = GUIGetMsg()
+Switch $kz
+Case -3, $p3, $nr
+_1cm($q8)
 Return 0
-Case $BTN_SyncAll
-ConsoleWrite($DatabaseDir & @CRLF)
-SyncronizeDataFiles()
-_GUIDisable($Form7, 0, 50)
-_Metro_MsgBox(0, "Alert", "Sync Completed. Done in " & TimerDiff($timer) / 1000 & " seconds!")
-_GUIDisable($Form7)
-Case $BTN_DL_Import
-ImportDatalinker()
+Case $q9
+ConsoleWrite($f & @CRLF)
+_127()
+_1ea($q8, 0, 50)
+_1dk(0, "Alert", "Sync Completed. Done in " & TimerDiff($ak) / 1000 & " seconds!")
+_1ea($q8)
+Case $qa
+_1em()
 If @error Then
-_GUIDisable($Form7, 0, 50)
-_Metro_MsgBox($MB_SYSTEMMODAL, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
-_GUIDisable($Form7)
+_1ea($q8, 0, 50)
+_1dk(4096, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
+_1ea($q8)
 Else
-_GUIDisable($Form7, 0, 50)
-_Metro_MsgBox($MB_SYSTEMMODAL, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
-_GUIDisable($Form7)
+_1ea($q8, 0, 50)
+_1dk(4096, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
+_1ea($q8)
 EndIf
-Case $BTN_UploadAMCharts
-UploadamCharts()
-Case $BTN_UploadDatalinker
-UploadDatalinker()
+Case $qc
+_12d()
+Case $qd
+_1el()
 EndSwitch
 WEnd
 EndFunc
-Func BrowseForDBPath()
-Local Const $sMessage = "Select a folder"
-Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
+Func _1ej()
+Local Const $qe = "Select a folder"
+Local $qf = FileSelectFolder($qe, "")
 If @error Then
-_GUIDisable($Form5, 0, 50)
-_Metro_MsgBox($MB_SYSTEMMODAL, "Error", "No folder was selected.")
-_GUIDisable($Form5)
-GUICtrlSetData($INPT_DropboxFolder, "")
+_1ea($pi, 0, 50)
+_1dk(4096, "Error", "No folder was selected.")
+_1ea($pi)
+GUICtrlSetData($c, "")
 Else
-GUICtrlSetData($INPT_DropboxFolder, $sFileSelectFolder)
+GUICtrlSetData($c, $qf)
 EndIf
 EndFunc
-Func UploadDatalinker()
-If $INPT_Name = "Jakob" Then
-FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir, 1)
+Func _1el()
+If $6 = "Jakob" Then
+FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $f, 1)
 If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Upload Datalinker File to " & $DatabaseDir)
+_1ea($q8, 0, 30)
+_1dk(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $q8)
+_1ea($q8)
+_11b("Error! Unable to Upload Datalinker File to " & $f)
 Else
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Success!", "Datalinker File has been uploaded to the database.", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaInfo("Datalinker File Uploaded to " & $DatabaseDir)
+_1ea($q8, 0, 30)
+_1dk(0, "Success!", "Datalinker File has been uploaded to the database.", 500, 11, $q8)
+_1ea($q8)
+_119("Datalinker File Uploaded to " & $f)
 EndIf
 Else
-FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir & "\" & $INPT_Name & "_Datalinker.xml", 1)
+FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $f & "\" & $6 & "_Datalinker.xml", 1)
 If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Upload Datalinker File to " & $DatabaseDir)
+_1ea($q8, 0, 30)
+_1dk(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $q8)
+_1ea($q8)
+_11b("Error! Unable to Upload Datalinker File to " & $f)
 Else
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Success!", "Datalinker File has been uploaded to the database.", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaInfo("Datalinker File Uploaded to " & $DatabaseDir)
+_1ea($q8, 0, 30)
+_1dk(0, "Success!", "Datalinker File has been uploaded to the database.", 500, 11, $q8)
+_1ea($q8)
+_119("Datalinker File Uploaded to " & $f)
 EndIf
 EndIf
 EndFunc
-Func ImportDatalinker()
-FileCopy($DatabaseDir & "\DataLinker.xml", @ScriptDir & "\Datalinker_TEMP1.xml", 1)
+Func _1em()
+FileCopy($f & "\DataLinker.xml", @ScriptDir & "\Datalinker_TEMP1.xml", 1)
 If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "Unable to copy datalinker.xml file to script directory", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to copy datalinker.xml file to script directory")
+_1ea($q8, 0, 30)
+_1dk(0, "Error!", "Unable to copy datalinker.xml file to script directory", 500, 11, $q8)
+_1ea($q8)
+_11b("Error! Unable to copy datalinker.xml file to script directory")
 Else
-_LogaInfo("Datalinker File Imported to AutoCharts Directory")
+_119("Datalinker File Imported to AutoCharts Directory")
 EndIf
-Local $file = @ScriptDir & "\Datalinker_TEMP1.xml"
-Local $text = FileRead($file)
-If $INPT_Name <> "Jakob" Then
-$tout1 = StringReplace($text, 'X:\Marketing Team Files\', $DropboxDir & '\Marketing Team Files\')
-FileWrite(@ScriptDir & "\DataLinker_Updated1.xml", $tout1)
+Local $qg = @ScriptDir & "\Datalinker_TEMP1.xml"
+Local $gj = FileRead($qg)
+If $6 <> "Jakob" Then
+$qh = StringReplace($gj, 'X:\Marketing Team Files\', $e & '\Marketing Team Files\')
+FileWrite(@ScriptDir & "\DataLinker_Updated1.xml", $qh)
 If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
+_1ea($q8, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $q8)
+_1ea($q8)
+_11b("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
-_LogaInfo("Datalinker File Imported to InDesign successfully")
+_119("Datalinker File Imported to InDesign successfully")
 EndIf
 Else
 FileCopy(@ScriptDir & "\Datalinker_TEMP1.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
 If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
+_1ea($q8, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $q8)
+_1ea($q8)
+_11b("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
-_LogaInfo("Datalinker File Imported to InDesign successfully")
+_119("Datalinker File Imported to InDesign successfully")
 EndIf
 EndIf
 FileCopy(@ScriptDir & "\Datalinker_Updated1.xml", @ScriptDir & "\Datalinker_TEMP2.xml", 1)
 If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign")
+_1ea($q8, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign", 500, 11, $q8)
+_1ea($q8)
+_11b("Error! Unable to Import Datalinker File to InDesign")
 Else
-_LogaInfo("Datalinker File Imported to AutoCharts Directory")
+_119("Datalinker File Imported to AutoCharts Directory")
 EndIf
-Local $file2 = @ScriptDir & "\Datalinker_TEMP2.xml"
-Local $text2 = FileRead($file2)
-If $INPT_Name <> "Jakob" Then
-$tout2 = StringReplace($text2, 'file:///X:', 'file:///' & $DropboxDir)
-FileWrite(@ScriptDir & "\DataLinker_Updated2.xml", $tout2)
+Local $qi = @ScriptDir & "\Datalinker_TEMP2.xml"
+Local $qj = FileRead($qi)
+If $6 <> "Jakob" Then
+$qk = StringReplace($qj, 'file:///X:', 'file:///' & $e)
+FileWrite(@ScriptDir & "\DataLinker_Updated2.xml", $qk)
 FileCopy(@ScriptDir & "\Datalinker_Updated2.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
 If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
+_1ea($q8, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $q8)
+_1ea($q8)
+_11b("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
 FileDelete(@ScriptDir & "\Datalinker_Updated2.xml")
 FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
 FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
 FileDelete(@ScriptDir & "\Datalinker_TEMP2.xml")
-_LogaInfo("Datalinker File Imported to InDesign successfully")
+_119("Datalinker File Imported to InDesign successfully")
 EndIf
 Else
 FileCopy(@ScriptDir & "\Datalinker_TEMP.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
 If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
+_1ea($q8, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $q8)
+_1ea($q8)
+_11b("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
 FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
 FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
 FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
 FileDelete(@ScriptDir & "\Datalinker_TEMP2.xml")
-_LogaInfo("Datalinker File Imported to InDesign successfully")
+_119("Datalinker File Imported to InDesign successfully")
 EndIf
 EndIf
 EndFunc
-Func CheckForSettingsMigrate()
+Func _1en()
 If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
 FileDelete(@ScriptDir & "/settings-MIGRATE.ini")
-_LogaInfo("Updated install detected.")
-_Metro_MsgBox(0, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
+_119("Updated install detected.")
+_1dk(0, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
 EndIf
 EndFunc
-Func CheckForUpdate()
+Func _1eo()
 Run(@ScriptDir & "/AutoCharts_Updater.exe")
 EndFunc
-CheckForSettingsMigrate()
-Func DetermineDates()
-$Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
-$INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
-Local $QtrToMonth
-Local $DayNumber
-Local $MonthNumber
-If $Select_Quarter = 'Q1' Then
-$QtrToMonth = "March"
-$MonthNumber = "03"
-$DayNumber = "31"
-ElseIf $Select_Quarter = 'Q2' Then
-$QtrToMonth = "June"
-$MonthNumber = "06"
-$DayNumber = "30"
-ElseIf $Select_Quarter = 'Q3' Then
-$QtrToMonth = "September"
-$MonthNumber = "09"
-$DayNumber = "30"
-ElseIf $Select_Quarter = 'Q4' Then
-$QtrToMonth = "December"
-$MonthNumber = "12"
-$DayNumber = "31"
+_1en()
+Func _1ep()
+$7 = IniRead($5, 'Settings', 'CurrentQuarter', '')
+$8 = IniRead($5, 'Settings', 'CurrentYear', '')
+Local $ql
+Local $qm
+Local $qn
+If $7 = 'Q1' Then
+$ql = "March"
+$qn = "03"
+$qm = "31"
+ElseIf $7 = 'Q2' Then
+$ql = "June"
+$qn = "06"
+$qm = "30"
+ElseIf $7 = 'Q3' Then
+$ql = "September"
+$qn = "09"
+$qm = "30"
+ElseIf $7 = 'Q4' Then
+$ql = "December"
+$qn = "12"
+$qm = "31"
 Else
-_Metro_MsgBox(0, "Error!", "A quarter has not been selected in the settings tab.")
+_1dk(0, "Error!", "A quarter has not been selected in the settings tab.")
 EndIf
-_LogaInfo("Determined quarter to be ~" & $Select_Quarter & "~ and current year to be ~" & $INPT_CurYear & "~")
-If FileExists($DatabaseDir & "\csv\Update_FactSheetDates.csv") Then
-FileDelete($DatabaseDir & "\csv\Update_FactSheetDates.csv")
+_119("Determined quarter to be ~" & $7 & "~ and current year to be ~" & $8 & "~")
+If FileExists($f & "\csv\Update_FactSheetDates.csv") Then
+FileDelete($f & "\csv\Update_FactSheetDates.csv")
 EndIf
-Local $file = $DatabaseDir & "\csv\Update_FactSheetDatesTEMP.csv"
-Local $text = FileReadLine($file, 1)
-$tout1 = StringReplace($text, 'Label,ID', 'Label,ID' & @CRLF)
-FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
-$text = FileReadLine($file, 2)
-$tout1 = StringReplace($text, '03/31/2021,1', $MonthNumber & '/' & $DayNumber & '/' & $INPT_CurYear & ',1' & @CRLF)
-FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
-$text = FileReadLine($file, 3)
-$tout1 = StringReplace($text, '"March 31, 2021",2', '"' & $QtrToMonth & ' ' & $DayNumber & ', ' & $INPT_CurYear & '",2' & @CRLF)
-FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
-$text = FileReadLine($file, 4)
-$tout1 = StringReplace($text, 'Q1 2021,3', $Select_Quarter & ' ' & $INPT_CurYear & ',3' & @CRLF)
-FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
-$text = FileReadLine($file, 5)
-$tout1 = StringReplace($text, 'March 2021,4', $QtrToMonth & ' ' & $INPT_CurYear & ',4' & @CRLF)
-FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
-$text = FileReadLine($file, 6)
-$tout1 = StringReplace($text, '03/2021,5', $MonthNumber & '/' & $INPT_CurYear & ',5')
-FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
-FileClose($DatabaseDir & "\csv\Update_FactSheetDates.csv")
-_LogaInfo("Updated FactSheetDates CSV File with selected dates")
+Local $qg = $f & "\csv\Update_FactSheetDatesTEMP.csv"
+Local $gj = FileReadLine($qg, 1)
+$qh = StringReplace($gj, 'Label,ID', 'Label,ID' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
+$gj = FileReadLine($qg, 2)
+$qh = StringReplace($gj, '03/31/2021,1', $qn & '/' & $qm & '/' & $8 & ',1' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
+$gj = FileReadLine($qg, 3)
+$qh = StringReplace($gj, '"March 31, 2021",2', '"' & $ql & ' ' & $qm & ', ' & $8 & '",2' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
+$gj = FileReadLine($qg, 4)
+$qh = StringReplace($gj, 'Q1 2021,3', $7 & ' ' & $8 & ',3' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
+$gj = FileReadLine($qg, 5)
+$qh = StringReplace($gj, 'March 2021,4', $ql & ' ' & $8 & ',4' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
+$gj = FileReadLine($qg, 6)
+$qh = StringReplace($gj, '03/2021,5', $qn & '/' & $8 & ',5')
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
+FileClose($f & "\csv\Update_FactSheetDates.csv")
+_119("Updated FactSheetDates CSV File with selected dates")
 EndFunc
-Func ClearLog()
+Func _1eq()
 FileDelete(@ScriptDir & "\AutoCharts.log")
-_FileCreate(@ScriptDir & "\AutoCharts.log")
+_1j(@ScriptDir & "\AutoCharts.log")
 If @error = 0 Then
-_GUIDisable($Form6, 0, 50)
-_Metro_MsgBox($MB_SYSTEMMODAL, "Success", "Log file cleared.")
-_GUIDisable($Form6)
+_1ea($q2, 0, 50)
+_1dk(4096, "Success", "Log file cleared.")
+_1ea($q2)
 EndIf
 If @error = 1 Then
-_GUIDisable($Form6, 0, 50)
-_Metro_MsgBox(0, "Error", "There was an error with clearing the log.")
-_GUIDisable($Form6)
+_1ea($q2, 0, 50)
+_1dk(0, "Error", "There was an error with clearing the log.")
+_1ea($q2)
 EndIf
 EndFunc
-Func RunCSVConvert()
-For $a = 0 To(UBound($FamilySwitch) - 1)
-If $FamilySwitch[$a] <> "" Then
-$CurrentFund = $FamilySwitch[$a]
-GUICtrlSetData($UpdateLabel, "Updating the following Fund Factsheet: " & $CurrentFund)
-_Metro_SetProgress($ProgressBar, 15)
-_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
-If $FundFamily = "Catalyst" Then
-PullCatalystFundData()
+Func _1er()
+For $qo = 0 To(UBound($3) - 1)
+If $3[$qo] <> "" Then
+$4 = $3[$qo]
+GUICtrlSetData($ox, "Updating the following Fund Factsheet: " & $4)
+_1dn($p4, 15)
+_119("~~~~~~~~~~~~ " & $4 & " CSV CONVERSION START ~~~~~~~~~~~~")
+If $9 = "Catalyst" Then
+_129()
 EndIf
-If $FundFamily = "Rational" Then
-PullRationalFundData()
+If $9 = "Rational" Then
+_12b()
 EndIf
-If $FundFamily = "StrategyShares" Then
-PullStrategySharesFundData()
+If $9 = "StrategyShares" Then
+_12c()
 EndIf
-FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")
-RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
-_LogaInfo("Converted " & $CurrentFund & ".xlsx file to csv")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & ".xlsx file to csv")
-If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
-RunCSVConvert4Institution()
+If Not FileCopy($f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "*.xlsx", @ScriptDir & "/VBS_Scripts/") Then
+_1ea($nq, 0, 50)
+_1dk(0, "Error", "Could not copy backup file from " & $f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "*.xlsx")
+_1ea($nq)
+_11b("Could not copy backup file from " & $f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "*.xlsx")
 EndIf
-If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
-RunCSVConvert4Brochure()
+RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $4 & ".xlsx", @TempDir, @SW_HIDE)
+GUICtrlSetData($ox, $4 & " | ~~~~~~~~~~~~ " & $4 & " CSV CONVERSION START ~~~~~~~~~~~~")
+_119("Converted " & $4 & ".xlsx file to csv")
+GUICtrlSetData($ox, $4 & " | Converted " & $4 & ".xlsx file to csv")
+If FileExists($f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "-institutional.xlsx") Then
+_1es()
 EndIf
-If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
-RunCSVConvert4Presentation()
+If FileExists($f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "-brochure.xlsx") Then
+_1et()
 EndIf
-_Metro_SetProgress($ProgressBar, 25)
-FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)
-FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)
-_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
-_Metro_SetProgress($ProgressBar, 30)
+If FileExists($f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "-presentation.xlsx") Then
+_1eu()
+EndIf
+_1dn($p4, 25)
+FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $d & "\" & $9 & "\" & $4 & "\" & "*.csv", 1)
+FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $f & "\csv\" & $9 & "\" & $4 & "\*.csv", 1)
+_119("Moved the " & $4 & ".csv files to the fund's InDesign Links folder in Dropbox")
+GUICtrlSetData($ox, $4 & " | Moved the " & $4 & ".csv files to the fund's InDesign Links folder in Dropbox")
+_1dn($p4, 30)
 FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
-_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
-_Metro_SetProgress($ProgressBar, 55)
+_119("Deleted remaining " & $4 & ".xlsx files from CSV Conversion directory")
+GUICtrlSetData($ox, $4 & " | Deleted remaining " & $4 & ".xlsx files from CSV Conversion directory")
+_1dn($p4, 55)
 Else
 ContinueLoop
 EndIf
 Next
 EndFunc
-Func RunCSVConvert4Institution()
-RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)
-_LogaInfo("Converted " & $CurrentFund & "-institutional.xlsx file to csv")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-institutional.xlsx file to csv")
+Func _1es()
+RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $4 & "-institutional.xlsx", @TempDir, @SW_HIDE)
+_119("Converted " & $4 & "-institutional.xlsx file to csv")
+GUICtrlSetData($ox, $4 & " | Converted " & $4 & "-institutional.xlsx file to csv")
 EndFunc
-Func RunCSVConvert4Brochure()
-RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)
-_LogaInfo("Converted " & $CurrentFund & "-brochure.xlsx file to csv")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-brochure.xlsx file to csv")
+Func _1et()
+RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $4 & "-brochure.xlsx", @TempDir, @SW_HIDE)
+_119("Converted " & $4 & "-brochure.xlsx file to csv")
+GUICtrlSetData($ox, $4 & " | Converted " & $4 & "-brochure.xlsx file to csv")
 EndFunc
-Func RunCSVConvert4Presentation()
-RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)
-_LogaInfo("Converted " & $CurrentFund & "-presentation.xlsx file to csv")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-presentation.xlsx file to csv")
+Func _1eu()
+RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $4 & "-presentation.xlsx", @TempDir, @SW_HIDE)
+_119("Converted " & $4 & "-presentation.xlsx file to csv")
+GUICtrlSetData($ox, $4 & " | Converted " & $4 & "-presentation.xlsx file to csv")
 EndFunc
-Func HTMLChartEditor()
-Local $file = @ScriptDir & "\assets\ChartBuilder\public\index_TEMPLATE.html"
-Local $text = FileRead($file)
-$tout1 = StringReplace($text, '<script src="/scripts/CHANGEME.js"></script>', '<script src="/scripts/' & $CurrentFund & '.js"></script>')
-FileWrite(@ScriptDir & "\assets\ChartBuilder\public\index.html", $tout1)
-_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~")
-_LogaInfo("Created HTML file for " & $CurrentFund & " chart generation")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Created HTML file for " & $CurrentFund & " chart generation")
-_LogaInfo("Initializing Local Server for amCharts")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Initializing Local Server for amCharts")
+Func _1ev()
+Local $qg = @ScriptDir & "\assets\ChartBuilder\public\index_TEMPLATE.html"
+Local $gj = FileRead($qg)
+$qh = StringReplace($gj, '<script src="/scripts/CHANGEME.js"></script>', '<script src="/scripts/' & $4 & '.js"></script>')
+FileWrite(@ScriptDir & "\assets\ChartBuilder\public\index.html", $qh)
+_119("~~~~~~~~~~~~ " & $4 & " CHART GENERATION START ~~~~~~~~~~~~")
+GUICtrlSetData($ox, $4 & " | ~~~~~~~~~~~~ " & $4 & " CHART GENERATION START ~~~~~~~~~~~~")
+_119("Created HTML file for " & $4 & " chart generation")
+GUICtrlSetData($ox, $4 & " | Created HTML file for " & $4 & " chart generation")
+_119("Initializing Local Server for amCharts")
+GUICtrlSetData($ox, $4 & " | Initializing Local Server for amCharts")
 EndFunc
-Func CreateCharts()
-For $a = 0 To(UBound($FamilySwitch) - 1)
-If $FamilySwitch[$a] <> "" Then
-$CurrentFund = $FamilySwitch[$a]
-Call("HTMLChartEditor")
+Func _1ew()
+For $qo = 0 To(UBound($3) - 1)
+If $3[$qo] <> "" Then
+$4 = $3[$qo]
+Call("_1ev")
 RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE)
-_Metro_SetProgress($ProgressBar, 70)
-_LogaInfo($CurrentFund & " charts generated in SVG format using amCharts")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Charts generated in SVG format using amCharts")
+_1dn($p4, 70)
+_119($4 & " charts generated in SVG format using amCharts")
+GUICtrlSetData($ox, $4 & " | Charts generated in SVG format using amCharts")
 FileDelete(@ScriptDir & "\assets\ChartBuilder\public\index.html")
-FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $DatabaseDir & "\images\charts\" & $FundFamily & "\" & $CurrentFund & "\*.svg", 1)
-_Metro_SetProgress($ProgressBar, 92)
-_LogaInfo($CurrentFund & " charts moved to the funds InDesign Links folder")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Charts moved to the funds InDesign Links folder")
+FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $f & "\images\charts\" & $9 & "\" & $4 & "\*.svg", 1)
+_1dn($p4, 92)
+_119($4 & " charts moved to the funds InDesign Links folder")
+GUICtrlSetData($ox, $4 & " | Charts moved to the funds InDesign Links folder")
 Else
 ContinueLoop
 EndIf
-_Metro_SetProgress($ProgressBar, 100)
+_1dn($p4, 100)
 Next
 EndFunc
-Func RunExpenseRatios()
-If $FundFamily = "Catalyst" Then
-GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
-_Metro_SetProgress($ProgressBar, 60)
-FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")
+Func _1ex()
+If $9 = "Catalyst" Then
+GUICtrlSetData($ox, "Updating Catalyst Expense Ratios")
+_1dn($p4, 60)
+FileCopy($f & "\fin_backup_files\" & $9 & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)
-_LogaInfo("~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")
-GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
-_LogaInfo("Updated Catalyst Expense Ratios")
-GUICtrlSetData($UpdateLabel, "Updated Catalyst Expense Ratios")
-FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)
+_119("~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")
+GUICtrlSetData($ox, "Updating Catalyst Expense Ratios")
+_119("Updated Catalyst Expense Ratios")
+GUICtrlSetData($ox, "Updated Catalyst Expense Ratios")
+FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $f & "\csv\" & $9 & "\Catalyst_ExpenseRatios.csv", 1)
 FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
 EndIf
-If $FundFamily = "Rational" Then
-GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
-_Metro_SetProgress($ProgressBar, 60)
-FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")
+If $9 = "Rational" Then
+GUICtrlSetData($ox, "Updating Rational Expense Ratios")
+_1dn($p4, 60)
+FileCopy($f & "\fin_backup_files\" & $9 & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)
-_LogaInfo("~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")
-GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
-_LogaInfo("Updated Rational Expense Ratios")
-GUICtrlSetData($UpdateLabel, "Updated Rational Expense Ratios")
-FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)
+_119("~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")
+GUICtrlSetData($ox, "Updating Rational Expense Ratios")
+_119("Updated Rational Expense Ratios")
+GUICtrlSetData($ox, "Updated Rational Expense Ratios")
+FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $f & "\csv\" & $9 & "\Rational_ExpenseRatios.csv", 1)
 FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
 EndIf
-_Metro_SetProgress($ProgressBar, 100)
+_1dn($p4, 100)
 EndFunc
-Func CreateFactSheetArchive()
-Local $Zip, $myfile
-Local Const $sMessage = "Select Save Location"
-Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
+Func _1ey()
+Local $qp, $qq
+Local Const $qe = "Select Save Location"
+Local $qf = FileSelectFolder($qe, "")
 If @error Then
-_GUIDisable($Form1, 0, 50)
-_Metro_MsgBox(0, "Error", "No folder was selected.")
-_GUIDisable($Form1)
+_1ea($nq, 0, 50)
+_1dk(0, "Error", "No folder was selected.")
+_1ea($nq)
 Else
-$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip")
-_Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4)
-_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4)
-_GUIDisable($Form1, 0, 50)
-_Metro_MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip)
-_GUIDisable($Form1)
-_LogaInfo("Created Factsheet Archive at " & $Zip)
+$qp = _g5($qf & "\FactSheets_" & $7 & "-" & $8 & ".zip")
+_g7($qp, $f & "\fin_backup_files\", 4)
+_g7($qp, $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4)
+_1ea($nq, 0, 50)
+_1dk(0, "Items in Zip", "Succesfully added " & _gc($qp) & " items in " & $qp)
+_1ea($nq)
+_119("Created Factsheet Archive at " & $qp)
 EndIf
 EndFunc
