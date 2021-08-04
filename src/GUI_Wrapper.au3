@@ -1,7 +1,7 @@
 ; ===============================================================================================================================
-; Name ..........: MetroGUI UDF Example
-; Version .......: v5.1
-; Author ........: BB_19
+; Name ..........: GUI Wrapper for Autocharts
+; Version .......: v3.0
+; Author ........: oNevion
 ; ===============================================================================================================================
 
 ;!Highly recommended for improved overall performance and responsiveness of the GUI effects etc.! (after compiling):

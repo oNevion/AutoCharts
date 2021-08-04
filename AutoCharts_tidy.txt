@@ -251,217 +251,224 @@
 00247  |  |  |  |    				PullStrategySharesFundData()
 00248  |  |  |  +-			EndIf
 00249  |  |  |    
-00250  |  |  |    			FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")   ; grab .xlsx from current fund directory and move to /VBS_Scripts
-00251  |  |  |    			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
-00252  |  |  |    
-00253  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
-00254  |  |  |    
-00255  |  |  |    			_LogaInfo("Converted " & $CurrentFund & ".xlsx file to csv")     ; Write to the logfile
-00256  |  |  |    
-00257  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & ".xlsx file to csv")
-00258  |  |  |    
-00259  |  |  |  +-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
-00260  |  |  |  |    				RunCSVConvert4Institution()
-00261  |  |  |  +-			EndIf
-00262  |  |  |  +-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
-00263  |  |  |  |    				RunCSVConvert4Brochure()
-00264  |  |  |  +-			EndIf
-00265  |  |  |  +-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
-00266  |  |  |  |    				RunCSVConvert4Presentation()
-00267  |  |  |  +-			EndIf
-00268  |  |  |    
-00269  |  |  |    
-00270  |  |  |    
-00271  |  |  |    			_Metro_SetProgress($ProgressBar, 25)
-00272  |  |  |    
-00273  |  |  |    
-00274  |  |  |    
+00250  |  |  |  +-			If Not FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/") Then      ; grab .xlsx from current fund directory and move to /VBS_Scripts
+00251  |  |  |  |    				_GUIDisable($Form1, 0, 50)
+00252  |  |  |  |    				_Metro_MsgBox(0, "Error", "Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")
+00253  |  |  |  |    				_GUIDisable($Form1)
+00254  |  |  |  |    				_LogaError("Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")     ; Write to the logfile
+00255  |  |  |  |    
+00256  |  |  |  +-			EndIf
+00257  |  |  |    
+00258  |  |  |    			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+00259  |  |  |    
+00260  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
+00261  |  |  |    
+00262  |  |  |    			_LogaInfo("Converted " & $CurrentFund & ".xlsx file to csv")     ; Write to the logfile
+00263  |  |  |    
+00264  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & ".xlsx file to csv")
+00265  |  |  |    
+00266  |  |  |  +-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
+00267  |  |  |  |    				RunCSVConvert4Institution()
+00268  |  |  |  +-			EndIf
+00269  |  |  |  +-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
+00270  |  |  |  |    				RunCSVConvert4Brochure()
+00271  |  |  |  +-			EndIf
+00272  |  |  |  +-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+00273  |  |  |  |    				RunCSVConvert4Presentation()
+00274  |  |  |  +-			EndIf
 00275  |  |  |    
-00276  |  |  |    			FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
-00277  |  |  |    			FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
-00278  |  |  |    
-00279  |  |  |    			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox") ; Write to the logfile
-00280  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
-00281  |  |  |    			_Metro_SetProgress($ProgressBar, 30)
+00276  |  |  |    
+00277  |  |  |    
+00278  |  |  |    			_Metro_SetProgress($ProgressBar, 25)
+00279  |  |  |    
+00280  |  |  |    
+00281  |  |  |    
 00282  |  |  |    
-00283  |  |  |    
-00284  |  |  |    			FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")       ; deletes remaining .xlsx from conversion
-00285  |  |  |    			_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
-00286  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
-00287  |  |  |    			_Metro_SetProgress($ProgressBar, 55)
-00288  |  |  |    
-00289  |  |  +-		Else
-00290  |  ^--|----			ContinueLoop
-00291  |  |  +-		EndIf
-00292  |  |    
-00293  |  +-	Next
-00294  |    
-00295  +-EndFunc   ;==>RunCSVConvert
-00296    
-00297    
-00298  +-Func RunCSVConvert4Institution() ; Dynamically checks for funds with "-institutional.xlsx" files and converts those automatically as well.
-00299  |    
-00300  |    	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+00283  |  |  |    			FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+00284  |  |  |    			FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+00285  |  |  |    
+00286  |  |  |    			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox") ; Write to the logfile
+00287  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
+00288  |  |  |    			_Metro_SetProgress($ProgressBar, 30)
+00289  |  |  |    
+00290  |  |  |    
+00291  |  |  |    			FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")       ; deletes remaining .xlsx from conversion
+00292  |  |  |    			_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
+00293  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
+00294  |  |  |    			_Metro_SetProgress($ProgressBar, 55)
+00295  |  |  |    
+00296  |  |  +-		Else
+00297  |  ^--|----			ContinueLoop
+00298  |  |  +-		EndIf
+00299  |  |    
+00300  |  +-	Next
 00301  |    
-00302  |    	_LogaInfo("Converted " & $CurrentFund & "-institutional.xlsx file to csv")     ; Write to the logfile
-00303  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-institutional.xlsx file to csv")
-00304  |    
-00305  |    
-00306  +-EndFunc   ;==>RunCSVConvert4Institution
-00307    
-00308    
-00309    
-00310  +-Func RunCSVConvert4Brochure() ; Dynamically checks for funds with "-brochure.xlsx" files and converts those automatically as well.
+00302  +-EndFunc   ;==>RunCSVConvert
+00303    
+00304    
+00305  +-Func RunCSVConvert4Institution() ; Dynamically checks for funds with "-institutional.xlsx" files and converts those automatically as well.
+00306  |    
+00307  |    	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+00308  |    
+00309  |    	_LogaInfo("Converted " & $CurrentFund & "-institutional.xlsx file to csv")     ; Write to the logfile
+00310  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-institutional.xlsx file to csv")
 00311  |    
-00312  |    	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
-00313  |    
-00314  |    	_LogaInfo("Converted " & $CurrentFund & "-brochure.xlsx file to csv")     ; Write to the logfile
-00315  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-brochure.xlsx file to csv")
-00316  |    
-00317  |    
-00318  +-EndFunc   ;==>RunCSVConvert4Brochure
-00319    
-00320    
-00321  +-Func RunCSVConvert4Presentation() ; Dynamically checks for funds with "-brochure.xlsx" files and converts those automatically as well.
-00322  |    
-00323  |    	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+00312  |    
+00313  +-EndFunc   ;==>RunCSVConvert4Institution
+00314    
+00315    
+00316    
+00317  +-Func RunCSVConvert4Brochure() ; Dynamically checks for funds with "-brochure.xlsx" files and converts those automatically as well.
+00318  |    
+00319  |    	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+00320  |    
+00321  |    	_LogaInfo("Converted " & $CurrentFund & "-brochure.xlsx file to csv")     ; Write to the logfile
+00322  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-brochure.xlsx file to csv")
+00323  |    
 00324  |    
-00325  |    	_LogaInfo("Converted " & $CurrentFund & "-presentation.xlsx file to csv")     ; Write to the logfile
-00326  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-presentation.xlsx file to csv")
-00327  |    
-00328  |    
-00329  +-EndFunc   ;==>RunCSVConvert4Presentation
-00330    
-00331    
-00332    
-00333    
-00334  +-Func HTMLChartEditor() ; Edits index_TEMPLATE.html file to include current fund's chart .js file
-00335  |    	Local $file = @ScriptDir & "\assets\ChartBuilder\public\index_TEMPLATE.html"
-00336  |    	Local $text = FileRead($file)
-00337  |    
-00338  |    	$tout1 = StringReplace($text, '<script src="/scripts/CHANGEME.js"></script>', '<script src="/scripts/' & $CurrentFund & '.js"></script>')
-00339  |    	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\index.html", $tout1)
-00340  |    
-00341  |    	_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~") ; Write to the logfile
-00342  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~")
-00343  |    
-00344  |    	_LogaInfo("Created HTML file for " & $CurrentFund & " chart generation") ; Write to the logfile
-00345  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Created HTML file for " & $CurrentFund & " chart generation")
-00346  |    
-00347  |    	_LogaInfo("Initializing Local Server for amCharts") ; Write to the logfile
-00348  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Initializing Local Server for amCharts")
-00349  |    
+00325  +-EndFunc   ;==>RunCSVConvert4Brochure
+00326    
+00327    
+00328  +-Func RunCSVConvert4Presentation() ; Dynamically checks for funds with "-brochure.xlsx" files and converts those automatically as well.
+00329  |    
+00330  |    	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+00331  |    
+00332  |    	_LogaInfo("Converted " & $CurrentFund & "-presentation.xlsx file to csv")     ; Write to the logfile
+00333  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-presentation.xlsx file to csv")
+00334  |    
+00335  |    
+00336  +-EndFunc   ;==>RunCSVConvert4Presentation
+00337    
+00338    
+00339    
+00340    
+00341  +-Func HTMLChartEditor() ; Edits index_TEMPLATE.html file to include current fund's chart .js file
+00342  |    	Local $file = @ScriptDir & "\assets\ChartBuilder\public\index_TEMPLATE.html"
+00343  |    	Local $text = FileRead($file)
+00344  |    
+00345  |    	$tout1 = StringReplace($text, '<script src="/scripts/CHANGEME.js"></script>', '<script src="/scripts/' & $CurrentFund & '.js"></script>')
+00346  |    	FileWrite(@ScriptDir & "\assets\ChartBuilder\public\index.html", $tout1)
+00347  |    
+00348  |    	_LogaInfo("~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~") ; Write to the logfile
+00349  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CHART GENERATION START ~~~~~~~~~~~~")
 00350  |    
-00351  +-EndFunc   ;==>HTMLChartEditor
-00352    
-00353    
-00354    
-00355    
-00356  +-Func CreateCharts()
-00357  |  +-	For $a = 0 To (UBound($FamilySwitch) - 1)    ; Loops through FundFamily Array
-00358  |  |  +-		If $FamilySwitch[$a] <> "" Then
-00359  |  |  |    			$CurrentFund = $FamilySwitch[$a]
-00360  |  |  |    			Call("HTMLChartEditor")
-00361  |  |  |    			RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE) ;~ Runs local server to create current fund's amcharts svgs.
-00362  |  |  |    			;RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
-00363  |  |  |    			_Metro_SetProgress($ProgressBar, 70)
-00364  |  |  |    
-00365  |  |  |    			_LogaInfo($CurrentFund & " charts generated in SVG format using amCharts") ; Write to the logfile
-00366  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Charts generated in SVG format using amCharts")
-00367  |  |  |    
-00368  |  |  |    
-00369  |  |  |    			FileDelete(@ScriptDir & "\assets\ChartBuilder\public\index.html")  ; ~ Deletes index.html file that was created in Func HTMLChartEditor to keep from editing the same file.
-00370  |  |  |    			FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $DatabaseDir & "\images\charts\" & $FundFamily & "\" & $CurrentFund & "\*.svg", 1)   ; Move all .SVG to Database
-00371  |  |  |    			_Metro_SetProgress($ProgressBar, 92)
-00372  |  |  |    
-00373  |  |  |    			_LogaInfo($CurrentFund & " charts moved to the funds InDesign Links folder") ; Write to the logfile
-00374  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Charts moved to the funds InDesign Links folder")
+00351  |    	_LogaInfo("Created HTML file for " & $CurrentFund & " chart generation") ; Write to the logfile
+00352  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Created HTML file for " & $CurrentFund & " chart generation")
+00353  |    
+00354  |    	_LogaInfo("Initializing Local Server for amCharts") ; Write to the logfile
+00355  |    	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Initializing Local Server for amCharts")
+00356  |    
+00357  |    
+00358  +-EndFunc   ;==>HTMLChartEditor
+00359    
+00360    
+00361    
+00362    
+00363  +-Func CreateCharts()
+00364  |  +-	For $a = 0 To (UBound($FamilySwitch) - 1)    ; Loops through FundFamily Array
+00365  |  |  +-		If $FamilySwitch[$a] <> "" Then
+00366  |  |  |    			$CurrentFund = $FamilySwitch[$a]
+00367  |  |  |    			Call("HTMLChartEditor")
+00368  |  |  |    			RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE) ;~ Runs local server to create current fund's amcharts svgs.
+00369  |  |  |    			;RunWait(@ComSpec & " /c node server.js", @ScriptDir & "/assets/ChartBuilder/") ;~ Runs local server to create current fund's amcharts svgs.
+00370  |  |  |    			_Metro_SetProgress($ProgressBar, 70)
+00371  |  |  |    
+00372  |  |  |    			_LogaInfo($CurrentFund & " charts generated in SVG format using amCharts") ; Write to the logfile
+00373  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Charts generated in SVG format using amCharts")
+00374  |  |  |    
 00375  |  |  |    
-00376  |  |  |    
-00377  |  |  +-		Else
-00378  |  ^--|----			ContinueLoop
-00379  |  |  +-		EndIf
-00380  |  |    		_Metro_SetProgress($ProgressBar, 100)
-00381  |  |    
-00382  |  +-	Next
-00383  +-EndFunc   ;==>CreateCharts
-00384    
-00385  +-Func RunExpenseRatios()
-00386  |  +-	If $FundFamily = "Catalyst" Then
-00387  |  |    		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
-00388  |  |    		_Metro_SetProgress($ProgressBar, 60)
-00389  |  |    
-00390  |  |    		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Catalyst Data Directory
-00391  |  |    		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
-00392  |  |    
-00393  |  |    		_LogaInfo("~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")     ; Write to the logfile
+00376  |  |  |    			FileDelete(@ScriptDir & "\assets\ChartBuilder\public\index.html")  ; ~ Deletes index.html file that was created in Func HTMLChartEditor to keep from editing the same file.
+00377  |  |  |    			FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $DatabaseDir & "\images\charts\" & $FundFamily & "\" & $CurrentFund & "\*.svg", 1)   ; Move all .SVG to Database
+00378  |  |  |    			_Metro_SetProgress($ProgressBar, 92)
+00379  |  |  |    
+00380  |  |  |    			_LogaInfo($CurrentFund & " charts moved to the funds InDesign Links folder") ; Write to the logfile
+00381  |  |  |    			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Charts moved to the funds InDesign Links folder")
+00382  |  |  |    
+00383  |  |  |    
+00384  |  |  +-		Else
+00385  |  ^--|----			ContinueLoop
+00386  |  |  +-		EndIf
+00387  |  |    		_Metro_SetProgress($ProgressBar, 100)
+00388  |  |    
+00389  |  +-	Next
+00390  +-EndFunc   ;==>CreateCharts
+00391    
+00392  +-Func RunExpenseRatios()
+00393  |  +-	If $FundFamily = "Catalyst" Then
 00394  |  |    		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
-00395  |  |    
-00396  |  |    		_LogaInfo("Updated Catalyst Expense Ratios")         ; Write to the logfile
-00397  |  |    
-00398  |  |    		GUICtrlSetData($UpdateLabel, "Updated Catalyst Expense Ratios")
-00399  |  |    		FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
-00400  |  |    		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
-00401  |  |    
+00395  |  |    		_Metro_SetProgress($ProgressBar, 60)
+00396  |  |    
+00397  |  |    		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Catalyst Data Directory
+00398  |  |    		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+00399  |  |    
+00400  |  |    		_LogaInfo("~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")     ; Write to the logfile
+00401  |  |    		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
 00402  |  |    
-00403  |  +-	EndIf
-00404  |  +-	If $FundFamily = "Rational" Then
-00405  |  |    		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
-00406  |  |    		_Metro_SetProgress($ProgressBar, 60)
-00407  |  |    
-00408  |  |    		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Rational Data Directory
-00409  |  |    		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
-00410  |  |    
-00411  |  |    		_LogaInfo("~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")         ; Write to the logfile
+00403  |  |    		_LogaInfo("Updated Catalyst Expense Ratios")         ; Write to the logfile
+00404  |  |    
+00405  |  |    		GUICtrlSetData($UpdateLabel, "Updated Catalyst Expense Ratios")
+00406  |  |    		FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+00407  |  |    		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
+00408  |  |    
+00409  |  |    
+00410  |  +-	EndIf
+00411  |  +-	If $FundFamily = "Rational" Then
 00412  |  |    		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
-00413  |  |    
-00414  |  |    		_LogaInfo("Updated Rational Expense Ratios")         ; Write to the logfile
-00415  |  |    
-00416  |  |    		GUICtrlSetData($UpdateLabel, "Updated Rational Expense Ratios")
-00417  |  |    		FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
-00418  |  |    		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
-00419  |  |    
+00413  |  |    		_Metro_SetProgress($ProgressBar, 60)
+00414  |  |    
+00415  |  |    		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Rational Data Directory
+00416  |  |    		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+00417  |  |    
+00418  |  |    		_LogaInfo("~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")         ; Write to the logfile
+00419  |  |    		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
 00420  |  |    
-00421  |  +-	EndIf
-00422  |    
-00423  |    	_Metro_SetProgress($ProgressBar, 100)
-00424  |    
-00425  +-EndFunc   ;==>RunExpenseRatios
-00426    
-00427  +-Func CreateFactSheetArchive()
-00428  |    	Local $Zip, $myfile
+00421  |  |    		_LogaInfo("Updated Rational Expense Ratios")         ; Write to the logfile
+00422  |  |    
+00423  |  |    		GUICtrlSetData($UpdateLabel, "Updated Rational Expense Ratios")
+00424  |  |    		FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+00425  |  |    		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
+00426  |  |    
+00427  |  |    
+00428  |  +-	EndIf
 00429  |    
-00430  |    	; Create a constant variable in Local scope of the message to display in FileSelectFolder.
-00431  |    	Local Const $sMessage = "Select Save Location"
-00432  |    
-00433  |    	; Display an open dialog to select a file.
-00434  |    	Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
-00435  |  +-	If @error Then
-00436  |  |    		; Display the error message.
-00437  |  |    
-00438  |  |    		_GUIDisable($Form1, 0, 50)
-00439  |  |    		_Metro_MsgBox(0, "Error", "No folder was selected.")
-00440  |  |    		_GUIDisable($Form1)
-00441  |  |    
-00442  |  |    
-00443  |  +-	Else
-00444  |  |    		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
-00445  |  |    		_Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
-00446  |  |    		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
-00447  |  |    
-00448  |  |    		_GUIDisable($Form1, 0, 50)
-00449  |  |    		_Metro_MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip)
-00450  |  |    		_GUIDisable($Form1)
-00451  |  |    
-00452  |  |    		_LogaInfo("Created Factsheet Archive at " & $Zip) ; Write to the logfile
-00453  |  |    
-00454  |  +-	EndIf
-00455  |    
-00456  |    
-00457  +-EndFunc   ;==>CreateFactSheetArchive
-00458    
-00459    
-00460    #EndRegion ### Start Main Functions Region
+00430  |    	_Metro_SetProgress($ProgressBar, 100)
+00431  |    
+00432  +-EndFunc   ;==>RunExpenseRatios
+00433    
+00434  +-Func CreateFactSheetArchive()
+00435  |    	Local $Zip, $myfile
+00436  |    
+00437  |    	; Create a constant variable in Local scope of the message to display in FileSelectFolder.
+00438  |    	Local Const $sMessage = "Select Save Location"
+00439  |    
+00440  |    	; Display an open dialog to select a file.
+00441  |    	Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
+00442  |  +-	If @error Then
+00443  |  |    		; Display the error message.
+00444  |  |    
+00445  |  |    		_GUIDisable($Form1, 0, 50)
+00446  |  |    		_Metro_MsgBox(0, "Error", "No folder was selected.")
+00447  |  |    		_GUIDisable($Form1)
+00448  |  |    
+00449  |  |    
+00450  |  +-	Else
+00451  |  |    		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
+00452  |  |    		_Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
+00453  |  |    		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
+00454  |  |    
+00455  |  |    		_GUIDisable($Form1, 0, 50)
+00456  |  |    		_Metro_MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip)
+00457  |  |    		_GUIDisable($Form1)
+00458  |  |    
+00459  |  |    		_LogaInfo("Created Factsheet Archive at " & $Zip) ; Write to the logfile
+00460  |  |    
+00461  |  +-	EndIf
+00462  |    
+00463  |    
+00464  +-EndFunc   ;==>CreateFactSheetArchive
+00465    
+00466    
+00467    #EndRegion ### Start Main Functions Region
 
 ======================
 === xref reports =====
@@ -474,15 +481,15 @@ Function name             Row     Referenced at Row(s)
 CheckForSettingsMigrate   00114  00130
 CheckForUpdate            00122 
 ClearLog                  00209 
-CreateCharts              00356 
-CreateFactSheetArchive    00427 
+CreateCharts              00363 
+CreateFactSheetArchive    00434 
 DetermineDates            00135 
-HTMLChartEditor           00334  00360
+HTMLChartEditor           00341  00367
 RunCSVConvert             00227 
-RunCSVConvert4Brochure    00310  00263
-RunCSVConvert4Institution  00298  00260
-RunCSVConvert4Presentation  00321  00266
-RunExpenseRatios          00385 
+RunCSVConvert4Brochure    00317  00270
+RunCSVConvert4Institution  00305  00267
+RunCSVConvert4Presentation  00328  00273
+RunExpenseRatios          00392 
 
 #### indicates that this specific variable only occurs one time in the script.
 ---- indicates that this specific variable isn't declared with Dim/Local/Global/Const.
@@ -493,52 +500,52 @@ Variable name             Dim   Used in Row(s)
 $BTN_Cancel               ----- 00049
 $BTN_Save                 ----- 00048
 $BTN_SelectDBPath         ----- 00050
-$CSVDataDir               ----- 00061 00276
-$CurrentFund              ----- 00034 00231 00232 00235 00250 00251 00253 00255 00257 00259 00262 00265 00276 00277 
-                                00279 00280 00285 00286 00300 00302 00303 00312 00314 00315 00323 00325 00326 00338 
-                                00341 00342 00344 00345 00348 00359 00365 00366 00370 00373 00374
-$DatabaseDir              ----- 00063 00165 00166 00171 00175 00180 00185 00190 00195 00200 00201 00250 00259 00262 
-                                00265 00277 00370 00390 00399 00408 00417 00445
+$CSVDataDir               ----- 00061 00283
+$CurrentFund              ----- 00034 00231 00232 00235 00250 00252 00254 00258 00260 00262 00264 00266 00269 00272 
+                                00283 00284 00286 00287 00292 00293 00307 00309 00310 00319 00321 00322 00330 00332 
+                                00333 00345 00348 00349 00351 00352 00355 00366 00372 00373 00377 00380 00381
+$DatabaseDir              ----- 00063 00165 00166 00171 00175 00180 00185 00190 00195 00200 00201 00250 00252 00254 
+                                00266 00269 00272 00284 00377 00397 00406 00415 00424 00452
 $DayNumber                ----- 00139 00145 00149 00153 00157 00179 00184
-$DropboxDir               ----- 00062 00063 00446
-$FamilySwitch             ----- 00032 00229 00230 00231 00357 00358 00359
-$Form1                    ----- 00438 00440 00448 00450
+$DropboxDir               ----- 00062 00063 00453
+$FamilySwitch             ----- 00032 00229 00230 00231 00364 00365 00366
+$Form1                    ----- 00251 00253 00445 00447 00455 00457
 $Form6                    ----- 00213 00215 00218 00220
-$FundFamily               ----- 00039 00238 00242 00246 00250 00259 00262 00265 00276 00277 00370 00386 00390 00399 
-                                00404 00408 00417
+$FundFamily               ----- 00039 00238 00242 00246 00250 00252 00254 00266 00269 00272 00283 00284 00377 00393 
+                                00397 00406 00411 00415 00424
 $GUI_UserSettings         ----- 00046
-$INPT_CurYear             ----- 00038 00137 00163 00179 00184 00189 00194 00199 00444
+$INPT_CurYear             ----- 00038 00137 00163 00179 00184 00189 00194 00199 00451
 $INPT_DropboxFolder       ----- 00047
 $INPT_Name                ----- 00036
 $MB_SYSTEMMODAL           ----- 00214
 $MonthNumber              ----- 00140 00144 00148 00152 00156 00179 00199
-$ProgressBar              ----- 00233 00271 00281 00287 00363 00371 00380 00388 00406 00423
+$ProgressBar              ----- 00233 00278 00288 00294 00370 00378 00387 00395 00413 00430
 $QtrToMonth               ----- 00138 00143 00147 00151 00155 00184 00194
 $Radio_Q1                 ----- 00052
 $Radio_Q2                 ----- 00053
 $Radio_Q3                 ----- 00054
 $Radio_Q4                 ----- 00055
-$Select_Quarter           ----- 00037 00136 00142 00146 00150 00154 00163 00189 00444
+$Select_Quarter           ----- 00037 00136 00142 00146 00150 00154 00163 00189 00451
 $Select_Theme             ----- 00041
-$UpdateLabel              ----- 00232 00253 00257 00280 00286 00303 00315 00326 00342 00345 00348 00366 00374 00387 
-                                00394 00398 00405 00412 00416
-$Zip                      ----- 00428 00444 00445 00446 00449 00452
-$a                        ----- 00229 00230 00231 00357 00358 00359
+$UpdateLabel              ----- 00232 00260 00264 00287 00293 00310 00322 00333 00349 00352 00355 00373 00381 00394 
+                                00401 00405 00412 00419 00423
+$Zip                      ----- 00435 00451 00452 00453 00456 00459
+$a                        ----- 00229 00230 00231 00364 00365 00366
 $aCatalystCheck           ----- 00028
 $aRationalCheck           ----- 00029
 $aStrategyCheck           ----- 00030
 $bDBVerified              ----- 00040
-$file                     ----- 00171 00172 00177 00182 00187 00192 00197 00335 00336
+$file                     ----- 00171 00172 00177 00182 00187 00192 00197 00342 00343
 $ini                      ----- 00035 00036 00037 00038 00040 00041 00062 00136 00137
-$myfile                   ----- 00428
-$sFileSelectFolder        ----- 00434 00444
-$sMessage                 ----- 00431 00434
-$text                     ----- 00172 00174 00177 00179 00182 00184 00187 00189 00192 00194 00197 00199 00336 00338
-$tout1                    ----- 00174 00175 00179 00180 00184 00185 00189 00190 00194 00195 00199 00200 00338 00339
+$myfile                   ----- 00435
+$sFileSelectFolder        ----- 00441 00451
+$sMessage                 ----- 00438 00441
+$text                     ----- 00172 00174 00177 00179 00182 00184 00187 00189 00192 00194 00197 00199 00343 00345
+$tout1                    ----- 00174 00175 00179 00180 00184 00185 00189 00190 00194 00195 00199 00200 00345 00346
 @CRLF                     ----- 00118 00174 00179 00184 00189 00194
-@ComSpec                  ----- 00251 00300 00312 00323 00361 00391 00409
-@SW_HIDE                  ----- 00251 00300 00312 00323 00361 00391 00409
-@ScriptDir                ----- 00115 00116 00123 00210 00211 00250 00251 00276 00277 00284 00300 00312 00323 00335 
-                                00339 00361 00369 00370 00390 00391 00399 00400 00408 00409 00417 00418
-@TempDir                  ----- 00251 00300 00312 00323 00391 00409
-@error                    ----- 00212 00217 00435
+@ComSpec                  ----- 00258 00307 00319 00330 00368 00398 00416
+@SW_HIDE                  ----- 00258 00307 00319 00330 00368 00398 00416
+@ScriptDir                ----- 00115 00116 00123 00210 00211 00250 00258 00283 00284 00291 00307 00319 00330 00342 
+                                00346 00368 00376 00377 00397 00398 00406 00407 00415 00416 00424 00425
+@TempDir                  ----- 00258 00307 00319 00330 00398 00416
+@error                    ----- 00212 00217 00442

@@ -247,7 +247,14 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 				PullStrategySharesFundData()
 			EndIf
 
-			FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/")   ; grab .xlsx from current fund directory and move to /VBS_Scripts
+			If Not FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/") Then      ; grab .xlsx from current fund directory and move to /VBS_Scripts
+				_GUIDisable($Form1, 0, 50)
+				_Metro_MsgBox(0, "Error", "Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")
+				_GUIDisable($Form1)
+				_LogaError("Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")     ; Write to the logfile
+
+			EndIf
+
 			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
