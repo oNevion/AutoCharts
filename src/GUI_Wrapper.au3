@@ -70,8 +70,8 @@ Func OpenMainGUI()
 	_Metro_AddHSeperator(50, 570, 440, 1)
 
 
-	Local $BTN_Settings = _Metro_CreateButton("Settings", 50, 600, 100, 40, 0xcccccc, $ButtonBKColor)
-	Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xcccccc, $ButtonBKColor)
+	Local $BTN_Settings = _Metro_CreateButton("Settings", 50, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
+	Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 
 
 	Local $Label_Version = GUICtrlCreateLabel("v3.0.0", 450, 620, 50, 50, $SS_RIGHT)
@@ -111,7 +111,6 @@ Func OpenMainGUI()
 						CreateFactSheetArchive()
 					Case "1"
 						_GUIDisable($Form1, 0, 50)
-
 						_SettingsGUI()
 						_GUIDisable($Form1)
 
@@ -210,7 +209,7 @@ Func _CatalystFundsGUI()
 
 
 	Global $BTN_RunCatalyst = _Metro_CreateButton("Process Updates", 50, 550, 210, 40)
-	Global $BTN_Catalyst_UpdateExpenseRatio = _Metro_CreateButton("Update Expense Ratios", 280, 550, 210, 40, 0xcccccc, $ButtonBKColor)
+	Global $BTN_Catalyst_UpdateExpenseRatio = _Metro_CreateButtonEx("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 	Local $BTN_Back = _Metro_AddControlButton_Back()
 	Global $ProgressBar = _Metro_CreateProgress(50, 500, 440, 26)
 
@@ -573,7 +572,7 @@ Func _RationalFundsGUI()
 
 
 	Local $BTN_RunRational = _Metro_CreateButton("Process Updates", 50, 550, 210, 40)
-	Local $BTN_Rational_UpdateExpenseRatio = _Metro_CreateButton("Update Expense Ratios", 280, 550, 210, 40, 0xcccccc, $ButtonBKColor)
+	Local $BTN_Rational_UpdateExpenseRatio = _Metro_CreateButton("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 	Local $BTN_Back = _Metro_AddControlButton_Back()
 	Global $ProgressBar = _Metro_CreateProgress(50, 500, 440, 26)
 
@@ -958,7 +957,7 @@ Func _SettingsGUI()
 
 
 	Local $BTN_Save = _Metro_CreateButton("Save Settings", 50, 550, 210, 40)
-	Local $BTN_Cancel = _Metro_CreateButton("Cancel", 280, 550, 210, 40, 0xcccccc, $ButtonBKColor)
+	Local $BTN_Cancel = _Metro_CreateButton("Cancel", 280, 550, 210, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 
 	Local $BTN_Back = _Metro_AddControlButton_Back()
 
@@ -1162,7 +1161,7 @@ EndFunc   ;==>_HelpGUI
 
 Func _SyncGUI()
 
-	Local $Form7 = _Metro_CreateGUI("AutoCharts Sync Options", 540, 500, -1, -1, False, $Form1)
+	Global $Form7 = _Metro_CreateGUI("AutoCharts Sync Options", 540, 500, -1, -1, False, $Form1)
 	;Add control buttons
 	Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
 	Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
@@ -1179,10 +1178,8 @@ Func _SyncGUI()
 	GUICtrlSetColor(-1, $FontThemeColor)
 	GUICtrlSetFont(-1, 12, 400, 0, "Segoe UI")
 
-
-
-	Local $BTN_UploadAMCharts = _Metro_CreateButton("Upload amCharts to Database", 50, 280, 440, 40, 0xcccccc, $ButtonBKColor)
-	Local $BTN_UploadDatalinker = _Metro_CreateButton("Upload DataLinker to Database", 50, 340, 440, 40, 0xcccccc, $ButtonBKColor)
+	Local $BTN_UploadAMCharts = _Metro_CreateButton("Upload amCharts to Database", 50, 280, 440, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
+	Local $BTN_UploadDatalinker = _Metro_CreateButton("Upload DataLinker to Database", 50, 340, 440, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 
 	Local $BTN_Back = _Metro_AddControlButton_Back()
 
