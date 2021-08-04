@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Description=AutoCharts 3.0.0
-#AutoIt3Wrapper_Res_Fileversion=3.0.0
+#AutoIt3Wrapper_Res_Fileversion=3.0.0.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
 #AutoIt3Wrapper_Res_ProductVersion=3.0.0
@@ -17,6 +17,7 @@
 #AutoIt3Wrapper_AU3Check_Stop_OnWarning=y
 #AutoIt3Wrapper_AU3Check_Parameters=-w 1 -v 1
 #AutoIt3Wrapper_Run_Tidy=y
+#Tidy_Parameters=/gd
 #AutoIt3Wrapper_Run_Au3Stripper=y
 #Au3Stripper_Parameters=/tl
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -95,18 +96,20 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 #include "src/Database_Sync.au3"
 
 ;-------------------------------------------------------------------------------
+; Main program that houses all GUI events and controls
+;
+; This is the entry point to the GUI Wrapper code.
+;-------------------------------------------------------------------------------
+#include "src/GUI_Wrapper.au3"
+
+;-------------------------------------------------------------------------------
 ; Main program that manages DataLinker Functions
 ;
 ; This is the entry point to the DataLinker code.
 ;-------------------------------------------------------------------------------
 #include "src/DataLinker_Func.au3"
 
-;-------------------------------------------------------------------------------
-; Main program that houses all GUI events and controls
-;
-; This is the entry point to the GUI Wrapper code.
-;-------------------------------------------------------------------------------
-#include "src/GUI_Wrapper.au3"
+
 
 Func CheckForSettingsMigrate()
 	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
@@ -153,7 +156,8 @@ Func DetermineDates()
 		$MonthNumber = "12"
 		$DayNumber = "31"
 	Else
-		MsgBox(0, "Error!", "A quarter has not been selected in the settings tab.")
+		_Metro_MsgBox(0, "Error!", "A quarter has not been selected in the settings tab.")
+
 	EndIf
 
 	_LogaInfo("Determined quarter to be ~" & $Select_Quarter & "~ and current year to be ~" & $INPT_CurYear & "~") ; Write to the logfile
