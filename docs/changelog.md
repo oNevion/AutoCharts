@@ -1,7 +1,18 @@
 # Changelog
 
-## 2.4.9
+## 3.0.0
 ### Current Release
+
+*August 04, 2021*
+
+* New "Metro" UI Style with 4 user selectable themes
+* Data sync validation added when running VBS script that splits .xlsx files to .csv
+* Various updates to fund charts for Q2 2021
+* GUI functions and variables now separated from main code
+* Support for multiple child GUI's added for better program development
+* GUI is now resizable, but very janky
+
+## 2.4.9
 
 *July 12, 2021*
 

@@ -2,7 +2,7 @@
 
 ![logo](img/icon.svg)
 
-# AutoCharts <small>v2.4.9</small>
+# AutoCharts <small>v3.0.0</small>
 
 > A magical quarterly marketing updater.
 
