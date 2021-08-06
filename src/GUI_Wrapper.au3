@@ -1,6 +1,6 @@
 ; ===============================================================================================================================
 ; Name ..........: GUI Wrapper for Autocharts
-; Version .......: v3.0
+; Version .......: v3.1
 ; Author ........: oNevion
 ; ===============================================================================================================================
 
@@ -56,7 +56,7 @@ Func OpenMainGUI()
 
 	$Pic1 = GUICtrlCreatePic(@ScriptDir & "\assets\GUI_Menus\main-img.bmp", 0, 35, 540, 158, BitOR($GUI_SS_DEFAULT_PIC, $SS_CENTERIMAGE))
 
-	_Metro_AddHSeperator(50, 240, 440, 1)
+	$HSeperator1 = _Metro_AddHSeperator(50, 240, 440, 1)
 
 	Local $Label_Main = GUICtrlCreateLabel("Please Select a Fund Family", 50, 275, 440, 50)
 	GUICtrlSetColor(-1, $FontThemeColor)
@@ -67,7 +67,7 @@ Func OpenMainGUI()
 	$TAB_Rational = _Metro_CreateButton("Rational Funds", 200, 350, 140, 40)
 	$TAB_StrategyShares = _Metro_CreateButton("Strategy Shares", 350, 350, 140, 40)
 
-	_Metro_AddHSeperator(50, 570, 440, 1)
+	$HSeperator2 = _Metro_AddHSeperator(50, 570, 440, 1)
 
 
 	Local $BTN_Settings = _Metro_CreateButton("Settings", 50, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
@@ -80,9 +80,16 @@ Func OpenMainGUI()
 
 
 	;Set resizing options for the controls so they don't change in size or position. This can be customized to match your gui perfectly for resizing. See AutoIt Help file.
+	GUICtrlSetResizing($Pic1, 768 + 8)
+	GUICtrlSetResizing($HSeperator1, 768 + 8)
 	GUICtrlSetResizing($TAB_Catalyst, 768 + 8)
 	GUICtrlSetResizing($TAB_Rational, 768 + 8)
 	GUICtrlSetResizing($TAB_StrategyShares, 768 + 8)
+	GUICtrlSetResizing($HSeperator2, 768 + 8)
+	GUICtrlSetResizing($BTN_Settings, 768 + 8)
+	GUICtrlSetResizing($BTN_About, 768 + 8)
+	GUICtrlSetResizing($Label_Version, 768 + 8)
+	GUICtrlSetResizing($Label_Main, 768 + 8)
 
 	GUISetState(@SW_SHOW)
 
@@ -213,9 +220,6 @@ Func _CatalystFundsGUI()
 	Local $BTN_Back = _Metro_AddControlButton_Back()
 	Global $ProgressBar = _Metro_CreateProgress(50, 500, 440, 26)
 
-
-	GUICtrlSetResizing($BTN_RunCatalyst, 768 + 8)
-	GUICtrlSetResizing($ACX, 768 + 8)
 	GUISetState(@SW_SHOW)
 
 	While 1
@@ -555,9 +559,10 @@ Func _RationalFundsGUI()
 	Local $HDC = _Metro_CreateToggle("HDC", 50, 120, 130, 30)
 	Local $HRS = _Metro_CreateToggle("HRS", 50, 170, 130, 30)
 	Local $HSU = _Metro_CreateToggle("HSU", 50, 220, 130, 30)
-	Local $PBX = _Metro_CreateToggle("PBX", 50, 270, 130, 30)
-	Local $RDM = _Metro_CreateToggle("RDM", 50, 320, 130, 30)
-	Local $RFX = _Metro_CreateToggle("RFX", 50, 370, 130, 30)
+	Local $IGO = _Metro_CreateToggle("IGO", 50, 270, 130, 30)
+	Local $PBX = _Metro_CreateToggle("PBX", 50, 320, 130, 30)
+	Local $RDM = _Metro_CreateToggle("RDM", 50, 370, 130, 30)
+	Local $RFX = _Metro_CreateToggle("RFX", 220, 70, 130, 30)
 	Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
 
 	Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
@@ -576,9 +581,6 @@ Func _RationalFundsGUI()
 	Local $BTN_Back = _Metro_AddControlButton_Back()
 	Global $ProgressBar = _Metro_CreateProgress(50, 500, 440, 26)
 
-
-	GUICtrlSetResizing($BTN_RunRational, 768 + 8)
-	GUICtrlSetResizing($HBA, 768 + 8)
 	GUISetState(@SW_SHOW)
 
 	While 1
@@ -632,37 +634,48 @@ Func _RationalFundsGUI()
 					ConsoleWrite($aRationalCheck[3] & " Toggle checked!" & @CRLF)
 				EndIf
 
-			Case $PBX
-				If _Metro_ToggleIsChecked($PBX) Then
-					_Metro_ToggleUnCheck($PBX)
+			Case $IGO
+				If _Metro_ToggleIsChecked($IGO) Then
+					_Metro_ToggleUnCheck($IGO)
 					$aRationalCheck[4] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
 					ConsoleWrite("Toggle unchecked!" & @CRLF)
 				Else
-					_Metro_ToggleCheck($PBX)
-					$aRationalCheck[4] = "PBX" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+					_Metro_ToggleCheck($IGO)
+					$aRationalCheck[4] = "IGO" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
 					ConsoleWrite($aRationalCheck[4] & " Toggle checked!" & @CRLF)
+				EndIf
+
+			Case $PBX
+				If _Metro_ToggleIsChecked($PBX) Then
+					_Metro_ToggleUnCheck($PBX)
+					$aRationalCheck[5] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
+					ConsoleWrite("Toggle unchecked!" & @CRLF)
+				Else
+					_Metro_ToggleCheck($PBX)
+					$aRationalCheck[5] = "PBX" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+					ConsoleWrite($aRationalCheck[5] & " Toggle checked!" & @CRLF)
 				EndIf
 
 			Case $RDM
 				If _Metro_ToggleIsChecked($RDM) Then
 					_Metro_ToggleUnCheck($RDM)
-					$aRationalCheck[5] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
+					$aRationalCheck[6] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
 					ConsoleWrite("Toggle unchecked!" & @CRLF)
 				Else
 					_Metro_ToggleCheck($RDM)
-					$aRationalCheck[5] = "RDM" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
-					ConsoleWrite($aRationalCheck[5] & " Toggle checked!" & @CRLF)
+					$aRationalCheck[6] = "RDM" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+					ConsoleWrite($aRationalCheck[6] & " Toggle checked!" & @CRLF)
 				EndIf
 
 			Case $RFX
 				If _Metro_ToggleIsChecked($RFX) Then
 					_Metro_ToggleUnCheck($RFX)
-					$aRationalCheck[6] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
+					$aRationalCheck[7] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
 					ConsoleWrite("Toggle unchecked!" & @CRLF)
 				Else
 					_Metro_ToggleCheck($RFX)
-					$aRationalCheck[6] = "RFX" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
-					ConsoleWrite($aRationalCheck[6] & " Toggle checked!" & @CRLF)
+					$aRationalCheck[7] = "RFX" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+					ConsoleWrite($aRationalCheck[7] & " Toggle checked!" & @CRLF)
 				EndIf
 
 			Case $CB_FactSheet
@@ -770,9 +783,6 @@ Func _StrategySharesFundsGUI()
 	Local $BTN_Back = _Metro_AddControlButton_Back()
 	Global $ProgressBar = _Metro_CreateProgress(50, 500, 440, 26)
 
-
-	GUICtrlSetResizing($BTN_RunStrategyShares, 768 + 8)
-	GUICtrlSetResizing($GLDB, 768 + 8)
 	GUISetState(@SW_SHOW)
 
 	While 1
