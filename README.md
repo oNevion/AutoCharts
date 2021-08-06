@@ -18,7 +18,7 @@ Please make sure Smart Sync for Dropbox is set to "Local" for the following fold
 
 `Dropbox Root > Marketing Team Files > Marketing Materials > AutoCharts&Tables`
 
-![alt](/img/smartsync.gif) 
+![alt](/docs/img/smartsync.gif) 
 
 [Click here for more information on Dropbox's Smart Sync](https://help.dropbox.com/installs-integrations/sync-uploads/smart-sync)
 
@@ -35,19 +35,19 @@ Use the installer file here:
 
 `Main Menu > Settings` or by clicking the `Settings` button in the bottom right.
 
-![alt](/img/autocharts1.gif)  
+![alt](/docs/img/autocharts1.gif)  
 
 * After you have updated a backup file for a fund in Dropbox, you should sync Dropbox with AutoCharts. To do this, simply select "Pull Data from Dropbox" under the "Sync Options" menu.  
 
 `Main Menu > Sync Options > Pull Data from Dropbox`
 
-![alt](/img/autocharts2.gif)  
+![alt](/docs/img/autocharts2.gif)  
 
 ?> **Tip |** As of v2.2.0, you may skip the above step as AutoCharts will automatically sync with Dropbox when you press the "Process Updates" button
 
 * Lastly, to update a fund, just select the fund family and then the fund and click "Process Updates"
 
-![alt](/img/autocharts3.gif)  
+![alt](/docs/img/autocharts3.gif)  
 
 ## Requests and Future Development
 AutoCharts is still in active development and more features will be coming soon. 
