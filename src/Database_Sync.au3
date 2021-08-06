@@ -3,7 +3,7 @@
 ; Name:    			Database Sync
 ; Description:      Dropbox Database Sync for AutoCharts
 ; Author(s):        oNevion
-; Version:          v0.5
+; Version:          v0.6
 ;
 ;===============================================================================
 
@@ -52,13 +52,13 @@ Func SyncronizeDataFiles()
 	$destination = $DatabaseDir & "\fin_backup_files"
 	$timer = TimerInit()
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "")
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 
 	$source = $DatabaseDir & "\fin_backup_files"
 	$destination = @ScriptDir & $CSVDataDir
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 
 	_LogaInfo("Synced Dropbox data with Autocharts Data") ; Write to the logfile
@@ -66,7 +66,7 @@ Func SyncronizeDataFiles()
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
 
@@ -92,19 +92,19 @@ Func PullCatalystData()
 	$destination = $DatabaseDir & "\fin_backup_files\Catalyst"
 	;Local $timer = TimerInit()
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	$source = $DatabaseDir & "\fin_backup_files\Catalyst"
 	$destination = @ScriptDir & $CSVDataDir & "\Catalyst"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Pulled All Catalyst Data from Dropbox") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
 
@@ -128,19 +128,19 @@ Func PullCatalystFundData()
 	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $CurrentFund & "\"
 	$destination = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	$source = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
 	$destination = @ScriptDir & $CSVDataDir & "\Catalyst\" & $CurrentFund & "\"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
 
@@ -162,19 +162,19 @@ Func PullRationalData()
 	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\"
 	$destination = $DatabaseDir & "\fin_backup_files\Rational\"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	$source = $DatabaseDir & "\fin_backup_files\Rational\"
 	$destination = @ScriptDir & $CSVDataDir & "\Rational\"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Pulled Rational Data from Dropbox") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 
 	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
@@ -197,19 +197,19 @@ Func PullRationalFundData()
 	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $CurrentFund & "\"
 	$destination = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	$source = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
 	$destination = @ScriptDir & $CSVDataDir & "\Rational\" & $CurrentFund & "\"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
 
@@ -232,19 +232,19 @@ Func PullStrategySharesFundData()
 	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $CurrentFund & "\"
 	$destination = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	$source = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
 	$destination = @ScriptDir & $CSVDataDir & "\StrategyShares\" & $CurrentFund & "\"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
 
@@ -262,10 +262,10 @@ EndFunc   ;==>PullStrategySharesFundData
 Func UploadamCharts()
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	$source = "C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\ChartBuilder\public\scripts"
+	$source = "C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\ChartBuilder\public\scripts\"
 	$destination = $DatabaseDir & "\amCharts"
 
-	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 	SplashOff()
 
