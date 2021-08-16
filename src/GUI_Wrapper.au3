@@ -74,7 +74,7 @@ Func OpenMainGUI()
 	Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 
 
-	Local $Label_Version = GUICtrlCreateLabel("v3.0.0", 450, 620, 50, 50, $SS_RIGHT)
+	Local $Label_Version = GUICtrlCreateLabel("v3.1.0", 450, 620, 50, 50, $SS_RIGHT)
 	GUICtrlSetColor(-1, $FontThemeColor)
 	GUICtrlSetFont(-1, 15, 400, 0, "Segoe UI")
 

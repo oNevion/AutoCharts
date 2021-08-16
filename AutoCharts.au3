@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Description=AutoCharts 3.1.0
-#AutoIt3Wrapper_Res_Fileversion=3.1.0.0
+#AutoIt3Wrapper_Res_Fileversion=3.1.0.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
 #AutoIt3Wrapper_Res_ProductVersion=3.1.0

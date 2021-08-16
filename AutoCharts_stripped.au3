@@ -1471,14 +1471,14 @@ SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-
 $ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files"
 $aj = $f & "\fin_backup_files"
 $ak = TimerInit()
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "")
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $ai = $f & "\fin_backup_files"
 $aj = @ScriptDir & $d
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Synced Dropbox data with Autocharts Data")
 $ai = $f & "\amCharts"
 $aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
@@ -1486,14 +1486,14 @@ Func _128()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 $ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst"
 $aj = $f & "\fin_backup_files\Catalyst"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $ai = $f & "\fin_backup_files\Catalyst"
 $aj = @ScriptDir & $d & "\Catalyst"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Pulled All Catalyst Data from Dropbox")
 $ai = $f & "\amCharts"
 $aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
@@ -1501,14 +1501,14 @@ Func _129()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 $ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $4 & "\"
 $aj = $f & "\fin_backup_files\Catalyst\" & $4 & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $ai = $f & "\fin_backup_files\Catalyst\" & $4 & "\"
 $aj = @ScriptDir & $d & "\Catalyst\" & $4 & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Pulled " & $4 & " Data from Dropbox")
 $ai = $f & "\amCharts"
 $aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
@@ -1516,14 +1516,14 @@ Func _12a()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 $ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\"
 $aj = $f & "\fin_backup_files\Rational\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $ai = $f & "\fin_backup_files\Rational\"
 $aj = @ScriptDir & $d & "\Rational\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Pulled Rational Data from Dropbox")
 $ai = $f & "\amCharts"
 $aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
@@ -1531,14 +1531,14 @@ Func _12b()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 $ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $4 & "\"
 $aj = $f & "\fin_backup_files\Rational\" & $4 & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $ai = $f & "\fin_backup_files\Rational\" & $4 & "\"
 $aj = @ScriptDir & $d & "\Rational\" & $4 & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Pulled " & $4 & " Data from Dropbox")
 $ai = $f & "\amCharts"
 $aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
@@ -1546,22 +1546,22 @@ Func _12c()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 $ai = $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $4 & "\"
 $aj = $f & "\fin_backup_files\StrategyShares\" & $4 & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $ai = $f & "\fin_backup_files\StrategyShares\" & $4 & "\"
 $aj = @ScriptDir & $d & "\StrategyShares\" & $4 & "\"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Pulled " & $4 & " Data from Dropbox")
 $ai = $f & "\amCharts"
 $aj = @ScriptDir & "\assets\ChartBuilder\public\scripts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 _119("Downloaded amChart Scripts from Database")
 SplashOff()
 EndFunc
 Func _12d()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$ai = "C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\ChartBuilder\public\scripts"
+$ai = "C:\Users\mrjak\Documents\GitHub\AutoCharts\assets\ChartBuilder\public\scripts\"
 $aj = $f & "\amCharts"
-RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J", "", @SW_HIDE)
+RunWait(@ComSpec & " /c " & "xcopy " & '"' & $ai & '"' & ' "' & $aj & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 SplashOff()
 _119("Uploaded amCharts Scripts to Database")
 EndFunc
@@ -4562,22 +4562,29 @@ $nv = $gz[4]
 $nw = $gz[5]
 $nx = $gz[6]
 $ny = GUICtrlCreatePic(@ScriptDir & "\assets\GUI_Menus\main-img.bmp", 0, 35, 540, 158, BitOR(0x0100, 0x0200))
-_1do(50, 240, 440, 1)
-Local $nz = GUICtrlCreateLabel("Please Select a Fund Family", 50, 275, 440, 50)
+$nz = _1do(50, 240, 440, 1)
+Local $o0 = GUICtrlCreateLabel("Please Select a Fund Family", 50, 275, 440, 50)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 20, 400, 0, "Segoe UI")
-$o0 = _1cw("Catalyst Funds", 50, 350, 140, 40)
-$o1 = _1cw("Rational Funds", 200, 350, 140, 40)
-$o2 = _1cw("Strategy Shares", 350, 350, 140, 40)
-_1do(50, 570, 440, 1)
-Local $o3 = _1cw("Settings", 50, 600, 100, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
-Local $o4 = _1cw("About", 170, 600, 100, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
-Local $o5 = GUICtrlCreateLabel("v3.0.0", 450, 620, 50, 50, 0x2)
+$o1 = _1cw("Catalyst Funds", 50, 350, 140, 40)
+$o2 = _1cw("Rational Funds", 200, 350, 140, 40)
+$o3 = _1cw("Strategy Shares", 350, 350, 140, 40)
+$o4 = _1do(50, 570, 440, 1)
+Local $o5 = _1cw("Settings", 50, 600, 100, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $o6 = _1cw("About", 170, 600, 100, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $o7 = GUICtrlCreateLabel("v3.1.0", 450, 620, 50, 50, 0x2)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 15, 400, 0, "Segoe UI")
-GUICtrlSetResizing($o0, 768 + 8)
+GUICtrlSetResizing($ny, 768 + 8)
+GUICtrlSetResizing($nz, 768 + 8)
 GUICtrlSetResizing($o1, 768 + 8)
 GUICtrlSetResizing($o2, 768 + 8)
+GUICtrlSetResizing($o3, 768 + 8)
+GUICtrlSetResizing($o4, 768 + 8)
+GUICtrlSetResizing($o5, 768 + 8)
+GUICtrlSetResizing($o6, 768 + 8)
+GUICtrlSetResizing($o7, 768 + 8)
+GUICtrlSetResizing($o0, 768 + 8)
 GUISetState(@SW_SHOW)
 While 1
 $kz = GUIGetMsg()
@@ -4594,9 +4601,9 @@ GUISetState(@SW_RESTORE, $nq)
 Case $nv, $nw
 ConsoleWrite("Fullscreen toggled" & @CRLF)
 Case $nx
-Local $o6[5] = ["Archive Factsheets", "Settings", "Sync Options", "Help", "Exit"]
-Local $o7 = _1cs($nq, 150, $o6)
-Switch $o7
+Local $o8[5] = ["Archive Factsheets", "Settings", "Sync Options", "Help", "Exit"]
+Local $o9 = _1cs($nq, 150, $o8)
+Switch $o9
 Case "0"
 _1ey()
 Case "1"
@@ -4615,299 +4622,281 @@ Case "4"
 _1cm($nq)
 Exit
 EndSwitch
-Case $o0
+Case $o1
 _1ea($nq, 0, 50)
 _1ed()
 _1ea($nq)
-Case $o1
+Case $o2
 _1ea($nq, 0, 50)
 _1ee()
 _1ea($nq)
-Case $o2
+Case $o3
 _1ea($nq, 0, 50)
 _1ef()
 _1ea($nq)
-Case $o3
+Case $o5
 _1ea($nq, 0, 50)
 _1eg()
 _1ea($nq)
-Case $o4
+Case $o6
 ShellExecute("https://onevion.github.io/AutoCharts/")
 EndSwitch
 WEnd
 EndFunc
 Func _1ed()
-Local $o8 = _1ck("Catalyst Funds GUI", 540, 620, -1, -1, False, $nq)
-Local $o9 = _1cn(True, False, False, False)
-Local $nr = $o9[0]
-Local $oa = _1d1("ACX", 50, 70, 130, 30)
-Local $ob = _1d1("ATR", 50, 120, 130, 30)
-Local $oc = _1d1("BUY", 50, 170, 130, 30)
-Local $od = _1d1("CAX", 50, 220, 130, 30)
-Local $oe = _1d1("CFR", 50, 270, 130, 30)
-Local $of = _1d1("CLP", 50, 320, 130, 30)
-Local $og = _1d1("CLT", 50, 370, 130, 30)
-Local $oh = _1dp(180, 85, 300, 1)
-Local $oi = _1d1("CPE", 220, 70, 130, 30)
-Local $oj = _1d1("CWX", 220, 120, 130, 30)
-Local $ok = _1d1("DCX", 220, 170, 130, 30)
-Local $ol = _1d1("EIX", 220, 220, 130, 30)
-Local $om = _1d1("HII", 220, 270, 130, 30)
-Local $on = _1d1("IIX", 220, 320, 130, 30)
-Local $oo = _1d1("INS", 220, 370, 130, 30)
-Local $op = _1dp(350, 85, 300, 1)
-Local $oq = _1d1("IOX", 390, 70, 130, 30)
-Local $or = _1d1("MBX", 390, 120, 130, 30)
-Local $os = _1d1("MLX", 390, 170, 130, 30)
-Local $ot = _1d1("SHI", 390, 220, 130, 30)
-Local $ou = _1d1("TEZ", 390, 270, 130, 30)
-Local $ov = _1d1("TRI", 390, 320, 130, 30)
-Local $ow = _1d1("TRX", 390, 370, 130, 30)
-Global $ox = GUICtrlCreateLabel("", 50, 420, 440, 20)
+Local $oa = _1ck("Catalyst Funds GUI", 540, 620, -1, -1, False, $nq)
+Local $ob = _1cn(True, False, False, False)
+Local $nr = $ob[0]
+Local $oc = _1d1("ACX", 50, 70, 130, 30)
+Local $od = _1d1("ATR", 50, 120, 130, 30)
+Local $oe = _1d1("BUY", 50, 170, 130, 30)
+Local $of = _1d1("CAX", 50, 220, 130, 30)
+Local $og = _1d1("CFR", 50, 270, 130, 30)
+Local $oh = _1d1("CLP", 50, 320, 130, 30)
+Local $oi = _1d1("CLT", 50, 370, 130, 30)
+Local $oj = _1dp(180, 85, 300, 1)
+Local $ok = _1d1("CPE", 220, 70, 130, 30)
+Local $ol = _1d1("CWX", 220, 120, 130, 30)
+Local $om = _1d1("DCX", 220, 170, 130, 30)
+Local $on = _1d1("EIX", 220, 220, 130, 30)
+Local $oo = _1d1("HII", 220, 270, 130, 30)
+Local $op = _1d1("IIX", 220, 320, 130, 30)
+Local $oq = _1d1("INS", 220, 370, 130, 30)
+Local $or = _1dp(350, 85, 300, 1)
+Local $os = _1d1("IOX", 390, 70, 130, 30)
+Local $ot = _1d1("MBX", 390, 120, 130, 30)
+Local $ou = _1d1("MLX", 390, 170, 130, 30)
+Local $ov = _1d1("SHI", 390, 220, 130, 30)
+Local $ow = _1d1("TEZ", 390, 270, 130, 30)
+Local $ox = _1d1("TRI", 390, 320, 130, 30)
+Local $oy = _1d1("TRX", 390, 370, 130, 30)
+Global $oz = GUICtrlCreateLabel("", 50, 420, 440, 20)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $oy = _1dd("Factsheet", 60, 450, 105, 30)
-Local $oz = _1dd("Brochure", 210, 450, 105, 30)
-Local $p0 = _1dd("Presentation", 350, 450, 115, 30)
-_1di($oy, True)
-Global $p1 = _1cw("Process Updates", 50, 550, 210, 40)
-Global $p2 = _1cx("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
-Local $p3 = _1cr()
-Global $p4 = _1dm(50, 500, 440, 26)
-GUICtrlSetResizing($p1, 768 + 8)
-GUICtrlSetResizing($oa, 768 + 8)
+Global $p0 = _1dd("Factsheet", 60, 450, 105, 30)
+Global $p1 = _1dd("Brochure", 210, 450, 105, 30)
+Global $p2 = _1dd("Presentation", 350, 450, 115, 30)
+_1di($p0, True)
+Global $p3 = _1cw("Process Updates", 50, 550, 210, 40)
+Global $p4 = _1cx("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $p5 = _1cr()
+Global $p6 = _1dm(50, 500, 440, 26)
 GUISetState(@SW_SHOW)
 While 1
 $kz = GUIGetMsg()
 Switch $kz
-Case -3, $p3, $nr
-_1cm($o8)
+Case -3, $p5, $nr
+_1cm($oa)
 Return 0
-Case $oa
-If _1d5($oa) Then
-_1d7($oa)
-$0[0] = 0
-ConsoleWrite("Toggle unchecked!" & @CRLF)
-Else
-_1d8($oa)
-$0[0] = "ACX"
-ConsoleWrite($0[0] & " Toggle checked!" & @CRLF)
-EndIf
-Case $ob
-If _1d5($ob) Then
-_1d7($ob)
-$0[1] = 0
-ConsoleWrite("Toggle unchecked!" & @CRLF)
-Else
-_1d8($ob)
-$0[1] = "ATR"
-ConsoleWrite($0[1] & " Toggle checked!" & @CRLF)
-EndIf
 Case $oc
 If _1d5($oc) Then
 _1d7($oc)
-$0[2] = 0
+$0[0] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($oc)
-$0[2] = "BUY"
-ConsoleWrite($0[2] & " Toggle checked!" & @CRLF)
+$0[0] = "ACX"
+ConsoleWrite($0[0] & " Toggle checked!" & @CRLF)
 EndIf
 Case $od
 If _1d5($od) Then
 _1d7($od)
-$0[3] = 0
+$0[1] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($od)
-$0[3] = "CAX"
-ConsoleWrite($0[3] & " Toggle checked!" & @CRLF)
+$0[1] = "ATR"
+ConsoleWrite($0[1] & " Toggle checked!" & @CRLF)
 EndIf
 Case $oe
 If _1d5($oe) Then
 _1d7($oe)
-$0[4] = 0
+$0[2] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($oe)
-$0[4] = "CFR"
-ConsoleWrite($0[4] & " Toggle checked!" & @CRLF)
+$0[2] = "BUY"
+ConsoleWrite($0[2] & " Toggle checked!" & @CRLF)
 EndIf
 Case $of
 If _1d5($of) Then
 _1d7($of)
-$0[5] = 0
+$0[3] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($of)
-$0[5] = "CLP"
-ConsoleWrite($0[5] & " Toggle checked!" & @CRLF)
+$0[3] = "CAX"
+ConsoleWrite($0[3] & " Toggle checked!" & @CRLF)
 EndIf
 Case $og
 If _1d5($og) Then
 _1d7($og)
-$0[6] = 0
+$0[4] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($og)
-$0[6] = "CLT"
-ConsoleWrite($0[6] & " Toggle checked!" & @CRLF)
+$0[4] = "CFR"
+ConsoleWrite($0[4] & " Toggle checked!" & @CRLF)
+EndIf
+Case $oh
+If _1d5($oh) Then
+_1d7($oh)
+$0[5] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
+Else
+_1d8($oh)
+$0[5] = "CLP"
+ConsoleWrite($0[5] & " Toggle checked!" & @CRLF)
 EndIf
 Case $oi
 If _1d5($oi) Then
 _1d7($oi)
-$0[7] = 0
+$0[6] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($oi)
-$0[7] = "CPE"
-ConsoleWrite($0[7] & " Toggle checked!" & @CRLF)
-EndIf
-Case $oj
-If _1d5($oj) Then
-_1d7($oj)
-$0[8] = 0
-ConsoleWrite("Toggle unchecked!" & @CRLF)
-Else
-_1d8($oj)
-$0[8] = "CWX"
-ConsoleWrite($0[8] & " Toggle checked!" & @CRLF)
+$0[6] = "CLT"
+ConsoleWrite($0[6] & " Toggle checked!" & @CRLF)
 EndIf
 Case $ok
 If _1d5($ok) Then
 _1d7($ok)
-$0[9] = 0
+$0[7] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($ok)
-$0[9] = "DCX"
-ConsoleWrite($0[9] & " Toggle checked!" & @CRLF)
+$0[7] = "CPE"
+ConsoleWrite($0[7] & " Toggle checked!" & @CRLF)
 EndIf
 Case $ol
 If _1d5($ol) Then
 _1d7($ol)
-$0[10] = 0
+$0[8] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($ol)
-$0[10] = "EIX"
-ConsoleWrite($0[10] & " Toggle checked!" & @CRLF)
+$0[8] = "CWX"
+ConsoleWrite($0[8] & " Toggle checked!" & @CRLF)
 EndIf
 Case $om
 If _1d5($om) Then
 _1d7($om)
-$0[11] = 0
+$0[9] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($om)
-$0[11] = "HII"
-ConsoleWrite($0[11] & " Toggle checked!" & @CRLF)
+$0[9] = "DCX"
+ConsoleWrite($0[9] & " Toggle checked!" & @CRLF)
 EndIf
 Case $on
 If _1d5($on) Then
 _1d7($on)
-$0[12] = 0
+$0[10] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($on)
-$0[12] = "IIX"
-ConsoleWrite($0[12] & " Toggle checked!" & @CRLF)
+$0[10] = "EIX"
+ConsoleWrite($0[10] & " Toggle checked!" & @CRLF)
 EndIf
 Case $oo
 If _1d5($oo) Then
 _1d7($oo)
-$0[13] = 0
+$0[11] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($oo)
-$0[13] = "INS"
-ConsoleWrite($0[13] & " Toggle checked!" & @CRLF)
+$0[11] = "HII"
+ConsoleWrite($0[11] & " Toggle checked!" & @CRLF)
+EndIf
+Case $op
+If _1d5($op) Then
+_1d7($op)
+$0[12] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
+Else
+_1d8($op)
+$0[12] = "IIX"
+ConsoleWrite($0[12] & " Toggle checked!" & @CRLF)
 EndIf
 Case $oq
 If _1d5($oq) Then
 _1d7($oq)
-$0[14] = 0
+$0[13] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($oq)
-$0[14] = "IOX"
-ConsoleWrite($0[14] & " Toggle checked!" & @CRLF)
-EndIf
-Case $or
-If _1d5($or) Then
-_1d7($or)
-$0[15] = 0
-ConsoleWrite("Toggle unchecked!" & @CRLF)
-Else
-_1d8($or)
-$0[15] = "MBX"
-ConsoleWrite($0[15] & " Toggle checked!" & @CRLF)
+$0[13] = "INS"
+ConsoleWrite($0[13] & " Toggle checked!" & @CRLF)
 EndIf
 Case $os
 If _1d5($os) Then
 _1d7($os)
-$0[16] = 0
+$0[14] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($os)
-$0[16] = "MLX"
-ConsoleWrite($0[16] & " Toggle checked!" & @CRLF)
+$0[14] = "IOX"
+ConsoleWrite($0[14] & " Toggle checked!" & @CRLF)
 EndIf
 Case $ot
 If _1d5($ot) Then
 _1d7($ot)
-$0[17] = 0
+$0[15] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($ot)
-$0[17] = "SHI"
-ConsoleWrite($0[17] & " Toggle checked!" & @CRLF)
+$0[15] = "MBX"
+ConsoleWrite($0[15] & " Toggle checked!" & @CRLF)
 EndIf
 Case $ou
 If _1d5($ou) Then
 _1d7($ou)
-$0[18] = 0
+$0[16] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($ou)
-$0[18] = "TEZ"
-ConsoleWrite($0[18] & " Toggle checked!" & @CRLF)
+$0[16] = "MLX"
+ConsoleWrite($0[16] & " Toggle checked!" & @CRLF)
 EndIf
 Case $ov
 If _1d5($ov) Then
 _1d7($ov)
-$0[19] = 0
+$0[17] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($ov)
-$0[19] = "TRI"
-ConsoleWrite($0[19] & " Toggle checked!" & @CRLF)
+$0[17] = "SHI"
+ConsoleWrite($0[17] & " Toggle checked!" & @CRLF)
 EndIf
 Case $ow
 If _1d5($ow) Then
 _1d7($ow)
-$0[20] = 0
+$0[18] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($ow)
-$0[20] = "TRX"
-ConsoleWrite($0[20] & " Toggle checked!" & @CRLF)
+$0[18] = "TEZ"
+ConsoleWrite($0[18] & " Toggle checked!" & @CRLF)
+EndIf
+Case $ox
+If _1d5($ox) Then
+_1d7($ox)
+$0[19] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
+Else
+_1d8($ox)
+$0[19] = "TRI"
+ConsoleWrite($0[19] & " Toggle checked!" & @CRLF)
 EndIf
 Case $oy
-If _1dg($oy) Then
-_1dh($oy)
-ConsoleWrite("Checkbox unchecked!" & @CRLF)
+If _1d5($oy) Then
+_1d7($oy)
+$0[20] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_1di($oy)
-ConsoleWrite("Checkbox checked!" & @CRLF)
-EndIf
-Case $oz
-If _1dg($oz) Then
-_1dh($oz)
-ConsoleWrite("Checkbox unchecked!" & @CRLF)
-Else
-_1di($oz)
-ConsoleWrite("Checkbox checked!" & @CRLF)
+_1d8($oy)
+$0[20] = "TRX"
+ConsoleWrite($0[20] & " Toggle checked!" & @CRLF)
 EndIf
 Case $p0
 If _1dg($p0) Then
@@ -4918,6 +4907,22 @@ _1di($p0)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
 Case $p1
+If _1dg($p1) Then
+_1dh($p1)
+ConsoleWrite("Checkbox unchecked!" & @CRLF)
+Else
+_1di($p1)
+ConsoleWrite("Checkbox checked!" & @CRLF)
+EndIf
+Case $p2
+If _1dg($p2) Then
+_1dh($p2)
+ConsoleWrite("Checkbox unchecked!" & @CRLF)
+Else
+_1di($p2)
+ConsoleWrite("Checkbox checked!" & @CRLF)
+EndIf
+Case $p3
 _126()
 If $a = True Then
 $9 = "Catalyst"
@@ -4926,77 +4931,76 @@ _1em()
 _1er()
 _1ew()
 _119("############################### END OF RUN - CATALYST ###############################")
-_1ea($o8, 0, 30)
-_1dk(0, "Finished", "The process has finished.", 500, 11, $o8)
-_1ea($o8)
-_1cm($o8)
+_1ea($oa, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $oa)
+_1ea($oa)
+_1cm($oa)
 Return 0
 Else
 If @error = 50 Then
-_1ea($o8, 0, 30)
-_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $o8)
-_1ea($o8)
+_1ea($oa, 0, 30)
+_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $oa)
+_1ea($oa)
 EndIf
 EndIf
-Case $p2
+Case $p4
 $9 = "Catalyst"
 $3 = $0
-GUICtrlSetData($p4, 10)
+GUICtrlSetData($p6, 10)
 _1em()
 _128()
 _1ex()
 _119("############################### END OF RUN - CATALYST ###############################")
-GUICtrlSetData($p4, 0)
-_1ea($o8, 0, 30)
-_1dk(0, "Finished", "The process has finished.", 500, 11, $o8)
-_1ea($o8)
+GUICtrlSetData($p6, 0)
+_1ea($oa, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $oa)
+_1ea($oa)
 If @error = 50 Then
-_1ea($o8, 0, 30)
-_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $o8)
-_1ea($o8)
+_1ea($oa, 0, 30)
+_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $oa)
+_1ea($oa)
 EndIf
 EndSwitch
 WEnd
 EndFunc
 Func _1ee()
-Local $p5 = _1ck("Rational Funds GUI", 540, 620, -1, -1, False, $nq)
-Local $o9 = _1cn(True, False, False, False)
-Local $nr = $o9[0]
-Local $p6 = _1d1("HBA", 50, 70, 130, 30)
+Local $p7 = _1ck("Rational Funds GUI", 540, 620, -1, -1, False, $nq)
+Local $ob = _1cn(True, False, False, False)
+Local $nr = $ob[0]
+Local $p8 = _1d1("HBA", 50, 70, 130, 30)
 Local $74 = _1d1("HDC", 50, 120, 130, 30)
 Local $lg = _1d1("HRS", 50, 170, 130, 30)
-Local $p7 = _1d1("HSU", 50, 220, 130, 30)
-Local $p8 = _1d1("PBX", 50, 270, 130, 30)
-Local $p9 = _1d1("RDM", 50, 320, 130, 30)
-Local $pa = _1d1("RFX", 50, 370, 130, 30)
-Local $oh = _1dp(180, 85, 300, 1)
-Global $ox = GUICtrlCreateLabel("", 50, 420, 440, 20)
+Local $p9 = _1d1("HSU", 50, 220, 130, 30)
+Local $pa = _1d1("IGO", 50, 270, 130, 30)
+Local $pb = _1d1("PBX", 50, 320, 130, 30)
+Local $pc = _1d1("RDM", 50, 370, 130, 30)
+Local $pd = _1d1("RFX", 220, 70, 130, 30)
+Local $oj = _1dp(180, 85, 300, 1)
+Global $oz = GUICtrlCreateLabel("", 50, 420, 440, 20)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $oy = _1dd("Factsheet", 60, 450, 105, 30)
-Local $oz = _1dd("Brochure", 210, 450, 105, 30)
-Local $p0 = _1dd("Presentation", 350, 450, 115, 30)
-_1di($oy, True)
-Local $pb = _1cw("Process Updates", 50, 550, 210, 40)
-Local $pc = _1cw("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
-Local $p3 = _1cr()
-Global $p4 = _1dm(50, 500, 440, 26)
-GUICtrlSetResizing($pb, 768 + 8)
-GUICtrlSetResizing($p6, 768 + 8)
+Global $pe = _1dd("Factsheet", 60, 450, 105, 30)
+Global $pf = _1dd("Brochure", 210, 450, 105, 30)
+Global $pg = _1dd("Presentation", 350, 450, 115, 30)
+_1di($pe, True)
+Local $ph = _1cw("Process Updates", 50, 550, 210, 40)
+Local $pi = _1cw("Update Expense Ratios", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $p5 = _1cr()
+Global $p6 = _1dm(50, 500, 440, 26)
 GUISetState(@SW_SHOW)
 While 1
 $kz = GUIGetMsg()
 Switch $kz
-Case -3, $p3, $nr
-_1cm($p5)
+Case -3, $p5, $nr
+_1cm($p7)
 Return 0
-Case $p6
-If _1d5($p6) Then
-_1d7($p6)
+Case $p8
+If _1d5($p8) Then
+_1d7($p8)
 $1[0] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_1d8($p6)
+_1d8($p8)
 $1[0] = "HBA"
 ConsoleWrite($1[0] & " Toggle checked!" & @CRLF)
 EndIf
@@ -5020,198 +5024,206 @@ _1d8($lg)
 $1[2] = "HRS"
 ConsoleWrite($1[2] & " Toggle checked!" & @CRLF)
 EndIf
-Case $p7
-If _1d5($p7) Then
-_1d7($p7)
-$1[3] = 0
-ConsoleWrite("Toggle unchecked!" & @CRLF)
-Else
-_1d8($p7)
-$1[3] = "HSU"
-ConsoleWrite($1[3] & " Toggle checked!" & @CRLF)
-EndIf
-Case $p8
-If _1d5($p8) Then
-_1d7($p8)
-$1[4] = 0
-ConsoleWrite("Toggle unchecked!" & @CRLF)
-Else
-_1d8($p8)
-$1[4] = "PBX"
-ConsoleWrite($1[4] & " Toggle checked!" & @CRLF)
-EndIf
 Case $p9
 If _1d5($p9) Then
 _1d7($p9)
-$1[5] = 0
+$1[3] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($p9)
-$1[5] = "RDM"
-ConsoleWrite($1[5] & " Toggle checked!" & @CRLF)
+$1[3] = "HSU"
+ConsoleWrite($1[3] & " Toggle checked!" & @CRLF)
 EndIf
 Case $pa
 If _1d5($pa) Then
 _1d7($pa)
-$1[6] = 0
+$1[4] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
 _1d8($pa)
-$1[6] = "RFX"
-ConsoleWrite($1[6] & " Toggle checked!" & @CRLF)
-EndIf
-Case $oy
-If _1dg($oy) Then
-_1dh($oy)
-ConsoleWrite("Checkbox unchecked!" & @CRLF)
-Else
-_1di($oy)
-ConsoleWrite("Checkbox checked!" & @CRLF)
-EndIf
-Case $oz
-If _1dg($oz) Then
-_1dh($oz)
-ConsoleWrite("Checkbox unchecked!" & @CRLF)
-Else
-_1di($oz)
-ConsoleWrite("Checkbox checked!" & @CRLF)
-EndIf
-Case $p0
-If _1dg($p0) Then
-_1dh($p0)
-ConsoleWrite("Checkbox unchecked!" & @CRLF)
-Else
-_1di($p0)
-ConsoleWrite("Checkbox checked!" & @CRLF)
+$1[4] = "IGO"
+ConsoleWrite($1[4] & " Toggle checked!" & @CRLF)
 EndIf
 Case $pb
+If _1d5($pb) Then
+_1d7($pb)
+$1[5] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
+Else
+_1d8($pb)
+$1[5] = "PBX"
+ConsoleWrite($1[5] & " Toggle checked!" & @CRLF)
+EndIf
+Case $pc
+If _1d5($pc) Then
+_1d7($pc)
+$1[6] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
+Else
+_1d8($pc)
+$1[6] = "RDM"
+ConsoleWrite($1[6] & " Toggle checked!" & @CRLF)
+EndIf
+Case $pd
+If _1d5($pd) Then
+_1d7($pd)
+$1[7] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
+Else
+_1d8($pd)
+$1[7] = "RFX"
+ConsoleWrite($1[7] & " Toggle checked!" & @CRLF)
+EndIf
+Case $pe
+If _1dg($pe) Then
+_1dh($pe)
+ConsoleWrite("Checkbox unchecked!" & @CRLF)
+Else
+_1di($pe)
+ConsoleWrite("Checkbox checked!" & @CRLF)
+EndIf
+Case $pf
+If _1dg($pf) Then
+_1dh($pf)
+ConsoleWrite("Checkbox unchecked!" & @CRLF)
+Else
+_1di($pf)
+ConsoleWrite("Checkbox checked!" & @CRLF)
+EndIf
+Case $pg
+If _1dg($pg) Then
+_1dh($pg)
+ConsoleWrite("Checkbox unchecked!" & @CRLF)
+Else
+_1di($pg)
+ConsoleWrite("Checkbox checked!" & @CRLF)
+EndIf
+Case $ph
 $9 = "Rational"
 $3 = $1
-GUICtrlSetData($p4, 10)
+GUICtrlSetData($p6, 10)
 _1em()
 _1er()
 _1ew()
 _119("############################### END OF RUN - RATIONAL ###############################")
-GUICtrlSetData($p4, 0)
-_1ea($p5, 0, 30)
-_1dk(0, "Finished", "The process has finished.", 500, 11, $p5)
-_1ea($p5)
-_1cm($p5)
+GUICtrlSetData($p6, 0)
+_1ea($p7, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $p7)
+_1ea($p7)
+_1cm($p7)
 Return 0
-Case $pc
+Case $pi
 $9 = "Rational"
 $3 = $1
-GUICtrlSetData($p4, 10)
+GUICtrlSetData($p6, 10)
 _1em()
 _12a()
 _1ex()
 _119("############################### END OF RUN - RATIONAL ###############################")
-GUICtrlSetData($p4, 0)
-_1ea($p5, 0, 30)
-_1dk(0, "Finished", "The process has finished.", 500, 11, $p5)
-_1ea($p5)
+GUICtrlSetData($p6, 0)
+_1ea($p7, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $p7)
+_1ea($p7)
 If @error = 50 Then
-_1ea($p5, 0, 30)
-_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $p5)
-_1ea($p5)
+_1ea($p7, 0, 30)
+_1dk(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $p7)
+_1ea($p7)
 EndIf
 EndSwitch
 WEnd
 EndFunc
 Func _1ef()
-Local $pd = _1ck("Strategy Shares Funds GUI", 540, 620, -1, -1, False, $nq)
-Local $o9 = _1cn(True, False, False, False)
-Local $nr = $o9[0]
-Local $pe = _1d1("GLDB", 50, 70, 130, 30)
-Local $pf = _1d1("HNDL", 50, 120, 130, 30)
-Local $pg = _1d1("ROMO", 50, 170, 130, 30)
-Local $oh = _1dp(180, 85, 300, 1)
-Global $ox = GUICtrlCreateLabel("", 50, 420, 440, 20)
+Local $pj = _1ck("Strategy Shares Funds GUI", 540, 620, -1, -1, False, $nq)
+Local $ob = _1cn(True, False, False, False)
+Local $nr = $ob[0]
+Local $pk = _1d1("GLDB", 50, 70, 130, 30)
+Local $pl = _1d1("HNDL", 50, 120, 130, 30)
+Local $pm = _1d1("ROMO", 50, 170, 130, 30)
+Local $oj = _1dp(180, 85, 300, 1)
+Global $oz = GUICtrlCreateLabel("", 50, 420, 440, 20)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $oy = _1dd("Factsheet", 60, 450, 105, 30)
-Local $oz = _1dd("Brochure", 210, 450, 105, 30)
-Local $p0 = _1dd("Presentation", 350, 450, 115, 30)
-_1di($oy, True)
-Local $ph = _1cw("Process Updates", 50, 550, 210, 40)
-Local $p3 = _1cr()
-Global $p4 = _1dm(50, 500, 440, 26)
-GUICtrlSetResizing($ph, 768 + 8)
-GUICtrlSetResizing($pe, 768 + 8)
+Global $pn = _1dd("Factsheet", 60, 450, 105, 30)
+Global $po = _1dd("Brochure", 210, 450, 105, 30)
+Global $pp = _1dd("Presentation", 350, 450, 115, 30)
+_1di($pn, True)
+Local $pq = _1cw("Process Updates", 50, 550, 210, 40)
+Local $p5 = _1cr()
+Global $p6 = _1dm(50, 500, 440, 26)
 GUISetState(@SW_SHOW)
 While 1
 $kz = GUIGetMsg()
 Switch $kz
-Case -3, $p3, $nr
-_1cm($pd)
+Case -3, $p5, $nr
+_1cm($pj)
 Return 0
-Case $pe
-If _1d5($pe) Then
-_1d7($pe)
+Case $pk
+If _1d5($pk) Then
+_1d7($pk)
 $2[0] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_1d8($pe)
+_1d8($pk)
 $2[0] = "GLDB"
 ConsoleWrite($2[0] & " Toggle checked!" & @CRLF)
 EndIf
-Case $pf
-If _1d5($pf) Then
-_1d7($pf)
+Case $pl
+If _1d5($pl) Then
+_1d7($pl)
 $2[1] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_1d8($pf)
+_1d8($pl)
 $2[1] = "HNDL"
 ConsoleWrite($2[1] & " Toggle checked!" & @CRLF)
 EndIf
-Case $pg
-If _1d5($pg) Then
-_1d7($pg)
+Case $pm
+If _1d5($pm) Then
+_1d7($pm)
 $2[2] = 0
 ConsoleWrite("Toggle unchecked!" & @CRLF)
 Else
-_1d8($pg)
+_1d8($pm)
 $2[2] = "ROMO"
 ConsoleWrite($2[2] & " Toggle checked!" & @CRLF)
 EndIf
-Case $oy
-If _1dg($oy) Then
-_1dh($oy)
+Case $pn
+If _1dg($pn) Then
+_1dh($pn)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_1di($oy)
+_1di($pn)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $oz
-If _1dg($oz) Then
-_1dh($oz)
+Case $po
+If _1dg($po) Then
+_1dh($po)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_1di($oz)
+_1di($po)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $p0
-If _1dg($p0) Then
-_1dh($p0)
+Case $pp
+If _1dg($pp) Then
+_1dh($pp)
 ConsoleWrite("Checkbox unchecked!" & @CRLF)
 Else
-_1di($p0)
+_1di($pp)
 ConsoleWrite("Checkbox checked!" & @CRLF)
 EndIf
-Case $ph
+Case $pq
 $9 = "StrategyShares"
 $3 = $2
-GUICtrlSetData($p4, 10)
+GUICtrlSetData($p6, 10)
 _1em()
 _1er()
 _1ew()
 _119("############################### END OF RUN - STRATEGY SHARES ###############################")
-GUICtrlSetData($p4, 0)
-_1ea($pd, 0, 30)
-_1dk(0, "Finished", "The process has finished.", 500, 11, $pd)
-_1ea($pd)
-_1cm($pd)
+GUICtrlSetData($p6, 0)
+_1ea($pj, 0, 30)
+_1dk(0, "Finished", "The process has finished.", 500, 11, $pj)
+_1ea($pj)
+_1cm($pj)
 Return 0
 EndSwitch
 WEnd
@@ -5221,153 +5233,153 @@ $e = IniRead($5, 'Settings', 'DropboxDir', '')
 $6 = IniRead($5, 'Settings', 'UserName', '')
 $7 = IniRead($5, 'Settings', 'CurrentQuarter', '')
 $8 = IniRead($5, 'Settings', 'CurrentYear', '')
-Global $pi = _1ck("AutoCharts Settings", 540, 620, -1, -1, False, $nq)
-Local $o9 = _1cn(True, False, False, False)
-Local $nr = $o9[0]
-Local $pj = GUICtrlCreateLabel("Path to Dropbox Folder:", 50, 50, 440, 20)
+Global $pr = _1ck("AutoCharts Settings", 540, 620, -1, -1, False, $nq)
+Local $ob = _1cn(True, False, False, False)
+Local $nr = $ob[0]
+Local $ps = GUICtrlCreateLabel("Path to Dropbox Folder:", 50, 50, 440, 20)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
 Global $c = GUICtrlCreateInput($e, 50, 75, 440, 30)
 GUICtrlSetFont(-1, 11, 500, 0, "Segoe UI")
-Local $pk = _1cw("Browse", 280, 110, 210, 40)
-Local $pl = GUICtrlCreateLabel("Your Name:", 50, 175, 440, 40)
+Local $pt = _1cw("Browse", 280, 110, 210, 40)
+Local $pu = GUICtrlCreateLabel("Your Name:", 50, 175, 440, 40)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $pm = GUICtrlCreateInput($6, 50, 200, 440, 30)
+Local $pv = GUICtrlCreateInput($6, 50, 200, 440, 30)
 GUICtrlSetFont(-1, 11, 500, 0, "Segoe UI")
-Local $pn = GUICtrlCreateLabel("Current Quarter:", 50, 275, 440, 40)
+Local $pw = GUICtrlCreateLabel("Current Quarter:", 50, 275, 440, 40)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $po = _1da("1", "Q1", 50, 300, 100, 30)
+Local $px = _1da("1", "Q1", 50, 300, 100, 30)
 If $7 = "Q1" Then
-_1db("1", $po)
+_1db("1", $px)
 EndIf
-Local $pp = _1da("1", "Q2", 160, 300, 100, 30)
+Local $py = _1da("1", "Q2", 160, 300, 100, 30)
 If $7 = "Q2" Then
-_1db("1", $pp)
+_1db("1", $py)
 EndIf
-Local $pq = _1da("1", "Q3", 270, 300, 100, 30)
+Local $pz = _1da("1", "Q3", 270, 300, 100, 30)
 If $7 = "Q3" Then
-_1db("1", $pq)
+_1db("1", $pz)
 EndIf
-Local $pr = _1da("1", "Q4", 380, 300, 100, 30)
+Local $q0 = _1da("1", "Q4", 380, 300, 100, 30)
 If $7 = "Q4" Then
-_1db("1", $pr)
+_1db("1", $q0)
 EndIf
-Local $ps = GUICtrlCreateLabel("Current Year:", 50, 375, 440, 40)
+Local $q1 = GUICtrlCreateLabel("Current Year:", 50, 375, 440, 40)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
-Local $pt = GUICtrlCreateInput($8, 50, 400, 440, 30)
+Local $q2 = GUICtrlCreateInput($8, 50, 400, 440, 30)
 GUICtrlSetFont(-1, 11, 500, 0, "Segoe UI")
-Local $pu = _1da("2", "Blue", 50, 480, 100, 30)
+Local $q3 = _1da("2", "Blue", 50, 480, 100, 30)
 If $b = "DarkBlue" Then
-_1db("2", $pu)
+_1db("2", $q3)
 EndIf
-Local $pv = _1da("2", "Blue 2", 160, 480, 100, 30)
+Local $q4 = _1da("2", "Blue 2", 160, 480, 100, 30)
 If $b = "LightBlue" Then
-_1db("2", $pv)
+_1db("2", $q4)
 EndIf
-Local $pw = _1da("2", "Purple", 270, 480, 100, 30)
+Local $q5 = _1da("2", "Purple", 270, 480, 100, 30)
 If $b = "DarkPurple" Then
-_1db("2", $pw)
+_1db("2", $q5)
 EndIf
-Local $px = _1da("2", "Purple 2", 380, 480, 100, 30)
+Local $q6 = _1da("2", "Purple 2", 380, 480, 100, 30)
 If $b = "LightPurple" Then
-_1db("2", $px)
+_1db("2", $q6)
 EndIf
-Local $py = _1cw("Save Settings", 50, 550, 210, 40)
-Local $pz = _1cw("Cancel", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
-Local $p3 = _1cr()
+Local $q7 = _1cw("Save Settings", 50, 550, 210, 40)
+Local $q8 = _1cw("Cancel", 280, 550, 210, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $p5 = _1cr()
 GUISetState(@SW_SHOW)
 While 1
 $kz = GUIGetMsg()
 Switch $kz
-Case -3, $p3, $nr, $pz
-_1cm($pi)
+Case -3, $p5, $nr, $q8
+_1cm($pr)
 Return 0
-Case $pk
+Case $pt
 _1ej()
-Case $po
-_1db(1, $po)
-ConsoleWrite("Radio 1 selected!" & @CRLF)
-Case $pp
-_1db(1, $pp)
-ConsoleWrite("Radio 4 selected!" & @CRLF)
-Case $pq
-_1db(1, $pq)
-ConsoleWrite("Radio 3 selected!" & @CRLF)
-Case $pr
-_1db(1, $pr)
-ConsoleWrite("Radio 4 selected!" & @CRLF)
-Case $pu
-_1db(2, $pu)
-ConsoleWrite("Dark Blue Theme selected!" & @CRLF)
-Case $pv
-_1db(2, $pv)
-ConsoleWrite("Light Blue Theme selected!" & @CRLF)
-Case $pw
-_1db(2, $pw)
-ConsoleWrite("Dark Purple Theme selected!" & @CRLF)
 Case $px
-_1db(2, $px)
-ConsoleWrite("Light Purple Theme selected!" & @CRLF)
+_1db(1, $px)
+ConsoleWrite("Radio 1 selected!" & @CRLF)
 Case $py
-$q0 = GUICtrlRead($c)
-If $q0 = "" Then
-_1ea($pi, 0, 30)
-_1dk(0, "Error!", "You must select a dropbox directory!", 500, 11, $pi)
-_1ea($pi)
+_1db(1, $py)
+ConsoleWrite("Radio 4 selected!" & @CRLF)
+Case $pz
+_1db(1, $pz)
+ConsoleWrite("Radio 3 selected!" & @CRLF)
+Case $q0
+_1db(1, $q0)
+ConsoleWrite("Radio 4 selected!" & @CRLF)
+Case $q3
+_1db(2, $q3)
+ConsoleWrite("Dark Blue Theme selected!" & @CRLF)
+Case $q4
+_1db(2, $q4)
+ConsoleWrite("Light Blue Theme selected!" & @CRLF)
+Case $q5
+_1db(2, $q5)
+ConsoleWrite("Dark Purple Theme selected!" & @CRLF)
+Case $q6
+_1db(2, $q6)
+ConsoleWrite("Light Purple Theme selected!" & @CRLF)
+Case $q7
+$q9 = GUICtrlRead($c)
+If $q9 = "" Then
+_1ea($pr, 0, 30)
+_1dk(0, "Error!", "You must select a dropbox directory!", 500, 11, $pr)
+_1ea($pr)
 Else
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $q0)
-$q0 = GUICtrlRead($pm)
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UserName', $q0)
-If _1dc(1, $po) Then
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $q9)
+$q9 = GUICtrlRead($pv)
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UserName', $q9)
+If _1dc(1, $px) Then
 $7 = "Q1"
-$q0 = "Q1"
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q0)
+$q9 = "Q1"
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q9)
 EndIf
-If _1dc(1, $pp) Then
+If _1dc(1, $py) Then
 $7 = "Q2"
-$q0 = "Q2"
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q0)
+$q9 = "Q2"
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q9)
 EndIf
-If _1dc(1, $pq) Then
+If _1dc(1, $pz) Then
 $7 = "Q3"
-$q0 = "Q3"
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q0)
+$q9 = "Q3"
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q9)
 EndIf
-If _1dc(1, $pr) Then
+If _1dc(1, $q0) Then
 $7 = "Q4"
-$q0 = "Q4"
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q0)
+$q9 = "Q4"
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentQuarter', $q9)
 EndIf
-If _1dc(2, $pu) Then
+If _1dc(2, $q3) Then
 $b = "DarkBlue"
 _12e("DarkBlue")
-$q0 = "DarkBlue"
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q0)
+$q9 = "DarkBlue"
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q9)
 EndIf
-If _1dc(2, $pv) Then
+If _1dc(2, $q4) Then
 $b = "LightBlue"
 _12e("LightBlue")
-$q0 = "LightBlue"
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q0)
+$q9 = "LightBlue"
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q9)
 EndIf
-If _1dc(2, $pw) Then
+If _1dc(2, $q5) Then
 $b = "DarkPurple"
 _12e("DarkPurple")
-$q0 = "DarkPurple"
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q0)
+$q9 = "DarkPurple"
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q9)
 EndIf
-If _1dc(2, $px) Then
+If _1dc(2, $q6) Then
 $b = "LightPurple"
 _12e("LightPurple")
-$q0 = "LightPurple"
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q0)
+$q9 = "LightPurple"
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'UITheme', $q9)
 EndIf
-$q0 = GUICtrlRead($pt)
-$q1 = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentYear', $q0)
-If $q1 = 1 Then
+$q9 = GUICtrlRead($q2)
+$qa = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'CurrentYear', $q9)
+If $qa = 1 Then
 $e = IniRead($5, 'Settings', 'DropboxDir', '')
 $6 = IniRead($5, 'Settings', 'UserName', '')
 $7 = IniRead($5, 'Settings', 'CurrentQuarter', '')
@@ -5375,21 +5387,21 @@ $8 = IniRead($5, 'Settings', 'CurrentYear', '')
 $a = IniRead($5, 'Settings', 'DBVerified', '')
 $b = IniRead($5, 'Settings', 'UITheme', '')
 _1ep()
-_1ea($pi, 0, 30)
-_1dk(0, "Success!", "Your settings were saved.", 500, 11, $pi)
-_1ea($pi)
+_1ea($pr, 0, 30)
+_1dk(0, "Success!", "Your settings were saved.", 500, 11, $pr)
+_1ea($pr)
 Else
-_1ea($pi, 0, 30)
-_1dk(0, "Error!", "An error occured", 500, 11, $pi)
-_1ea($pi)
+_1ea($pr, 0, 30)
+_1dk(0, "Error!", "An error occured", 500, 11, $pr)
+_1ea($pr)
 EndIf
 _126()
 If @error = 50 Then
-_1ea($pi, 0, 30)
-_1dk(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.", 500, 11, $pi)
-_1ea($pi)
+_1ea($pr, 0, 30)
+_1dk(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.", 500, 11, $pr)
+_1ea($pr)
 EndIf
-_1cm($pi)
+_1cm($pr)
 _1cm($nq)
 _1ec()
 EndIf
@@ -5397,116 +5409,116 @@ EndSwitch
 WEnd
 EndFunc
 Func _1eh()
-Global $q2 = _1ck("AutoCharts Help", 540, 500, -1, -1, False, $nq)
-Local $o9 = _1cn(True, False, False, False)
-Local $nr = $o9[0]
-Local $o4 = _1cw("About AutoCharts", 50, 100, 440, 40)
-Local $q3 = _1cw("Open Log File", 50, 160, 440, 40)
-Local $q4 = _1cw("Clear Log File", 50, 220, 440, 40)
-Local $q5 = _1cw("Check for Update", 50, 280, 440, 40)
-Local $p3 = _1cr()
+Global $qb = _1ck("AutoCharts Help", 540, 500, -1, -1, False, $nq)
+Local $ob = _1cn(True, False, False, False)
+Local $nr = $ob[0]
+Local $o6 = _1cw("About AutoCharts", 50, 100, 440, 40)
+Local $qc = _1cw("Open Log File", 50, 160, 440, 40)
+Local $qd = _1cw("Clear Log File", 50, 220, 440, 40)
+Local $qe = _1cw("Check for Update", 50, 280, 440, 40)
+Local $p5 = _1cr()
 GUISetState(@SW_SHOW)
 While 1
 $kz = GUIGetMsg()
 Switch $kz
-Case -3, $p3, $nr
-_1cm($q2)
+Case -3, $p5, $nr
+_1cm($qb)
 Return 0
-Case $o4
+Case $o6
 ShellExecute("https://onevion.github.io/AutoCharts/")
-Case $q3
-$q6 = @ScriptDir & "\AutoCharts.log"
-$q7 = "notepad.exe " & $q6
-ConsoleWrite("$_Run : " & $q7 & @CRLF)
-Run($q7, @WindowsDir, @SW_SHOWDEFAULT)
-Case $q4
+Case $qc
+$qf = @ScriptDir & "\AutoCharts.log"
+$qg = "notepad.exe " & $qf
+ConsoleWrite("$_Run : " & $qg & @CRLF)
+Run($qg, @WindowsDir, @SW_SHOWDEFAULT)
+Case $qd
 _1eq()
-Case $q5
+Case $qe
 _1eo()
 EndSwitch
 WEnd
 EndFunc
 Func _1ei()
-Global $q8 = _1ck("AutoCharts Sync Options", 540, 500, -1, -1, False, $nq)
-Local $o9 = _1cn(True, False, False, False)
-Local $nr = $o9[0]
-Local $q9 = _1cw("Pull Data from Dropbox", 50, 100, 440, 40)
-Local $qa = _1cw("Import Datalinker from Database", 50, 160, 440, 40)
+Global $qh = _1ck("AutoCharts Sync Options", 540, 500, -1, -1, False, $nq)
+Local $ob = _1cn(True, False, False, False)
+Local $nr = $ob[0]
+Local $qi = _1cw("Pull Data from Dropbox", 50, 100, 440, 40)
+Local $qj = _1cw("Import Datalinker from Database", 50, 160, 440, 40)
 _1do(50, 240, 440, 1)
-Local $qb = GUICtrlCreateLabel("Admin Settings", 200, 230, 150, 40, 0x1)
+Local $qk = GUICtrlCreateLabel("Admin Settings", 200, 230, 150, 40, 0x1)
 GUICtrlSetColor(-1, $am)
 GUICtrlSetFont(-1, 12, 400, 0, "Segoe UI")
-Local $qc = _1cw("Upload amCharts to Database", 50, 280, 440, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
-Local $qd = _1cw("Upload DataLinker to Database", 50, 340, 440, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
-Local $p3 = _1cr()
+Local $ql = _1cw("Upload amCharts to Database", 50, 280, 440, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $qm = _1cw("Upload DataLinker to Database", 50, 340, 440, 40, 0xE9E9E9, $ao, "Segoe UI", 10, 1, $ao)
+Local $p5 = _1cr()
 GUISetState(@SW_SHOW)
 While 1
 $kz = GUIGetMsg()
 Switch $kz
-Case -3, $p3, $nr
-_1cm($q8)
+Case -3, $p5, $nr
+_1cm($qh)
 Return 0
-Case $q9
+Case $qi
 ConsoleWrite($f & @CRLF)
 _127()
-_1ea($q8, 0, 50)
+_1ea($qh, 0, 50)
 _1dk(0, "Alert", "Sync Completed. Done in " & TimerDiff($ak) / 1000 & " seconds!")
-_1ea($q8)
-Case $qa
+_1ea($qh)
+Case $qj
 _1em()
 If @error Then
-_1ea($q8, 0, 50)
+_1ea($qh, 0, 50)
 _1dk(4096, "Error", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file")
-_1ea($q8)
+_1ea($qh)
 Else
-_1ea($q8, 0, 50)
+_1ea($qh, 0, 50)
 _1dk(4096, "Success", "DataLinker file has successfully been imported. Please Restart InDesign if it is currently Open.")
-_1ea($q8)
+_1ea($qh)
 EndIf
-Case $qc
+Case $ql
 _12d()
-Case $qd
+Case $qm
 _1el()
 EndSwitch
 WEnd
 EndFunc
 Func _1ej()
-Local Const $qe = "Select a folder"
-Local $qf = FileSelectFolder($qe, "")
+Local Const $qn = "Select a folder"
+Local $qo = FileSelectFolder($qn, "")
 If @error Then
-_1ea($pi, 0, 50)
+_1ea($pr, 0, 50)
 _1dk(4096, "Error", "No folder was selected.")
-_1ea($pi)
+_1ea($pr)
 GUICtrlSetData($c, "")
 Else
-GUICtrlSetData($c, $qf)
+GUICtrlSetData($c, $qo)
 EndIf
 EndFunc
 Func _1el()
 If $6 = "Jakob" Then
 FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $f, 1)
 If @error Then
-_1ea($q8, 0, 30)
-_1dk(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $qh)
+_1ea($qh)
 _11b("Error! Unable to Upload Datalinker File to " & $f)
 Else
-_1ea($q8, 0, 30)
-_1dk(0, "Success!", "Datalinker File has been uploaded to the database.", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Success!", "Datalinker File has been uploaded to the database.", 500, 11, $qh)
+_1ea($qh)
 _119("Datalinker File Uploaded to " & $f)
 EndIf
 Else
 FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $f & "\" & $6 & "_Datalinker.xml", 1)
 If @error Then
-_1ea($q8, 0, 30)
-_1dk(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $qh)
+_1ea($qh)
 _11b("Error! Unable to Upload Datalinker File to " & $f)
 Else
-_1ea($q8, 0, 30)
-_1dk(0, "Success!", "Datalinker File has been uploaded to the database.", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Success!", "Datalinker File has been uploaded to the database.", 500, 11, $qh)
+_1ea($qh)
 _119("Datalinker File Uploaded to " & $f)
 EndIf
 EndIf
@@ -5514,22 +5526,22 @@ EndFunc
 Func _1em()
 FileCopy($f & "\DataLinker.xml", @ScriptDir & "\Datalinker_TEMP1.xml", 1)
 If @error Then
-_1ea($q8, 0, 30)
-_1dk(0, "Error!", "Unable to copy datalinker.xml file to script directory", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Error!", "Unable to copy datalinker.xml file to script directory", 500, 11, $qh)
+_1ea($qh)
 _11b("Error! Unable to copy datalinker.xml file to script directory")
 Else
 _119("Datalinker File Imported to AutoCharts Directory")
 EndIf
-Local $qg = @ScriptDir & "\Datalinker_TEMP1.xml"
-Local $gj = FileRead($qg)
+Local $qp = @ScriptDir & "\Datalinker_TEMP1.xml"
+Local $gj = FileRead($qp)
 If $6 <> "Jakob" Then
-$qh = StringReplace($gj, 'X:\Marketing Team Files\', $e & '\Marketing Team Files\')
-FileWrite(@ScriptDir & "\DataLinker_Updated1.xml", $qh)
+$qq = StringReplace($gj, 'X:\Marketing Team Files\', $e & '\Marketing Team Files\')
+FileWrite(@ScriptDir & "\DataLinker_Updated1.xml", $qq)
 If @error Then
-_1ea($q8, 0, 30)
-_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $qh)
+_1ea($qh)
 _11b("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
 _119("Datalinker File Imported to InDesign successfully")
@@ -5537,9 +5549,9 @@ EndIf
 Else
 FileCopy(@ScriptDir & "\Datalinker_TEMP1.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
 If @error Then
-_1ea($q8, 0, 30)
-_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $qh)
+_1ea($qh)
 _11b("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
 _119("Datalinker File Imported to InDesign successfully")
@@ -5547,23 +5559,23 @@ EndIf
 EndIf
 FileCopy(@ScriptDir & "\Datalinker_Updated1.xml", @ScriptDir & "\Datalinker_TEMP2.xml", 1)
 If @error Then
-_1ea($q8, 0, 30)
-_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign", 500, 11, $qh)
+_1ea($qh)
 _11b("Error! Unable to Import Datalinker File to InDesign")
 Else
 _119("Datalinker File Imported to AutoCharts Directory")
 EndIf
-Local $qi = @ScriptDir & "\Datalinker_TEMP2.xml"
-Local $qj = FileRead($qi)
+Local $qr = @ScriptDir & "\Datalinker_TEMP2.xml"
+Local $qs = FileRead($qr)
 If $6 <> "Jakob" Then
-$qk = StringReplace($qj, 'file:///X:', 'file:///' & $e)
-FileWrite(@ScriptDir & "\DataLinker_Updated2.xml", $qk)
+$qt = StringReplace($qs, 'file:///X:', 'file:///' & $e)
+FileWrite(@ScriptDir & "\DataLinker_Updated2.xml", $qt)
 FileCopy(@ScriptDir & "\Datalinker_Updated2.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
 If @error Then
-_1ea($q8, 0, 30)
-_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $qh)
+_1ea($qh)
 _11b("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
 FileDelete(@ScriptDir & "\Datalinker_Updated2.xml")
@@ -5575,9 +5587,9 @@ EndIf
 Else
 FileCopy(@ScriptDir & "\Datalinker_TEMP.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
 If @error Then
-_1ea($q8, 0, 30)
-_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $q8)
-_1ea($q8)
+_1ea($qh, 0, 30)
+_1dk(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $qh)
+_1ea($qh)
 _11b("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
 Else
 FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
@@ -5602,25 +5614,25 @@ _1en()
 Func _1ep()
 $7 = IniRead($5, 'Settings', 'CurrentQuarter', '')
 $8 = IniRead($5, 'Settings', 'CurrentYear', '')
-Local $ql
-Local $qm
-Local $qn
+Local $qu
+Local $qv
+Local $qw
 If $7 = 'Q1' Then
-$ql = "March"
-$qn = "03"
-$qm = "31"
+$qu = "March"
+$qw = "03"
+$qv = "31"
 ElseIf $7 = 'Q2' Then
-$ql = "June"
-$qn = "06"
-$qm = "30"
+$qu = "June"
+$qw = "06"
+$qv = "30"
 ElseIf $7 = 'Q3' Then
-$ql = "September"
-$qn = "09"
-$qm = "30"
+$qu = "September"
+$qw = "09"
+$qv = "30"
 ElseIf $7 = 'Q4' Then
-$ql = "December"
-$qn = "12"
-$qm = "31"
+$qu = "December"
+$qw = "12"
+$qv = "31"
 Else
 _1dk(0, "Error!", "A quarter has not been selected in the settings tab.")
 EndIf
@@ -5628,25 +5640,25 @@ _119("Determined quarter to be ~" & $7 & "~ and current year to be ~" & $8 & "~"
 If FileExists($f & "\csv\Update_FactSheetDates.csv") Then
 FileDelete($f & "\csv\Update_FactSheetDates.csv")
 EndIf
-Local $qg = $f & "\csv\Update_FactSheetDatesTEMP.csv"
-Local $gj = FileReadLine($qg, 1)
-$qh = StringReplace($gj, 'Label,ID', 'Label,ID' & @CRLF)
-FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
-$gj = FileReadLine($qg, 2)
-$qh = StringReplace($gj, '03/31/2021,1', $qn & '/' & $qm & '/' & $8 & ',1' & @CRLF)
-FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
-$gj = FileReadLine($qg, 3)
-$qh = StringReplace($gj, '"March 31, 2021",2', '"' & $ql & ' ' & $qm & ', ' & $8 & '",2' & @CRLF)
-FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
-$gj = FileReadLine($qg, 4)
-$qh = StringReplace($gj, 'Q1 2021,3', $7 & ' ' & $8 & ',3' & @CRLF)
-FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
-$gj = FileReadLine($qg, 5)
-$qh = StringReplace($gj, 'March 2021,4', $ql & ' ' & $8 & ',4' & @CRLF)
-FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
-$gj = FileReadLine($qg, 6)
-$qh = StringReplace($gj, '03/2021,5', $qn & '/' & $8 & ',5')
-FileWrite($f & "\csv\Update_FactSheetDates.csv", $qh)
+Local $qp = $f & "\csv\Update_FactSheetDatesTEMP.csv"
+Local $gj = FileReadLine($qp, 1)
+$qq = StringReplace($gj, 'Label,ID', 'Label,ID' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qq)
+$gj = FileReadLine($qp, 2)
+$qq = StringReplace($gj, '03/31/2021,1', $qw & '/' & $qv & '/' & $8 & ',1' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qq)
+$gj = FileReadLine($qp, 3)
+$qq = StringReplace($gj, '"March 31, 2021",2', '"' & $qu & ' ' & $qv & ', ' & $8 & '",2' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qq)
+$gj = FileReadLine($qp, 4)
+$qq = StringReplace($gj, 'Q1 2021,3', $7 & ' ' & $8 & ',3' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qq)
+$gj = FileReadLine($qp, 5)
+$qq = StringReplace($gj, 'March 2021,4', $qu & ' ' & $8 & ',4' & @CRLF)
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qq)
+$gj = FileReadLine($qp, 6)
+$qq = StringReplace($gj, '03/2021,5', $qw & '/' & $8 & ',5')
+FileWrite($f & "\csv\Update_FactSheetDates.csv", $qq)
 FileClose($f & "\csv\Update_FactSheetDates.csv")
 _119("Updated FactSheetDates CSV File with selected dates")
 EndFunc
@@ -5654,22 +5666,22 @@ Func _1eq()
 FileDelete(@ScriptDir & "\AutoCharts.log")
 _1j(@ScriptDir & "\AutoCharts.log")
 If @error = 0 Then
-_1ea($q2, 0, 50)
+_1ea($qb, 0, 50)
 _1dk(4096, "Success", "Log file cleared.")
-_1ea($q2)
+_1ea($qb)
 EndIf
 If @error = 1 Then
-_1ea($q2, 0, 50)
+_1ea($qb, 0, 50)
 _1dk(0, "Error", "There was an error with clearing the log.")
-_1ea($q2)
+_1ea($qb)
 EndIf
 EndFunc
 Func _1er()
-For $qo = 0 To(UBound($3) - 1)
-If $3[$qo] <> "" Then
-$4 = $3[$qo]
-GUICtrlSetData($ox, "Updating the following Fund Factsheet: " & $4)
-_1dn($p4, 15)
+For $qx = 0 To(UBound($3) - 1)
+If $3[$qx] <> "" Then
+$4 = $3[$qx]
+GUICtrlSetData($oz, "Updating the following Fund Factsheet: " & $4)
+_1dn($p6, 15)
 _119("~~~~~~~~~~~~ " & $4 & " CSV CONVERSION START ~~~~~~~~~~~~")
 If $9 = "Catalyst" Then
 _129()
@@ -5685,11 +5697,12 @@ _1ea($nq, 0, 50)
 _1dk(0, "Error", "Could not copy backup file from " & $f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "*.xlsx")
 _1ea($nq)
 _11b("Could not copy backup file from " & $f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "*.xlsx")
+ExitLoop
 EndIf
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $4 & ".xlsx", @TempDir, @SW_HIDE)
-GUICtrlSetData($ox, $4 & " | ~~~~~~~~~~~~ " & $4 & " CSV CONVERSION START ~~~~~~~~~~~~")
+GUICtrlSetData($oz, $4 & " | ~~~~~~~~~~~~ " & $4 & " CSV CONVERSION START ~~~~~~~~~~~~")
 _119("Converted " & $4 & ".xlsx file to csv")
-GUICtrlSetData($ox, $4 & " | Converted " & $4 & ".xlsx file to csv")
+GUICtrlSetData($oz, $4 & " | Converted " & $4 & ".xlsx file to csv")
 If FileExists($f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "-institutional.xlsx") Then
 _1es()
 EndIf
@@ -5699,16 +5712,16 @@ EndIf
 If FileExists($f & "\fin_backup_files\" & $9 & "\" & $4 & "\" & $4 & "-presentation.xlsx") Then
 _1eu()
 EndIf
-_1dn($p4, 25)
+_1dn($p6, 25)
 FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $d & "\" & $9 & "\" & $4 & "\" & "*.csv", 1)
 FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $f & "\csv\" & $9 & "\" & $4 & "\*.csv", 1)
 _119("Moved the " & $4 & ".csv files to the fund's InDesign Links folder in Dropbox")
-GUICtrlSetData($ox, $4 & " | Moved the " & $4 & ".csv files to the fund's InDesign Links folder in Dropbox")
-_1dn($p4, 30)
+GUICtrlSetData($oz, $4 & " | Moved the " & $4 & ".csv files to the fund's InDesign Links folder in Dropbox")
+_1dn($p6, 30)
 FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
 _119("Deleted remaining " & $4 & ".xlsx files from CSV Conversion directory")
-GUICtrlSetData($ox, $4 & " | Deleted remaining " & $4 & ".xlsx files from CSV Conversion directory")
-_1dn($p4, 55)
+GUICtrlSetData($oz, $4 & " | Deleted remaining " & $4 & ".xlsx files from CSV Conversion directory")
+_1dn($p6, 55)
 Else
 ContinueLoop
 EndIf
@@ -5717,92 +5730,92 @@ EndFunc
 Func _1es()
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $4 & "-institutional.xlsx", @TempDir, @SW_HIDE)
 _119("Converted " & $4 & "-institutional.xlsx file to csv")
-GUICtrlSetData($ox, $4 & " | Converted " & $4 & "-institutional.xlsx file to csv")
+GUICtrlSetData($oz, $4 & " | Converted " & $4 & "-institutional.xlsx file to csv")
 EndFunc
 Func _1et()
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $4 & "-brochure.xlsx", @TempDir, @SW_HIDE)
 _119("Converted " & $4 & "-brochure.xlsx file to csv")
-GUICtrlSetData($ox, $4 & " | Converted " & $4 & "-brochure.xlsx file to csv")
+GUICtrlSetData($oz, $4 & " | Converted " & $4 & "-brochure.xlsx file to csv")
 EndFunc
 Func _1eu()
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $4 & "-presentation.xlsx", @TempDir, @SW_HIDE)
 _119("Converted " & $4 & "-presentation.xlsx file to csv")
-GUICtrlSetData($ox, $4 & " | Converted " & $4 & "-presentation.xlsx file to csv")
+GUICtrlSetData($oz, $4 & " | Converted " & $4 & "-presentation.xlsx file to csv")
 EndFunc
 Func _1ev()
-Local $qg = @ScriptDir & "\assets\ChartBuilder\public\index_TEMPLATE.html"
-Local $gj = FileRead($qg)
-$qh = StringReplace($gj, '<script src="/scripts/CHANGEME.js"></script>', '<script src="/scripts/' & $4 & '.js"></script>')
-FileWrite(@ScriptDir & "\assets\ChartBuilder\public\index.html", $qh)
+Local $qp = @ScriptDir & "\assets\ChartBuilder\public\index_TEMPLATE.html"
+Local $gj = FileRead($qp)
+$qq = StringReplace($gj, '<script src="/scripts/CHANGEME.js"></script>', '<script src="/scripts/' & $4 & '.js"></script>')
+FileWrite(@ScriptDir & "\assets\ChartBuilder\public\index.html", $qq)
 _119("~~~~~~~~~~~~ " & $4 & " CHART GENERATION START ~~~~~~~~~~~~")
-GUICtrlSetData($ox, $4 & " | ~~~~~~~~~~~~ " & $4 & " CHART GENERATION START ~~~~~~~~~~~~")
+GUICtrlSetData($oz, $4 & " | ~~~~~~~~~~~~ " & $4 & " CHART GENERATION START ~~~~~~~~~~~~")
 _119("Created HTML file for " & $4 & " chart generation")
-GUICtrlSetData($ox, $4 & " | Created HTML file for " & $4 & " chart generation")
+GUICtrlSetData($oz, $4 & " | Created HTML file for " & $4 & " chart generation")
 _119("Initializing Local Server for amCharts")
-GUICtrlSetData($ox, $4 & " | Initializing Local Server for amCharts")
+GUICtrlSetData($oz, $4 & " | Initializing Local Server for amCharts")
 EndFunc
 Func _1ew()
-For $qo = 0 To(UBound($3) - 1)
-If $3[$qo] <> "" Then
-$4 = $3[$qo]
+For $qx = 0 To(UBound($3) - 1)
+If $3[$qx] <> "" Then
+$4 = $3[$qx]
 Call("_1ev")
 RunWait(@ComSpec & " /c node --unhandled-rejections=strict server.js", @ScriptDir & "/assets/ChartBuilder/", @SW_HIDE)
-_1dn($p4, 70)
+_1dn($p6, 70)
 _119($4 & " charts generated in SVG format using amCharts")
-GUICtrlSetData($ox, $4 & " | Charts generated in SVG format using amCharts")
+GUICtrlSetData($oz, $4 & " | Charts generated in SVG format using amCharts")
 FileDelete(@ScriptDir & "\assets\ChartBuilder\public\index.html")
 FileMove(@ScriptDir & "/assets/ChartBuilder/*.svg", $f & "\images\charts\" & $9 & "\" & $4 & "\*.svg", 1)
-_1dn($p4, 92)
+_1dn($p6, 92)
 _119($4 & " charts moved to the funds InDesign Links folder")
-GUICtrlSetData($ox, $4 & " | Charts moved to the funds InDesign Links folder")
+GUICtrlSetData($oz, $4 & " | Charts moved to the funds InDesign Links folder")
 Else
 ContinueLoop
 EndIf
-_1dn($p4, 100)
+_1dn($p6, 100)
 Next
 EndFunc
 Func _1ex()
 If $9 = "Catalyst" Then
-GUICtrlSetData($ox, "Updating Catalyst Expense Ratios")
-_1dn($p4, 60)
+GUICtrlSetData($oz, "Updating Catalyst Expense Ratios")
+_1dn($p6, 60)
 FileCopy($f & "\fin_backup_files\" & $9 & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)
 _119("~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")
-GUICtrlSetData($ox, "Updating Catalyst Expense Ratios")
+GUICtrlSetData($oz, "Updating Catalyst Expense Ratios")
 _119("Updated Catalyst Expense Ratios")
-GUICtrlSetData($ox, "Updated Catalyst Expense Ratios")
+GUICtrlSetData($oz, "Updated Catalyst Expense Ratios")
 FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $f & "\csv\" & $9 & "\Catalyst_ExpenseRatios.csv", 1)
 FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
 EndIf
 If $9 = "Rational" Then
-GUICtrlSetData($ox, "Updating Rational Expense Ratios")
-_1dn($p4, 60)
+GUICtrlSetData($oz, "Updating Rational Expense Ratios")
+_1dn($p6, 60)
 FileCopy($f & "\fin_backup_files\" & $9 & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")
 RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)
 _119("~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")
-GUICtrlSetData($ox, "Updating Rational Expense Ratios")
+GUICtrlSetData($oz, "Updating Rational Expense Ratios")
 _119("Updated Rational Expense Ratios")
-GUICtrlSetData($ox, "Updated Rational Expense Ratios")
+GUICtrlSetData($oz, "Updated Rational Expense Ratios")
 FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $f & "\csv\" & $9 & "\Rational_ExpenseRatios.csv", 1)
 FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
 EndIf
-_1dn($p4, 100)
+_1dn($p6, 100)
 EndFunc
 Func _1ey()
-Local $qp, $qq
-Local Const $qe = "Select Save Location"
-Local $qf = FileSelectFolder($qe, "")
+Local $qy, $qz
+Local Const $qn = "Select Save Location"
+Local $qo = FileSelectFolder($qn, "")
 If @error Then
 _1ea($nq, 0, 50)
 _1dk(0, "Error", "No folder was selected.")
 _1ea($nq)
 Else
-$qp = _g5($qf & "\FactSheets_" & $7 & "-" & $8 & ".zip")
-_g7($qp, $f & "\fin_backup_files\", 4)
-_g7($qp, $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4)
+$qy = _g5($qo & "\FactSheets_" & $7 & "-" & $8 & ".zip")
+_g7($qy, $f & "\fin_backup_files\", 4)
+_g7($qy, $e & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4)
 _1ea($nq, 0, 50)
-_1dk(0, "Items in Zip", "Succesfully added " & _gc($qp) & " items in " & $qp)
+_1dk(0, "Items in Zip", "Succesfully added " & _gc($qy) & " items in " & $qy)
 _1ea($nq)
-_119("Created Factsheet Archive at " & $qp)
+_119("Created Factsheet Archive at " & $qy)
 EndIf
 EndFunc
