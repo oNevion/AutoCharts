@@ -252,7 +252,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 				_Metro_MsgBox(0, "Error", "Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")
 				_GUIDisable($Form1)
 				_LogaError("Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")     ; Write to the logfile
-
+				ExitLoop
 			EndIf
 
 			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
