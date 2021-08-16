@@ -208,11 +208,11 @@ Func _CatalystFundsGUI()
 	GUICtrlSetColor(-1, $FontThemeColor)
 	GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
 
-	Local $CB_FactSheet = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
-	Local $CB_Brochure = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
-	Local $CB_Presentation = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
+	Global $CB_FactSheet_Catalyst = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
+	Global $CB_Brochure_Catalyst = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
+	Global $CB_Presentation_Catalyst = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
 
-	_Metro_CheckboxCheck($CB_FactSheet, True)
+	_Metro_CheckboxCheck($CB_FactSheet_Catalyst, True)
 
 
 	Global $BTN_RunCatalyst = _Metro_CreateButton("Process Updates", 50, 550, 210, 40)
@@ -463,30 +463,30 @@ Func _CatalystFundsGUI()
 					ConsoleWrite($aCatalystCheck[20] & " Toggle checked!" & @CRLF)
 				EndIf
 
-			Case $CB_FactSheet
-				If _Metro_CheckboxIsChecked($CB_FactSheet) Then
-					_Metro_CheckboxUnCheck($CB_FactSheet)
+			Case $CB_FactSheet_Catalyst
+				If _Metro_CheckboxIsChecked($CB_FactSheet_Catalyst) Then
+					_Metro_CheckboxUnCheck($CB_FactSheet_Catalyst)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_FactSheet)
+					_Metro_CheckboxCheck($CB_FactSheet_Catalyst)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
-			Case $CB_Brochure
-				If _Metro_CheckboxIsChecked($CB_Brochure) Then
-					_Metro_CheckboxUnCheck($CB_Brochure)
+			Case $CB_Brochure_Catalyst
+				If _Metro_CheckboxIsChecked($CB_Brochure_Catalyst) Then
+					_Metro_CheckboxUnCheck($CB_Brochure_Catalyst)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_Brochure)
+					_Metro_CheckboxCheck($CB_Brochure_Catalyst)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
-			Case $CB_Presentation
-				If _Metro_CheckboxIsChecked($CB_Presentation) Then
-					_Metro_CheckboxUnCheck($CB_Presentation)
+			Case $CB_Presentation_Catalyst
+				If _Metro_CheckboxIsChecked($CB_Presentation_Catalyst) Then
+					_Metro_CheckboxUnCheck($CB_Presentation_Catalyst)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_Presentation)
+					_Metro_CheckboxCheck($CB_Presentation_Catalyst)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
@@ -569,11 +569,11 @@ Func _RationalFundsGUI()
 	GUICtrlSetColor(-1, $FontThemeColor)
 	GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
 
-	Local $CB_FactSheet = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
-	Local $CB_Brochure = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
-	Local $CB_Presentation = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
+	Global $CB_FactSheet_Rational = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
+	Global $CB_Brochure_Rational = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
+	Global $CB_Presentation_Rational = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
 
-	_Metro_CheckboxCheck($CB_FactSheet, True)
+	_Metro_CheckboxCheck($CB_FactSheet_Rational, True)
 
 
 	Local $BTN_RunRational = _Metro_CreateButton("Process Updates", 50, 550, 210, 40)
@@ -678,30 +678,30 @@ Func _RationalFundsGUI()
 					ConsoleWrite($aRationalCheck[7] & " Toggle checked!" & @CRLF)
 				EndIf
 
-			Case $CB_FactSheet
-				If _Metro_CheckboxIsChecked($CB_FactSheet) Then
-					_Metro_CheckboxUnCheck($CB_FactSheet)
+			Case $CB_FactSheet_Rational
+				If _Metro_CheckboxIsChecked($CB_FactSheet_Rational) Then
+					_Metro_CheckboxUnCheck($CB_FactSheet_Rational)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_FactSheet)
+					_Metro_CheckboxCheck($CB_FactSheet_Rational)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
-			Case $CB_Brochure
-				If _Metro_CheckboxIsChecked($CB_Brochure) Then
-					_Metro_CheckboxUnCheck($CB_Brochure)
+			Case $CB_Brochure_Rational
+				If _Metro_CheckboxIsChecked($CB_Brochure_Rational) Then
+					_Metro_CheckboxUnCheck($CB_Brochure_Rational)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_Brochure)
+					_Metro_CheckboxCheck($CB_Brochure_Rational)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
-			Case $CB_Presentation
-				If _Metro_CheckboxIsChecked($CB_Presentation) Then
-					_Metro_CheckboxUnCheck($CB_Presentation)
+			Case $CB_Presentation_Rational
+				If _Metro_CheckboxIsChecked($CB_Presentation_Rational) Then
+					_Metro_CheckboxUnCheck($CB_Presentation_Rational)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_Presentation)
+					_Metro_CheckboxCheck($CB_Presentation_Rational)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
@@ -772,11 +772,11 @@ Func _StrategySharesFundsGUI()
 	GUICtrlSetColor(-1, $FontThemeColor)
 	GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
 
-	Local $CB_FactSheet = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
-	Local $CB_Brochure = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
-	Local $CB_Presentation = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
+	Global $CB_FactSheet_SS = _Metro_CreateCheckbox("Factsheet", 60, 450, 105, 30)
+	Global $CB_Brochure_SS = _Metro_CreateCheckbox("Brochure", 210, 450, 105, 30)
+	Global $CB_Presentation_SS = _Metro_CreateCheckbox("Presentation", 350, 450, 115, 30)
 
-	_Metro_CheckboxCheck($CB_FactSheet, True)
+	_Metro_CheckboxCheck($CB_FactSheet_SS, True)
 
 
 	Local $BTN_RunStrategyShares = _Metro_CreateButton("Process Updates", 50, 550, 210, 40)
@@ -825,30 +825,30 @@ Func _StrategySharesFundsGUI()
 					ConsoleWrite($aStrategyCheck[2] & " Toggle checked!" & @CRLF)
 				EndIf
 
-			Case $CB_FactSheet
-				If _Metro_CheckboxIsChecked($CB_FactSheet) Then
-					_Metro_CheckboxUnCheck($CB_FactSheet)
+			Case $CB_FactSheet_SS
+				If _Metro_CheckboxIsChecked($CB_FactSheet_SS) Then
+					_Metro_CheckboxUnCheck($CB_FactSheet_SS)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_FactSheet)
+					_Metro_CheckboxCheck($CB_FactSheet_SS)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
-			Case $CB_Brochure
-				If _Metro_CheckboxIsChecked($CB_Brochure) Then
-					_Metro_CheckboxUnCheck($CB_Brochure)
+			Case $CB_Brochure_SS
+				If _Metro_CheckboxIsChecked($CB_Brochure_SS) Then
+					_Metro_CheckboxUnCheck($CB_Brochure_SS)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_Brochure)
+					_Metro_CheckboxCheck($CB_Brochure_SS)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
-			Case $CB_Presentation
-				If _Metro_CheckboxIsChecked($CB_Presentation) Then
-					_Metro_CheckboxUnCheck($CB_Presentation)
+			Case $CB_Presentation_SS
+				If _Metro_CheckboxIsChecked($CB_Presentation_SS) Then
+					_Metro_CheckboxUnCheck($CB_Presentation_SS)
 					ConsoleWrite("Checkbox unchecked!" & @CRLF)
 				Else
-					_Metro_CheckboxCheck($CB_Presentation)
+					_Metro_CheckboxCheck($CB_Presentation_SS)
 					ConsoleWrite("Checkbox checked!" & @CRLF)
 				EndIf
 
