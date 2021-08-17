@@ -1,10 +1,10 @@
 ;aiu;
 
 [General]
-MessageTitle = Update 3.0.0 for AutoCharts is available
+MessageTitle = Update 3.1.0 for AutoCharts is available
 MessageBody = Notification Message
 MessageExpirationDate = 01/09/2021
-MessageURI = https://github.com/oNevion/AutoCharts/releases/tag/v3.0.0
+MessageURI = https://github.com/oNevion/AutoCharts/releases/tag/v3.1.0
 MessageButtonText = Learn More
 
 [3.1.0]
