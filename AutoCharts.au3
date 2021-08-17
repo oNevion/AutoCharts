@@ -1,25 +1,24 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
-#AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_UseX64=n
-#AutoIt3Wrapper_Res_Description=AutoCharts 3.0.0
-#AutoIt3Wrapper_Res_Fileversion=3.0.0.5
+#AutoIt3Wrapper_Res_Description=AutoCharts 3.1.0
+#AutoIt3Wrapper_Res_Fileversion=3.1.0.1
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=3.0.0
+#AutoIt3Wrapper_Res_ProductVersion=3.1.0
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_Res_Language=1033
-#AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
-#AutoIt3Wrapper_Res_HiDpi=y
+#AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #AutoIt3Wrapper_Add_Constants=n
 #AutoIt3Wrapper_AU3Check_Stop_OnWarning=y
 #AutoIt3Wrapper_AU3Check_Parameters=-w 1 -v 1
 #AutoIt3Wrapper_Run_Tidy=y
+#Tidy_Parameters=/gds
 #AutoIt3Wrapper_Run_Au3Stripper=y
-#Au3Stripper_Parameters=/tl /so /rm /pe
+#Au3Stripper_Parameters=/tl /so /rm /pe /debug
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #Au3Stripper_Ignore_Funcs=_iHoverOn,_iHoverOff,_iFullscreenToggleBtn,_cHvr_CSCP_X64,_cHvr_CSCP_X86,_iControlDelete
 
@@ -253,7 +252,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 				_Metro_MsgBox(0, "Error", "Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")
 				_GUIDisable($Form1)
 				_LogaError("Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")     ; Write to the logfile
-
+				ExitLoop
 			EndIf
 
 			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
