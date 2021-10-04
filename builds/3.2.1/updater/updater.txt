@@ -1,0 +1,116 @@
+;aiu;
+
+[General]
+MessageTitle = Update 3.1.0 for AutoCharts is available
+MessageBody = Notification Message
+MessageExpirationDate = 01/09/2021
+MessageURI = https://github.com/oNevion/AutoCharts/releases/tag/v3.1.0
+MessageButtonText = Learn More
+
+[3.1.0]
+Name = AutoCharts 3.1.0
+ProductVersion = 3.1.0.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v3.1.0/AutoCharts_3.1.0_Setup.exe
+Size = 25034463
+ReleaseDate = 17/08/2021
+SHA256 = 703CA3536B4774575F255A8593D15CC9C60398BC5E2697D0DAF73D4D802201D3
+MD5 = 209aa143f68001895b50b46d2642315d
+ServerFileName = AutoCharts_3.1.0_Setup.exe
+Flags = Critical
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 3.1.0.0
+UpdatedApplications = AutoCharts[1.0-3.1]
+Feature = Added IGO to Rational Tab
+Feature1 = Fixed resizing issue of GUI. User can now resize the program
+Feature2 = Removed DPI compatibility to try and fix GUI rendering issues
+Feature3 = Installation and running of the program now requires administrator rights
+Feature4 = Program install file moved to C:/Programs instead of the Local App Data folder
+
+[3.0.0]
+Name = AutoCharts 3.0.0
+ProductVersion = 3.0.0.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v3.0.0/AutoCharts_3.0.0.exe
+Size = 23602000
+ReleaseDate = 04/08/2021
+SHA256 = D12221EAF7FE1E3AFA6ECD5E6984341FFDAEDD41F4110AA3BF4053F2D17A73AF
+MD5 = 99bbfc3b4c62072dcfca509a664513b0
+ServerFileName = AutoCharts_3.0.0.exe
+Flags = Critical
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 3.0.0.0
+UpdatedApplications = AutoCharts[1.0-3.0]
+Feature = New "Metro" UI Style with 4 user selectable themes
+Feature1 = Data sync validation added when running VBS script that splits .xlsx files to .csv
+Feature2 = Various updates to fund charts for Q2 2021
+Feature3 = GUI functions and variables now separated from main code
+Feature4 = Support for multiple child GUI's added for better program development
+Feature5 = GUI is now resizable, but very janky
+
+[2.4.9]
+Name = AutoCharts 2.4.9
+ProductVersion = 2.4.9.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.9/AutoCharts_2.4.9.exe
+Size = 13724200
+ReleaseDate = 19/07/2021
+SHA256 = 21F8D751A637EC8292DC5B9F731BF07203AEE5D8AD677DA27833AD14B537D7CF
+MD5 = aa3dd9a622e61599c48e35d2faffa0ac
+ServerFileName = AutoCharts_2.4.8.exe
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 2.4.8.0
+UpdatedApplications = AutoCharts[1.0-2.4.9)
+Description = AutoCharts 2.4.9 should fix the database sync issue on user's machines. 
+Feature = Added WinSCP Library for future feature releases
+Feature1 = Updated Include syntax by globalizing database sync variables
+Feature2 = AutoCharts now checks for updates on startup
+Feature3 = You can manually check for updates by going to HELP > Check for Updates
+Enhancement = Database sync now uses XCopy and only replaces files if they've been recently modified. Should perform a lot faster.
+BugFix = Database sync issue should be fixed now as a required include was accidentally deleted.
+AutoCloseApplication = [APPDIR]AutoCharts.exe
+
+[2.4.8]
+Name = AutoCharts 2.4.8
+ProductVersion = 2.4.8.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.8/AutoCharts_2.4.8.exe
+Size = 13724200
+ReleaseDate = 12/07/2021
+SHA256 = 21F8D751A637EC8292DC5B9F731BF07203AEE5D8AD677DA27833AD14B537D7CF
+MD5 = aa3dd9a622e61599c48e35d2faffa0ac
+ServerFileName = AutoCharts_2.4.8.exe
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 2.4.8.0
+UpdatedApplications = AutoCharts[1.0-2.4.8)
+Description = Update to command that runs updater.
+
+[2.4.7]
+Name = AutoCharts 2.4.7
+ProductVersion = 2.4.7.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.7/AutoCharts_2.4.7.exe
+Size = 13644472
+SHA256 = 1F128BADA2D619CC744BDC28434FAA7EA6C6F72ED546E8247099FB0F577863AB
+MD5 = 28ec626eaf765a711102697b870d3709
+ServerFileName = AutoCharts_2.4.7.exe
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 2.4.7.0
+UpdatedApplications = AutoCharts[1.0-2.4.7)
+Feature = Updated DCX chart
+Feature1 = Updated EIX charts
+Feature2 = Updated internal updater code
+
+[2.4.6]
+Name = AutoCharts 2.4.6
+ProductVersion = 2.4.6.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v2.4.6/AutoCharts_2.4.6.exe
+Size = 12440709
+SHA256 = CB022D47C4203F8BC2646C7DFDF72BA6F7E8489B07818BFDF24694F69E04F926
+MD5 = 97bd517a5826254e82a068d26e8cb62d
+ServerFileName = AutoCharts_2.4.6.exe
+Flags = NoCache
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 2.4.6.0
+UpdatedApplications = AutoCharts[1.0-2.4.6)
+Feature = Updated include links again
+Feature1 = Added Database variables to main program run
+Feature2 = FEATURE: Program now only downloads current fund's csv data (should help with optimization/speed)
+Feature3 = Added message box reminding user to check that their settings converted over correctly
+Feature4 = Changed naming convention when creating factsheet archives
+Feature5 = Updated GUI for 2.4.6 release
