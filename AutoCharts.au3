@@ -252,11 +252,11 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 
 			CreateAutoChartsDocFolder()
 
-			If Not FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @MyDocumentsDir & "/AutoCharts/vbs/") Then      ; grab .xlsx from current fund directory and move to /VBS_Scripts
+			If Not FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & "*.xlsx", @MyDocumentsDir & "/AutoCharts/vbs/") Then      ; grab .xlsx from current fund directory and move to /VBS_Scripts
 				_GUIDisable($Form1, 0, 50)
-				_Metro_MsgBox(0, "Error", "Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")
+				_Metro_MsgBox(0, "Error", "Could not copy backup file " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & ".xlsx")
 				_GUIDisable($Form1)
-				_LogaError("Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")     ; Write to the logfile
+				_LogaError("Could not copy backup file " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & ".xlsx")     ; Write to the logfile
 				ExitLoop
 			EndIf
 
