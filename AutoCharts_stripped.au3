@@ -4656,7 +4656,7 @@ $TAB_StrategyShares = _Metro_CreateButton("Strategy Shares", 350, 350, 140, 40)
 $HSeperator2 = _Metro_AddHSeperator(50, 570, 440, 1)
 Local $BTN_Settings = _Metro_CreateButton("Settings", 50, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $Label_Version = GUICtrlCreateLabel("v3.1.0", 450, 620, 50, 50, $SS_RIGHT)
+Local $Label_Version = GUICtrlCreateLabel("v3.2.0", 450, 620, 50, 50, $SS_RIGHT)
 GUICtrlSetColor(-1, $FontThemeColor)
 GUICtrlSetFont(-1, 15, 400, 0, "Segoe UI")
 GUICtrlSetResizing($Pic1, 768 + 8)
@@ -5020,6 +5020,7 @@ _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
 _GUIDisable($Form2)
 _Metro_GUIDelete($Form2)
 Return 0
+Global $aCatalystCheck[24]
 Else
 If @error = 50 Then
 _GUIDisable($Form2, 0, 30)
@@ -5039,6 +5040,7 @@ GUICtrlSetData($ProgressBar, 0)
 _GUIDisable($Form2, 0, 30)
 _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
 _GUIDisable($Form2)
+Global $aCatalystCheck[24]
 If @error = 50 Then
 _GUIDisable($Form2, 0, 30)
 _Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form2)
@@ -5196,6 +5198,7 @@ _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
 _GUIDisable($Form3)
 _Metro_GUIDelete($Form3)
 Return 0
+Global $aRationalCheck[8]
 Case $BTN_Rational_UpdateExpenseRatio
 $FundFamily = "Rational"
 $FamilySwitch = $aRationalCheck
@@ -5208,6 +5211,7 @@ GUICtrlSetData($ProgressBar, 0)
 _GUIDisable($Form3, 0, 30)
 _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
 _GUIDisable($Form3)
+Global $aRationalCheck[8]
 If @error = 50 Then
 _GUIDisable($Form3, 0, 30)
 _Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form3)
@@ -5309,6 +5313,7 @@ _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form4)
 _GUIDisable($Form4)
 _Metro_GUIDelete($Form4)
 Return 0
+Global $aStrategyCheck[3]
 EndSwitch
 WEnd
 EndFunc
@@ -5684,6 +5689,18 @@ _LogaInfo("Datalinker File Imported to InDesign successfully")
 EndIf
 EndIf
 EndFunc
+Func CreateAutoChartsDocFolder()
+If FileExists(@MyDocumentsDir & "\AutoCharts\vbs\Excel_to_CSV_All_Worksheets.vbs") Then
+_LogaInfo("Checking for " & @MyDocumentsDir & "\AutoCharts\vbs\Excel_to_CSV_All_Worksheets.vbs")
+GUICtrlSetData($UpdateLabel, $CurrentFund & " | Checking for " & @MyDocumentsDir & "\AutoCharts\vbs\Excel_to_CSV_All_Worksheets.vbs")
+_LogaInfo("File Exists. Moving on")
+GUICtrlSetData($UpdateLabel, $CurrentFund & " | File Exists. Moving on")
+Else
+DirCopy(@ScriptDir & "\VBS_Scripts", @MyDocumentsDir & "\AutoCharts\vbs", 0)
+_LogaInfo("File did not exist. Creating directory " & @MyDocumentsDir & "\AutoCharts\vbs\")
+GUICtrlSetData($UpdateLabel, $CurrentFund & " | File did not exist. Creating directory " & @MyDocumentsDir & "\AutoCharts\vbs\")
+EndIf
+EndFunc
 Func CheckForSettingsMigrate()
 If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
 FileDelete(@ScriptDir & "/settings-MIGRATE.ini")
@@ -5776,33 +5793,85 @@ EndIf
 If $FundFamily = "StrategyShares" Then
 PullStrategySharesFundData()
 EndIf
-If Not FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/") Then
+CreateAutoChartsDocFolder()
+If Not FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @MyDocumentsDir & "/AutoCharts/vbs/") Then
 _GUIDisable($Form1, 0, 50)
 _Metro_MsgBox(0, "Error", "Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")
 _GUIDisable($Form1)
 _LogaError("Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")
 ExitLoop
 EndIf
-RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)
+RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 _LogaInfo("Converted " & $CurrentFund & ".xlsx file to csv")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & ".xlsx file to csv")
-If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
-RunCSVConvert4Institution()
-EndIf
+If $FundFamily = "Catalyst" Then
+If _Metro_CheckboxIsChecked($CB_Brochure_Catalyst) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 RunCSVConvert4Brochure()
 EndIf
+_Metro_CheckboxUnCheck($CB_Brochure_Catalyst)
+EndIf
+If _Metro_CheckboxIsChecked($CB_FactSheet_Catalyst) Then
+If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
+RunCSVConvert4Institution()
+EndIf
+_Metro_CheckboxUnCheck($CB_FactSheet_Catalyst)
+EndIf
+If _Metro_CheckboxIsChecked($CB_Presentation_Catalyst) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 RunCSVConvert4Presentation()
 EndIf
+_Metro_CheckboxUnCheck($CB_Presentation_Catalyst)
+EndIf
+EndIf
+If $FundFamily = "Rational" Then
+If _Metro_CheckboxIsChecked($CB_Brochure_Rational) Then
+If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
+RunCSVConvert4Brochure()
+EndIf
+_Metro_CheckboxUnCheck($CB_Brochure_Rational)
+EndIf
+If _Metro_CheckboxIsChecked($CB_FactSheet_Rational) Then
+If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
+RunCSVConvert4Institution()
+EndIf
+_Metro_CheckboxUnCheck($CB_FactSheet_Rational)
+EndIf
+If _Metro_CheckboxIsChecked($CB_Presentation_Rational) Then
+If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+RunCSVConvert4Presentation()
+EndIf
+_Metro_CheckboxUnCheck($CB_Presentation_Rational)
+EndIf
+EndIf
+If $FundFamily = "StrategyShares" Then
+If _Metro_CheckboxIsChecked($CB_Brochure_SS) Then
+If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
+RunCSVConvert4Brochure()
+EndIf
+_Metro_CheckboxUnCheck($CB_Brochure_SS)
+EndIf
+If _Metro_CheckboxIsChecked($CB_FactSheet_SS) Then
+If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
+RunCSVConvert4Institution()
+EndIf
+_Metro_CheckboxUnCheck($CB_FactSheet_SS)
+EndIf
+If _Metro_CheckboxIsChecked($CB_Presentation_SS) Then
+If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+RunCSVConvert4Presentation()
+EndIf
+_Metro_CheckboxUnCheck($CB_Presentation_SS)
+EndIf
+EndIf
 _Metro_SetProgress($ProgressBar, 25)
-FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)
-FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)
+FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)
+FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)
 _LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
 _Metro_SetProgress($ProgressBar, 30)
-FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")
+FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")
 _LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 _Metro_SetProgress($ProgressBar, 55)
@@ -5812,17 +5881,17 @@ EndIf
 Next
 EndFunc
 Func RunCSVConvert4Institution()
-RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)
+RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)
 _LogaInfo("Converted " & $CurrentFund & "-institutional.xlsx file to csv")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-institutional.xlsx file to csv")
 EndFunc
 Func RunCSVConvert4Brochure()
-RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)
+RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)
 _LogaInfo("Converted " & $CurrentFund & "-brochure.xlsx file to csv")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-brochure.xlsx file to csv")
 EndFunc
 Func RunCSVConvert4Presentation()
-RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)
+RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)
 _LogaInfo("Converted " & $CurrentFund & "-presentation.xlsx file to csv")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-presentation.xlsx file to csv")
 EndFunc
