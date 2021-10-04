@@ -1,11 +1,44 @@
 ;aiu;
 
 [General]
-MessageTitle = Update 3.1.0 for AutoCharts is available
+MessageTitle = Update 3.2.1 for AutoCharts is available
 MessageBody = Notification Message
-MessageExpirationDate = 01/09/2021
-MessageURI = https://github.com/oNevion/AutoCharts/releases/tag/v3.1.0
+MessageExpirationDate = 31/12/2021
+MessageURI = https://github.com/oNevion/AutoCharts/releases/tag/v3.2.1
 MessageButtonText = Learn More
+
+[3.2.1]
+Name = AutoCharts 3.2.1
+ProductVersion = 3.2.1.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v3.2.1/AutoCharts_3.2.1_Setup.exe
+Size = 25041247
+SHA256 = F19FD25827554AB82FE2B981DDE3CC518BFEDD951011492BD7F1B1A66573657F
+MD5 = 2e4bf2af99f0f83d2f9eb992f7d46d4e
+ServerFileName = AutoCharts_3.2.1_Setup.exe
+Flags = Critical
+FilePath = [APPDIR]AutoCharts.exe
+Version = 3.2.1
+UpdatedApplications = AutoCharts[1.0-3.2.1)
+BugFix = Fix error when copying backup file to VBS location
+BugFix1 = Fix expense ratio CSV splitting to use new VBS location
+BugFix2 = Fix dropbox directory saving error
+AutoCloseApplication = [APPDIR]AutoCharts.exe
+
+[3.2.0]
+Name = AutoCharts 3.2.0
+ProductVersion = 3.2.0.0
+URL = https://github.com/oNevion/AutoCharts/releases/download/v3.2.0/AutoCharts_3.2.0_Setup.exe
+Size = 25038483
+ReleaseDate = 04/10/2021
+SHA256 = E75A47A5BF28FE10B03CD21DCD8610CE346B2F503EDDC59FAD2426ADCADED536
+MD5 = ae1c74db962d8dfb8596bdbc1c66db3b
+ServerFileName = AutoCharts_3.2.0_Setup.exe
+RegistryKey = HKUD\Software\Jakob Bradshaw Productions\AutoCharts\Version
+Version = 3.2.0.0
+UpdatedApplications = AutoCharts[1.0-3.2]
+Feature = Material checkboxes now work as expected
+BugFix = Fixed VBS script call issue by moving to user's Documents folder
+AutoCloseApplication = [APPDIR]AutoCharts.exe
 
 [3.1.0]
 Name = AutoCharts 3.1.0
