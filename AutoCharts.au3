@@ -467,8 +467,8 @@ Func RunExpenseRatios()
 		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
 		_Metro_SetProgress($ProgressBar, 60)
 
-		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Catalyst Data Directory
-		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Catalyst_ExpenseRatios.xlsx", @MyDocumentsDir & "/AutoCharts/vbs/")       ; grab Expense Ratio .xlsx from Catalyst Data Directory
+		RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs Catalyst_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
 		_LogaInfo("~~~~~~~~~~~~ Updating Catalyst Expense Ratios ~~~~~~~~~~~~")     ; Write to the logfile
 		GUICtrlSetData($UpdateLabel, "Updating Catalyst Expense Ratios")
@@ -476,8 +476,8 @@ Func RunExpenseRatios()
 		_LogaInfo("Updated Catalyst Expense Ratios")         ; Write to the logfile
 
 		GUICtrlSetData($UpdateLabel, "Updated Catalyst Expense Ratios")
-		FileMove(@ScriptDir & "/VBS_Scripts/Catalyst_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
-		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
+		FileMove(@MyDocumentsDir & "/AutoCharts/vbs/Catalyst_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Catalyst_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")           ; deletes remaining .xlsx from conversion
 
 
 	EndIf
@@ -485,8 +485,8 @@ Func RunExpenseRatios()
 		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
 		_Metro_SetProgress($ProgressBar, 60)
 
-		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @ScriptDir & "/VBS_Scripts/")       ; grab Expense Ratio .xlsx from Rational Data Directory
-		RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+		FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\Rational_ExpenseRatios.xlsx", @MyDocumentsDir & "/AutoCharts/vbs/")       ; grab Expense Ratio .xlsx from Rational Data Directory
+		RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs Rational_ExpenseRatios.xlsx", @TempDir, @SW_HIDE)         ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
 		_LogaInfo("~~~~~~~~~~~~ Updating Rational Expense Ratios ~~~~~~~~~~~~")         ; Write to the logfile
 		GUICtrlSetData($UpdateLabel, "Updating Rational Expense Ratios")
@@ -494,8 +494,8 @@ Func RunExpenseRatios()
 		_LogaInfo("Updated Rational Expense Ratios")         ; Write to the logfile
 
 		GUICtrlSetData($UpdateLabel, "Updated Rational Expense Ratios")
-		FileMove(@ScriptDir & "/VBS_Scripts/Rational_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
-		FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")           ; deletes remaining .xlsx from conversion
+		FileMove(@MyDocumentsDir & "/AutoCharts/vbs/Rational_ExpenseRatios.csv", $DatabaseDir & "\csv\" & $FundFamily & "\Rational_ExpenseRatios.csv", 1)           ; Move all .CSV back to Data folder and overwrite.
+		FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")           ; deletes remaining .xlsx from conversion
 
 
 	EndIf
