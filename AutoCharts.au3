@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseX64=n
 #AutoIt3Wrapper_Res_Description=AutoCharts 3.2.1
-#AutoIt3Wrapper_Res_Fileversion=3.2.1
+#AutoIt3Wrapper_Res_Fileversion=3.2.1.0
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
 #AutoIt3Wrapper_Res_ProductVersion=3.2.1
@@ -123,7 +123,7 @@ Func CheckForSettingsMigrate()
 EndFunc   ;==>CheckForSettingsMigrate
 
 Func CheckForUpdate()
-	Run(@ScriptDir & "/AutoCharts_Updater.exe")
+	RunWait(@ScriptDir & "/AutoCharts_Updater.exe")
 EndFunc   ;==>CheckForUpdate
 
 ;Func CheckForUpdateSilent()
