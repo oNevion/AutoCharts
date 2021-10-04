@@ -506,6 +506,7 @@ Func _CatalystFundsGUI()
 					_GUIDisable($Form2)
 					_Metro_GUIDelete($Form2) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 					Return 0
+					Global $aCatalystCheck[24]
 				Else
 					If @error = 50 Then
 
@@ -531,6 +532,7 @@ Func _CatalystFundsGUI()
 				_GUIDisable($Form2, 0, 30)
 				_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
 				_GUIDisable($Form2)
+Global $aCatalystCheck[24]
 
 				If @error = 50 Then
 
@@ -722,7 +724,7 @@ Func _RationalFundsGUI()
 
 				_Metro_GUIDelete($Form3) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 				Return 0
-
+Global $aRationalCheck[8]
 			Case $BTN_Rational_UpdateExpenseRatio
 				$FundFamily = "Rational"
 				$FamilySwitch = $aRationalCheck
@@ -739,7 +741,7 @@ Func _RationalFundsGUI()
 				_GUIDisable($Form3, 0, 30)
 				_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
 				_GUIDisable($Form3)
-
+Global $aRationalCheck[8]
 				If @error = 50 Then
 
 					_GUIDisable($Form3, 0, 30)
@@ -872,6 +874,7 @@ Func _StrategySharesFundsGUI()
 				_Metro_GUIDelete($Form4) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 				Return 0
 
+Global $aStrategyCheck[3]
 		EndSwitch
 	WEnd
 EndFunc   ;==>_StrategySharesFundsGUI

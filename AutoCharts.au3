@@ -2,11 +2,11 @@
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseX64=n
-#AutoIt3Wrapper_Res_Description=AutoCharts 3.1.1
-#AutoIt3Wrapper_Res_Fileversion=3.1.1.3
+#AutoIt3Wrapper_Res_Description=AutoCharts 3.2.0
+#AutoIt3Wrapper_Res_Fileversion=3.2.0
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=3.1.1
+#AutoIt3Wrapper_Res_ProductVersion=3.2.0
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -267,21 +267,89 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & ".xlsx file to csv")
 
-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
-				RunCSVConvert4Institution()
-			EndIf
-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
-				RunCSVConvert4Brochure()
-			EndIf
-			If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
-				RunCSVConvert4Presentation()
+			;Checks to see if Catalyst checkboxes are checked for different marketing material types | Factsheet, Brochure, Presentation
+			If $FundFamily = "Catalyst" Then
+				If _Metro_CheckboxIsChecked($CB_Brochure_Catalyst) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
+						RunCSVConvert4Brochure()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_Brochure_Catalyst)
+				EndIf
+
+				If _Metro_CheckboxIsChecked($CB_FactSheet_Catalyst) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
+						RunCSVConvert4Institution()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_FactSheet_Catalyst)
+
+				EndIf
+
+				If _Metro_CheckboxIsChecked($CB_Presentation_Catalyst) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+						RunCSVConvert4Presentation()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_Presentation_Catalyst)
+
+				EndIf
 			EndIf
 
+			;Checks to see if Rational checkboxes are checked for different marketing material types | Factsheet, Brochure, Presentation
+			If $FundFamily = "Rational" Then
 
+				If _Metro_CheckboxIsChecked($CB_Brochure_Rational) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
+						RunCSVConvert4Brochure()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_Brochure_Rational)
+
+				EndIf
+
+				If _Metro_CheckboxIsChecked($CB_FactSheet_Rational) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
+						RunCSVConvert4Institution()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_FactSheet_Rational)
+
+				EndIf
+
+				If _Metro_CheckboxIsChecked($CB_Presentation_Rational) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+						RunCSVConvert4Presentation()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_Presentation_Rational)
+
+				EndIf
+			EndIf
+
+			;Checks to see if Strategy Shares checkboxes are checked for different marketing material types | Factsheet, Brochure, Presentation
+			If $FundFamily = "StrategyShares" Then
+
+				If _Metro_CheckboxIsChecked($CB_Brochure_SS) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
+						RunCSVConvert4Brochure()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_Brochure_SS)
+
+				EndIf
+
+				If _Metro_CheckboxIsChecked($CB_FactSheet_SS) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
+						RunCSVConvert4Institution()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_FactSheet_SS)
+
+				EndIf
+
+				If _Metro_CheckboxIsChecked($CB_Presentation_SS) Then
+					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
+						RunCSVConvert4Presentation()
+					EndIf
+					_Metro_CheckboxUnCheck($CB_Presentation_SS)
+
+				EndIf
+			EndIf
 
 			_Metro_SetProgress($ProgressBar, 25)
-
-
 
 
 			FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
