@@ -2,23 +2,20 @@
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
 #AutoIt3Wrapper_UseX64=n
-#AutoIt3Wrapper_Res_Description=AutoCharts 3.1.0
-#AutoIt3Wrapper_Res_Fileversion=3.1.0.1
+#AutoIt3Wrapper_Res_Description=AutoCharts 3.1.1
+#AutoIt3Wrapper_Res_Fileversion=3.1.1.3
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=3.1.0
+#AutoIt3Wrapper_Res_ProductVersion=3.1.1
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
-#AutoIt3Wrapper_Add_Constants=n
 #AutoIt3Wrapper_AU3Check_Stop_OnWarning=y
 #AutoIt3Wrapper_AU3Check_Parameters=-w 1 -v 1
 #AutoIt3Wrapper_Run_Tidy=y
-#Tidy_Parameters=/gds
 #AutoIt3Wrapper_Run_Au3Stripper=y
-#Au3Stripper_Parameters=/tl /so /rm /pe /debug
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #Au3Stripper_Ignore_Funcs=_iHoverOn,_iHoverOff,_iFullscreenToggleBtn,_cHvr_CSCP_X64,_cHvr_CSCP_X86,_iControlDelete
 
@@ -109,7 +106,12 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 ;-------------------------------------------------------------------------------
 #include "src/DataLinker_Func.au3"
 
-
+;-------------------------------------------------------------------------------
+; Main program that manages files for the documents folder
+;
+; This is the entry point to the directory and file check and creation code.
+;-------------------------------------------------------------------------------
+#include "src/MyDocuments_Include.au3"
 
 Func CheckForSettingsMigrate()
 	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
@@ -247,7 +249,9 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 				PullStrategySharesFundData()
 			EndIf
 
-			If Not FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @ScriptDir & "/VBS_Scripts/") Then      ; grab .xlsx from current fund directory and move to /VBS_Scripts
+			CreateAutoChartsDocFolder()
+
+			If Not FileCopy($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx", @MyDocumentsDir & "/AutoCharts/vbs/") Then      ; grab .xlsx from current fund directory and move to /VBS_Scripts
 				_GUIDisable($Form1, 0, 50)
 				_Metro_MsgBox(0, "Error", "Could not copy backup file from " & $DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "*.xlsx")
 				_GUIDisable($Form1)
@@ -255,7 +259,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 				ExitLoop
 			EndIf
 
-			RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+			RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & ".xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
 
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | ~~~~~~~~~~~~ " & $CurrentFund & " CSV CONVERSION START ~~~~~~~~~~~~")
 
@@ -280,15 +284,15 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 
 
 
-			FileCopy(@ScriptDir & "/VBS_Scripts/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
-			FileMove(@ScriptDir & "/VBS_Scripts/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
 
 			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
 			_Metro_SetProgress($ProgressBar, 30)
 
 
-			FileDelete(@ScriptDir & "/VBS_Scripts/*.xlsx")       ; deletes remaining .xlsx from conversion
+			FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")       ; deletes remaining .xlsx from conversion
 			_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 			_Metro_SetProgress($ProgressBar, 55)
@@ -304,7 +308,7 @@ EndFunc   ;==>RunCSVConvert
 
 Func RunCSVConvert4Institution() ; Dynamically checks for funds with "-institutional.xlsx" files and converts those automatically as well.
 
-	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+	RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-institutional.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
 
 	_LogaInfo("Converted " & $CurrentFund & "-institutional.xlsx file to csv")     ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-institutional.xlsx file to csv")
@@ -316,7 +320,7 @@ EndFunc   ;==>RunCSVConvert4Institution
 
 Func RunCSVConvert4Brochure() ; Dynamically checks for funds with "-brochure.xlsx" files and converts those automatically as well.
 
-	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+	RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-brochure.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
 
 	_LogaInfo("Converted " & $CurrentFund & "-brochure.xlsx file to csv")     ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-brochure.xlsx file to csv")
@@ -327,7 +331,7 @@ EndFunc   ;==>RunCSVConvert4Brochure
 
 Func RunCSVConvert4Presentation() ; Dynamically checks for funds with "-brochure.xlsx" files and converts those automatically as well.
 
-	RunWait(@ComSpec & " /c " & @ScriptDir & "/VBS_Scripts/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
+	RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs " & $CurrentFund & "-presentation.xlsx", @TempDir, @SW_HIDE)     ;~ Runs command hidden, Converts Current Fund's INSTITUTIONAL.xlsx to .csv
 
 	_LogaInfo("Converted " & $CurrentFund & "-presentation.xlsx file to csv")     ; Write to the logfile
 	GUICtrlSetData($UpdateLabel, $CurrentFund & " | Converted " & $CurrentFund & "-presentation.xlsx file to csv")
