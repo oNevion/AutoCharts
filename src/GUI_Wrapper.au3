@@ -35,6 +35,23 @@ CheckForSettingsMigrate()
 OpenMainGUI()
 
 Func OpenMainGUI()
+	Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
+	_LogaInfo("Set dropbox directory to | " & $DropboxDir)                             ; Write to the logfile
+
+	Global $INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
+	_LogaInfo("Set UserName to | " & $INPT_Name)                ; Write to the logfile
+
+	Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
+	_LogaInfo("Set current quarter to | " & $Select_Quarter)                  ; Write to the logfile
+
+	Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
+	_LogaInfo("Set current year to | " & $INPT_CurYear)                  ; Write to the logfile
+
+	Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', '')
+	_LogaInfo("Dropbox directory verified? | " & $bDBVerified)                  ; Write to the logfile
+
+	Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
+	_LogaInfo("Set theme to | " & $Select_Theme)                ; Write to the logfile
 	;Set Theme
 	_SetTheme($Select_Theme) ;See MetroThemes.au3 for selectable themes or to add more
 
@@ -532,7 +549,7 @@ Func _CatalystFundsGUI()
 				_GUIDisable($Form2, 0, 30)
 				_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
 				_GUIDisable($Form2)
-Global $aCatalystCheck[24]
+				Global $aCatalystCheck[24]
 
 				If @error = 50 Then
 
@@ -724,7 +741,7 @@ Func _RationalFundsGUI()
 
 				_Metro_GUIDelete($Form3) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 				Return 0
-Global $aRationalCheck[8]
+				Global $aRationalCheck[8]
 			Case $BTN_Rational_UpdateExpenseRatio
 				$FundFamily = "Rational"
 				$FamilySwitch = $aRationalCheck
@@ -741,7 +758,7 @@ Global $aRationalCheck[8]
 				_GUIDisable($Form3, 0, 30)
 				_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
 				_GUIDisable($Form3)
-Global $aRationalCheck[8]
+				Global $aRationalCheck[8]
 				If @error = 50 Then
 
 					_GUIDisable($Form3, 0, 30)
@@ -874,7 +891,7 @@ Func _StrategySharesFundsGUI()
 				_Metro_GUIDelete($Form4) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 				Return 0
 
-Global $aStrategyCheck[3]
+				Global $aStrategyCheck[3]
 		EndSwitch
 	WEnd
 EndFunc   ;==>_StrategySharesFundsGUI
@@ -900,10 +917,6 @@ Func _SettingsGUI()
 	Global $INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 50, 75, 440, 30)
 	GUICtrlSetFont(-1, 11, 500, 0, "Segoe UI")
 	Local $BTN_SelectDBPath = _Metro_CreateButton("Browse", 280, 110, 210, 40)
-
-
-
-
 
 	Local $Label_Name = GUICtrlCreateLabel("Your Name:", 50, 175, 440, 40)
 	GUICtrlSetColor(-1, $FontThemeColor)
@@ -948,24 +961,24 @@ Func _SettingsGUI()
 
 	;Create 4 Radios that are assigned to Radio Group 1
 	Local $Radio_DarkBlue = _Metro_CreateRadioEx("2", "Blue", 50, 480, 100, 30)
-		If $Select_Theme = "DarkBlue" Then
-				_Metro_RadioCheck("2", $Radio_DarkBlue)         ;check $Radio1 which is assigned to radio group "1" and uncheck any other radio in group "1"
-		EndIf
+	If $Select_Theme = "DarkBlue" Then
+		_Metro_RadioCheck("2", $Radio_DarkBlue)                 ;check $Radio1 which is assigned to radio group "1" and uncheck any other radio in group "1"
+	EndIf
 
 	Local $Radio_LightBlue = _Metro_CreateRadioEx("2", "Blue 2", 160, 480, 100, 30)
-		If $Select_Theme = "LightBlue" Then
-				_Metro_RadioCheck("2", $Radio_LightBlue)         ;check $Radio1 which is assigned to radio group "1" and uncheck any other radio in group "1"
-		EndIf
+	If $Select_Theme = "LightBlue" Then
+		_Metro_RadioCheck("2", $Radio_LightBlue)                 ;check $Radio1 which is assigned to radio group "1" and uncheck any other radio in group "1"
+	EndIf
 
 	Local $Radio_DarkPurple = _Metro_CreateRadioEx("2", "Purple", 270, 480, 100, 30)
-		If $Select_Theme = "DarkPurple" Then
-				_Metro_RadioCheck("2", $Radio_DarkPurple)         ;check $Radio1 which is assigned to radio group "1" and uncheck any other radio in group "1"
-		EndIf
+	If $Select_Theme = "DarkPurple" Then
+		_Metro_RadioCheck("2", $Radio_DarkPurple)                 ;check $Radio1 which is assigned to radio group "1" and uncheck any other radio in group "1"
+	EndIf
 
 	Local $Radio_LightPurple = _Metro_CreateRadioEx("2", "Purple 2", 380, 480, 100, 30)
-		If $Select_Theme = "LightPurple" Then
-				_Metro_RadioCheck("2", $Radio_LightPurple)         ;check $Radio1 which is assigned to radio group "1" and uncheck any other radio in group "1"
-		EndIf
+	If $Select_Theme = "LightPurple" Then
+		_Metro_RadioCheck("2", $Radio_LightPurple)                 ;check $Radio1 which is assigned to radio group "1" and uncheck any other radio in group "1"
+	EndIf
 
 
 
@@ -1118,6 +1131,8 @@ Func _SettingsGUI()
 					_Metro_GUIDelete($Form5) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 					_Metro_GUIDelete($Form1) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 					OpenMainGUI()
+
+
 				EndIf
 
 		EndSwitch
