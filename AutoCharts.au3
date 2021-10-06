@@ -62,7 +62,6 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 
 
 #EndRegion ### Database Variables
-
 #include <Array.au3>
 #include <File.au3>
 #include <MsgBoxConstants.au3>
