@@ -37,7 +37,7 @@ am4core.useTheme(am4themes_amcharts);
 var chart1 = am4core.create("chartdiv", am4charts.XYChart);
 
 // Set up data source
-chart1.dataSource.url = "../Data/Backups/Rational/IGO/IGO_10k.csv";
+chart1.dataSource.url = "../Data/Backups/Rational/IGO/IGO_EXPORT_10kChart.csv";
 chart1.dataSource.parser = new am4core.CSVParser();
 chart1.dataSource.parser.options.useColumnNames = true;
 
@@ -77,7 +77,7 @@ series1.legendSettings.labelText = "{name}[/]";
 series1.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
 var series2 = chart1.series.push(new am4charts.LineSeries());
-series2.dataFields.valueY = "60% S&P 500 TR Index / 40% Bloomberg Agg. Bond Index";
+series2.dataFields.valueY = "Benchmark";
 series2.dataFields.dateX = "Date";
 series2.name = "60% S&P 500 TR Index / 40% Bloomberg Agg. Bond Index";
 series2.strokeWidth = 3;
