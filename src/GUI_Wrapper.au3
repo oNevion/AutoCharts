@@ -911,12 +911,13 @@ Func _SettingsGUI()
 
 
 	;Create Settings Options
-	Local $Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox Folder:", 50, 50, 440, 20)
+	Local $Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox:", 50, 50, 440, 20)
 	GUICtrlSetColor(-1, $FontThemeColor)
 	GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
 	Global $INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 50, 75, 440, 30)
 	GUICtrlSetFont(-1, 11, 500, 0, "Segoe UI")
 	Local $BTN_SelectDBPath = _Metro_CreateButton("Browse", 280, 110, 210, 40)
+
 
 	Local $Label_Name = GUICtrlCreateLabel("Your Name:", 50, 175, 440, 40)
 	GUICtrlSetColor(-1, $FontThemeColor)

@@ -3,7 +3,7 @@
 ; Name:    			Database Sync
 ; Description:      Dropbox Database Sync for AutoCharts
 ; Author(s):        oNevion
-; Version:          v0.6
+; Version:          v0.7
 ;
 ;===============================================================================
 
@@ -27,12 +27,21 @@ Global $timer
 ;===============================================================================
 
 Func VerifyDropbox()
-	If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then  ; dynamically checks if Current Fund has institutional backupfile. If so, runs csv convert on both
+	If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then
 		$bDBVerified = True
 		IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
 	Else
 		$bDBVerified = False
 		IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
+		SetError(50)
+	EndIf
+	;Verifies Connection to new AutoCharts Drive
+		If FileExists($DatabaseDir & "/.checkfile") Then
+		$bACDriveVerified = True
+		IniWrite($ini, 'Settings', 'ACDriveVerified', $bDBVerified)
+	Else
+		$bACDriveVerified = False
+		IniWrite($ini, 'Settings', 'ACDriveVerified', $bDBVerified)
 		SetError(50)
 	EndIf
 EndFunc   ;==>VerifyDropbox
