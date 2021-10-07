@@ -36,7 +36,7 @@ OpenMainGUI()
 
 Func OpenMainGUI()
 	Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-	_LogaInfo("Set dropbox directory to | " & $DropboxDir)                             ; Write to the logfile
+	_LogaInfo("Set AutoCharts Drive directory to | " & $DropboxDir)                             ; Write to the logfile
 
 	Global $INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
 	_LogaInfo("Set UserName to | " & $INPT_Name)                ; Write to the logfile
@@ -48,7 +48,7 @@ Func OpenMainGUI()
 	_LogaInfo("Set current year to | " & $INPT_CurYear)                  ; Write to the logfile
 
 	Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', '')
-	_LogaInfo("Dropbox directory verified? | " & $bDBVerified)                  ; Write to the logfile
+	_LogaInfo("AutoCharts Drive directory verified? | " & $bDBVerified)                  ; Write to the logfile
 
 	Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
 	_LogaInfo("Set theme to | " & $Select_Theme)                ; Write to the logfile
@@ -530,7 +530,7 @@ Func _CatalystFundsGUI()
 					If @error = 50 Then
 
 						_GUIDisable($Form2, 0, 30)
-						_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form2)
+						_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | AutoCharts Drive path not verified. Process has been aborted.", 500, 11, $Form2)
 						_GUIDisable($Form2)
 
 					EndIf
@@ -556,7 +556,7 @@ Func _CatalystFundsGUI()
 				If @error = 50 Then
 
 					_GUIDisable($Form2, 0, 30)
-					_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form2)
+					_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | AutoCharts Drive path not verified. Process has been aborted.", 500, 11, $Form2)
 					_GUIDisable($Form2)
 
 				EndIf
@@ -765,7 +765,7 @@ Func _RationalFundsGUI()
 				If @error = 50 Then
 
 					_GUIDisable($Form3, 0, 30)
-					_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form3)
+					_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | AutoCharts Drive path not verified. Process has been aborted.", 500, 11, $Form3)
 					_GUIDisable($Form3)
 				EndIf
 
@@ -1035,7 +1035,7 @@ Func _SettingsGUI()
 				$DATA_UserSettings = GUICtrlRead($INPT_DropboxFolder)
 				If $DATA_UserSettings = "" Then
 					_GUIDisable($Form5, 0, 30)
-					_Metro_MsgBox(0, "Error!", "You must select a dropbox directory!", 500, 11, $Form5)
+					_Metro_MsgBox(0, "Error!", "You must select the AutoCharts Drive!", 500, 11, $Form5)
 					_GUIDisable($Form5)
 				Else
 					$iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $DATA_UserSettings)
@@ -1129,7 +1129,7 @@ Func _SettingsGUI()
 					VerifyDropbox()
 					If @error = 50 Then
 						_GUIDisable($Form5, 0, 30)
-						_Metro_MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.", 500, 11, $Form5)
+						_Metro_MsgBox(0, "Error!", "Error Code: " & @error & " | AutoCharts Drive path not verified. Please try resetting it.", 500, 11, $Form5)
 						_GUIDisable($Form5)
 					EndIf
 					_Metro_GUIDelete($Form5) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
@@ -1201,7 +1201,7 @@ Func _SyncGUI()
 
 	;Create Settings Options
 
-	Local $BTN_SyncAll = _Metro_CreateButton("Pull Data from Dropbox", 50, 100, 440, 40)
+	Local $BTN_SyncAll = _Metro_CreateButton("Pull Data from AutoCharts Drive", 50, 100, 440, 40)
 	Local $BTN_DL_Import = _Metro_CreateButton("Import Datalinker from Database", 50, 160, 440, 40)
 
 	_Metro_AddHSeperator(50, 240, 440, 1)
