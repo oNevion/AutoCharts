@@ -180,13 +180,14 @@ dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "24px";
 dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.minGridDistance = 60;
-dateAxis.renderer.labels.template.dx = -54;
+dateAxis.renderer.labels.template.dx = -60;
 dateAxis.renderer.labels.template.location = 1;
 dateAxis.renderer.labels.template.rotation = -45;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "left";
 dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
+dateAxis.extraMax = 0.02; 
 
 var valueAxis = chart3.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
