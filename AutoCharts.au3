@@ -357,8 +357,8 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
 			FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
 
-			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox") ; Write to the logfile
-			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
+			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in AutoCharts Drive") ; Write to the logfile
+			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in AutoCharts Drive")
 			_Metro_SetProgress($ProgressBar, 30)
 
 

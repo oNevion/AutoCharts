@@ -15,7 +15,7 @@
 ;===============================================================================
 ;
 ; Function Name:    ExportDatalinker()
-; Description:      Copies and exports DataLinker XML file from Dropbox Database to user defined directory
+; Description:      Copies and exports DataLinker XML file from AutoCharts Drive Database to user defined directory
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -49,7 +49,7 @@ EndFunc   ;==>ExportDatalinker
 ;===============================================================================
 ;
 ; Function Name:    UploadDatalinker()
-; Description:      Copies DataLinker XML file from current user's local plugin directory and uploads it to Dropbox directory
+; Description:      Copies DataLinker XML file from current user's local plugin directory and uploads it to AutoCharts Drive directory
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -91,7 +91,7 @@ EndFunc   ;==>UploadDatalinker
 ;===============================================================================
 ;
 ; Function Name:    ImportDatalinker()
-; Description:      Imports Datalinker file from Dropbox Database and changes file paths to current user's dropbox directory.
+; Description:      Imports Datalinker file from AutoCharts Drive Database and changes file paths to current user's AutoCharts Drive directory.
 ; Parameter(s):     None
 ;
 ;===============================================================================

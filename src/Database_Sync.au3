@@ -1,7 +1,7 @@
 ;===============================================================================
 ;
 ; Name:    			Database Sync
-; Description:      Dropbox Database Sync for AutoCharts
+; Description:      AutoCharts Drive Database Sync for AutoCharts
 ; Author(s):        oNevion
 ; Version:          v0.7
 ;
@@ -21,7 +21,7 @@ Global $timer
 ;===============================================================================
 ;
 ; Function Name:    VerifyDropbox()
-; Description:      Verifies User Selected Dropbox Directory. If .checkfile does not exist, than user receives and error.
+; Description:      Verifies User Selected AutoCharts Drive Directory. If .checkfile does not exist, than user receives and error.
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -41,7 +41,7 @@ EndFunc   ;==>VerifyDropbox
 ;===============================================================================
 ;
 ; Function Name:    SyncronizeDataFiles()
-; Description:      Downloads all files from Dropbox Database into AutoCharts Directory
+; Description:      Downloads all files from AutoCharts Drive Database into AutoCharts Directory
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -62,7 +62,7 @@ Func SyncronizeDataFiles()
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
 
-	_LogaInfo("Synced Dropbox data with Autocharts Data") ; Write to the logfile
+	_LogaInfo("Synced AutoCharts Drive data with Autocharts Data") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
@@ -80,7 +80,7 @@ EndFunc   ;==>SyncronizeDataFiles
 ;===============================================================================
 ;
 ; Function Name:    PullCatalystData()
-; Description:      Downloads all files for Catalyst Funds from Dropbox Database into AutoCharts Directory
+; Description:      Downloads all files for Catalyst Funds from AutoCharts Drive Database into AutoCharts Directory
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -100,7 +100,7 @@ Func PullCatalystData()
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
-	_LogaInfo("Pulled All Catalyst Data from Dropbox") ; Write to the logfile
+	_LogaInfo("Pulled All Catalyst Data from AutoCharts Drive") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
@@ -117,7 +117,7 @@ EndFunc   ;==>PullCatalystData
 ;===============================================================================
 ;
 ; Function Name:    PullCatalystFundData()
-; Description:      Downloads $CurrentFund's csv data from Dropbox Database into AutoCharts Directory
+; Description:      Downloads $CurrentFund's csv data from AutoCharts Drive Database into AutoCharts Directory
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -136,7 +136,7 @@ Func PullCatalystFundData()
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
-	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
+	_LogaInfo("Pulled " & $CurrentFund & " Data from AutoCharts Drive") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
@@ -151,7 +151,7 @@ EndFunc   ;==>PullCatalystFundData
 ;===============================================================================
 ;
 ; Function Name:    PullRationalData()
-; Description:      Downloads all files for Rational Funds from Dropbox Database into AutoCharts Directory
+; Description:      Downloads all files for Rational Funds from AutoCharts Drive Database into AutoCharts Directory
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -170,7 +170,7 @@ Func PullRationalData()
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
-	_LogaInfo("Pulled Rational Data from Dropbox") ; Write to the logfile
+	_LogaInfo("Pulled Rational Data from AutoCharts Drive") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
@@ -186,7 +186,7 @@ EndFunc   ;==>PullRationalData
 ;===============================================================================
 ;
 ; Function Name:    PullRationalFundData()
-; Description:      Downloads $CurrentFund's csv data from Dropbox Database into AutoCharts Directory
+; Description:      Downloads $CurrentFund's csv data from AutoCharts Drive Database into AutoCharts Directory
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -205,7 +205,7 @@ Func PullRationalFundData()
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
-	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
+	_LogaInfo("Pulled " & $CurrentFund & " Data from AutoCharts Drive") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
@@ -221,7 +221,7 @@ EndFunc   ;==>PullRationalFundData
 ;===============================================================================
 ;
 ; Function Name:    PullStrategySharesFundData()
-; Description:      Downloads $CurrentFund's csv data from Dropbox Database into AutoCharts Directory
+; Description:      Downloads $CurrentFund's csv data from AutoCharts Drive Database into AutoCharts Directory
 ; Parameter(s):     None
 ;
 ;===============================================================================
@@ -240,7 +240,7 @@ Func PullStrategySharesFundData()
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 
-	_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox") ; Write to the logfile
+	_LogaInfo("Pulled " & $CurrentFund & " Data from AutoCharts Drive") ; Write to the logfile
 
 	$source = $DatabaseDir & "\amCharts"
 	$destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
@@ -255,7 +255,7 @@ EndFunc   ;==>PullStrategySharesFundData
 ;===============================================================================
 ;
 ; Function Name:    UploadamCharts()
-; Description:      Uploads amCharts JS files from AutoCharts directory to Dropbox Database
+; Description:      Uploads amCharts JS files from AutoCharts directory to AutoCharts Drive Database
 ; Parameter(s):     None
 ;
 ;===============================================================================
