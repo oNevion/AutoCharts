@@ -56,7 +56,7 @@ Func OpenMainGUI()
 	_SetTheme($Select_Theme) ;See MetroThemes.au3 for selectable themes or to add more
 
 	;Create resizable Metro GUI
-	Global $Form1 = _Metro_CreateGUI("AutoCharts 3.0.0", 540, 700, -1, -1, True)
+	Global $Form1 = _Metro_CreateGUI("AutoCharts 3.2.1", 540, 700, -1, -1, True)
 	GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
 	;Add/create control buttons to the GUI
 	$Control_Buttons = _Metro_AddControlButtons(True, True, True, True, True) ;CloseBtn = True, MaximizeBtn = True, MinimizeBtn = True, FullscreenBtn = True, MenuBtn = True
@@ -518,12 +518,14 @@ Func _CatalystFundsGUI()
 					CreateCharts()
 
 					_LogaInfo("############################### END OF RUN - CATALYST ###############################")
+					Global $aCatalystCheck[24]
+
 					_GUIDisable($Form2, 0, 30)
 					_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
+
 					_GUIDisable($Form2)
 					_Metro_GUIDelete($Form2) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 					Return 0
-					Global $aCatalystCheck[24]
 				Else
 					If @error = 50 Then
 
@@ -545,11 +547,11 @@ Func _CatalystFundsGUI()
 				_LogaInfo("############################### END OF RUN - CATALYST ###############################")             ; Write to the logfile
 
 				GUICtrlSetData($ProgressBar, 0)
+				Global $aCatalystCheck[24]
 
 				_GUIDisable($Form2, 0, 30)
 				_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
 				_GUIDisable($Form2)
-				Global $aCatalystCheck[24]
 
 				If @error = 50 Then
 
@@ -735,13 +737,14 @@ Func _RationalFundsGUI()
 				_LogaInfo("############################### END OF RUN - RATIONAL ###############################")         ; Write to the logfile
 
 				GUICtrlSetData($ProgressBar, 0)
+				Global $aRationalCheck[8]
+
 				_GUIDisable($Form3, 0, 30)
 				_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
 				_GUIDisable($Form3)
 
 				_Metro_GUIDelete($Form3) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 				Return 0
-				Global $aRationalCheck[8]
 			Case $BTN_Rational_UpdateExpenseRatio
 				$FundFamily = "Rational"
 				$FamilySwitch = $aRationalCheck
@@ -754,11 +757,11 @@ Func _RationalFundsGUI()
 				_LogaInfo("############################### END OF RUN - RATIONAL ###############################")             ; Write to the logfile
 
 				GUICtrlSetData($ProgressBar, 0)
+				Global $aRationalCheck[8]
 
 				_GUIDisable($Form3, 0, 30)
 				_Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
 				_GUIDisable($Form3)
-				Global $aRationalCheck[8]
 				If @error = 50 Then
 
 					_GUIDisable($Form3, 0, 30)
@@ -882,6 +885,7 @@ Func _StrategySharesFundsGUI()
 				CreateCharts()
 
 				_LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################")         ; Write to the logfile
+				Global $aStrategyCheck[3]
 
 				GUICtrlSetData($ProgressBar, 0)
 				_GUIDisable($Form4, 0, 30)
@@ -891,7 +895,6 @@ Func _StrategySharesFundsGUI()
 				_Metro_GUIDelete($Form4) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 				Return 0
 
-				Global $aStrategyCheck[3]
 		EndSwitch
 	WEnd
 EndFunc   ;==>_StrategySharesFundsGUI
