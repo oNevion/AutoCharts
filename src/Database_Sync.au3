@@ -27,21 +27,13 @@ Global $timer
 ;===============================================================================
 
 Func VerifyDropbox()
-	If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then
-		$bDBVerified = True
-		IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
-	Else
-		$bDBVerified = False
-		IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
-		SetError(50)
-	EndIf
 	;Verifies Connection to new AutoCharts Drive
 		If FileExists($DatabaseDir & "/.checkfile") Then
 		$bACDriveVerified = True
-		IniWrite($ini, 'Settings', 'ACDriveVerified', $bDBVerified)
+		IniWrite($ini, 'Settings', 'ACDriveVerified', $bACDriveVerified)
 	Else
 		$bACDriveVerified = False
-		IniWrite($ini, 'Settings', 'ACDriveVerified', $bDBVerified)
+		IniWrite($ini, 'Settings', 'ACDriveVerified', $bACDriveVerified)
 		SetError(50)
 	EndIf
 EndFunc   ;==>VerifyDropbox
@@ -57,7 +49,7 @@ Func SyncronizeDataFiles()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files"
+	$source = $DropboxDir & "\Backup Files"
 	$destination = $DatabaseDir & "\fin_backup_files"
 	$timer = TimerInit()
 
@@ -97,7 +89,7 @@ Func PullCatalystData()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst"
+	$source = $DropboxDir & "\Backup Files\Catalyst"
 	$destination = $DatabaseDir & "\fin_backup_files\Catalyst"
 	;Local $timer = TimerInit()
 
@@ -134,7 +126,7 @@ Func PullCatalystFundData()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $CurrentFund & "\"
+	$source = $DropboxDir & "\Backup Files\Catalyst\" & $CurrentFund & "\"
 	$destination = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -168,7 +160,7 @@ Func PullRationalData()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\"
+	$source = $DropboxDir & "\Backup Files\Rational\"
 	$destination = $DatabaseDir & "\fin_backup_files\Rational\"
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -203,7 +195,7 @@ Func PullRationalFundData()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $CurrentFund & "\"
+	$source = $DropboxDir & "\Backup Files\Rational\" & $CurrentFund & "\"
 	$destination = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -238,7 +230,7 @@ Func PullStrategySharesFundData()
 
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
-	$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $CurrentFund & "\"
+	$source = $DropboxDir & "\Backup Files\StrategyShares\" & $CurrentFund & "\"
 	$destination = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
 
 	RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
