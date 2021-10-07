@@ -36,6 +36,7 @@ Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
 Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $FundFamily = ""
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
+Global $bACDriveVerified = IniRead($ini, 'Settings', 'ACDriveVerified', 'False')
 Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
 
 
@@ -58,7 +59,8 @@ Global $Radio_Q4 = 4
 
 Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups\"
 Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
+Global $AutoChartsDriveDir = "Z:\"
+Global $DatabaseDir = $AutoChartsDriveDir & "\database"
 
 
 #EndRegion ### Database Variables
