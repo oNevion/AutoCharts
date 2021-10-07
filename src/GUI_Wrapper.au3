@@ -911,7 +911,7 @@ Func _SettingsGUI()
 
 
 	;Create Settings Options
-	Local $Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox:", 50, 50, 440, 20)
+	Local $Label_Dropbox = GUICtrlCreateLabel("Path to AutoCharts Drive:", 50, 50, 440, 20)
 	GUICtrlSetColor(-1, $FontThemeColor)
 	GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
 	Global $INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 50, 75, 440, 30)
