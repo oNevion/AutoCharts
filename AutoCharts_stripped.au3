@@ -10,12 +10,13 @@ Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
 Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $FundFamily = ""
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
+Global $bACDriveVerified = IniRead($ini, 'Settings', 'ACDriveVerified', 'False')
 Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
 Global $INPT_DropboxFolder = 9999
 Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups\"
 Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
-Global Const $UBOUND_DIMENSIONS = 0
+Global $AutoChartsDriveDir = "Z:\"
+Global $DatabaseDir = $AutoChartsDriveDir & "\database"
 Global Const $UBOUND_ROWS = 1
 Global Const $UBOUND_COLUMNS = 2
 Global Const $SWP_NOSIZE = 0x0001
@@ -25,8 +26,6 @@ Global Const $SWP_NOREDRAW = 0x0008
 Global Const $SWP_NOACTIVATE = 0x0010
 Global Const $SWP_FRAMECHANGED = 0x0020
 Global Const $MB_SYSTEMMODAL = 4096
-Global Const $STR_ENTIRESPLIT = 1
-Global Const $STR_NOCOUNT = 2
 Global Const $_ARRAYCONSTANT_SORTINFOSIZE = 11
 Global $__g_aArrayDisplay_SortInfo[$_ARRAYCONSTANT_SORTINFOSIZE]
 Global Const $_ARRAYCONSTANT_tagLVITEM = "struct;uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;int TextMax;int Image;lparam Param;" & "int Indent;int GroupID;uint Columns;ptr pColumns;ptr piColFmt;int iGroup;endstruct"
@@ -75,118 +74,6 @@ Local $pItem = DllStructGetPtr($tItem)
 GUICtrlSendMsg($hWnd, 0x1073, $iIndex, $pItem)
 EndIf
 Return DllStructGetData($tBuffer, "Text")
-EndFunc
-Global Enum $ARRAYFILL_FORCE_DEFAULT, $ARRAYFILL_FORCE_SINGLEITEM, $ARRAYFILL_FORCE_INT, $ARRAYFILL_FORCE_NUMBER, $ARRAYFILL_FORCE_PTR, $ARRAYFILL_FORCE_HWND, $ARRAYFILL_FORCE_STRING, $ARRAYFILL_FORCE_BOOLEAN
-Func _ArrayAdd(ByRef $aArray, $vValue, $iStart = 0, $sDelim_Item = "|", $sDelim_Row = @CRLF, $iForce = $ARRAYFILL_FORCE_DEFAULT)
-If $iStart = Default Then $iStart = 0
-If $sDelim_Item = Default Then $sDelim_Item = "|"
-If $sDelim_Row = Default Then $sDelim_Row = @CRLF
-If $iForce = Default Then $iForce = $ARRAYFILL_FORCE_DEFAULT
-If Not IsArray($aArray) Then Return SetError(1, 0, -1)
-Local $iDim_1 = UBound($aArray, $UBOUND_ROWS)
-Local $hDataType = 0
-Switch $iForce
-Case $ARRAYFILL_FORCE_INT
-$hDataType = Int
-Case $ARRAYFILL_FORCE_NUMBER
-$hDataType = Number
-Case $ARRAYFILL_FORCE_PTR
-$hDataType = Ptr
-Case $ARRAYFILL_FORCE_HWND
-$hDataType = Hwnd
-Case $ARRAYFILL_FORCE_STRING
-$hDataType = String
-Case $ARRAYFILL_FORCE_BOOLEAN
-$hDataType = "Boolean"
-EndSwitch
-Switch UBound($aArray, $UBOUND_DIMENSIONS)
-Case 1
-If $iForce = $ARRAYFILL_FORCE_SINGLEITEM Then
-ReDim $aArray[$iDim_1 + 1]
-$aArray[$iDim_1] = $vValue
-Return $iDim_1
-EndIf
-If IsArray($vValue) Then
-If UBound($vValue, $UBOUND_DIMENSIONS) <> 1 Then Return SetError(5, 0, -1)
-$hDataType = 0
-Else
-Local $aTmp = StringSplit($vValue, $sDelim_Item, $STR_NOCOUNT + $STR_ENTIRESPLIT)
-If UBound($aTmp, $UBOUND_ROWS) = 1 Then
-$aTmp[0] = $vValue
-EndIf
-$vValue = $aTmp
-EndIf
-Local $iAdd = UBound($vValue, $UBOUND_ROWS)
-ReDim $aArray[$iDim_1 + $iAdd]
-For $i = 0 To $iAdd - 1
-If String($hDataType) = "Boolean" Then
-Switch $vValue[$i]
-Case "True", "1"
-$aArray[$iDim_1 + $i] = True
-Case "False", "0", ""
-$aArray[$iDim_1 + $i] = False
-EndSwitch
-ElseIf IsFunc($hDataType) Then
-$aArray[$iDim_1 + $i] = $hDataType($vValue[$i])
-Else
-$aArray[$iDim_1 + $i] = $vValue[$i]
-EndIf
-Next
-Return $iDim_1 + $iAdd - 1
-Case 2
-Local $iDim_2 = UBound($aArray, $UBOUND_COLUMNS)
-If $iStart < 0 Or $iStart > $iDim_2 - 1 Then Return SetError(4, 0, -1)
-Local $iValDim_1, $iValDim_2 = 0, $iColCount
-If IsArray($vValue) Then
-If UBound($vValue, $UBOUND_DIMENSIONS) <> 2 Then Return SetError(5, 0, -1)
-$iValDim_1 = UBound($vValue, $UBOUND_ROWS)
-$iValDim_2 = UBound($vValue, $UBOUND_COLUMNS)
-$hDataType = 0
-Else
-Local $aSplit_1 = StringSplit($vValue, $sDelim_Row, $STR_NOCOUNT + $STR_ENTIRESPLIT)
-$iValDim_1 = UBound($aSplit_1, $UBOUND_ROWS)
-Local $aTmp[$iValDim_1][0], $aSplit_2
-For $i = 0 To $iValDim_1 - 1
-$aSplit_2 = StringSplit($aSplit_1[$i], $sDelim_Item, $STR_NOCOUNT + $STR_ENTIRESPLIT)
-$iColCount = UBound($aSplit_2)
-If $iColCount > $iValDim_2 Then
-$iValDim_2 = $iColCount
-ReDim $aTmp[$iValDim_1][$iValDim_2]
-EndIf
-For $j = 0 To $iColCount - 1
-$aTmp[$i][$j] = $aSplit_2[$j]
-Next
-Next
-$vValue = $aTmp
-EndIf
-If UBound($vValue, $UBOUND_COLUMNS) + $iStart > UBound($aArray, $UBOUND_COLUMNS) Then Return SetError(3, 0, -1)
-ReDim $aArray[$iDim_1 + $iValDim_1][$iDim_2]
-For $iWriteTo_Index = 0 To $iValDim_1 - 1
-For $j = 0 To $iDim_2 - 1
-If $j < $iStart Then
-$aArray[$iWriteTo_Index + $iDim_1][$j] = ""
-ElseIf $j - $iStart > $iValDim_2 - 1 Then
-$aArray[$iWriteTo_Index + $iDim_1][$j] = ""
-Else
-If String($hDataType) = "Boolean" Then
-Switch $vValue[$iWriteTo_Index][$j - $iStart]
-Case "True", "1"
-$aArray[$iWriteTo_Index + $iDim_1][$j] = True
-Case "False", "0", ""
-$aArray[$iWriteTo_Index + $iDim_1][$j] = False
-EndSwitch
-ElseIf IsFunc($hDataType) Then
-$aArray[$iWriteTo_Index + $iDim_1][$j] = $hDataType($vValue[$iWriteTo_Index][$j - $iStart])
-Else
-$aArray[$iWriteTo_Index + $iDim_1][$j] = $vValue[$iWriteTo_Index][$j - $iStart]
-EndIf
-EndIf
-Next
-Next
-Case Else
-Return SetError(2, 0, -1)
-EndSwitch
-Return UBound($aArray, $UBOUND_ROWS) - 1
 EndFunc
 Global Const $FO_OVERWRITE = 2
 Global Const $FO_CREATEPATH = 8
@@ -416,102 +303,6 @@ Func _WinAPI_SetWindowPos($hWnd, $hAfter, $iX, $iY, $iCX, $iCY, $iFlags)
 Local $aResult = DllCall("user32.dll", "bool", "SetWindowPos", "hwnd", $hWnd, "hwnd", $hAfter, "int", $iX, "int", $iY, "int", $iCX, "int", $iCY, "uint", $iFlags)
 If @error Then Return SetError(@error, @extended, False)
 Return $aResult[0]
-EndFunc
-If UBound($CMDLine) > 1 Then
-If $CMDLine[1] <> "" Then _Zip_VirtualZipOpen()
-EndIf
-Func _Zip_Create($hFilename)
-$hFp = FileOpen($hFilename, 26)
-$sString = Chr(80) & Chr(75) & Chr(5) & Chr(6) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0) & Chr(0)
-FileWrite($hFp, $sString)
-If @error Then Return SetError(1,0,0)
-FileClose($hFp)
-While Not FileExists($hFilename)
-Sleep(10)
-Wend
-Return $hFilename
-EndFunc
-Func _Zip_AddFolder($hZipFile, $hFolder, $flag = 1)
-Local $DLLChk = _Zip_DllChk()
-If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
-If not _IsFullPath($hZipFile) then Return SetError(4,0)
-If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
-If StringRight($hFolder, 1) <> "\" Then $hFolder &= "\"
-$files = _Zip_Count($hZipFile)
-$oApp = ObjCreate("Shell.Application")
-$oCopy = $oApp.NameSpace($hZipFile).CopyHere($oApp.Namespace($hFolder))
-While 1
-If $flag = 1 then _Hide()
-If _Zip_Count($hZipFile) =($files+1) Then ExitLoop
-Sleep(10)
-WEnd
-Return SetError(0,0,1)
-EndFunc
-Func _Zip_Unzip($hZipFile, $hFilename, $hDestPath, $flag = 1)
-Local $DLLChk = _Zip_DllChk()
-If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
-If not _IsFullPath($hZipFile) then Return SetError(4,0)
-If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
-If Not FileExists($hDestPath) Then DirCreate($hDestPath)
-$oApp = ObjCreate("Shell.Application")
-$hFolderitem = $oApp.NameSpace($hZipFile).Parsename($hFilename)
-$oApp.NameSpace($hDestPath).Copyhere($hFolderitem)
-While 1
-If $flag = 1 then _Hide()
-If FileExists($hDestPath & "\" & $hFilename) Then
-return SetError(0, 0, 1)
-ExitLoop
-EndIf
-Sleep(500)
-WEnd
-EndFunc
-Func _Zip_Count($hZipFile)
-Local $DLLChk = _Zip_DllChk()
-If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
-If not _IsFullPath($hZipFile) then Return SetError(4,0)
-If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
-$items = _Zip_List($hZipFile)
-Return UBound($items) - 1
-EndFunc
-Func _Zip_List($hZipFile)
-local $aArray[1]
-Local $DLLChk = _Zip_DllChk()
-If $DLLChk <> 0 Then Return SetError($DLLChk, 0, 0)
-If not _IsFullPath($hZipFile) then Return SetError(4,0)
-If Not FileExists($hZipFile) Then Return SetError(1, 0, 0)
-$oApp = ObjCreate("Shell.Application")
-$hList = $oApp.Namespace($hZipFile).Items
-For $item in $hList
-_ArrayAdd($aArray,$item.name)
-Next
-$aArray[0] = UBound($aArray) - 1
-Return $aArray
-EndFunc
-Func _Zip_VirtualZipOpen()
-$ZipSplit = StringSplit($CMDLine[1], ",")
-$ZipName = $ZipSplit[1]
-$ZipFile = $ZipSplit[2]
-_Zip_Unzip($ZipName, $ZipFile, @TempDir & "\", 4+16)
-If @error Then Return SetError(@error,0,0)
-ShellExecute(@TempDir & "\" & $ZipFile)
-EndFunc
-Func _Zip_DllChk()
-If Not FileExists(@SystemDir & "\zipfldr.dll") Then Return 2
-If Not RegRead("HKEY_CLASSES_ROOT\CLSID\{E88DCCE0-B7B3-11d1-A9F0-00AA0060FA31}", "") Then Return 3
-Return 0
-EndFunc
-Func _IsFullPath($path)
-if StringInStr($path,":\") then
-Return True
-Else
-Return False
-EndIf
-Endfunc
-Func _Hide()
-If ControlGetHandle("[CLASS:#32770]", "", "[CLASS:SysAnimate32; INSTANCE:1]") <> "" And WinGetState("[CLASS:#32770]") <> @SW_HIDE Then
-$hWnd = WinGetHandle("[CLASS:#32770]")
-WinSetState($hWnd, "", @SW_HIDE)
-EndIf
 EndFunc
 Global Const $__RICHEDITCONSTANT_WM_USER = 0x400
 Global Const $EM_FINDWORDBREAK = $__RICHEDITCONSTANT_WM_USER + 76
@@ -1535,29 +1326,38 @@ Return $aLoga
 EndFunc
 Global $sLogFilePath = 'FilePath="AutoCharts.log"'
 Global $hLoga1 = _LogaNew($sLogFilePath)
+Func _ThrowError($txt, $exit = 0, $ret = "", $err = 0, $ext = 0, $time = 0)
+If $exit = 0 Then
+MsgBox(48, @ScriptName, $txt, $time)
+Return SetError($err, $ext, $ret)
+Else
+MsgBox(16, @ScriptName, $txt, $time)
+Exit($err)
+EndIf
+EndFunc
 Local $source
 Local $destination
 Global $timer
 Func VerifyDropbox()
-If FileExists($DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\.checkfile") Then
-$bDBVerified = True
-IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
+If FileExists($DatabaseDir & "/.checkfile") Then
+$bACDriveVerified = True
+IniWrite($ini, 'Settings', 'ACDriveVerified', $bACDriveVerified)
 Else
-$bDBVerified = False
-IniWrite($ini, 'Settings', 'DBVerified', $bDBVerified)
+$bACDriveVerified = False
+IniWrite($ini, 'Settings', 'ACDriveVerified', $bACDriveVerified)
 SetError(50)
 EndIf
 EndFunc
 Func SyncronizeDataFiles()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files"
+$source = $DropboxDir & "\Backup Files"
 $destination = $DatabaseDir & "\fin_backup_files"
 $timer = TimerInit()
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $source = $DatabaseDir & "\fin_backup_files"
 $destination = @ScriptDir & $CSVDataDir
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
-_LogaInfo("Synced Dropbox data with Autocharts Data")
+_LogaInfo("Synced AutoCharts Drive data with Autocharts Data")
 $source = $DatabaseDir & "\amCharts"
 $destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -1566,13 +1366,13 @@ SplashOff()
 EndFunc
 Func PullCatalystData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst"
+$source = $DropboxDir & "\Backup Files\Catalyst"
 $destination = $DatabaseDir & "\fin_backup_files\Catalyst"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $source = $DatabaseDir & "\fin_backup_files\Catalyst"
 $destination = @ScriptDir & $CSVDataDir & "\Catalyst"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
-_LogaInfo("Pulled All Catalyst Data from Dropbox")
+_LogaInfo("Pulled All Catalyst Data from AutoCharts Drive")
 $source = $DatabaseDir & "\amCharts"
 $destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -1581,13 +1381,13 @@ SplashOff()
 EndFunc
 Func PullCatalystFundData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Catalyst\" & $CurrentFund & "\"
+$source = $DropboxDir & "\Backup Files\Catalyst\" & $CurrentFund & "\"
 $destination = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $source = $DatabaseDir & "\fin_backup_files\Catalyst\" & $CurrentFund & "\"
 $destination = @ScriptDir & $CSVDataDir & "\Catalyst\" & $CurrentFund & "\"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
-_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
+_LogaInfo("Pulled " & $CurrentFund & " Data from AutoCharts Drive")
 $source = $DatabaseDir & "\amCharts"
 $destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -1596,13 +1396,13 @@ SplashOff()
 EndFunc
 Func PullRationalData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\"
+$source = $DropboxDir & "\Backup Files\Rational\"
 $destination = $DatabaseDir & "\fin_backup_files\Rational\"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $source = $DatabaseDir & "\fin_backup_files\Rational\"
 $destination = @ScriptDir & $CSVDataDir & "\Rational\"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
-_LogaInfo("Pulled Rational Data from Dropbox")
+_LogaInfo("Pulled Rational Data from AutoCharts Drive")
 $source = $DatabaseDir & "\amCharts"
 $destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -1611,13 +1411,13 @@ SplashOff()
 EndFunc
 Func PullRationalFundData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\Rational\" & $CurrentFund & "\"
+$source = $DropboxDir & "\Backup Files\Rational\" & $CurrentFund & "\"
 $destination = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $source = $DatabaseDir & "\fin_backup_files\Rational\" & $CurrentFund & "\"
 $destination = @ScriptDir & $CSVDataDir & "\Rational\" & $CurrentFund & "\"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
-_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
+_LogaInfo("Pulled " & $CurrentFund & " Data from AutoCharts Drive")
 $source = $DatabaseDir & "\amCharts"
 $destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -1626,13 +1426,13 @@ SplashOff()
 EndFunc
 Func PullStrategySharesFundData()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
-$source = $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\Backup Files\StrategyShares\" & $CurrentFund & "\"
+$source = $DropboxDir & "\Backup Files\StrategyShares\" & $CurrentFund & "\"
 $destination = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
 $source = $DatabaseDir & "\fin_backup_files\StrategyShares\" & $CurrentFund & "\"
 $destination = @ScriptDir & $CSVDataDir & "\StrategyShares\" & $CurrentFund & "\"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
-_LogaInfo("Pulled " & $CurrentFund & " Data from Dropbox")
+_LogaInfo("Pulled " & $CurrentFund & " Data from AutoCharts Drive")
 $source = $DatabaseDir & "\amCharts"
 $destination = @ScriptDir & "\assets\ChartBuilder\public\scripts"
 RunWait(@ComSpec & " /c " & "xcopy " & '"' & $source & '"' & ' "' & $destination & '"' & " /E /C /D /Y /H /J /I", "", @SW_HIDE)
@@ -4631,11 +4431,11 @@ _Metro_EnableHighDPIScaling()
 SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1", "-1", 1)
 Sleep(2000)
 SplashOff()
-CheckForSettingsMigrate()
+CheckForFreshInstall()
 OpenMainGUI()
 Func OpenMainGUI()
 Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-_LogaInfo("Set dropbox directory to | " & $DropboxDir)
+_LogaInfo("Set AutoCharts Drive directory to | " & $DropboxDir)
 Global $INPT_Name = IniRead($ini, 'Settings', 'UserName', '')
 _LogaInfo("Set UserName to | " & $INPT_Name)
 Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
@@ -4643,11 +4443,11 @@ _LogaInfo("Set current quarter to | " & $Select_Quarter)
 Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 _LogaInfo("Set current year to | " & $INPT_CurYear)
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', '')
-_LogaInfo("Dropbox directory verified? | " & $bDBVerified)
+_LogaInfo("AutoCharts Drive directory verified? | " & $bDBVerified)
 Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
 _LogaInfo("Set theme to | " & $Select_Theme)
 _SetTheme($Select_Theme)
-Global $Form1 = _Metro_CreateGUI("AutoCharts 3.0.0", 540, 700, -1, -1, True)
+Global $Form1 = _Metro_CreateGUI("AutoCharts 3.3.0", 540, 700, -1, -1, True)
 GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
 $Control_Buttons = _Metro_AddControlButtons(True, True, True, True, True)
 $GUI_CLOSE_BUTTON = $Control_Buttons[0]
@@ -4668,7 +4468,7 @@ $TAB_StrategyShares = _Metro_CreateButton("Strategy Shares", 350, 350, 140, 40)
 $HSeperator2 = _Metro_AddHSeperator(50, 570, 440, 1)
 Local $BTN_Settings = _Metro_CreateButton("Settings", 50, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $Label_Version = GUICtrlCreateLabel("v3.2.1", 450, 620, 50, 50, $SS_RIGHT)
+Local $Label_Version = GUICtrlCreateLabel("v3.3.0", 450, 620, 50, 50, $SS_RIGHT)
 GUICtrlSetColor(-1, $FontThemeColor)
 GUICtrlSetFont(-1, 15, 400, 0, "Segoe UI")
 GUICtrlSetResizing($Pic1, 768 + 8)
@@ -5027,16 +4827,16 @@ ImportDatalinker()
 RunCSVConvert()
 CreateCharts()
 _LogaInfo("############################### END OF RUN - CATALYST ###############################")
+Global $aCatalystCheck[24]
 _GUIDisable($Form2, 0, 30)
 _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
 _GUIDisable($Form2)
 _Metro_GUIDelete($Form2)
 Return 0
-Global $aCatalystCheck[24]
 Else
 If @error = 50 Then
 _GUIDisable($Form2, 0, 30)
-_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form2)
+_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | AutoCharts Drive path not verified. Process has been aborted.", 500, 11, $Form2)
 _GUIDisable($Form2)
 EndIf
 EndIf
@@ -5049,13 +4849,13 @@ PullCatalystData()
 RunExpenseRatios()
 _LogaInfo("############################### END OF RUN - CATALYST ###############################")
 GUICtrlSetData($ProgressBar, 0)
+Global $aCatalystCheck[24]
 _GUIDisable($Form2, 0, 30)
 _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form2)
 _GUIDisable($Form2)
-Global $aCatalystCheck[24]
 If @error = 50 Then
 _GUIDisable($Form2, 0, 30)
-_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form2)
+_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | AutoCharts Drive path not verified. Process has been aborted.", 500, 11, $Form2)
 _GUIDisable($Form2)
 EndIf
 EndSwitch
@@ -5205,12 +5005,12 @@ RunCSVConvert()
 CreateCharts()
 _LogaInfo("############################### END OF RUN - RATIONAL ###############################")
 GUICtrlSetData($ProgressBar, 0)
+Global $aRationalCheck[8]
 _GUIDisable($Form3, 0, 30)
 _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
 _GUIDisable($Form3)
 _Metro_GUIDelete($Form3)
 Return 0
-Global $aRationalCheck[8]
 Case $BTN_Rational_UpdateExpenseRatio
 $FundFamily = "Rational"
 $FamilySwitch = $aRationalCheck
@@ -5220,13 +5020,13 @@ PullRationalData()
 RunExpenseRatios()
 _LogaInfo("############################### END OF RUN - RATIONAL ###############################")
 GUICtrlSetData($ProgressBar, 0)
+Global $aRationalCheck[8]
 _GUIDisable($Form3, 0, 30)
 _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form3)
 _GUIDisable($Form3)
-Global $aRationalCheck[8]
 If @error = 50 Then
 _GUIDisable($Form3, 0, 30)
-_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | Dropbox path not verified. Process has been aborted.", 500, 11, $Form3)
+_Metro_MsgBox(0, "Error", "Error Code: " & @error & " | AutoCharts Drive path not verified. Process has been aborted.", 500, 11, $Form3)
 _GUIDisable($Form3)
 EndIf
 EndSwitch
@@ -5319,13 +5119,13 @@ ImportDatalinker()
 RunCSVConvert()
 CreateCharts()
 _LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################")
+Global $aStrategyCheck[3]
 GUICtrlSetData($ProgressBar, 0)
 _GUIDisable($Form4, 0, 30)
 _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form4)
 _GUIDisable($Form4)
 _Metro_GUIDelete($Form4)
 Return 0
-Global $aStrategyCheck[3]
 EndSwitch
 WEnd
 EndFunc
@@ -5337,7 +5137,7 @@ $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $Form5 = _Metro_CreateGUI("AutoCharts Settings", 540, 620, -1, -1, False, $Form1)
 Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
 Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
-Local $Label_Dropbox = GUICtrlCreateLabel("Path to Dropbox Folder:", 50, 50, 440, 20)
+Local $Label_Dropbox = GUICtrlCreateLabel("Path to AutoCharts Drive:", 50, 50, 440, 20)
 GUICtrlSetColor(-1, $FontThemeColor)
 GUICtrlSetFont(-1, 11, 400, 0, "Segoe UI")
 Global $INPT_DropboxFolder = GUICtrlCreateInput($DropboxDir, 50, 75, 440, 30)
@@ -5428,7 +5228,7 @@ Case $BTN_Save
 $DATA_UserSettings = GUICtrlRead($INPT_DropboxFolder)
 If $DATA_UserSettings = "" Then
 _GUIDisable($Form5, 0, 30)
-_Metro_MsgBox(0, "Error!", "You must select a dropbox directory!", 500, 11, $Form5)
+_Metro_MsgBox(0, "Error!", "You must select the AutoCharts Drive!", 500, 11, $Form5)
 _GUIDisable($Form5)
 Else
 $iSettingsConfirm = IniWrite(@ScriptDir & '\settings.ini', 'Settings', 'DropboxDir', $DATA_UserSettings)
@@ -5499,9 +5299,10 @@ EndIf
 VerifyDropbox()
 If @error = 50 Then
 _GUIDisable($Form5, 0, 30)
-_Metro_MsgBox(0, "Error!", "Error Code: " & @error & " | Dropbox path not verified. Please try resetting it.", 500, 11, $Form5)
+_Metro_MsgBox(0, "Error!", "Error Code: " & @error & " | AutoCharts Drive path not verified. Please try resetting it.", 500, 11, $Form5)
 _GUIDisable($Form5)
 EndIf
+FileCopy(@ScriptDir & "\settings.ini", @MyDocumentsDir & "\AutoCharts\settings.ini", 1)
 _Metro_GUIDelete($Form5)
 _Metro_GUIDelete($Form1)
 OpenMainGUI()
@@ -5543,7 +5344,7 @@ Func _SyncGUI()
 Global $Form7 = _Metro_CreateGUI("AutoCharts Sync Options", 540, 500, -1, -1, False, $Form1)
 Local $Control_Buttons_2 = _Metro_AddControlButtons(True, False, False, False)
 Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
-Local $BTN_SyncAll = _Metro_CreateButton("Pull Data from Dropbox", 50, 100, 440, 40)
+Local $BTN_SyncAll = _Metro_CreateButton("Pull Data from AutoCharts Drive", 50, 100, 440, 40)
 Local $BTN_DL_Import = _Metro_CreateButton("Import Datalinker from Database", 50, 160, 440, 40)
 _Metro_AddHSeperator(50, 240, 440, 1)
 Local $Label_AdminSettings = GUICtrlCreateLabel("Admin Settings", 200, 230, 150, 40, $SS_CENTER)
@@ -5636,18 +5437,6 @@ _LogaInfo("Datalinker File Imported to AutoCharts Directory")
 EndIf
 Local $file = @ScriptDir & "\Datalinker_TEMP1.xml"
 Local $text = FileRead($file)
-If $INPT_Name <> "Jakob" Then
-$tout1 = StringReplace($text, 'X:\Marketing Team Files\', $DropboxDir & '\Marketing Team Files\')
-FileWrite(@ScriptDir & "\DataLinker_Updated1.xml", $tout1)
-If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
-Else
-_LogaInfo("Datalinker File Imported to InDesign successfully")
-EndIf
-Else
 FileCopy(@ScriptDir & "\Datalinker_TEMP1.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
 If @error Then
 _GUIDisable($Form7, 0, 30)
@@ -5657,73 +5446,40 @@ _LogaError("Error! Unable to Import Datalinker File to InDesign | Could not repl
 Else
 _LogaInfo("Datalinker File Imported to InDesign successfully")
 EndIf
-EndIf
-FileCopy(@ScriptDir & "\Datalinker_Updated1.xml", @ScriptDir & "\Datalinker_TEMP2.xml", 1)
-If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign")
-Else
-_LogaInfo("Datalinker File Imported to AutoCharts Directory")
-EndIf
-Local $file2 = @ScriptDir & "\Datalinker_TEMP2.xml"
-Local $text2 = FileRead($file2)
-If $INPT_Name <> "Jakob" Then
-$tout2 = StringReplace($text2, 'file:///X:', 'file:///' & $DropboxDir)
-FileWrite(@ScriptDir & "\DataLinker_Updated2.xml", $tout2)
-FileCopy(@ScriptDir & "\Datalinker_Updated2.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
-If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
-Else
 FileDelete(@ScriptDir & "\Datalinker_Updated2.xml")
 FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
 FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
 FileDelete(@ScriptDir & "\Datalinker_TEMP2.xml")
 _LogaInfo("Datalinker File Imported to InDesign successfully")
-EndIf
-Else
-FileCopy(@ScriptDir & "\Datalinker_TEMP.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
-If @error Then
-_GUIDisable($Form7, 0, 30)
-_Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $Form7)
-_GUIDisable($Form7)
-_LogaError("Error! Unable to Import Datalinker File to InDesign | Could not replace directory in file")
-Else
-FileDelete(@ScriptDir & "\Datalinker_Updated.xml")
-FileDelete(@ScriptDir & "\Datalinker_Updated1.xml")
-FileDelete(@ScriptDir & "\Datalinker_TEMP1.xml")
-FileDelete(@ScriptDir & "\Datalinker_TEMP2.xml")
-_LogaInfo("Datalinker File Imported to InDesign successfully")
-EndIf
-EndIf
 EndFunc
 Func CreateAutoChartsDocFolder()
 If FileExists(@MyDocumentsDir & "\AutoCharts\vbs\Excel_to_CSV_All_Worksheets.vbs") Then
 _LogaInfo("Checking for " & @MyDocumentsDir & "\AutoCharts\vbs\Excel_to_CSV_All_Worksheets.vbs")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | Checking for " & @MyDocumentsDir & "\AutoCharts\vbs\Excel_to_CSV_All_Worksheets.vbs")
 _LogaInfo("File Exists. Moving on")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | File Exists. Moving on")
+GUICtrlSetData($UpdateLabel, $CurrentFund & " | VBS script has already moved to " & $INPT_Name & "'s documents folder. Moving on")
 Else
 DirCopy(@ScriptDir & "\VBS_Scripts", @MyDocumentsDir & "\AutoCharts\vbs", 0)
 _LogaInfo("File did not exist. Creating directory " & @MyDocumentsDir & "\AutoCharts\vbs\")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | File did not exist. Creating directory " & @MyDocumentsDir & "\AutoCharts\vbs\")
 EndIf
 EndFunc
-Func CheckForSettingsMigrate()
-If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
-FileDelete(@ScriptDir & "/settings-MIGRATE.ini")
-_LogaInfo("Updated install detected.")
-_Metro_MsgBox(0, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
+Func CheckForFreshInstall()
+If Not FileExists(@MyDocumentsDir & "\AutoCharts\settings.ini") Then
+_LogaInfo("Brand new install detected.")
+_Metro_MsgBox(0, "Thanks for installing AutoCharts!", "Thanks for installing AutoCharts!" & @CRLF & @CRLF & "Before you begin, please open the settings and set your AutoCharts drive.")
+Else
+$CopySettings = FileCopy(@MyDocumentsDir & "\AutoCharts\settings.ini", @ScriptDir & "\settings.ini", 1)
+If $CopySettings = 0 Then
+_ThrowError("Could not save file to documents folder", 0, 0, 0, 3)
+_LogaError("Could not save file to documents folder")
+EndIf
 EndIf
 EndFunc
 Func CheckForUpdate()
-Run(@ScriptDir & "/AutoCharts_Updater.exe")
+RunWait(@ScriptDir & "/AutoCharts_Updater.exe")
 EndFunc
-CheckForSettingsMigrate()
+CheckForFreshInstall()
 Func DetermineDates()
 $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
 $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
@@ -5822,19 +5578,16 @@ If _Metro_CheckboxIsChecked($CB_Brochure_Catalyst) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 RunCSVConvert4Brochure()
 EndIf
-_Metro_CheckboxUnCheck($CB_Brochure_Catalyst)
 EndIf
 If _Metro_CheckboxIsChecked($CB_FactSheet_Catalyst) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 RunCSVConvert4Institution()
 EndIf
-_Metro_CheckboxUnCheck($CB_FactSheet_Catalyst)
 EndIf
 If _Metro_CheckboxIsChecked($CB_Presentation_Catalyst) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 RunCSVConvert4Presentation()
 EndIf
-_Metro_CheckboxUnCheck($CB_Presentation_Catalyst)
 EndIf
 EndIf
 If $FundFamily = "Rational" Then
@@ -5842,19 +5595,16 @@ If _Metro_CheckboxIsChecked($CB_Brochure_Rational) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 RunCSVConvert4Brochure()
 EndIf
-_Metro_CheckboxUnCheck($CB_Brochure_Rational)
 EndIf
 If _Metro_CheckboxIsChecked($CB_FactSheet_Rational) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 RunCSVConvert4Institution()
 EndIf
-_Metro_CheckboxUnCheck($CB_FactSheet_Rational)
 EndIf
 If _Metro_CheckboxIsChecked($CB_Presentation_Rational) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 RunCSVConvert4Presentation()
 EndIf
-_Metro_CheckboxUnCheck($CB_Presentation_Rational)
 EndIf
 EndIf
 If $FundFamily = "StrategyShares" Then
@@ -5862,28 +5612,37 @@ If _Metro_CheckboxIsChecked($CB_Brochure_SS) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 RunCSVConvert4Brochure()
 EndIf
-_Metro_CheckboxUnCheck($CB_Brochure_SS)
 EndIf
 If _Metro_CheckboxIsChecked($CB_FactSheet_SS) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 RunCSVConvert4Institution()
 EndIf
-_Metro_CheckboxUnCheck($CB_FactSheet_SS)
 EndIf
 If _Metro_CheckboxIsChecked($CB_Presentation_SS) Then
 If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 RunCSVConvert4Presentation()
 EndIf
-_Metro_CheckboxUnCheck($CB_Presentation_SS)
 EndIf
 EndIf
 _Metro_SetProgress($ProgressBar, 25)
-FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)
-FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)
-_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
-GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
+$CSVCopy = FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)
+If $CSVCopy = 0 Then
+_ThrowError("Could not save CSV files to program directory.", 1, 0, 0, 3)
+_LogaError("Could not save CSV files to program directory.")
+EndIf
+$CSVMove = FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)
+If $CSVMove = 0 Then
+_ThrowError("Could not save CSV files to AutoCharts Database.", 0, 0, 0, 3)
+_LogaError("Could not save CSV files to AutoCharts Database.")
+EndIf
+_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in AutoCharts Drive")
+GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in AutoCharts Drive")
 _Metro_SetProgress($ProgressBar, 30)
-FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")
+$XLSXDelete = FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")
+If $XLSXDelete = 0 Then
+_ThrowError("Cound not clear excel files from VBS directory.", 0, 0, 0, 3)
+_LogaError("Cound not clear excel files from VBS directory.")
+EndIf
 _LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 GUICtrlSetData($UpdateLabel, $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 _Metro_SetProgress($ProgressBar, 55)
@@ -5967,7 +5726,7 @@ EndIf
 _Metro_SetProgress($ProgressBar, 100)
 EndFunc
 Func CreateFactSheetArchive()
-Local $Zip, $myfile
+Local $Archive
 Local Const $sMessage = "Select Save Location"
 Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
 If @error Then
@@ -5975,12 +5734,15 @@ _GUIDisable($Form1, 0, 50)
 _Metro_MsgBox(0, "Error", "No folder was selected.")
 _GUIDisable($Form1)
 Else
-$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip")
-_Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4)
-_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4)
 _GUIDisable($Form1, 0, 50)
-_Metro_MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip)
+SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+$Archive = $sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & "\"
+DirCreate($Archive)
+DirCopy($DatabaseDir & "\fin_backup_files", $Archive, 1)
+DirCopy($DropboxDir & "\FactSheets", $Archive, 1)
+SplashOff()
+_Metro_MsgBox(0, "Success", "Created Factsheet Archive at " & $Archive)
 _GUIDisable($Form1)
-_LogaInfo("Created Factsheet Archive at " & $Zip)
+_LogaInfo("Created Factsheet Archive at " & $Archive)
 EndIf
 EndFunc
