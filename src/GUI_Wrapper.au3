@@ -31,7 +31,7 @@ SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\splash.jpg", "443", "294", "-1
 
 Sleep(2000)
 SplashOff()
-CheckForSettingsMigrate()
+CheckForFreshInstall()
 OpenMainGUI()
 
 Func OpenMainGUI()
@@ -1132,6 +1132,9 @@ Func _SettingsGUI()
 						_Metro_MsgBox(0, "Error!", "Error Code: " & @error & " | AutoCharts Drive path not verified. Please try resetting it.", 500, 11, $Form5)
 						_GUIDisable($Form5)
 					EndIf
+
+					FileCopy(@ScriptDir & "\settings.ini", @MyDocumentsDir & "\AutoCharts\settings.ini", 1)
+
 					_Metro_GUIDelete($Form5) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 					_Metro_GUIDelete($Form1) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 					OpenMainGUI()
