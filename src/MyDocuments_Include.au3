@@ -28,7 +28,7 @@ Func CreateAutoChartsDocFolder()
 			_LogaInfo("Checking for " & @MyDocumentsDir & "\AutoCharts\vbs\Excel_to_CSV_All_Worksheets.vbs") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Checking for " & @MyDocumentsDir & "\AutoCharts\vbs\Excel_to_CSV_All_Worksheets.vbs")
 			_LogaInfo("File Exists. Moving on") ; Write to the logfile
-			GUICtrlSetData($UpdateLabel, $CurrentFund & " | File Exists. Moving on")
+			GUICtrlSetData($UpdateLabel, $CurrentFund & " | VBS script has already moved to " & $INPT_Name & "'s documents folder. Moving on")
     Else
 		DirCopy(@ScriptDir & "\VBS_Scripts", @MyDocumentsDir & "\AutoCharts\vbs", 0)
 		_LogaInfo("File did not exist. Creating directory " & @MyDocumentsDir & "\AutoCharts\vbs\") ; Write to the logfile
