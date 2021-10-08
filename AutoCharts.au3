@@ -276,14 +276,14 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 						RunCSVConvert4Brochure()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Brochure_Catalyst)
+					;_Metro_CheckboxUnCheck($CB_Brochure_Catalyst)
 				EndIf
 
 				If _Metro_CheckboxIsChecked($CB_FactSheet_Catalyst) Then
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 						RunCSVConvert4Institution()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_FactSheet_Catalyst)
+					;_Metro_CheckboxUnCheck($CB_FactSheet_Catalyst)
 
 				EndIf
 
@@ -291,7 +291,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 						RunCSVConvert4Presentation()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Presentation_Catalyst)
+					;_Metro_CheckboxUnCheck($CB_Presentation_Catalyst)
 
 				EndIf
 			EndIf
@@ -303,7 +303,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 						RunCSVConvert4Brochure()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Brochure_Rational)
+					;_Metro_CheckboxUnCheck($CB_Brochure_Rational)
 
 				EndIf
 
@@ -311,7 +311,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 						RunCSVConvert4Institution()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_FactSheet_Rational)
+					;_Metro_CheckboxUnCheck($CB_FactSheet_Rational)
 
 				EndIf
 
@@ -319,7 +319,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 						RunCSVConvert4Presentation()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Presentation_Rational)
+					;_Metro_CheckboxUnCheck($CB_Presentation_Rational)
 
 				EndIf
 			EndIf
@@ -331,7 +331,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 						RunCSVConvert4Brochure()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Brochure_SS)
+					;_Metro_CheckboxUnCheck($CB_Brochure_SS)
 
 				EndIf
 
@@ -339,7 +339,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 						RunCSVConvert4Institution()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_FactSheet_SS)
+					;_Metro_CheckboxUnCheck($CB_FactSheet_SS)
 
 				EndIf
 
@@ -347,7 +347,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 						RunCSVConvert4Presentation()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Presentation_SS)
+					;_Metro_CheckboxUnCheck($CB_Presentation_SS)
 
 				EndIf
 			EndIf
