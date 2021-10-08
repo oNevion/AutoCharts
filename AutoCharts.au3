@@ -78,7 +78,6 @@ Global $DatabaseDir = $AutoChartsDriveDir & "\database"
 #include <WinAPIFiles.au3>
 #include <AutoItConstants.au3>
 #include <FileConstants.au3>
-#include "Zip.au3"
 
 ;-------------------------------------------------------------------------------
 ; Main program that manages Logging
@@ -506,7 +505,7 @@ Func RunExpenseRatios()
 EndFunc   ;==>RunExpenseRatios
 
 Func CreateFactSheetArchive()
-	Local $Zip, $myfile
+	Local $Archive
 
 	; Create a constant variable in Local scope of the message to display in FileSelectFolder.
 	Local Const $sMessage = "Select Save Location"
@@ -522,15 +521,19 @@ Func CreateFactSheetArchive()
 
 
 	Else
-		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
-		_Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
-		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
-
 		_GUIDisable($Form1, 0, 50)
-		_Metro_MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip)
+		SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+		$Archive = $sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & "\"
+		DirCreate($Archive) ;Create The archive folder.
+		DirCopy($DatabaseDir & "\fin_backup_files", $Archive, 1) ;Add a folder to the archive (files/subfolders will be added)
+		DirCopy($DropboxDir & "\FactSheets", $Archive, 1) ;Add a folder to the archive (files/subfolders will be added)
+		SplashOff()
+
+		_Metro_MsgBox(0, "Success", "Created Factsheet Archive at " & $Archive)
 		_GUIDisable($Form1)
 
-		_LogaInfo("Created Factsheet Archive at " & $Zip) ; Write to the logfile
+		_LogaInfo("Created Factsheet Archive at " & $Archive) ; Write to the logfile
 
 	EndIf
 
