@@ -1,12 +1,12 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile=AutoCharts.exe
-#AutoIt3Wrapper_UseX64=n
-#AutoIt3Wrapper_Res_Description=AutoCharts 3.2.1
-#AutoIt3Wrapper_Res_Fileversion=3.2.1.0
+#AutoIt3Wrapper_Outfile_x64=AutoCharts.exe
+#AutoIt3Wrapper_Res_Description=AutoCharts 3.3.0
+#AutoIt3Wrapper_Res_Fileversion=3.3.0.2
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=3.2.1
+#AutoIt3Wrapper_Res_ProductVersion=3.3.0
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
@@ -36,6 +36,7 @@ Global $Select_Quarter = IniRead($ini, 'Settings', 'CurrentQuarter', '')
 Global $INPT_CurYear = IniRead($ini, 'Settings', 'CurrentYear', '')
 Global $FundFamily = ""
 Global $bDBVerified = IniRead($ini, 'Settings', 'DBVerified', 'False')
+Global $bACDriveVerified = IniRead($ini, 'Settings', 'ACDriveVerified', 'False')
 Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
 
 
@@ -58,7 +59,8 @@ Global $Radio_Q4 = 4
 
 Global $CSVDataDir = "\assets\ChartBuilder\public\Data\Backups\"
 Global $DropboxDir = IniRead($ini, 'Settings', 'DropboxDir', '')
-Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
+Global $AutoChartsDriveDir = "Z:\"
+Global $DatabaseDir = $AutoChartsDriveDir & "\database"
 
 
 #EndRegion ### Database Variables
@@ -76,7 +78,6 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 #include <WinAPIFiles.au3>
 #include <AutoItConstants.au3>
 #include <FileConstants.au3>
-#include "Zip.au3"
 
 ;-------------------------------------------------------------------------------
 ; Main program that manages Logging
@@ -113,23 +114,26 @@ Global $DatabaseDir = $DropboxDir & "\Marketing Team Files\AutoCharts_Database"
 ;-------------------------------------------------------------------------------
 #include "src/MyDocuments_Include.au3"
 
-Func CheckForSettingsMigrate()
-	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
-		FileDelete(@ScriptDir & "/settings-MIGRATE.ini")
-		_LogaInfo("Updated install detected.")
-		_Metro_MsgBox(0, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
+Func CheckForFreshInstall()
+	If Not FileExists(@MyDocumentsDir & "\AutoCharts\settings.ini") Then
+		;FileCopy(@ScriptDir & "/settings.ini", @MyDocumentsDir & "\AutoCharts\settings.ini")
+		_LogaInfo("Brand new install detected.")
+		_Metro_MsgBox(0, "Thanks for installing AutoCharts!", "Thanks for installing AutoCharts!" & @CRLF & @CRLF & "Before you begin, please open the settings and set your AutoCharts drive.")
+	Else
+		$CopySettings = FileCopy(@MyDocumentsDir & "\AutoCharts\settings.ini", @ScriptDir & "\settings.ini", 1)
+		If $CopySettings = 0 Then
+			_ThrowError("Could not save file to documents folder", 0, 0, 0, 3) ; No exit, no error, auto-close in 3 seconds
+			_LogaError("Could not save file to documents folder")
+		EndIf
+
 	EndIf
-EndFunc   ;==>CheckForSettingsMigrate
+EndFunc   ;==>CheckForFreshInstall
 
 Func CheckForUpdate()
 	RunWait(@ScriptDir & "/AutoCharts_Updater.exe")
 EndFunc   ;==>CheckForUpdate
 
-;Func CheckForUpdateSilent()
-;Run(@ComSpec & " /c AutoCharts_Updater.exe -nogui", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
-;EndFunc   ;==>CheckForUpdateSilent
-
-CheckForSettingsMigrate()
+CheckForFreshInstall()
 
 
 #Region ### Start Main Functions Region
@@ -273,14 +277,14 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 						RunCSVConvert4Brochure()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Brochure_Catalyst)
+					;_Metro_CheckboxUnCheck($CB_Brochure_Catalyst)
 				EndIf
 
 				If _Metro_CheckboxIsChecked($CB_FactSheet_Catalyst) Then
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 						RunCSVConvert4Institution()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_FactSheet_Catalyst)
+					;_Metro_CheckboxUnCheck($CB_FactSheet_Catalyst)
 
 				EndIf
 
@@ -288,7 +292,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 						RunCSVConvert4Presentation()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Presentation_Catalyst)
+					;_Metro_CheckboxUnCheck($CB_Presentation_Catalyst)
 
 				EndIf
 			EndIf
@@ -300,7 +304,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 						RunCSVConvert4Brochure()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Brochure_Rational)
+					;_Metro_CheckboxUnCheck($CB_Brochure_Rational)
 
 				EndIf
 
@@ -308,7 +312,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 						RunCSVConvert4Institution()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_FactSheet_Rational)
+					;_Metro_CheckboxUnCheck($CB_FactSheet_Rational)
 
 				EndIf
 
@@ -316,7 +320,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 						RunCSVConvert4Presentation()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Presentation_Rational)
+					;_Metro_CheckboxUnCheck($CB_Presentation_Rational)
 
 				EndIf
 			EndIf
@@ -328,7 +332,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-brochure.xlsx") Then
 						RunCSVConvert4Brochure()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Brochure_SS)
+					;_Metro_CheckboxUnCheck($CB_Brochure_SS)
 
 				EndIf
 
@@ -336,7 +340,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-institutional.xlsx") Then
 						RunCSVConvert4Institution()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_FactSheet_SS)
+					;_Metro_CheckboxUnCheck($CB_FactSheet_SS)
 
 				EndIf
 
@@ -344,7 +348,7 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 					If FileExists($DatabaseDir & "\fin_backup_files\" & $FundFamily & "\" & $CurrentFund & "\" & $CurrentFund & "-presentation.xlsx") Then
 						RunCSVConvert4Presentation()
 					EndIf
-					_Metro_CheckboxUnCheck($CB_Presentation_SS)
+					;_Metro_CheckboxUnCheck($CB_Presentation_SS)
 
 				EndIf
 			EndIf
@@ -352,15 +356,28 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			_Metro_SetProgress($ProgressBar, 25)
 
 
-			FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
-			FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			$CSVCopy = FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			If $CSVCopy = 0 Then
+				_ThrowError("Could not save CSV files to program directory.", 1, 0, 0, 3) ; No exit, no error, auto-close in 3 seconds
+				_LogaError("Could not save CSV files to program directory.")
+			EndIf
 
-			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox") ; Write to the logfile
-			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in Dropbox")
+			$CSVMove = FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			If $CSVMove = 0 Then
+				_ThrowError("Could not save CSV files to AutoCharts Database.", 0, 0, 0, 3) ; No exit, no error, auto-close in 3 seconds
+				_LogaError("Could not save CSV files to AutoCharts Database.")
+			EndIf
+
+			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in AutoCharts Drive") ; Write to the logfile
+			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in AutoCharts Drive")
 			_Metro_SetProgress($ProgressBar, 30)
 
 
-			FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")       ; deletes remaining .xlsx from conversion
+			$XLSXDelete = FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")     ; deletes remaining .xlsx from conversion
+			If $XLSXDelete = 0 Then
+				_ThrowError("Cound not clear excel files from VBS directory.", 0, 0, 0, 3) ; No exit, no error, auto-close in 3 seconds
+				_LogaError("Cound not clear excel files from VBS directory.")
+			EndIf
 			_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 			_Metro_SetProgress($ProgressBar, 55)
@@ -504,7 +521,7 @@ Func RunExpenseRatios()
 EndFunc   ;==>RunExpenseRatios
 
 Func CreateFactSheetArchive()
-	Local $Zip, $myfile
+	Local $Archive
 
 	; Create a constant variable in Local scope of the message to display in FileSelectFolder.
 	Local Const $sMessage = "Select Save Location"
@@ -520,15 +537,19 @@ Func CreateFactSheetArchive()
 
 
 	Else
-		$Zip = _Zip_Create($sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & ".zip") ;Create The Zip File. Returns a Handle to the zip File
-		_Zip_AddFolder($Zip, $DatabaseDir & "\fin_backup_files\", 4) ;Add a folder to the zip file (files/subfolders will be added)
-		_Zip_AddFolder($Zip, $DropboxDir & "\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets\", 4) ;Add a folder to the zip file (files/subfolders will be added)
-
 		_GUIDisable($Form1, 0, 50)
-		_Metro_MsgBox(0, "Items in Zip", "Succesfully added " & _Zip_Count($Zip) & " items in " & $Zip)
+		SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
+
+		$Archive = $sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & "\"
+		DirCreate($Archive) ;Create The archive folder.
+		DirCopy($DatabaseDir & "\fin_backup_files", $Archive, 1) ;Add a folder to the archive (files/subfolders will be added)
+		DirCopy($DropboxDir & "\FactSheets", $Archive, 1) ;Add a folder to the archive (files/subfolders will be added)
+		SplashOff()
+
+		_Metro_MsgBox(0, "Success", "Created Factsheet Archive at " & $Archive)
 		_GUIDisable($Form1)
 
-		_LogaInfo("Created Factsheet Archive at " & $Zip) ; Write to the logfile
+		_LogaInfo("Created Factsheet Archive at " & $Archive) ; Write to the logfile
 
 	EndIf
 
