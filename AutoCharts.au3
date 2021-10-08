@@ -120,17 +120,18 @@ Func CheckForFreshInstall()
 		_LogaInfo("Brand new install detected.")
 		_Metro_MsgBox(0, "Thanks for installing AutoCharts!", "Thanks for installing AutoCharts!" & @CRLF & @CRLF & "Before you begin, please open the settings and set your AutoCharts drive.")
 	Else
-		FileCopy(@MyDocumentsDir & "\AutoCharts\settings.ini", @ScriptDir & "\settings.ini", 1)
+		$CopySettings = FileCopy(@MyDocumentsDir & "\AutoCharts\settings.ini", @ScriptDir & "\settings.ini", 1)
+		If $CopySettings = 0 Then
+			_ThrowError("Could not save file to documents folder", 0, 0, 0, 3) ; No exit, no error, auto-close in 3 seconds
+			_LogaError("Could not save file to documents folder")
+		EndIf
+
 	EndIf
 EndFunc   ;==>CheckForFreshInstall
 
 Func CheckForUpdate()
 	RunWait(@ScriptDir & "/AutoCharts_Updater.exe")
 EndFunc   ;==>CheckForUpdate
-
-;Func CheckForUpdateSilent()
-;Run(@ComSpec & " /c AutoCharts_Updater.exe -nogui", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
-;EndFunc   ;==>CheckForUpdateSilent
 
 CheckForFreshInstall()
 
@@ -355,15 +356,28 @@ Func RunCSVConvert() ; Dynamically checks for funds with "-institutional.xlsx" f
 			_Metro_SetProgress($ProgressBar, 25)
 
 
-			FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
-			FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			$CSVCopy = FileCopy(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", @ScriptDir & $CSVDataDir & "\" & $FundFamily & "\" & $CurrentFund & "\" & "*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			If $CSVCopy = 0 Then
+				_ThrowError("Could not save CSV files to program directory.", 1, 0, 0, 3) ; No exit, no error, auto-close in 3 seconds
+				_LogaError("Could not save CSV files to program directory.")
+			EndIf
+
+			$CSVMove = FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\" & $FundFamily & "\" & $CurrentFund & "\*.csv", 1)       ; Move all .CSV back to Data folder and overwrite.
+			If $CSVMove = 0 Then
+				_ThrowError("Could not save CSV files to AutoCharts Database.", 0, 0, 0, 3) ; No exit, no error, auto-close in 3 seconds
+				_LogaError("Could not save CSV files to AutoCharts Database.")
+			EndIf
 
 			_LogaInfo("Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in AutoCharts Drive") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Moved the " & $CurrentFund & ".csv files to the fund's InDesign Links folder in AutoCharts Drive")
 			_Metro_SetProgress($ProgressBar, 30)
 
 
-			FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")       ; deletes remaining .xlsx from conversion
+			$XLSXDelete = FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")     ; deletes remaining .xlsx from conversion
+			If $XLSXDelete = 0 Then
+				_ThrowError("Cound not clear excel files from VBS directory.", 0, 0, 0, 3) ; No exit, no error, auto-close in 3 seconds
+				_LogaError("Cound not clear excel files from VBS directory.")
+			EndIf
 			_LogaInfo("Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Deleted remaining " & $CurrentFund & ".xlsx files from CSV Conversion directory")
 			_Metro_SetProgress($ProgressBar, 55)
