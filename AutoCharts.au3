@@ -114,13 +114,15 @@ Global $DatabaseDir = $AutoChartsDriveDir & "\database"
 ;-------------------------------------------------------------------------------
 #include "src/MyDocuments_Include.au3"
 
-Func CheckForSettingsMigrate()
-	If FileExists(@ScriptDir & "/settings-MIGRATE.ini") Then
-		FileDelete(@ScriptDir & "/settings-MIGRATE.ini")
-		_LogaInfo("Updated install detected.")
-		_Metro_MsgBox(0, "Thanks for upgrading!", "Thanks for upgrading AutoCharts!" & @CRLF & @CRLF & "Before you begin, please double check your settings have imported correctly.")
+Func CheckForFreshInstall()
+	If Not FileExists(@MyDocumentsDir & "\AutoCharts\settings.ini") Then
+		;FileCopy(@ScriptDir & "/settings.ini", @MyDocumentsDir & "\AutoCharts\settings.ini")
+		_LogaInfo("Brand new install detected.")
+		_Metro_MsgBox(0, "Thanks for installing AutoCharts!", "Thanks for installing AutoCharts!" & @CRLF & @CRLF & "Before you begin, please open the settings and set your AutoCharts drive.")
+	Else
+		FileCopy(@MyDocumentsDir & "\AutoCharts\settings.ini", @ScriptDir & "\settings.ini", 1)
 	EndIf
-EndFunc   ;==>CheckForSettingsMigrate
+EndFunc   ;==>CheckForFreshInstall
 
 Func CheckForUpdate()
 	RunWait(@ScriptDir & "/AutoCharts_Updater.exe")
@@ -130,7 +132,7 @@ EndFunc   ;==>CheckForUpdate
 ;Run(@ComSpec & " /c AutoCharts_Updater.exe -nogui", @AppDataDir & "/AutoCharts/", @SW_HIDE) ;~ @SW_HIDE Runs local server to create current fund's amcharts svgs.
 ;EndFunc   ;==>CheckForUpdateSilent
 
-CheckForSettingsMigrate()
+CheckForFreshInstall()
 
 
 #Region ### Start Main Functions Region
