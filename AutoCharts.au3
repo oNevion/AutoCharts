@@ -108,6 +108,13 @@ Global $DatabaseDir = $AutoChartsDriveDir & "\database"
 #include "src/DataLinker_Func.au3"
 
 ;-------------------------------------------------------------------------------
+; Main program that manages DataLinker Functions
+;
+; This is the entry point to the DataLinker code.
+;-------------------------------------------------------------------------------
+#include "src/InDesign_Func.au3"
+
+;-------------------------------------------------------------------------------
 ; Main program that manages files for the documents folder
 ;
 ; This is the entry point to the directory and file check and creation code.
@@ -469,6 +476,7 @@ Func CreateCharts()
 			_LogaInfo($CurrentFund & " charts moved to the funds InDesign Links folder") ; Write to the logfile
 			GUICtrlSetData($UpdateLabel, $CurrentFund & " | Charts moved to the funds InDesign Links folder")
 
+			OpenInDesignFile()
 
 		Else
 			ContinueLoop
