@@ -28,6 +28,11 @@ body {
     height:550px!important;
     }
 
+    #chartdiv4 {
+     width:950px!important;
+    height:650px!important;
+    }
+
 `;
 
 // append to DOM
@@ -272,6 +277,17 @@ valueAxis.renderer.labels.template.fontSize = "24px";
 valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "'$'#,###";
 
+var series4 = chart3.series.push(new am4charts.LineSeries());
+series4.dataFields.valueY = "Floor";
+series4.dataFields.dateX = "Date";
+series4.name = "Floor - 12.5%";
+series4.strokeWidth = 3;
+series4.tooltipText = "{valueY}";
+series4.stroke = am4core.color("#9F9F9F");
+series4.strokeDasharray = "5,5";
+series4.fill = am4core.color("#B3B3B3");
+series4.fillOpacity = .5;
+
 // Create series
 var series1 = chart3.series.push(new am4charts.LineSeries());
 series1.dataFields.valueY = "Defined Shield";
@@ -279,7 +295,7 @@ series1.dataFields.dateX = "Date";
 series1.name = "SHIIX";
 series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
-series1.stroke = am4core.color("#4472c4");
+series1.stroke = am4core.color("#08da94");
 
 
 
@@ -289,18 +305,8 @@ series3.dataFields.dateX = "Date";
 series3.name = "S&P 500 PR Index";
 series3.strokeWidth = 3;
 series3.tooltipText = "{valueY}";
-series3.stroke = am4core.color("#4d4d4f");
+series3.stroke = am4core.color("#4472c4");
 
-
-
-var series4 = chart3.series.push(new am4charts.LineSeries());
-series4.dataFields.valueY = "Floor";
-series4.dataFields.dateX = "Date";
-series4.name = "Static Floor - 12.5%";
-series4.strokeWidth = 3;
-series4.tooltipText = "{valueY}";
-series4.stroke = am4core.color("#ff6a5a");
-series4.strokeDasharray = "5,5";
 
 // Add legend
 chart3.legend = new am4charts.Legend();
@@ -320,14 +326,116 @@ chart3.exporting.menu.items = [{
 }];
 chart3.exporting.filePrefix = "SHI_FLYER_CovidDrop";
 
+// ################################   CHART 4 SHI - Factsheet Graph Q3 2021 ################################################
+
+
+// Themes begin
+am4core.useTheme(am4themes_amcharts);
+// Themes end
+
+// Create chart instance
+var chart4 = am4core.create("chartdiv4", am4charts.XYChart);
+
+// Set up data source
+chart4.dataSource.url = "../Data/Backups/Catalyst/SHI/SHI_EXPORT_FS_GraphDataQ32021.csv";
+chart4.dataSource.parser = new am4core.CSVParser();
+chart4.dataSource.parser.options.useColumnNames = true;
+
+// Set input format for the dates
+chart4.dateFormatter.inputDateFormat = "yyyy-MM-dd";
+chart4.numberFormatter.numberFormat = "'$'#,###.";
+
+// Create axes
+var dateAxis = chart4.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.labels.template.fontWeight = "Bold";
+dateAxis.renderer.labels.template.fontSize = "24px";
+dateAxis.renderer.grid.template.disabled = true;
+dateAxis.renderer.labels.template.location = 0;
+//dateAxis.renderer.minGridDistance = 30;
+dateAxis.renderer.labels.template.rotation = -60;
+dateAxis.renderer.labels.template.verticalCenter = "middle";
+dateAxis.renderer.labels.template.horizontalCenter = "right";
+dateAxis.dateFormats.setKey("month", "MM/yyyy");
+dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
+//dateAxis.extraMax = 0.04; 
+
+var valueAxis = chart4.yAxes.push(new am4charts.ValueAxis());
+valueAxis.renderer.labels.template.fontWeight = "Bold";
+valueAxis.renderer.labels.template.fontSize = "24px";
+valueAxis.min = 75000; 
+
+valueAxis.numberFormatter = new am4core.NumberFormatter();
+valueAxis.numberFormatter.numberFormat = "'$'#,###";
+
+var series2 = chart4.series.push(new am4charts.LineSeries());
+series2.dataFields.valueY = "SteppedUp Floor";
+series2.dataFields.dateX = "Date";
+series2.name = "Floor Step Up";
+series2.strokeWidth = 3;
+series2.tooltipText = "{valueY}";
+series2.stroke = am4core.color("#4d4d4f");
+series2.fill = am4core.color("#737373");
+series2.fillOpacity = 1;
+
+// Create series
+var series1 = chart4.series.push(new am4charts.LineSeries());
+series1.dataFields.valueY = "Shield";
+series1.dataFields.dateX = "Date";
+series1.name = "SHIIX";
+series1.strokeWidth = 3;
+series1.tooltipText = "{valueY}";
+series1.stroke = am4core.color("#08da94");
+
+
+
+var series3 = chart4.series.push(new am4charts.LineSeries());
+series3.dataFields.valueY = "S&P PR";
+series3.dataFields.dateX = "Date";
+series3.name = "S&P 500 PR Index";
+series3.strokeWidth = 3;
+series3.tooltipText = "{valueY}";
+series3.stroke = am4core.color("#4472c4");
+
+
+
+var series4 = chart4.series.push(new am4charts.LineSeries());
+series4.dataFields.valueY = "Base Floor";
+series4.dataFields.dateX = "Date";
+series4.name = "Original Floor";
+series4.strokeWidth = 3;
+series4.tooltipText = "{valueY}";
+series4.stroke = am4core.color("#9F9F9F");
+series4.strokeDasharray = "5,5";
+series4.fill = am4core.color("#B3B3B3");
+series4.fillOpacity = .5;
+
+// Add legend
+chart4.legend = new am4charts.Legend();
+chart4.legend.labels.template.fontSize = "19px";
+chart4.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.open}";
+chart4.legend.labels.template.truncate = false;
+
+
+
+// Export this stuff
+chart4.exporting.menu = new am4core.ExportMenu();
+chart4.exporting.menu.items = [{
+  "label": "...",
+  "menu": [
+          { "type": "svg", "label": "SVG" },
+  ]
+}];
+chart4.exporting.filePrefix = "SHI_FS_Graph_Q32021";
+
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
      chart1.exporting.export('svg');
      chart2.exporting.export('svg');
      chart3.exporting.export('svg');
+     chart4.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1800);
+window.onload = setTimeout(loadFrame, 2200);
                            
                         
