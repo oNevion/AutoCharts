@@ -84,6 +84,9 @@ Func OpenMainGUI()
 	$TAB_Rational = _Metro_CreateButton("Rational Funds", 200, 350, 140, 40)
 	$TAB_StrategyShares = _Metro_CreateButton("Strategy Shares", 350, 350, 140, 40)
 
+	Local $CB_PDF_Upload = _Metro_CreateCheckbox("Upload PDF to Website?", 50, 430, 200, 30)
+
+
 	$HSeperator2 = _Metro_AddHSeperator(50, 570, 440, 1)
 
 
