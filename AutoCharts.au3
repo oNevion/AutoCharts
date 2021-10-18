@@ -114,6 +114,13 @@ Global $DatabaseDir = $AutoChartsDriveDir & "\database"
 ;-------------------------------------------------------------------------------
 #include "src/MyDocuments_Include.au3"
 
+;-------------------------------------------------------------------------------
+; Main program that manages PDF uploads to Fund Websites
+;
+; This is the entry point to the PDF uploading functions
+;-------------------------------------------------------------------------------
+#include "src/Upload_PDF_Func.au3"
+
 Func CheckForFreshInstall()
 	If Not FileExists(@MyDocumentsDir & "\AutoCharts\settings.ini") Then
 		;FileCopy(@ScriptDir & "/settings.ini", @MyDocumentsDir & "\AutoCharts\settings.ini")
