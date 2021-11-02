@@ -56,7 +56,7 @@ Func OpenMainGUI()
 	_SetTheme($Select_Theme) ;See MetroThemes.au3 for selectable themes or to add more
 
 	;Create resizable Metro GUI
-	Global $Form1 = _Metro_CreateGUI("AutoCharts 3.3.0", 540, 700, -1, -1, True)
+	Global $Form1 = _Metro_CreateGUI("AutoCharts 3.3.1", 540, 700, -1, -1, True)
 	GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
 	;Add/create control buttons to the GUI
 	$Control_Buttons = _Metro_AddControlButtons(True, True, True, True, True) ;CloseBtn = True, MaximizeBtn = True, MinimizeBtn = True, FullscreenBtn = True, MenuBtn = True
@@ -84,7 +84,7 @@ Func OpenMainGUI()
 	$TAB_Rational = _Metro_CreateButton("Rational Funds", 200, 350, 140, 40)
 	$TAB_StrategyShares = _Metro_CreateButton("Strategy Shares", 350, 350, 140, 40)
 
-	Local $CB_PDF_Upload = _Metro_CreateCheckbox("Upload PDF to Website?", 50, 430, 200, 30)
+	;Local $CB_PDF_Upload = _Metro_CreateCheckbox("Upload PDF to Website?", 50, 430, 200, 30)
 
 
 	$HSeperator2 = _Metro_AddHSeperator(50, 570, 440, 1)
@@ -94,7 +94,7 @@ Func OpenMainGUI()
 	Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 
 
-	Local $Label_Version = GUICtrlCreateLabel("v3.3.0", 450, 620, 50, 50, $SS_RIGHT)
+	Local $Label_Version = GUICtrlCreateLabel("v3.3.1", 450, 620, 50, 50, $SS_RIGHT)
 	GUICtrlSetColor(-1, $FontThemeColor)
 	GUICtrlSetFont(-1, 15, 400, 0, "Segoe UI")
 
