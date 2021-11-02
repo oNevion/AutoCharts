@@ -4447,7 +4447,7 @@ _LogaInfo("AutoCharts Drive directory verified? | " & $bDBVerified)
 Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
 _LogaInfo("Set theme to | " & $Select_Theme)
 _SetTheme($Select_Theme)
-Global $Form1 = _Metro_CreateGUI("AutoCharts 3.3.0", 540, 700, -1, -1, True)
+Global $Form1 = _Metro_CreateGUI("AutoCharts 3.3.1", 540, 700, -1, -1, True)
 GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
 $Control_Buttons = _Metro_AddControlButtons(True, True, True, True, True)
 $GUI_CLOSE_BUTTON = $Control_Buttons[0]
@@ -4468,7 +4468,7 @@ $TAB_StrategyShares = _Metro_CreateButton("Strategy Shares", 350, 350, 140, 40)
 $HSeperator2 = _Metro_AddHSeperator(50, 570, 440, 1)
 Local $BTN_Settings = _Metro_CreateButton("Settings", 50, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $Label_Version = GUICtrlCreateLabel("v3.3.0", 450, 620, 50, 50, $SS_RIGHT)
+Local $Label_Version = GUICtrlCreateLabel("v3.3.1", 450, 620, 50, 50, $SS_RIGHT)
 GUICtrlSetColor(-1, $FontThemeColor)
 GUICtrlSetFont(-1, 15, 400, 0, "Segoe UI")
 GUICtrlSetResizing($Pic1, 768 + 8)
@@ -5398,7 +5398,7 @@ EndIf
 EndFunc
 Func UploadDatalinker()
 If $INPT_Name = "Jakob" Then
-FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir, 1)
+FileCopy(@AppDataDir & "\Adobe\InDesign\Version 17.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir, 1)
 If @error Then
 _GUIDisable($Form7, 0, 30)
 _Metro_MsgBox(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $Form7)
@@ -5411,7 +5411,7 @@ _GUIDisable($Form7)
 _LogaInfo("Datalinker File Uploaded to " & $DatabaseDir)
 EndIf
 Else
-FileCopy(@AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir & "\" & $INPT_Name & "_Datalinker.xml", 1)
+FileCopy(@AppDataDir & "\Adobe\InDesign\Version 17.0\en_US\DataLinker\DataLinker.xml", $DatabaseDir & "\" & $INPT_Name & "_Datalinker.xml", 1)
 If @error Then
 _GUIDisable($Form7, 0, 30)
 _Metro_MsgBox(0, "Error!", "There was an error uploading your Datalinker file to the database.", 500, 11, $Form7)
@@ -5437,7 +5437,7 @@ _LogaInfo("Datalinker File Imported to AutoCharts Directory")
 EndIf
 Local $file = @ScriptDir & "\Datalinker_TEMP1.xml"
 Local $text = FileRead($file)
-FileCopy(@ScriptDir & "\Datalinker_TEMP1.xml", @AppDataDir & "\Adobe\InDesign\Version 16.0\en_US\DataLinker\DataLinker.xml", 1)
+FileCopy(@ScriptDir & "\Datalinker_TEMP1.xml", @AppDataDir & "\Adobe\InDesign\Version 17.0\en_US\DataLinker\DataLinker.xml", 1)
 If @error Then
 _GUIDisable($Form7, 0, 30)
 _Metro_MsgBox(0, "Error!", "There was an error importing your Datalinker file to InDesign | Could not replace directory in file", 500, 11, $Form7)

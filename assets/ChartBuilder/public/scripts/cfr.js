@@ -72,7 +72,7 @@ chart1.dataSource.parser.options.useColumnNames = true;
 
 // Add series
 var series = chart1.series.push(new am4charts.PieSeries());
-series.dataFields.value = "Scaled to 100";
+series.dataFields.value = "Value";
 series.dataFields.category = "Label";
 series.slices.template.stroke = am4core.color("#ffffff");
 series.slices.template.strokeWidth = 2;
