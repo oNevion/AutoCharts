@@ -790,6 +790,7 @@ Func _StrategySharesFundsGUI()
 	Local $GLDB = _Metro_CreateToggle("GLDB", 50, 70, 130, 30)
 	Local $HNDL = _Metro_CreateToggle("HNDL", 50, 120, 130, 30)
 	Local $ROMO = _Metro_CreateToggle("ROMO", 50, 170, 130, 30)
+	Local $FIVR = _Metro_CreateToggle("FIVR", 50, 220, 130, 30)
 
 	Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
 
@@ -850,6 +851,17 @@ Func _StrategySharesFundsGUI()
 					ConsoleWrite($aStrategyCheck[2] & " Toggle checked!" & @CRLF)
 				EndIf
 
+			Case $FIVR
+				If _Metro_ToggleIsChecked($FIVR) Then
+					_Metro_ToggleUnCheck($FIVR)
+					$aStrategyCheck[3] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
+					ConsoleWrite("Toggle unchecked!" & @CRLF)
+				Else
+					_Metro_ToggleCheck($FIVR)
+					$aStrategyCheck[3] = "FIVR" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+					ConsoleWrite($aStrategyCheck[3] & " Toggle checked!" & @CRLF)
+				EndIf
+
 			Case $CB_FactSheet_SS
 				If _Metro_CheckboxIsChecked($CB_FactSheet_SS) Then
 					_Metro_CheckboxUnCheck($CB_FactSheet_SS)
@@ -888,7 +900,7 @@ Func _StrategySharesFundsGUI()
 				CreateCharts()
 
 				_LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################")         ; Write to the logfile
-				Global $aStrategyCheck[3]
+				Global $aStrategyCheck[5]
 
 				GUICtrlSetData($ProgressBar, 0)
 				_GUIDisable($Form4, 0, 30)
