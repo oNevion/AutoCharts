@@ -227,7 +227,7 @@ dateAxis.renderer.axisFills.template.fillOpacity = 0.1;
  
 dateAxis.fillRule = function(dataItem) { 
   let date = new Date(dataItem.value); 
-  if (date.getMonth() == 3 || date.getMonth() == 4 || date.getMonth() == 5 || date.getMonth() == 5 || date.getMonth() == 6) { 
+  if (date.getMonth() == 3 || date.getMonth() == 4 || date.getMonth() == 5 || date.getMonth() == 5) { 
     dataItem.axisFill.visible = true; 
   } 
   else { 
