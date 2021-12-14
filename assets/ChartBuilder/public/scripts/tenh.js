@@ -51,7 +51,7 @@ document.head.appendChild(style);
 
 
 
-// ################################   CHART 1 FIVR - Growth of 10k (Line) ################################################
+// ################################   CHART 1 TENH - Growth of 10k (Line) ################################################
 
 
 // Themes begin
@@ -142,10 +142,10 @@ chart1.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart1.exporting.filePrefix = "FIVR_10k";
+chart1.exporting.filePrefix = "TENH_10k";
 
 
-// ################################ CHART 2 FIVR - Performance Table (Bar) ################################################
+// ################################ CHART 2 TENH - Performance Table (Bar) ################################################
 
 // Themes begin
 am4core.useTheme(am4themes_amcharts);
@@ -158,7 +158,7 @@ var chart2 = am4core.create("chartdiv2", am4charts.XYChart);
 chart2.numberFormatter.numberFormat = "#.#'%'";
 
 // Set up data source
-chart2.dataSource.url = "../Data/Backups/StrategyShares/FIVR/FIVR_EXPORT_PerformanceBar.csv";
+chart2.dataSource.url = "../Data/Backups/StrategyShares/TENH/TENH_EXPORT_PerformanceBar.csv";
 chart2.dataSource.parser = new am4core.CSVParser();
 chart2.dataSource.parser.options.useColumnNames = true;
 
@@ -228,10 +228,10 @@ chart2.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart2.exporting.filePrefix = "FIVR_PerformanceBar";
+chart2.exporting.filePrefix = "TENH_PerformanceBar";
 
 
-// ################################ CHART 3 FIVR Sector Allocation (Pie) ################################################
+// ################################ CHART 3 TENH Sector Allocation (Pie) ################################################
 
 // Create chart instance
 var chart3 = am4core.create("chartdiv3", am4charts.PieChart);
@@ -239,7 +239,7 @@ chart3.innerRadius = am4core.percent(40);
 am4core.options.autoSetClassName = true;
 
 // Set up data source
-chart3.dataSource.url = "../Data/Backups/StrategyShares/FIVR/FIVR_EXPORT_SectorPie.csv";
+chart3.dataSource.url = "../Data/Backups/StrategyShares/TENH/TENH_EXPORT_SectorPie.csv";
 chart3.dataSource.parser = new am4core.CSVParser();
 chart3.dataSource.parser.options.useColumnNames = true;
 
@@ -310,10 +310,10 @@ chart3.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart3.exporting.filePrefix = "FIVR_SectorAllocation";
+chart3.exporting.filePrefix = "TENH_SectorAllocation";
 
 
-// ################################ CHART 4 FIVR - Institutional Growth of 10k (Line) ################################################
+// ################################ CHART 4 TENH - Institutional Growth of 10k (Line) ################################################
 
 // Themes begin
 am4core.useTheme(am4themes_amcharts);
@@ -323,7 +323,7 @@ am4core.useTheme(am4themes_amcharts);
 var chart4 = am4core.create("chartdiv4", am4charts.XYChart);
 
 // Set up data source
-chart4.dataSource.url = "../Data/Backups/StrategyShares/FIVR/FIVR_I_EXPORT_10k.csv";
+chart4.dataSource.url = "../Data/Backups/StrategyShares/TENH/TENH_I_EXPORT_10k.csv";
 chart4.dataSource.parser = new am4core.CSVParser();
 chart4.dataSource.parser.options.useColumnNames = true;
 
@@ -392,10 +392,10 @@ chart4.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart4.exporting.filePrefix = "FIVR_I_10k";
+chart4.exporting.filePrefix = "TENH_I_10k";
 
 
-// ################################ CHART 5 FIVR -  Institutional Performance Table (Bar) ################################################
+// ################################ CHART 5 TENH -  Institutional Performance Table (Bar) ################################################
 
 // Themes begin
 am4core.useTheme(am4themes_amcharts);
@@ -408,7 +408,7 @@ var chart5 = am4core.create("chartdiv5", am4charts.XYChart);
 chart5.numberFormatter.numberFormat = "#.#'%'";
 
 // Set up data source
-chart5.dataSource.url = "../Data/Backups/StrategyShares/FIVR/FIVR_I_EXPORT_PerformanceBar.csv";
+chart5.dataSource.url = "../Data/Backups/StrategyShares/TENH/TENH_I_EXPORT_PerformanceBar.csv";
 chart5.dataSource.parser = new am4core.CSVParser();
 chart5.dataSource.parser.options.useColumnNames = true;
 
@@ -436,7 +436,7 @@ valueAxis.renderer.labels.template.fontSize = "32px";
 
 // Create series
 var series = chart5.series.push(new am4charts.ColumnSeries());
-series.dataFields.valueY = "FIVR";
+series.dataFields.valueY = "TENH";
 series.dataFields.categoryX = "Label";
 series.name = "Nasdaq 7HANDL Index";
 series.clustered = true;
@@ -461,9 +461,9 @@ chart5.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart5.exporting.filePrefix = "FIVR_I_PerformanceBar";
+chart5.exporting.filePrefix = "TENH_I_PerformanceBar";
 
-// ################################ CHART 6 FIVR -  Institutional Annual Returns ################################################
+// ################################ CHART 6 TENH -  Institutional Annual Returns ################################################
 
 // Themes begin
 am4core.useTheme(am4themes_amcharts);
@@ -476,7 +476,7 @@ var chart6 = am4core.create("chartdiv6", am4charts.XYChart);
 chart6.numberFormatter.numberFormat = "#.#'%'";
 
 // Set up data source
-chart6.dataSource.url = "../Data/Backups/StrategyShares/FIVR/FIVR_I_EXPORT_AnnualReturns.csv";
+chart6.dataSource.url = "../Data/Backups/StrategyShares/TENH/TENH_I_EXPORT_AnnualReturns.csv";
 chart6.dataSource.parser = new am4core.CSVParser();
 chart6.dataSource.parser.options.useColumnNames = true;
 
@@ -504,7 +504,7 @@ valueAxis.renderer.labels.template.fontSize = "32px";
 
 // Create series
 var series = chart6.series.push(new am4charts.ColumnSeries());
-series.dataFields.valueY = "FIVR";
+series.dataFields.valueY = "TENH";
 series.dataFields.categoryX = "Year";
 series.name = "Nasdaq 7HANDL Index";
 series.clustered = true;
@@ -529,7 +529,7 @@ chart6.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart6.exporting.filePrefix = "FIVR_I_AnnualReturns";
+chart6.exporting.filePrefix = "TENH_I_AnnualReturns";
 
 // ################################   Export any charts OTHER THAN chart1 ################################################
 

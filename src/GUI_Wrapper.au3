@@ -791,6 +791,7 @@ Func _StrategySharesFundsGUI()
 	Local $HNDL = _Metro_CreateToggle("HNDL", 50, 120, 130, 30)
 	Local $ROMO = _Metro_CreateToggle("ROMO", 50, 170, 130, 30)
 	Local $FIVR = _Metro_CreateToggle("FIVR", 50, 220, 130, 30)
+	Local $TENH = _Metro_CreateToggle("TENH", 50, 270, 130, 30)
 
 	Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
 
@@ -861,6 +862,18 @@ Func _StrategySharesFundsGUI()
 					$aStrategyCheck[3] = "FIVR" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
 					ConsoleWrite($aStrategyCheck[3] & " Toggle checked!" & @CRLF)
 				EndIf
+
+			Case $TENH
+				If _Metro_ToggleIsChecked($TENH) Then
+					_Metro_ToggleUnCheck($TENH)
+					$aStrategyCheck[4] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
+					ConsoleWrite("Toggle unchecked!" & @CRLF)
+				Else
+					_Metro_ToggleCheck($TENH)
+					$aStrategyCheck[4] = "TENH" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+					ConsoleWrite($aStrategyCheck[4] & " Toggle checked!" & @CRLF)
+				EndIf
+
 
 			Case $CB_FactSheet_SS
 				If _Metro_CheckboxIsChecked($CB_FactSheet_SS) Then
