@@ -14,7 +14,7 @@ Please make sure you have the following installed on your system:
 
 Please make sure RaiDrive is running and has been configured to connect to the AutoCharts drive. This will be setup manually with Jakob Bradshaw
 
-![alt](/docs/img/raidrive.jpg) 
+![alt](/img/raidrive.jpg) 
 
 ## Installation
 
@@ -31,19 +31,19 @@ Use the installer file here:
 
 `Main Menu > Settings` or by clicking the `Settings` button in the bottom right.
 
-![alt](/docs/img/autocharts1.gif)  
+![alt](/img/autocharts1.gif)  
 
 * After you have updated a backup file for a fund in Dropbox, you should sync Dropbox with AutoCharts. To do this, simply select "Pull Data from Dropbox" under the "Sync Options" menu.  
 
 `Main Menu > Sync Options > Pull Data from Dropbox`
 
-![alt](/docs/img/autocharts2.gif)  
+![alt](/img/autocharts2.gif)  
 
 ?> **Tip |** As of v2.2.0, you may skip the above step as AutoCharts will automatically sync with Dropbox when you press the "Process Updates" button
 
 * Lastly, to update a fund, just select the fund family and then the fund and click "Process Updates"
 
-![alt](/docs/img/autocharts3.gif)  
+![alt](/img/autocharts3.gif)  
 
 ## Requests and Future Development
 AutoCharts is still in active development and more features will be coming soon. 
