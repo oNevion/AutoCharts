@@ -62,7 +62,7 @@ am4core.useTheme(am4themes_amcharts);
 var chart1 = am4core.create("chartdiv", am4charts.XYChart);
 
 // Set up data source
-chart1.dataSource.url = "../Data/Backups/StrategyShares/HNDL/HNDL_EXPORT_10k.csv";
+chart1.dataSource.url = "../Data/Backups/StrategyShares/FIVR/FIVR_EXPORT_10k.csv";
 chart1.dataSource.parser = new am4core.CSVParser();
 chart1.dataSource.parser.options.useColumnNames = true;
 
@@ -97,9 +97,9 @@ valueAxis.numberFormatter.numberFormat = "'$'#,###";
 
 // Create series
 var series1 = chart1.series.push(new am4charts.LineSeries());
-series1.dataFields.valueY = "HANDL: NAV";
+series1.dataFields.valueY = "FIVR: NAV";
 series1.dataFields.dateX = "Date";
-series1.name = "HANDL: NAV";
+series1.name = "FIVR: NAV";
 series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
 //series1.tensionX = 0.99;
@@ -107,9 +107,9 @@ series1.stroke = am4core.color("#08da94");
 series1.hidden = true;
 
 var series2 = chart1.series.push(new am4charts.LineSeries());
-series2.dataFields.valueY = "HANDL: Market";
+series2.dataFields.valueY = "FIVR: Market";
 series2.dataFields.dateX = "Date";
-series2.name = "HANDL: Market";
+series2.name = "FIVR: Market";
 series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 //series2.tensionX = 0.99;
@@ -186,9 +186,9 @@ valueAxis.renderer.labels.template.fontSize = "32px";
 
 // Create series
 var series = chart2.series.push(new am4charts.ColumnSeries());
-series.dataFields.valueY = "HANDL: NAV";
+series.dataFields.valueY = "FIVR: NAV";
 series.dataFields.categoryX = "Category";
-series.name = "HANDL: NAV";
+series.name = "FIVR: NAV";
 series.clustered = true;
 series.fill = am4core.color("#08da94");
 series.strokeWidth = 0;
@@ -199,9 +199,9 @@ series.hidden = true;
 
 
 var series2 = chart2.series.push(new am4charts.ColumnSeries());
-series2.dataFields.valueY = "HANDL: Market";
+series2.dataFields.valueY = "FIVR: Market";
 series2.dataFields.categoryX = "Category";
-series2.name = "HANDL: Market";
+series2.name = "FIVR: Market";
 series2.clustered = true;
 series2.fill = am4core.color("#2d7abf");
 series2.strokeWidth = 0;
@@ -360,9 +360,9 @@ valueAxis.numberFormatter.numberFormat = "'$'#,###";
 
 // Create series
 var series1 = chart4.series.push(new am4charts.LineSeries());
-series1.dataFields.valueY = "Nasdaq 7HANDL Index";
+series1.dataFields.valueY = "Nasdaq 5HANDL Index";
 series1.dataFields.dateX = "Date";
-series1.name = "Nasdaq 7HANDL Index";
+series1.name = "Nasdaq 5HANDL Index";
 series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
 //series1.tensionX = 0.99;
@@ -438,7 +438,7 @@ valueAxis.renderer.labels.template.fontSize = "32px";
 var series = chart5.series.push(new am4charts.ColumnSeries());
 series.dataFields.valueY = "FIVR";
 series.dataFields.categoryX = "Label";
-series.name = "Nasdaq 7HANDL Index";
+series.name = "Nasdaq 5HANDL Index";
 series.clustered = true;
 series.fill = am4core.color("#08da94");
 series.strokeWidth = 0;
@@ -506,7 +506,7 @@ valueAxis.renderer.labels.template.fontSize = "32px";
 var series = chart6.series.push(new am4charts.ColumnSeries());
 series.dataFields.valueY = "FIVR";
 series.dataFields.categoryX = "Year";
-series.name = "Nasdaq 7HANDL Index";
+series.name = "Nasdaq 5HANDL Index";
 series.clustered = true;
 series.fill = am4core.color("#08da94");
 series.strokeWidth = 0;
