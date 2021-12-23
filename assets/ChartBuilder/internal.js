@@ -22,7 +22,7 @@ module.exports = async (server) => {
     options.setPreference('browser.download.dir', __dirname);
 
     // Open the browser headless
-    options.addArguments('-headless');
+     options.addArguments('-headless');
 
     let driver = await new Builder()
         .forBrowser('firefox')
@@ -39,13 +39,13 @@ module.exports = async (server) => {
                         exportChart = () => {
 
                             chart1.exporting.events.on('exportfinished', () => {
-                                setTimeout(callback, 5000);
+                                setTimeout(callback, 8000);
                             });
 
                             // Start the export
 
 
-                            chart1.exporting.export('png');
+                           // chart1.exporting.export('png');
 
 
 
