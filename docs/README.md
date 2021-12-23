@@ -6,26 +6,20 @@ AutoCharts is a program that automatically updates the Catalyst/Rational/Strateg
 
 Please make sure you have the following installed on your system:
 * Node.JS
-* Dropbox
+* RaiDrive
 * Microsoft Excel
 * Adobe InDesign
 * Datalinker Plugin for Adobe InDesign
 * Firefox
 
-Please make sure Smart Sync for Dropbox is set to "Local" for the following folders:
+Please make sure RaiDrive is running and has been configured to connect to the AutoCharts drive. This will be setup manually with Jakob Bradshaw
 
-`Dropbox Root > Marketing Team Files > AutoCharts_Database`
-
-`Dropbox Root > Marketing Team Files > Marketing Materials > AutoCharts&Tables`
-
-![alt](/img/smartsync.gif) 
-
-[Click here for more information on Dropbox's Smart Sync](https://help.dropbox.com/installs-integrations/sync-uploads/smart-sync)
+![alt](/docs/img/raidrive.jpg) 
 
 ## Installation
 
 Use the installer file here:   
-[Current Release - 3.0.0](https://github.com/oNevion/AutoCharts/releases/download/v3.0.0/AutoCharts_3.0.0.exe)
+[Current Release - 3.4.0](https://github.com/oNevion/AutoCharts/releases/download/v3.4.0/AutoCharts_3.4.0_Setup.exe)
 
 ## Usage
 
@@ -33,21 +27,23 @@ Use the installer file here:
 
 * Before you run through an update, you need to update the settings by going to Main Menu > Settings
 
+* Please make sure to select the AutoCharts drive in the settings menu.
+
 `Main Menu > Settings` or by clicking the `Settings` button in the bottom right.
 
-![alt](/img/autocharts1.gif)  
+![alt](/docs/img/autocharts1.gif)  
 
 * After you have updated a backup file for a fund in Dropbox, you should sync Dropbox with AutoCharts. To do this, simply select "Pull Data from Dropbox" under the "Sync Options" menu.  
 
 `Main Menu > Sync Options > Pull Data from Dropbox`
 
-![alt](/img/autocharts2.gif)  
+![alt](/docs/img/autocharts2.gif)  
 
 ?> **Tip |** As of v2.2.0, you may skip the above step as AutoCharts will automatically sync with Dropbox when you press the "Process Updates" button
 
 * Lastly, to update a fund, just select the fund family and then the fund and click "Process Updates"
 
-![alt](/img/autocharts3.gif)  
+![alt](/docs/img/autocharts3.gif)  
 
 ## Requests and Future Development
 AutoCharts is still in active development and more features will be coming soon. 
