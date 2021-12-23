@@ -860,8 +860,6 @@ chart11.exporting.filePrefix = "RDM_Brochure_Export_15WorstQuarters";
 
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
-window.onload = setTimeout(loadFrame, 3300);
-
 
 function loadFrame() {
      chart1.exporting.export('svg');
@@ -876,3 +874,4 @@ function loadFrame() {
      chart11.exporting.export('svg');
 };                           
                         
+window.onload = setTimeout(loadFrame, 6000);

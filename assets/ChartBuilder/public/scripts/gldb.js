@@ -602,6 +602,6 @@ function loadFrame() {
      chart8.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 2100);
+window.onload = setTimeout(loadFrame, 6000);
                            
                         

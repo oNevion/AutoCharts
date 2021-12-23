@@ -109,6 +109,6 @@ function loadFrame() {
      chart1.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1200);
+window.onload = setTimeout(loadFrame, 6000);
                            
                         

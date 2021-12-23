@@ -450,6 +450,6 @@ function loadFrame() {
      chart5.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1800);
+window.onload = setTimeout(loadFrame, 6000);
                            
                         

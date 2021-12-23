@@ -203,6 +203,6 @@ function loadFrame() {
      chart2.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1800);
+window.onload = setTimeout(loadFrame, 6000);
                            
                         
