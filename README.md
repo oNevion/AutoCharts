@@ -6,32 +6,28 @@ AutoCharts is a program that automatically updates the Catalyst/Rational/Strateg
 
 Please make sure you have the following installed on your system:
 * Node.JS
-* Dropbox
+* RaiDrive
 * Microsoft Excel
 * Adobe InDesign
 * Datalinker Plugin for Adobe InDesign
 * Firefox
 
-Please make sure Smart Sync for Dropbox is set to "Local" for the following folders:
+Please make sure RaiDrive is running and has been configured to connect to the AutoCharts drive. This will be setup manually with Jakob Bradshaw
 
-`Dropbox Root > Marketing Team Files > AutoCharts_Database`
-
-`Dropbox Root > Marketing Team Files > Marketing Materials > AutoCharts&Tables`
-
-![alt](/docs/img/smartsync.gif) 
-
-[Click here for more information on Dropbox's Smart Sync](https://help.dropbox.com/installs-integrations/sync-uploads/smart-sync)
+![alt](/docs/img/raidrive.jpg) 
 
 ## Installation
 
 Use the installer file here:   
-[Current Release - 3.0.0](https://github.com/oNevion/AutoCharts/releases/download/v3.0.0/AutoCharts_3.0.0.exe)
+[Current Release - 3.4.0](https://github.com/oNevion/AutoCharts/releases/download/v3.4.0/AutoCharts_3.4.0_Setup.exe)
 
 ## Usage
 
 * Double check the prerequisites above!
 
 * Before you run through an update, you need to update the settings by going to Main Menu > Settings
+
+* Please make sure to select the AutoCharts drive in the settings menu.
 
 `Main Menu > Settings` or by clicking the `Settings` button in the bottom right.
 

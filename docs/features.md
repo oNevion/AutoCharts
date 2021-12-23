@@ -1,10 +1,10 @@
 # Features of AutoCharts
 
-## Sync with Dropbox
+## Sync with AutoCharts Drive over Internet
 
-To sync AutoCharts with Dropbox, all you need to do is go to the "Pull Data from Dropbox" option under "Sync Options"
+To sync AutoCharts with the AutoCharts drive, all you need to do is go to the "Pull Data from AutoCharts Drive" option under "Sync Options"
 
-`Sync Options > Pull Data from Dropbox`
+`Sync Options > Pull Data from AutoCharts Drive`
 
 
 ?> **Tip |** AutoCharts will also sync with Dropbox automatically when you click the "Process Updates" button.

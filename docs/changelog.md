@@ -1,7 +1,69 @@
 # Changelog
 
-## 3.0.0
+## 3.4.0
 ### Current Release
+
+*December 23, 2021*
+
+* Features: Added FIVR fund for Strategy Shares
+* Features: Added TENH fund for Strategy Shares
+* Features: Added a little Holiday Cheer
+* Bug Fixes: Increased server initialization time for chart builder to 8 seconds
+* Bug Fixes: Increase export wait time for all fund charts to 6 seconds
+* Bug Fixes: The two above bug fixes should resolve chart generation issue where data is not fully loaded
+
+## 3.3.1
+
+*November 02, 2021*
+
+* Features: Now compatible with InDesign 2022 and DataLinker 2022
+* Enhancements: Increased server wait time on chart creation for more reliable generation
+* Enhancements: Aesthetic updates to GLDB charts
+* Enhancements: Updated CFR pie chart to use "value" column in backup file
+* Enhancements: Added PDF upload functions in backend
+
+## 3.3.0
+
+*October 08, 2021*
+
+* Features: Removed Dropbox as database source and instead use WebDav drive connection
+* Features: Updated archive function to simply create a new directory (instead of creating a .zip file)
+* Features: Added additional error handling in main loop to help with future debugging
+* Enhancements: AutoCharts is now a 64bit program
+* Enhancements: Settings should better migrate over when user updates program
+* Enhancements: Updated chart bulder dependencies to remove tar vulnerability
+* Enhancements: RDM charts updated
+* Bug Fix: Sometimes, previously selected funds would not clear after running through updates for a second time - Clear FundFamily Array after main program loop
+* Bug Fix: GUI would "uncheck" the material type selected after pressing the "Process Updates" button - Material type checkboxes uncheck during main program loop
+* Bug Fix: Program would not move completed files back into DropBox while running.
+* Bug Fix: Creating an archive .zip file stopped working after recent Windows 10 update
+
+## 3.2.1
+
+*October 04, 2021*
+
+* Bug Fix: Fix error when copying backup file to VBS location
+* Bug Fix: Fix Expense Ratio CSV splitting to use new VBS location
+* Bug Fix: Fix dropbox directory saving error
+
+## 3.2.0
+
+*October 04, 2021*
+
+* Fixed VBS script call issue by moving to user's Documents folder
+* Material checkboxes now work as expected
+
+## 3.1.0
+
+*August 17, 2021*
+
+* Added IGO to Rational Tab
+* Fixed resizing issue of GUI. User can now resize the program
+* Removed DPI compatibility to try and fix GUI rendering issues
+* Installation and running of the program now requires administrator rights
+* Program install file moved to C:/Programs instead of the Local App Data folder
+
+## 3.0.0
 
 *August 04, 2021*
 
