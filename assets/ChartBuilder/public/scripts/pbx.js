@@ -406,6 +406,6 @@ function loadFrame() {
      chart4.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 1000);
+window.onload = setTimeout(loadFrame, 6000);
                            
                         
