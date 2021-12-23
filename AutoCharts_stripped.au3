@@ -1,7 +1,7 @@
 #Au3Stripper_Ignore_Funcs=_iHoverOn,_iHoverOff,_iFullscreenToggleBtn,_cHvr_CSCP_X64,_cHvr_CSCP_X86,_iControlDelete
 Global $aCatalystCheck[24]
 Global $aRationalCheck[8]
-Global $aStrategyCheck[3]
+Global $aStrategyCheck[5]
 Global $FamilySwitch
 Global $CurrentFund
 Global $ini = 'settings.ini'
@@ -4447,7 +4447,7 @@ _LogaInfo("AutoCharts Drive directory verified? | " & $bDBVerified)
 Global $Select_Theme = IniRead($ini, 'Settings', 'UITheme', '')
 _LogaInfo("Set theme to | " & $Select_Theme)
 _SetTheme($Select_Theme)
-Global $Form1 = _Metro_CreateGUI("AutoCharts 3.3.1", 540, 700, -1, -1, True)
+Global $Form1 = _Metro_CreateGUI("AutoCharts 3.4.0", 540, 700, -1, -1, True)
 GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
 $Control_Buttons = _Metro_AddControlButtons(True, True, True, True, True)
 $GUI_CLOSE_BUTTON = $Control_Buttons[0]
@@ -4468,7 +4468,7 @@ $TAB_StrategyShares = _Metro_CreateButton("Strategy Shares", 350, 350, 140, 40)
 $HSeperator2 = _Metro_AddHSeperator(50, 570, 440, 1)
 Local $BTN_Settings = _Metro_CreateButton("Settings", 50, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
 Local $BTN_About = _Metro_CreateButton("About", 170, 600, 100, 40, 0xE9E9E9, $ButtonBKColor, "Segoe UI", 10, 1, $ButtonBKColor)
-Local $Label_Version = GUICtrlCreateLabel("v3.3.1", 450, 620, 50, 50, $SS_RIGHT)
+Local $Label_Version = GUICtrlCreateLabel("v3.4.0", 450, 620, 50, 50, $SS_RIGHT)
 GUICtrlSetColor(-1, $FontThemeColor)
 GUICtrlSetFont(-1, 15, 400, 0, "Segoe UI")
 GUICtrlSetResizing($Pic1, 768 + 8)
@@ -5039,6 +5039,8 @@ Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
 Local $GLDB = _Metro_CreateToggle("GLDB", 50, 70, 130, 30)
 Local $HNDL = _Metro_CreateToggle("HNDL", 50, 120, 130, 30)
 Local $ROMO = _Metro_CreateToggle("ROMO", 50, 170, 130, 30)
+Local $FIVR = _Metro_CreateToggle("FIVR", 50, 220, 130, 30)
+Local $TENH = _Metro_CreateToggle("TENH", 50, 270, 130, 30)
 Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
 Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
 GUICtrlSetColor(-1, $FontThemeColor)
@@ -5087,6 +5089,26 @@ _Metro_ToggleCheck($ROMO)
 $aStrategyCheck[2] = "ROMO"
 ConsoleWrite($aStrategyCheck[2] & " Toggle checked!" & @CRLF)
 EndIf
+Case $FIVR
+If _Metro_ToggleIsChecked($FIVR) Then
+_Metro_ToggleUnCheck($FIVR)
+$aStrategyCheck[3] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
+Else
+_Metro_ToggleCheck($FIVR)
+$aStrategyCheck[3] = "FIVR"
+ConsoleWrite($aStrategyCheck[3] & " Toggle checked!" & @CRLF)
+EndIf
+Case $TENH
+If _Metro_ToggleIsChecked($TENH) Then
+_Metro_ToggleUnCheck($TENH)
+$aStrategyCheck[4] = 0
+ConsoleWrite("Toggle unchecked!" & @CRLF)
+Else
+_Metro_ToggleCheck($TENH)
+$aStrategyCheck[4] = "TENH"
+ConsoleWrite($aStrategyCheck[4] & " Toggle checked!" & @CRLF)
+EndIf
 Case $CB_FactSheet_SS
 If _Metro_CheckboxIsChecked($CB_FactSheet_SS) Then
 _Metro_CheckboxUnCheck($CB_FactSheet_SS)
@@ -5119,7 +5141,7 @@ ImportDatalinker()
 RunCSVConvert()
 CreateCharts()
 _LogaInfo("############################### END OF RUN - STRATEGY SHARES ###############################")
-Global $aStrategyCheck[3]
+Global $aStrategyCheck[5]
 GUICtrlSetData($ProgressBar, 0)
 _GUIDisable($Form4, 0, 30)
 _Metro_MsgBox(0, "Finished", "The process has finished.", 500, 11, $Form4)
