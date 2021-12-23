@@ -1,0 +1,14 @@
+<!-- _coverpage.md -->
+
+![logo](img/icon.svg)
+
+# AutoCharts <small>v3.0.0</small>
+
+> A magical quarterly marketing updater.
+
+- Simple and lightweight
+- Runs locally
+- Fully documented
+
+[GitHub](https://github.com/oNevion/AutoCharts)
+[Get Started](#main)
