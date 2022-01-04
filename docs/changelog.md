@@ -1,8 +1,17 @@
 # Changelog
 
-## 3.4.0
+## 3.4.1
 ### Current Release
 
+*January 04, 2022*
+
+* Features: Added NZRO to Strategy Shares Fund Options
+* Improvements: Updated geckodriver npm package for chart download functions
+* Improvements: Updated selenium-webdriver npm package for chart download functions
+* Bug Fixes: Bump jszip from 3.6.0 to 3.7.1 in /builds/2.4.5/assets/ChartBuilder
+* Bug Fixes: Fixed issues with GUI dependent file to allow code stripping when compiling the .exe
+
+## 3.4.0
 *December 23, 2021*
 
 * Features: Added FIVR fund for Strategy Shares

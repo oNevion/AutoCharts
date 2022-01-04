@@ -19,7 +19,7 @@ Please make sure RaiDrive is running and has been configured to connect to the A
 ## Installation
 
 Use the installer file here:   
-[Current Release - 3.4.0](https://github.com/oNevion/AutoCharts/releases/download/v3.4.0/AutoCharts_3.4.0_Setup.exe)
+[Current Release - 3.4.1](https://github.com/oNevion/AutoCharts/releases/download/v3.4.1/AutoCharts_3.4.1_Setup.exe)
 
 ## Usage
 
