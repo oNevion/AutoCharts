@@ -2,7 +2,7 @@
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile_x64=AutoCharts.exe
 #AutoIt3Wrapper_Res_Description=AutoCharts 3.4.1
-#AutoIt3Wrapper_Res_Fileversion=3.4.1.1
+#AutoIt3Wrapper_Res_Fileversion=3.4.1.5
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
 #AutoIt3Wrapper_Res_ProductVersion=3.4.1

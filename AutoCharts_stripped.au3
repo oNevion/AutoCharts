@@ -2121,10 +2121,10 @@ Local Const $_cHvr_PDEFSUBCLASSPROC = _WinAPI_GetProcAddress($_cHvr_HDLLCOMCTL32
 Local Const $_cHvr_PINTERNALSUBCLASS_DLL = DllCallbackRegister('_cHvr_iProc', 'NONE', 'HWND;UINT;WPARAM;LPARAM;DWORD')
 Local Const $_cHvr_PINTERNALSUBCLASS = DllCallbackGetPtr($_cHvr_PINTERNALSUBCLASS_DLL)
 OnAutoItExitRegister("_cHvr_Finalize")
-Local Const $_cHvr_TSUBCLASSEXE = Call(@AutoItX64 ? '_cHvr_CSCP_X64' : '_cHvr_CSCP_X86')
+Local Const $_cHvr_TSUBCLASSEXE = Call('_cHvr_CSCP_X64')
 Local Const $_cHvr_HEXECUTABLEHEAP = DllCall('kernel32.dll', 'HANDLE', 'HeapCreate', 'DWORD', 0x00040000, 'ULONG_PTR', 0, 'ULONG_PTR', 0)[0]
 Assert($_cHvr_HEXECUTABLEHEAP <> 0, 'Failed to create executable heap object')
-Local Const $_cHvr_PSUBCLASSEXE = _cHvr_ExecutableFromStruct(Call(@AutoItX64 ? '_cHvr_CSCP_X64' : '_cHvr_CSCP_X86'))
+Local Const $_cHvr_PSUBCLASSEXE = _cHvr_ExecutableFromStruct(Call('_cHvr_CSCP_X64'))
 Func _cHvr_Register($idCtrl, $fnHovOff = '', $fnHoverOn = '', $fnClick = '', $fnDblClk = '', $HoverData = 0,$ClickData = 0,$fnRightClick = '')
 Local $hWnd = GUICtrlGetHandle($idCtrl)
 If(Not(IsHWnd($hWnd))) Then Return SetError(1, 0, -1)
@@ -2216,7 +2216,6 @@ $aCtrlData[2] = 0
 _cHvr_CallFunc($aCtrlData, 3)
 EndFunc
 Func _cHvr_CallFunc(ByRef $aCtrlData, $iCallType)
-Call($aCtrlData[$iCallType], $aCtrlData[1], $aCtrlData[$iCallType + 1])
 EndFunc
 Func _cHvr_ArrayPush(ByRef $aStackArr, Const $vSrc1 = Default, Const $vSrc2 = Default, Const $vSrc3 = Default, Const $vSrc4 = Default, Const $vSrc5 = Default)
 While(UBound($aStackArr) <($aStackArr[0] + @NumParams))
