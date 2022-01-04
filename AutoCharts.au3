@@ -24,7 +24,7 @@
 
 Global $aCatalystCheck[24]
 Global $aRationalCheck[8]
-Global $aStrategyCheck[5]
+Global $aStrategyCheck[6]
 
 Global $FamilySwitch
 
