@@ -78,6 +78,8 @@ Global $DatabaseDir = $AutoChartsDriveDir & "\database"
 #include <AutoItConstants.au3>
 #include <FileConstants.au3>
 
+#include <Constants.au3>
+#include <FontConstants.au3>
 ;-------------------------------------------------------------------------------
 ; Main program that manages Logging
 ;
