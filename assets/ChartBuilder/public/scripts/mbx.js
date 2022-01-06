@@ -80,6 +80,7 @@ dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "left";
 dateAxis.renderer.maxLabelPosition = 1.05;
+dateAxis.extraMax = 0.01; 
 
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";

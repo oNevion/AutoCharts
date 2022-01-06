@@ -18,7 +18,10 @@ body {
 		height:800px!important;
     }
 
-
+    #chartdiv2 {
+        width:690px!important;
+    height:391px!important;
+    }
 
 `;
 
@@ -112,12 +115,83 @@ chart1.exporting.menu.items = [{
 chart1.exporting.filePrefix = "NZRO_10k";
 
 
+// ################################ CHART 2 NZRO Sector Allocation (Pie) ################################################
 
+// Create chart instance
+var chart2 = am4core.create("chartdiv2", am4charts.PieChart);
+chart2.innerRadius = am4core.percent(40);
+
+// Set up data source
+chart2.dataSource.url = "../Data/Backups/StrategyShares/NZRO/NZRO_EXPORT_SectorAllocationPie.csv";
+chart2.dataSource.parser = new am4core.CSVParser();
+chart2.dataSource.parser.options.useColumnNames = true;
+
+
+
+// Make the chart fade-in on init
+chart2.hiddenState.properties.opacity = 0;
+
+// Add series
+var series = chart2.series.push(new am4charts.PieSeries());
+series.dataFields.value = "Value";
+series.dataFields.category = "Label";
+series.slices.template.stroke = am4core.color("#ffffff");
+series.slices.template.strokeWidth = 2;
+series.slices.template.strokeOpacity = 1;
+series.labels.template.disabled = true;
+series.ticks.template.disabled = true;
+series.slices.template.tooltipText = "";
+series.colors.list = [
+  am4core.color("#0d345e"),
+  am4core.color("#0c4664"),
+  am4core.color("#0c5769"),
+  am4core.color("#0b696f"),
+  am4core.color("#0b7b75"),
+  am4core.color("#0a8d7b"),
+  am4core.color("#0aa081"),
+  am4core.color("#09b387"),
+  am4core.color("#09c68e"),
+  am4core.color("#08da94"),
+
+];
+series.hidden = true;
+
+
+// Create initial animation
+series.hiddenState.properties.opacity = 1;
+series.hiddenState.properties.endAngle = -90;
+series.hiddenState.properties.startAngle = -90;
+
+
+// Add legend
+chart2.legend = new am4charts.Legend();
+chart2.legend.position = "right";
+chart2.legend.maxWidth = undefined;
+chart2.legend.valueLabels.template.align = "right";
+chart2.legend.valueLabels.template.textAlign = "end";  
+chart2.legend.labels.template.minWidth = 220;
+chart2.legend.labels.template.truncate = false;
+chart2.legend.valign = "bottom";
+chart2.legend.itemContainers.template.paddingTop = 2;
+chart2.legend.itemContainers.template.paddingBottom = 2;
+
+
+
+// Export this stuff
+chart2.exporting.menu = new am4core.ExportMenu();
+chart2.exporting.menu.items = [{
+  "label": "...",
+  "menu": [
+          { "type": "svg", "label": "SVG" },
+  ]
+}];
+chart2.exporting.filePrefix = "NZRO_SectorWeights";
 
 // ################################   Export any charts OTHER THAN chart1 ################################################
 
 function loadFrame() {
      chart1.exporting.export('svg');
+     chart2.exporting.export('svg');
 };
 
 window.onload = setTimeout(loadFrame, 6000);
