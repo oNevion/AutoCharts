@@ -66,10 +66,10 @@ dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "24px"; 
 dateAxis.renderer.grid.template.disabled = true; 
 dateAxis.renderer.labels.template.location = 0; 
-//dateAxis.renderer.minGridDistance = 30; 
+dateAxis.renderer.minGridDistance = 40; 
 dateAxis.renderer.labels.template.rotation = -60; 
 dateAxis.renderer.labels.template.verticalCenter = "middle"; 
-dateAxis.renderer.labels.template.horizontalCenter = "right"; 
+dateAxis.renderer.labels.template.horizontalCenter = "middle"; 
 dateAxis.dateFormats.setKey("month", "MM/yyyy"); 
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy");  
 //dateAxis.extraMax = 0.04;  
@@ -77,7 +77,7 @@ dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy");
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis()); 
 valueAxis.renderer.labels.template.fontWeight = "Bold"; 
 valueAxis.renderer.labels.template.fontSize = "24px"; 
-valueAxis.max = 120000;  
+//valueAxis.max = 120000;  
  
 valueAxis.numberFormatter = new am4core.NumberFormatter(); 
 valueAxis.numberFormatter.numberFormat = "'$'#,###"; 
@@ -170,11 +170,12 @@ dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.minGridDistance = 40; 
 dateAxis.renderer.labels.template.rotation = -60; 
 dateAxis.renderer.labels.template.verticalCenter = "middle"; 
-dateAxis.renderer.labels.template.horizontalCenter = "left"; 
+dateAxis.renderer.labels.template.horizontalCenter = "middle"; 
 dateAxis.dateFormats.setKey("month", "MM/yyyy"); 
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy");  
 //dateAxis.extraMax = 0.05;  
- 
+dateAxis.renderer.labels.template.location = 0; 
+
  
  
 var valueAxis = chart2.yAxes.push(new am4charts.ValueAxis()); 
@@ -227,7 +228,7 @@ dateAxis.renderer.axisFills.template.fillOpacity = 0.1;
  
 dateAxis.fillRule = function(dataItem) { 
   let date = new Date(dataItem.value); 
-  if (date.getMonth() == 3 || date.getMonth() == 4 || date.getMonth() == 5 || date.getMonth() == 5) { 
+  if (date.getMonth() == 3 || date.getMonth() == 4 || date.getMonth() == 5 || date.getMonth() == 9 || date.getMonth() == 10 || date.getMonth() == 11) { 
     dataItem.axisFill.visible = true; 
   } 
   else { 

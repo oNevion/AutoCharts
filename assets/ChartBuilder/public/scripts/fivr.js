@@ -80,8 +80,8 @@ dateAxis.renderer.labels.template.location = 0;
 dateAxis.renderer.labels.template.rotation = -45;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "middle";
-dateAxis.dateFormats.setKey("month", "MM/yyyy");
-dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
+//dateAxis.dateFormats.setKey("month", "MM/yyyy");
+//dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
 dateAxis.startLocation = 0.49;
 dateAxis.endLocation = 0.4;
 dateAxis.renderer.labels.template.dy = 20;
@@ -104,7 +104,7 @@ series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
 //series1.tensionX = 0.99;
 series1.stroke = am4core.color("#08da94");
-series1.hidden = true;
+//series1.hidden = true;
 
 var series2 = chart1.series.push(new am4charts.LineSeries());
 series2.dataFields.valueY = "FIVR: Market";
@@ -114,7 +114,7 @@ series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 //series2.tensionX = 0.99;
 series2.stroke = am4core.color("#025268");
-series2.hidden = true;
+//series2.hidden = true;
 
 var series3 = chart1.series.push(new am4charts.LineSeries());
 series3.dataFields.valueY = "Bloomberg Barclay U.S. Agg. Index";
@@ -124,7 +124,7 @@ series3.strokeWidth = 3;
 series3.tooltipText = "{valueY}";
 //series2.tensionX = 0.99;
 series3.stroke = am4core.color("#b7b7bd");
-series3.hidden = true;
+//series3.hidden = true;
 
 // Add legend
 chart1.legend = new am4charts.Legend();
@@ -193,7 +193,7 @@ series.clustered = true;
 series.fill = am4core.color("#08da94");
 series.strokeWidth = 0;
 series.columns.template.width = am4core.percent(100);
-series.hidden = true;
+//series.hidden = true;
 
 
 
@@ -206,7 +206,7 @@ series2.clustered = true;
 series2.fill = am4core.color("#2d7abf");
 series2.strokeWidth = 0;
 series2.columns.template.width = am4core.percent(100);
-series2.hidden = true;
+//series2.hidden = true;
 
 
 var series3 = chart2.series.push(new am4charts.ColumnSeries());
@@ -217,7 +217,7 @@ series3.clustered = true;
 series3.fill = am4core.color("#444444");
 series3.strokeWidth = 0;
 series3.columns.template.width = am4core.percent(100);
-series3.hidden = true;
+//series3.hidden = true;
 
 
 // Export this stuff
