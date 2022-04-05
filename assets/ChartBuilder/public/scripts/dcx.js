@@ -70,8 +70,7 @@ valueAxis.renderer.labels.template.fontSize = "20px";
 
 valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "'$'#,###";
-valueAxis.min = 7000;
-valueAxis.max = 11000; 
+
 // Create series
 var series1 = chart1.series.push(new am4charts.LineSeries());
 series1.dataFields.valueY = "Portfolio";
