@@ -594,15 +594,18 @@ Func _RationalFundsGUI()
 
 
 	;Create Fund Toggles
-	Local $HBA = _Metro_CreateToggle("HBA", 50, 70, 130, 30)
-	Local $HDC = _Metro_CreateToggle("HDC", 50, 120, 130, 30)
-	Local $HRS = _Metro_CreateToggle("HRS", 50, 170, 130, 30)
-	Local $HSU = _Metro_CreateToggle("HSU", 50, 220, 130, 30)
-	Local $IGO = _Metro_CreateToggle("IGO", 50, 270, 130, 30)
-	Local $PBX = _Metro_CreateToggle("PBX", 50, 320, 130, 30)
-	Local $RDM = _Metro_CreateToggle("RDM", 50, 370, 130, 30)
-	Local $RFX = _Metro_CreateToggle("RFX", 220, 70, 130, 30)
-	Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
+	Local $HBA = _Metro_CreateToggle("HBA", 50, 50, 130, 30)
+	Local $HDC = _Metro_CreateToggle("HDC", 50, 95, 130, 30)
+	Local $HRS = _Metro_CreateToggle("HRS", 50, 140, 130, 30)
+	Local $HSU = _Metro_CreateToggle("HSU", 50, 185, 130, 30)
+	Local $IGO = _Metro_CreateToggle("IGO", 50, 230, 130, 30)
+	Local $PBX = _Metro_CreateToggle("PBX", 50, 275, 130, 30)
+	Local $RDM = _Metro_CreateToggle("RDM", 50, 320, 130, 30)
+	Local $RFX = _Metro_CreateToggle("RFX", 50, 365, 130, 30)
+
+	Local $vSeperator1 = _Metro_AddVSeperator(180, 50, 350, 1)
+
+	Local $vSeperator2 = _Metro_AddVSeperator(350, 50, 350, 1)
 
 	Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
 	GUICtrlSetColor(-1, $FontThemeColor)
@@ -802,14 +805,16 @@ Func _StrategySharesFundsGUI()
 
 
 	;Create Fund Toggles
-	Local $GLDB = _Metro_CreateToggle("GLDB", 50, 70, 130, 30)
-	Local $HNDL = _Metro_CreateToggle("HNDL", 50, 120, 130, 30)
-	Local $ROMO = _Metro_CreateToggle("ROMO", 50, 170, 130, 30)
-	Local $FIVR = _Metro_CreateToggle("FIVR", 50, 220, 130, 30)
-	Local $TENH = _Metro_CreateToggle("TENH", 50, 270, 130, 30)
-	Local $NZRO = _Metro_CreateToggle("NZRO", 50, 320, 130, 30)
+	Local $GLDB = _Metro_CreateToggle("GLDB", 50, 50, 130, 30)
+	Local $HNDL = _Metro_CreateToggle("HNDL", 50, 95, 130, 30)
+	Local $ROMO = _Metro_CreateToggle("ROMO", 50, 140, 130, 30)
+	Local $FIVR = _Metro_CreateToggle("FIVR", 50, 185, 130, 30)
+	Local $TENH = _Metro_CreateToggle("TENH", 50, 230, 130, 30)
+	Local $NZRO = _Metro_CreateToggle("NZRO", 50, 275, 130, 30)
 
-	Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
+	Local $vSeperator1 = _Metro_AddVSeperator(180, 50, 350, 1)
+
+	Local $vSeperator1 = _Metro_AddVSeperator(350, 50, 350, 1)
 
 	Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
 	GUICtrlSetColor(-1, $FontThemeColor)
