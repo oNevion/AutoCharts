@@ -210,7 +210,7 @@ Func DetermineDates()
 
 	$text = FileReadLine($file, 6)
 
-	$tout1 = StringReplace($text, '03/2021,5', $MonthNumber & '/' & $INPT_CurYear & ',5')
+	$tout1 = StringReplace($text, '03/2021,5', $MonthNumber & '/' & $INPT_CurYear & ',5' & @CRLF)
 	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
 
 	$text = FileReadLine($file, 7)
