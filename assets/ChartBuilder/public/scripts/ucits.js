@@ -14,8 +14,8 @@ body {
 
 
     #chartdiv {
-        width:1330px!important;
-		height:380px!important;
+        width:1500px!important;
+		height:350px!important;
     }
 
         #chartdiv2 {
@@ -63,18 +63,26 @@ chart1.numberFormatter.numberFormat = "'$'#,###.";
 // Create axes
 var dateAxis = chart1.xAxes.push(new am4charts.DateAxis());
 dateAxis.renderer.labels.template.fontWeight = "Bold";
-dateAxis.renderer.labels.template.fontSize = "16px";
+dateAxis.renderer.labels.template.fontSize = "24px";
 dateAxis.renderer.grid.template.disabled = true;
-dateAxis.renderer.minGridDistance = 40;
+//dateAxis.renderer.minGridDistance = 40;
 dateAxis.renderer.labels.template.location = 0;
 dateAxis.renderer.labels.template.dx = -10;
-dateAxis.extraMax = 0.03; 
+//dateAxis.extraMax = 0.03;
+dateAxis.renderer.labels.template.dy = 10;
+dateAxis.dateFormats.setKey("month", "MM/yyyy");
+dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
+dateAxis.renderer.labels.template.rotation = -45;
+dateAxis.renderer.labels.template.verticalCenter = "middle";
+dateAxis.renderer.labels.template.horizontalCenter = "middle";
+dateAxis.startLocation = 0.49;
+dateAxis.endLocation = 0.7;
 
 
 
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";
-valueAxis.renderer.labels.template.fontSize = "16px";
+valueAxis.renderer.labels.template.fontSize = "24px";
 
 valueAxis.numberFormatter = new am4core.NumberFormatter();
 valueAxis.numberFormatter.numberFormat = "'$'#,###";
@@ -83,7 +91,7 @@ valueAxis.numberFormatter.numberFormat = "'$'#,###";
 var series1 = chart1.series.push(new am4charts.LineSeries());
 series1.dataFields.valueY = "Fund";
 series1.dataFields.dateX = "Date";
-series1.name = "Fund";
+series1.name = "Founder USD";
 series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
 series1.tensionX = 0.93;
@@ -116,7 +124,8 @@ series3.legendSettings.valueText = "[bold {color}]{valueY.close}";
 // Add legend
 chart1.legend = new am4charts.Legend();
 chart1.legend.labels.template.truncate = false;
-
+chart1.legend.labels.template.fontSize = "24px";
+chart1.legend.valueLabels.template.fontSize = "24px";
 
 // Export this stuff
 chart1.exporting.menu = new am4core.ExportMenu();
@@ -133,7 +142,7 @@ chart1.exporting.filePrefix = "UCITS_10k_Chart";
 
 // Create chart instance
 var chart2 = am4core.create("chartdiv2", am4charts.PieChart);
-chart2.innerRadius = am4core.percent(40);
+chart2.innerRadius = am4core.percent(60);
 
 
 // Set up data source
@@ -145,11 +154,7 @@ chart2.dataSource.parser.options.useColumnNames = true;
 var series = chart2.series.push(new am4charts.PieSeries());
 
 series.ticks.template.disabled = true;
-series.alignLabels = false;
-series.labels.template.text = "[bold]{value.percent.formatNumber('#.0')}%";
-series.labels.template.radius = am4core.percent(-25);
-series.labels.template.fill = am4core.color("white");
-series.labels.template.fontSize = "20px";
+series.labels.template.disabled = true;
 
 
 
@@ -184,7 +189,7 @@ chart2.exporting.filePrefix = "UCITS_CreditBreakdownPie";
 
 // Create chart instance
 var chart3 = am4core.create("chartdiv3", am4charts.PieChart);
-chart3.innerRadius = am4core.percent(40);
+chart3.innerRadius = am4core.percent(60);
 
 
 // Set up data source
@@ -196,12 +201,7 @@ chart3.dataSource.parser.options.useColumnNames = true;
 var series = chart3.series.push(new am4charts.PieSeries());
 
 series.ticks.template.disabled = true;
-series.alignLabels = false;
-series.labels.template.text = "[bold]{value.percent.formatNumber('#.0')}%";
-series.labels.template.radius = am4core.percent(-25);
-series.labels.template.fill = am4core.color("white");
-series.labels.template.fontSize = "20px";
-
+series.labels.template.disabled = true;
 
 
 series.dataFields.value = "Value";
@@ -253,6 +253,7 @@ chart4.dataSource.parser.options.useColumnNames = true;
 var categoryAxis = chart4.xAxes.push(new am4charts.CategoryAxis());
 categoryAxis.dataFields.category = "Category";
 categoryAxis.renderer.labels.template.fontWeight = "Bold";
+categoryAxis.renderer.labels.template.fontSize = "24px";
 categoryAxis.renderer.grid.template.disabled = false;
 categoryAxis.renderer.grid.template.location = 0;
 categoryAxis.renderer.minGridDistance = 30;
@@ -266,16 +267,16 @@ categoryAxis.renderer.grid.template.strokeOpacity = .2;
 var valueAxis = chart4.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.grid.template.disabled = true;
 valueAxis.renderer.labels.template.fontWeight = "Bold";
-valueAxis.renderer.labels.template.fontSize = "32px";
+valueAxis.renderer.labels.template.fontSize = "24px";
 
 
 
 
 // Create series
 var series = chart4.series.push(new am4charts.ColumnSeries());
-series.dataFields.valueY = "Fund";
+series.dataFields.valueY = "Founder USD";
 series.dataFields.categoryX = "Category";
-series.name = "Fund";
+series.name = "Founder USD";
 series.clustered = true;
 series.fill = am4core.color("#293241");
 series.strokeWidth = 0;
@@ -303,6 +304,11 @@ series3.fill = am4core.color("#79c99e");
 series3.strokeWidth = 0;
 series3.columns.template.width = am4core.percent(100);
 
+// Add legend
+chart4.legend = new am4charts.Legend();
+chart4.legend.labels.template.truncate = false;
+chart4.legend.labels.template.fontSize = "24px";
+chart4.legend.valueLabels.template.fontSize = "24px";
 
 // Export this stuff
 chart4.exporting.menu = new am4core.ExportMenu();
