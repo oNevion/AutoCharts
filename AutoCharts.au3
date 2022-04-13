@@ -1,13 +1,13 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=assets\GUI_Menus\programicon_hxv_icon.ico
 #AutoIt3Wrapper_Outfile_x64=AutoCharts.exe
-#AutoIt3Wrapper_Res_Description=AutoCharts 3.4.1
-#AutoIt3Wrapper_Res_Fileversion=3.4.1.7
+#AutoIt3Wrapper_Res_Description=AutoCharts 3.5.0
+#AutoIt3Wrapper_Res_Fileversion=3.5.0.0
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_ProductName=AutoCharts
-#AutoIt3Wrapper_Res_ProductVersion=3.4.1
+#AutoIt3Wrapper_Res_ProductVersion=3.5.0
 #AutoIt3Wrapper_Res_CompanyName=Jakob Bradshaw Productions
-#AutoIt3Wrapper_Res_LegalCopyright=© 2021 Jakob Bradshaw Productions
+#AutoIt3Wrapper_Res_LegalCopyright=© 2022 Jakob Bradshaw Productions
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator

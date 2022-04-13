@@ -56,7 +56,7 @@ Func OpenMainGUI()
 	_SetTheme($Select_Theme) ;See MetroThemes.au3 for selectable themes or to add more
 
 	;Create resizable Metro GUI
-	Global $Form1 = _Metro_CreateGUI("AutoCharts 3.4.1", 540, 700, -1, -1, True)
+	Global $Form1 = _Metro_CreateGUI("AutoCharts 3.5.0", 540, 700, -1, -1, True)
 	GUISetIcon(@ScriptDir & "\assets\GUI_Menus\programicon_hxv_icon.ico")
 	;Add/create control buttons to the GUI
 	$Control_Buttons = _Metro_AddControlButtons(True, True, True, True, True) ;CloseBtn = True, MaximizeBtn = True, MinimizeBtn = True, FullscreenBtn = True, MenuBtn = True
