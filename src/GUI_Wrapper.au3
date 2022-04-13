@@ -197,32 +197,36 @@ Func _CatalystFundsGUI()
 	Local $GUI_CLOSE_BUTTON = $Control_Buttons_2[0]
 
 
+
 	;Create Fund Toggles
-	Local $ACX = _Metro_CreateToggle("ACX", 50, 70, 130, 30)
-	Local $ATR = _Metro_CreateToggle("ATR", 50, 120, 130, 30)
-	Local $BUY = _Metro_CreateToggle("BUY", 50, 170, 130, 30)
-	Local $CAX = _Metro_CreateToggle("CAX", 50, 220, 130, 30)
-	Local $CFR = _Metro_CreateToggle("CFR", 50, 270, 130, 30)
-	Local $CLP = _Metro_CreateToggle("CLP", 50, 320, 130, 30)
-	Local $CLT = _Metro_CreateToggle("CLT", 50, 370, 130, 30)
-	Local $vSeperator1 = _Metro_AddVSeperator(180, 85, 300, 1)
+	Local $ACX = _Metro_CreateToggle("ACX", 50, 50, 130, 30)
+	Local $ATR = _Metro_CreateToggle("ATR", 50, 95, 130, 30)
+	Local $BUY = _Metro_CreateToggle("BUY", 50, 140, 130, 30)
+	Local $CAX = _Metro_CreateToggle("CAX", 50, 185, 130, 30)
+	Local $CFR = _Metro_CreateToggle("CFR", 50, 230, 130, 30)
+	Local $CLP = _Metro_CreateToggle("CLP", 50, 275, 130, 30)
+	Local $CLT = _Metro_CreateToggle("CLT", 50, 320, 130, 30)
+	Local $CPE = _Metro_CreateToggle("CPE", 50, 365, 130, 30)
 
-	Local $CPE = _Metro_CreateToggle("CPE", 220, 70, 130, 30)
-	Local $CWX = _Metro_CreateToggle("CWX", 220, 120, 130, 30)
-	Local $DCX = _Metro_CreateToggle("DCX", 220, 170, 130, 30)
-	Local $EIX = _Metro_CreateToggle("EIX", 220, 220, 130, 30)
-	Local $HII = _Metro_CreateToggle("HII", 220, 270, 130, 30)
-	Local $IIX = _Metro_CreateToggle("IIX", 220, 320, 130, 30)
-	Local $INS = _Metro_CreateToggle("INS", 220, 370, 130, 30)
-	Local $vSeperator2 = _Metro_AddVSeperator(350, 85, 300, 1)
+	Local $vSeperator1 = _Metro_AddVSeperator(180, 50, 350, 1)
 
-	Local $IOX = _Metro_CreateToggle("IOX", 390, 70, 130, 30)
-	Local $MBX = _Metro_CreateToggle("MBX", 390, 120, 130, 30)
-	Local $MLX = _Metro_CreateToggle("MLX", 390, 170, 130, 30)
-	Local $SHI = _Metro_CreateToggle("SHI", 390, 220, 130, 30)
-	Local $TEZ = _Metro_CreateToggle("TEZ", 390, 270, 130, 30)
-	Local $TRI = _Metro_CreateToggle("TRI", 390, 320, 130, 30)
-	Local $TRX = _Metro_CreateToggle("TRX", 390, 370, 130, 30)
+	Local $CWX = _Metro_CreateToggle("CWX", 220, 50, 130, 30)
+	Local $DCX = _Metro_CreateToggle("DCX", 220, 95, 130, 30)
+	Local $EIX = _Metro_CreateToggle("EIX", 220, 140, 130, 30)
+	Local $HII = _Metro_CreateToggle("HII", 220, 185, 130, 30)
+	Local $IIX = _Metro_CreateToggle("IIX", 220, 230, 130, 30)
+	Local $INS = _Metro_CreateToggle("INS", 220, 275, 130, 30)
+	Local $IOX = _Metro_CreateToggle("IOX", 220, 320, 130, 30)
+	Local $MBX = _Metro_CreateToggle("MBX", 220, 365, 130, 30)
+
+	Local $vSeperator2 = _Metro_AddVSeperator(350, 50, 350, 1)
+
+	Local $MLX = _Metro_CreateToggle("MLX", 390, 50, 130, 30)
+	Local $SHI = _Metro_CreateToggle("SHI", 390, 95, 130, 30)
+	Local $TEZ = _Metro_CreateToggle("TEZ", 390, 140, 130, 30)
+	Local $TRI = _Metro_CreateToggle("TRI", 390, 185, 130, 30)
+	Local $TRX = _Metro_CreateToggle("TRX", 390, 230, 130, 30)
+	Local $UCITS = _Metro_CreateToggle("UCITS", 390, 275, 130, 30)
 
 	Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
 	GUICtrlSetColor(-1, $FontThemeColor)
@@ -481,6 +485,17 @@ Func _CatalystFundsGUI()
 					_Metro_ToggleCheck($TRX)
 					$aCatalystCheck[20] = "TRX" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
 					ConsoleWrite($aCatalystCheck[20] & " Toggle checked!" & @CRLF)
+				EndIf
+
+			Case $UCITS
+				If _Metro_ToggleIsChecked($UCITS) Then
+					_Metro_ToggleUnCheck($UCITS)
+					$aCatalystCheck[21] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
+					ConsoleWrite("Toggle unchecked!" & @CRLF)
+				Else
+					_Metro_ToggleCheck($UCITS)
+					$aCatalystCheck[21] = "UCITS" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+					ConsoleWrite($aCatalystCheck[21] & " Toggle checked!" & @CRLF)
 				EndIf
 
 			Case $CB_FactSheet_Catalyst
