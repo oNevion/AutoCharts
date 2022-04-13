@@ -14,8 +14,8 @@ body {
 
 
     #chartdiv {
-        width:790px!important;
-		height:300px!important;
+        width:1330px!important;
+		height:380px!important;
     }
 
         #chartdiv2 {
@@ -30,7 +30,7 @@ body {
 
     #chartdiv4 {
         width:1500px!important;
-    height:320px!important;
+    height:350px!important;
     }
 
 `;
@@ -87,29 +87,29 @@ series1.name = "Fund";
 series1.strokeWidth = 3;
 series1.tooltipText = "{valueY}";
 series1.tensionX = 0.93;
-series1.stroke = am4core.color("#08da94");
+series1.stroke = am4core.color("#293241");
 series1.legendSettings.labelText = "{name}[/]";
 series1.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
 var series2 = chart1.series.push(new am4charts.LineSeries());
-series2.dataFields.valueY = "Bloomberg";
+series2.dataFields.valueY = "Bloomberg MBS TR Index";
 series2.dataFields.dateX = "Date";
-series2.name = "Bloomberg MBS Index";
+series2.name = "Bloomberg MBS TR Index";
 series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 series2.tensionX = 0.93;
-series2.stroke = am4core.color("#025268");
+series2.stroke = am4core.color("#6b8ead");
 series2.legendSettings.labelText = "{name}[/]";
 series2.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
 var series3 = chart1.series.push(new am4charts.LineSeries());
-series3.dataFields.valueY = "Barclay";
+series3.dataFields.valueY = "Bloomberg Aggregate Bond TR Index";
 series3.dataFields.dateX = "Date";
-series3.name = "Barclays U.S. AGG";
+series3.name = "Bloomberg Aggregate Bond TR Index";
 series3.strokeWidth = 3;
 series3.tooltipText = "{valueY}";
 series3.tensionX = 0.93;
-series3.stroke = am4core.color("#b7b7bd");
+series3.stroke = am4core.color("#79c99e");
 series3.legendSettings.labelText = "{name}[/]";
 series3.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
@@ -126,7 +126,7 @@ chart1.exporting.menu.items = [{
           { "type": "svg", "label": "SVG" },
   ]
 }];
-chart1.exporting.filePrefix = "UCITS_BRO_10k";
+chart1.exporting.filePrefix = "UCITS_10k_Chart";
 
 
 // ################################ CHART 2 UCITS - Credit Breakdown Pie ################################################
@@ -161,9 +161,10 @@ series.slices.template.strokeOpacity = 1;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
-  am4core.color("#0d345e"),
-  am4core.color("#c02026"),
-  am4core.color("#6aaadd"),
+  am4core.color("#293241"),
+  am4core.color("#3D5A80"),
+  am4core.color("#6B8EAD"),
+  am4core.color("#98C1D9"),
 
 ];
 
@@ -211,9 +212,10 @@ series.slices.template.strokeOpacity = 1;
 series.ticks.template.disabled = true;
 series.slices.template.tooltipText = "";
 series.colors.list = [
-  am4core.color("#0d345e"),
-  am4core.color("#c02026"),
-  am4core.color("#6aaadd"),
+  am4core.color("#293241"),
+  am4core.color("#3D5A80"),
+  am4core.color("#6B8EAD"),
+  am4core.color("#98C1D9"),
 
 ];
 
@@ -275,7 +277,7 @@ series.dataFields.valueY = "Fund";
 series.dataFields.categoryX = "Category";
 series.name = "Fund";
 series.clustered = true;
-series.fill = am4core.color("#08da94");
+series.fill = am4core.color("#293241");
 series.strokeWidth = 0;
 series.columns.template.width = am4core.percent(100);
 
@@ -287,7 +289,7 @@ series2.dataFields.valueY = "Bloomberg MBS TR Index";
 series2.dataFields.categoryX = "Category";
 series2.name = "Bloomberg MBS TR Index";
 series2.clustered = true;
-series2.fill = am4core.color("#2d7abf");
+series2.fill = am4core.color("#6b8ead");
 series2.strokeWidth = 0;
 series2.columns.template.width = am4core.percent(100);
 
@@ -297,7 +299,7 @@ series3.dataFields.valueY = "Bloomberg Aggregate Bond TR Index";
 series3.dataFields.categoryX = "Category";
 series3.name = "Bloomberg Aggregate Bond TR Index";
 series3.clustered = true;
-series3.fill = am4core.color("#cccccc");
+series3.fill = am4core.color("#79c99e");
 series3.strokeWidth = 0;
 series3.columns.template.width = am4core.percent(100);
 
