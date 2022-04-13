@@ -178,9 +178,9 @@ series1.tooltipText = "{valueY}";
 series1.stroke = am4core.color("#08da94");
 
 var series2 = chart2.series.push(new am4charts.LineSeries());
-series2.dataFields.valueY = "60/40 MSCI ACWI/Barclay Agg. Bond Index";
+series2.dataFields.valueY = "60/40 MSCI ACWI/Bloomberg Agg. Bond Index";
 series2.dataFields.dateX = "Date";
-series2.name = "60/40 MSCI ACWI/Barclay Agg. Bond Index";
+series2.name = "60/40 MSCI ACWI/Bloomberg Agg. Bond Index";
 series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 //series2.tensionX = 0.99;

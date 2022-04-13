@@ -154,11 +154,6 @@ series.colors.list = [
 series.legendSettings.valueText = "{value.formatNumber('#.00%')}";
 
 
-// Create initial animation
-series.hiddenState.properties.opacity = 1;
-series.hiddenState.properties.endAngle = -90;
-series.hiddenState.properties.startAngle = -90;
-
 
 // Add legend
 chart2.legend = new am4charts.Legend();
@@ -170,7 +165,6 @@ chart2.legend.valueLabels.template.textAlign = "end";
 chart2.legend.labels.template.minWidth = 200;
 chart2.legend.labels.template.truncate = false;
 chart2.legend.scale = 1.4;
-chart2.legend.marginTop = "40";
 chart2.legend.itemContainers.template.paddingTop = 5;
 chart2.legend.itemContainers.template.paddingBottom = 5;
 

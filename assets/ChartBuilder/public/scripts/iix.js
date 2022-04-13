@@ -38,6 +38,7 @@ document.head.appendChild(style);
 var chart1 = am4core.create("chartdiv", am4charts.PieChart);
 chart1.innerRadius = am4core.percent(50);
 chart1.radius = am4core.percent(70);
+chart1.numberFormatter.numberFormat = "#.0'%'";
 
 // Set up data source
 chart1.dataSource.url = "../Data/Backups/Catalyst/IIX/IIX_EXPORT_PortSectorAllocation.csv";
@@ -75,7 +76,8 @@ series.colors.list = [
 // Add legend
 chart1.legend = new am4charts.Legend();
 chart1.legend.position = "right";
-chart1.legend.valign = "middle";
+//chart1.legend.valign = "top";
+chart1.legend.valueLabels.template.text = "{value.value}";
 
 chart1.legend.maxWidth = undefined;
 chart1.legend.maxheight = 600;
@@ -152,9 +154,9 @@ series.columns.template.width = am4core.percent(100);
 
 
 var series2 = chart2.series.push(new am4charts.ColumnSeries());
-series2.dataFields.valueY = "Barclays 1-3 Yr US Govt/Credit";
+series2.dataFields.valueY = "Bloomberg 1-3 Yr US Govt/Credit";
 series2.dataFields.categoryX = "Year";
-series2.name = "Barclays 1-3 Yr US Govt/Credit";
+series2.name = "Bloomberg 1-3 Yr US Govt/Credit";
 series2.clustered = true;
 series2.fill = am4core.color("#2d7abf");
 series2.strokeWidth = 0;

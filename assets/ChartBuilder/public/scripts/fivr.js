@@ -117,9 +117,9 @@ series2.stroke = am4core.color("#025268");
 //series2.hidden = true;
 
 var series3 = chart1.series.push(new am4charts.LineSeries());
-series3.dataFields.valueY = "Bloomberg Barclay U.S. Agg. Index";
+series3.dataFields.valueY = "Bloomberg U.S. Agg. Index";
 series3.dataFields.dateX = "Date";
-series3.name = "Bloomberg Barclays U.S. Agg. Index";
+series3.name = "Bloomberg U.S. Agg. Index";
 series3.strokeWidth = 3;
 series3.tooltipText = "{valueY}";
 //series2.tensionX = 0.99;
@@ -210,9 +210,9 @@ series2.columns.template.width = am4core.percent(100);
 
 
 var series3 = chart2.series.push(new am4charts.ColumnSeries());
-series3.dataFields.valueY = "Bloomberg Barclay U.S. Agg. Index";
+series3.dataFields.valueY = "Bloomberg U.S. Agg. Index";
 series3.dataFields.categoryX = "Category";
-series3.name = "Bloomberg Barclays U.S. Agg. Index";
+series3.name = "Bloomberg U.S. Agg. Index";
 series3.clustered = true;
 series3.fill = am4core.color("#444444");
 series3.strokeWidth = 0;

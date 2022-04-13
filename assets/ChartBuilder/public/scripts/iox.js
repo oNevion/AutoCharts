@@ -88,9 +88,9 @@ series1.tensionX = 0.93;
 series1.stroke = am4core.color("#08da94");
 
 var series2 = chart1.series.push(new am4charts.LineSeries());
-series2.dataFields.valueY = "Bloomberg Barclays US MBS Index";
+series2.dataFields.valueY = "Bloomberg US MBS Index";
 series2.dataFields.dateX = "Date";
-series2.name = "Bloomberg Barclays US MBS Index";
+series2.name = "Bloomberg US MBS Index";
 series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 series2.tensionX = 0.93;

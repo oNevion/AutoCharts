@@ -416,9 +416,9 @@ series2.tensionX = 0.93;
 series2.stroke = am4core.color("#025268");
 
 var series3 = chart5.series.push(new am4charts.LineSeries());
-series3.dataFields.valueY = "Barclays US Agg";
+series3.dataFields.valueY = "Bloomberg US Agg";
 series3.dataFields.dateX = "Date";
-series3.name = "Barclays US AGG";
+series3.name = "Bloomberg US Agg";
 series3.strokeWidth = 3;
 series3.tooltipText = "{valueY}";
 series3.tensionX = 0.93;
