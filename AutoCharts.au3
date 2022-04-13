@@ -212,8 +212,12 @@ Func DetermineDates()
 
 	$tout1 = StringReplace($text, '03/2021,5', $MonthNumber & '/' & $INPT_CurYear & ',5')
 	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
+
+	$text = FileReadLine($file, 7)
+
+	$tout1 = StringReplace($text, '31 March 2021,6', $DayNumber & ' ' & $QtrToMonth & ' ' & $INPT_CurYear & ',6')
+	FileWrite($DatabaseDir & "\csv\Update_FactSheetDates.csv", $tout1)
 	FileClose($DatabaseDir & "\csv\Update_FactSheetDates.csv") ; Close the filehandle to release the file.
-	;FileMove(@ScriptDir & "\assets\ChartBuilder\public\Data\Backups\Update_FactSheetDates.csv", $DatabaseDir & "\csv\", 1)
 
 	_LogaInfo("Updated FactSheetDates CSV File with selected dates") ; Write to the logfile
 
