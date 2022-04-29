@@ -555,7 +555,7 @@ Func CreateFactSheetArchive()
 		$Archive = $sFileSelectFolder & "\FactSheets_" & $Select_Quarter & "-" & $INPT_CurYear & "\"
 		DirCreate($Archive) ;Create The archive folder.
 		DirCopy($DatabaseDir & "\fin_backup_files", $Archive, 1) ;Add a folder to the archive (files/subfolders will be added)
-		DirCopy($DropboxDir & "\FactSheets", $Archive, 1) ;Add a folder to the archive (files/subfolders will be added)
+		DirCopy("X:\Marketing Team Files\Marketing Materials\AutoCharts&Tables\FactSheets", $Archive, 1) ;Add a folder to the archive (files/subfolders will be added)
 		SplashOff()
 
 		_Metro_MsgBox(0, "Success", "Created Factsheet Archive at " & $Archive)
