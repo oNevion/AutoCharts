@@ -61,11 +61,13 @@ dateAxis.renderer.labels.template.dx = -20;
 dateAxis.renderer.labels.template.dy = 10;
 dateAxis.renderer.minGridDistance = 50;
 dateAxis.renderer.labels.template.location = 0;
-dateAxis.renderer.labels.template.horizontalCenter = "left";
 dateAxis.extraMax = 0.03; 
 dateAxis.extraMin = 0.025; 
 dateAxis.startLocation = 0.49;
 dateAxis.endLocation = 0.4;
+dateAxis.renderer.labels.template.rotation = -45;
+dateAxis.renderer.labels.template.verticalCenter = "middle";
+dateAxis.renderer.labels.template.horizontalCenter = "right";
 
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
 valueAxis.renderer.labels.template.fontWeight = "Bold";

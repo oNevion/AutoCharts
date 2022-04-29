@@ -130,8 +130,7 @@ series3.stroke = am4core.color("#b7b7bd");
 chart1.legend = new am4charts.Legend();
 chart1.legend.labels.template.fontSize = "22px";
 chart1.legend.labels.template.truncate = false;
-//chart1.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
-chart1.legend.labels.template.text = "{name}[/] [bold {color}]";
+chart1.legend.labels.template.text = "{name}[/] [bold {color}]{valueY.close}";
 chart1.legend.itemContainers.template.marginTop = 10;
 
 // Export this stuff

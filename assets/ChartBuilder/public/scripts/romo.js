@@ -55,7 +55,7 @@ var dateAxis = chart1.xAxes.push(new am4charts.DateAxis());
 dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "26px";
 dateAxis.renderer.grid.template.disabled = true;
-dateAxis.renderer.minGridDistance = 30;
+dateAxis.renderer.minGridDistance = 50;
 dateAxis.renderer.labels.template.location = 0;
 dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
@@ -64,7 +64,7 @@ dateAxis.endLocation = 0.4;
 dateAxis.renderer.labels.template.dy = 20;
 dateAxis.renderer.labels.template.rotation = -45;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
-dateAxis.renderer.labels.template.horizontalCenter = "middle";
+dateAxis.renderer.labels.template.horizontalCenter = "right";
 dateAxis.extraMax = 0.04; 
 
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());

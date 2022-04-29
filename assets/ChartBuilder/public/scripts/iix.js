@@ -36,8 +36,7 @@ document.head.appendChild(style);
 
 // Create chart instance
 var chart1 = am4core.create("chartdiv", am4charts.PieChart);
-chart1.innerRadius = am4core.percent(50);
-chart1.radius = am4core.percent(70);
+chart1.innerRadius = am4core.percent(60);
 chart1.numberFormatter.numberFormat = "#.0'%'";
 
 // Set up data source
@@ -45,10 +44,6 @@ chart1.dataSource.url = "../Data/Backups/Catalyst/IIX/IIX_EXPORT_PortSectorAlloc
 chart1.dataSource.parser = new am4core.CSVParser();
 chart1.dataSource.parser.options.useColumnNames = true;
 
-
-
-// Make the chart fade-in on init
-chart1.hiddenState.properties.opacity = 0;
 
 // Add series
 var series = chart1.series.push(new am4charts.PieSeries());
@@ -76,7 +71,6 @@ series.colors.list = [
 // Add legend
 chart1.legend = new am4charts.Legend();
 chart1.legend.position = "right";
-//chart1.legend.valign = "top";
 chart1.legend.valueLabels.template.text = "{value.value}";
 
 chart1.legend.maxWidth = undefined;

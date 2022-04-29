@@ -108,9 +108,9 @@ series2.legendSettings.labelText = "{name}[/]";
 series2.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
 var series3 = chart1.series.push(new am4charts.LineSeries());
-series3.dataFields.valueY = "Barclays U.S. AGG";
+series3.dataFields.valueY = "Bloomberg U.S. AGG";
 series3.dataFields.dateX = "Date";
-series3.name = "Barclays U.S. AGG";
+series3.name = "Bloomberg U.S. AGG";
 series3.strokeWidth = 3;
 series3.tooltipText = "{valueY}";
 series3.tensionX = 0.93;
@@ -195,9 +195,9 @@ series2.legendSettings.labelText = "{name}[/]";
 series2.legendSettings.valueText = "[bold {color}]{valueY.close}";
 
 var series3 = chart2.series.push(new am4charts.LineSeries());
-series3.dataFields.valueY = "Barclays U.S. AGG";
+series3.dataFields.valueY = "Bloomberg U.S. AGG";
 series3.dataFields.dateX = "Date";
-series3.name = "Barclays U.S. AGG";
+series3.name = "Bloomberg U.S. AGG";
 series3.strokeWidth = 3;
 series3.tooltipText = "{valueY}";
 series3.tensionX = 0.93;
@@ -276,9 +276,9 @@ series.columns.template.width = am4core.percent(100);
 
 
 var series2 = chart3.series.push(new am4charts.ColumnSeries());
-series2.dataFields.valueY = "Barclays US Agg TR Index";
+series2.dataFields.valueY = "Bloomberg US Agg TR Index";
 series2.dataFields.categoryX = "Category";
-series2.name = "Barclays US Agg TR Index";
+series2.name = "Bloomberg US Agg TR Index";
 series2.clustered = true;
 series2.fill = am4core.color("#681d7d");
 series2.strokeWidth = 0;
