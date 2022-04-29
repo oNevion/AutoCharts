@@ -594,14 +594,14 @@ Func _RationalFundsGUI()
 
 
 	;Create Fund Toggles
-	Local $HBA = _Metro_CreateToggle("HBA", 50, 50, 130, 30)
-	Local $HDC = _Metro_CreateToggle("HDC", 50, 95, 130, 30)
-	Local $HRS = _Metro_CreateToggle("HRS", 50, 140, 130, 30)
-	Local $HSU = _Metro_CreateToggle("HSU", 50, 185, 130, 30)
-	Local $IGO = _Metro_CreateToggle("IGO", 50, 230, 130, 30)
-	Local $PBX = _Metro_CreateToggle("PBX", 50, 275, 130, 30)
-	Local $RDM = _Metro_CreateToggle("RDM", 50, 320, 130, 30)
-	Local $RFX = _Metro_CreateToggle("RFX", 50, 365, 130, 30)
+	Local $HDC = _Metro_CreateToggle("HDC", 50, 50, 130, 30)
+	Local $HRS = _Metro_CreateToggle("HRS", 50, 95, 130, 30)
+	Local $HSU = _Metro_CreateToggle("HSU", 50, 140, 130, 30)
+	Local $IGO = _Metro_CreateToggle("IGO", 50, 185, 130, 30)
+	Local $PBX = _Metro_CreateToggle("PBX", 50, 230, 130, 30)
+	Local $RDM = _Metro_CreateToggle("RDM", 50, 275, 130, 30)
+	Local $RFX = _Metro_CreateToggle("RFX", 50, 320, 130, 30)
+	Local $RHS = _Metro_CreateToggle("RHS", 50, 365, 130, 30)
 
 	Local $vSeperator1 = _Metro_AddVSeperator(180, 50, 350, 1)
 
@@ -632,14 +632,14 @@ Func _RationalFundsGUI()
 				_Metro_GUIDelete($Form3) ;Delete GUI/release resources, make sure you use this when working with multiple GUIs!
 				Return 0
 
-			Case $HBA
-				If _Metro_ToggleIsChecked($HBA) Then
-					_Metro_ToggleUnCheck($HBA)
+			Case $RHS
+				If _Metro_ToggleIsChecked($RHS) Then
+					_Metro_ToggleUnCheck($RHS)
 					$aRationalCheck[0] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
 					ConsoleWrite("Toggle unchecked!" & @CRLF)
 				Else
-					_Metro_ToggleCheck($HBA)
-					$aRationalCheck[0] = "HBA" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
+					_Metro_ToggleCheck($RHS)
+					$aRationalCheck[0] = "RHS" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
 					ConsoleWrite($aRationalCheck[0] & " Toggle checked!" & @CRLF)
 				EndIf
 
