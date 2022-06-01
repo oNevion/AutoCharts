@@ -223,10 +223,9 @@ Func _CatalystFundsGUI()
 
 	Local $MLX = _Metro_CreateToggle("MLX", 390, 50, 130, 30)
 	Local $SHI = _Metro_CreateToggle("SHI", 390, 95, 130, 30)
-	Local $TEZ = _Metro_CreateToggle("TEZ", 390, 140, 130, 30)
-	Local $TRI = _Metro_CreateToggle("TRI", 390, 185, 130, 30)
-	Local $TRX = _Metro_CreateToggle("TRX", 390, 230, 130, 30)
-	Local $UCITS = _Metro_CreateToggle("UCITS", 390, 275, 130, 30)
+	Local $TRI = _Metro_CreateToggle("TRI", 390, 140, 130, 30)
+	Local $TRX = _Metro_CreateToggle("TRX", 390, 185, 130, 30)
+	Local $UCITS = _Metro_CreateToggle("UCITS", 390, 230, 130, 30)
 
 	Global $UpdateLabel = GUICtrlCreateLabel("", 50, 420, 440, 20)
 	GUICtrlSetColor(-1, $FontThemeColor)
@@ -454,16 +453,6 @@ Func _CatalystFundsGUI()
 					ConsoleWrite($aCatalystCheck[17] & " Toggle checked!" & @CRLF)
 				EndIf
 
-			Case $TEZ
-				If _Metro_ToggleIsChecked($TEZ) Then
-					_Metro_ToggleUnCheck($TEZ)
-					$aCatalystCheck[18] = 0 ; Sets first slot of the Catalyst Array to 1 if CHECKED
-					ConsoleWrite("Toggle unchecked!" & @CRLF)
-				Else
-					_Metro_ToggleCheck($TEZ)
-					$aCatalystCheck[18] = "TEZ" ; Sets first slot of the Catalyst Array to 0 if NOT CHECKED
-					ConsoleWrite($aCatalystCheck[18] & " Toggle checked!" & @CRLF)
-				EndIf
 
 			Case $TRI
 				If _Metro_ToggleIsChecked($TRI) Then
