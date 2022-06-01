@@ -68,7 +68,7 @@ dateAxis.renderer.grid.template.disabled = true;
 dateAxis.renderer.minGridDistance = 40;
 dateAxis.renderer.labels.template.location = 0;
 dateAxis.renderer.labels.template.dx = -10;
-dateAxis.extraMax = 14;
+dateAxis.extraMax = 7;
 dateAxis.renderer.labels.template.dy = 10;
 dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
