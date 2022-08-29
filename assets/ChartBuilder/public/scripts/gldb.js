@@ -559,22 +559,17 @@ series.colors.list = [
 ];
 
 
-// Create initial animation
-series.hiddenState.properties.opacity = 1;
-series.hiddenState.properties.endAngle = -90;
-series.hiddenState.properties.startAngle = -90;
-
 
 // Add legend
 chart8.legend = new am4charts.Legend();
 chart8.legend.position = "right";
 chart8.legend.maxWidth = undefined;
-//chart8.legend.maxheight = 400;
+chart8.legend.maxheight = 400;
 chart8.legend.valueLabels.template.align = "right";
 chart8.legend.valueLabels.template.textAlign = "end";  
 chart8.legend.labels.template.minWidth = 220;
 chart8.legend.labels.template.truncate = false;
-chart8.legend.valign = "bottom";
+chart8.legend.valign = "top";
 chart8.legend.itemContainers.template.paddingTop = 2;
 chart8.legend.itemContainers.template.paddingBottom = 2;
 
@@ -602,6 +597,6 @@ function loadFrame() {
      chart8.exporting.export('svg');
 };
 
-window.onload = setTimeout(loadFrame, 6000);
+window.onload = setTimeout(loadFrame, 9000);
                            
                         

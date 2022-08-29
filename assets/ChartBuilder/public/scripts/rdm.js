@@ -15,12 +15,12 @@ body {
 
     #chartdiv {
         width:1200px!important;
-		height:560px!important;
+		height:600px!important;
     }
 
      #chartdiv3 {
         width:1200px!important;
-    height:500px!important;
+    height:420px!important;
     }
 
      #chartdiv4 {

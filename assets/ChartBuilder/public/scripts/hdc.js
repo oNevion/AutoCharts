@@ -67,7 +67,7 @@ dateAxis.gridIntervals.setAll([
   { timeUnit: "month", count: 1 }
 ]);
 dateAxis.renderer.maxLabelPosition = 1.02;
-dateAxis.extraMax = 0.05; 
+//dateAxis.extraMax = 0.05; 
 dateAxis.renderer.labels.template.rotation = -45;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "right";

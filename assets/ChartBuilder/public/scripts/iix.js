@@ -64,24 +64,24 @@ series.colors.list = [
   am4core.color("#1faf92"),
   am4core.color("#13c593"),
   am4core.color("#08da94"),
-
 ];
+
+//series.legendSettings.valueText = "{value.formatNumber('#.00%')}";
 
 
 // Add legend
 chart1.legend = new am4charts.Legend();
 chart1.legend.position = "right";
-chart1.legend.valueLabels.template.text = "{value.value}";
-
 chart1.legend.maxWidth = undefined;
-chart1.legend.maxheight = 600;
+chart1.legend.maxheight = 500;
 chart1.legend.valueLabels.template.align = "right";
 chart1.legend.valueLabels.template.textAlign = "end";  
-chart1.legend.labels.template.fontSize = "18px";
-chart1.legend.valueLabels.template.fontSize = "18px";
+chart1.legend.labels.template.minWidth = 200;
 chart1.legend.labels.template.truncate = false;
-chart1.legend.labels.template.wrap = true;
-chart1.legend.labels.template.minWidth = 220;
+chart1.legend.scale = 1.4;
+chart1.legend.itemContainers.template.paddingTop = 10;
+chart1.legend.itemContainers.template.paddingBottom = 5;
+chart1.legend.valign = "top";
 
 
 

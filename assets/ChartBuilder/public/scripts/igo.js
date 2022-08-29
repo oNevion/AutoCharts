@@ -167,6 +167,7 @@ chart2.legend.labels.template.truncate = false;
 chart2.legend.scale = 1.4;
 chart2.legend.itemContainers.template.paddingTop = 5;
 chart2.legend.itemContainers.template.paddingBottom = 5;
+chart2.legend.valign = "top";
 
 
 // Export this stuff

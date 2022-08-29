@@ -15,7 +15,7 @@ body {
 
     #chartdiv {
         width:950px!important;
-		height:400px!important;
+		height:550px!important;
     }
 
         #chartdiv2 {
@@ -29,7 +29,7 @@ body {
     }
 
     #chartdiv4 {
-        width:1430px!important;
+        width:1260px!important;
     height:460px!important;
     }
 
@@ -358,7 +358,7 @@ series5.columns.template.width = am4core.percent(100);
 var bullet = series.bullets.push(new am4charts.LabelBullet());
 bullet.label.text = "{valueY.value}";
 bullet.label.hideOversized = false;
-bullet.label.fontSize = "18px";
+bullet.label.fontSize = "16px";
 bullet.label.strokeWidth = 0;
 bullet.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
@@ -373,7 +373,7 @@ bullet.label.adapter.add("verticalCenter", function(center, target) {
 var bullet2 = series2.bullets.push(new am4charts.LabelBullet());
 bullet2.label.text = "{valueY.value}";
 bullet2.label.hideOversized = false;
-bullet2.label.fontSize = "18px";
+bullet2.label.fontSize = "16px";
 bullet2.label.strokeWidth = 0;
 bullet2.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
@@ -388,7 +388,7 @@ bullet2.label.adapter.add("verticalCenter", function(center, target) {
 var bullet3 = series3.bullets.push(new am4charts.LabelBullet());
 bullet3.label.text = "{valueY.value}";
 bullet3.label.hideOversized = false;
-bullet3.label.fontSize = "18px";
+bullet3.label.fontSize = "16px";
 bullet3.label.strokeWidth = 0;
 bullet3.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
@@ -403,7 +403,7 @@ bullet3.label.adapter.add("verticalCenter", function(center, target) {
 var bullet4 = series4.bullets.push(new am4charts.LabelBullet());
 bullet4.label.text = "{valueY.value}";
 bullet4.label.hideOversized = false;
-bullet4.label.fontSize = "18px";
+bullet4.label.fontSize = "16px";
 bullet4.label.strokeWidth = 0;
 bullet4.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
@@ -418,7 +418,7 @@ bullet4.label.adapter.add("verticalCenter", function(center, target) {
 var bullet5 = series5.bullets.push(new am4charts.LabelBullet());
 bullet5.label.text = "{valueY.value}";
 bullet5.label.hideOversized = false;
-bullet5.label.fontSize = "18px";
+bullet5.label.fontSize = "16px";
 bullet5.label.strokeWidth = 0;
 bullet5.label.adapter.add("verticalCenter", function(center, target) {
   if (!target.dataItem) {
