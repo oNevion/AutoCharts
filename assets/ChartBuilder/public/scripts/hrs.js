@@ -63,14 +63,15 @@ var dateAxis = chart1.xAxes.push(new am4charts.DateAxis());
 dateAxis.renderer.labels.template.fontWeight = "Bold";
 dateAxis.renderer.labels.template.fontSize = "24px";
 dateAxis.renderer.grid.template.disabled = true;
-dateAxis.renderer.minGridDistance = 60;
-dateAxis.renderer.labels.template.dx = -40;
+dateAxis.renderer.minGridDistance = 30;
+dateAxis.renderer.labels.template.dx = -60;
 dateAxis.renderer.labels.template.location = 0;
 dateAxis.renderer.labels.template.rotation = -60;
 dateAxis.renderer.labels.template.verticalCenter = "middle";
 dateAxis.renderer.labels.template.horizontalCenter = "left";
 dateAxis.dateFormats.setKey("month", "MM/yyyy");
 dateAxis.periodChangeDateFormats.setKey("month", "MM/yyyy"); 
+//dateAxis.extraMax = 0.03; 
 
 
 var valueAxis = chart1.yAxes.push(new am4charts.ValueAxis());
@@ -300,8 +301,8 @@ var xAxis = chart4.xAxes.push(new am4charts.ValueAxis());
 xAxis.renderer.minGridDistance = 50;
 xAxis.title.text = "Standard Deviation (Risk)";
 xAxis.renderer.labels.template.fontSize = "18px";
-xAxis.extraMax = 0.3; 
-xAxis.extraMin = 0.3; 
+xAxis.extraMax = 0.8; 
+xAxis.extraMin = 0.6; 
 xAxis.title.fontSize = 20;
 xAxis.title.fontWeight = "Bold";
 
@@ -310,7 +311,7 @@ var yAxis = chart4.yAxes.push(new am4charts.ValueAxis());
 yAxis.renderer.minGridDistance = 50;
 yAxis.title.text = "Annualized Return";
 yAxis.extraMin = 0.3; 
-yAxis.extraMax = 0.3; 
+yAxis.extraMax = 0.4; 
 yAxis.renderer.labels.template.fontSize = "18px";
 yAxis.title.fontSize = 20;
 yAxis.title.fontWeight = "Bold";

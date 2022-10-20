@@ -29,7 +29,7 @@ body {
     }
 
     #chartdiv4 {
-        width:1260px!important;
+        width:1320px!important;
     height:460px!important;
     }
 

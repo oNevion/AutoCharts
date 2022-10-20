@@ -368,9 +368,9 @@ series1.tooltipText = "{valueY}";
 series1.stroke = am4core.color("#08da94");
 
 var series2 = chart4.series.push(new am4charts.LineSeries());
-series2.dataFields.valueY = "Bloomberg Barclay U.S. Agg. Index";
+series2.dataFields.valueY = "Bloomberg U.S. Agg. Index";
 series2.dataFields.dateX = "Date";
-series2.name = "Bloomberg Barclays U.S. Agg. Index";
+series2.name = "Bloomberg U.S. Agg. Index";
 series2.strokeWidth = 3;
 series2.tooltipText = "{valueY}";
 //series2.tensionX = 0.99;
@@ -444,9 +444,9 @@ series.strokeWidth = 0;
 series.columns.template.width = am4core.percent(100);
 
 var series2 = chart5.series.push(new am4charts.ColumnSeries());
-series2.dataFields.valueY = "Barclay";
+series2.dataFields.valueY = "Bloomberg Agg";
 series2.dataFields.categoryX = "Label";
-series2.name = "Bloomberg Barclays Agg";
+series2.name = "Bloomberg U.S. Agg. Index";
 series2.clustered = true;
 series2.fill = am4core.color("#2d7abf");
 series2.strokeWidth = 0;
@@ -512,9 +512,9 @@ series.strokeWidth = 0;
 series.columns.template.width = am4core.percent(100);
 
 var series2 = chart6.series.push(new am4charts.ColumnSeries());
-series2.dataFields.valueY = "Barclay";
+series2.dataFields.valueY = "Bloomberg Agg";
 series2.dataFields.categoryX = "Year";
-series2.name = "Bloomberg Barclays Agg";
+series2.name = "Bloomberg U.S. Agg. Index";
 series2.clustered = true;
 series2.fill = am4core.color("#2d7abf");
 series2.strokeWidth = 0;
