@@ -1253,7 +1253,7 @@ Func _SyncGUI()
 
 	;Create Settings Options
 
-	Local $BTN_SyncAll = _Metro_CreateButton("Pull Data from AutoCharts Drive", 50, 100, 440, 40)
+	Local $BTN_SyncAll = _Metro_CreateButton("Synchronize with Database", 50, 100, 440, 40)
 	Local $BTN_DL_Import = _Metro_CreateButton("Import Datalinker from Database", 50, 160, 440, 40)
 
 	_Metro_AddHSeperator(50, 240, 440, 1)

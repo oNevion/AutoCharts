@@ -532,6 +532,26 @@ Func RunExpenseRatios()
 
 EndFunc   ;==>RunExpenseRatios
 
+Func RunSupplementData()
+	;GUICtrlSetData($UpdateLabel, "Updating Supplement Data")
+	;_Metro_SetProgress($ProgressBar, 60)
+
+	FileCopy($AutoChartsDriveDir & "\Backup Files\All_SupplementalQuarterlyData.xlsx", @MyDocumentsDir & "/AutoCharts/vbs/")           ; grab Supplemental Data .xlsx from Z Drive
+	RunWait(@ComSpec & " /c " & @MyDocumentsDir & "/AutoCharts/vbs/Excel_To_CSV_All_Worksheets.vbs All_SupplementalQuarterlyData.xlsx", @TempDir, @SW_HIDE)             ;~ Runs command hidden, Converts Current Fund's .xlsx to .csv
+
+	_LogaInfo("~~~~~~~~~~~~ Updating Supplemental Fund Data ~~~~~~~~~~~~")         ; Write to the logfile
+	;GUICtrlSetData($UpdateLabel, "Updating Supplemental Fund Data")
+
+	_LogaInfo("Updated Supplemental Fund Data")             ; Write to the logfile
+
+	;GUICtrlSetData($UpdateLabel, "Updated Supplemental Fund Data")
+	FileMove(@MyDocumentsDir & "/AutoCharts/vbs/*.csv", $DatabaseDir & "\csv\*.csv", 1)               ; Move all .CSV back to Data folder and overwrite.
+	FileDelete(@MyDocumentsDir & "/AutoCharts/vbs/*.xlsx")               ; deletes remaining .xlsx from conversion
+
+	;_Metro_SetProgress($ProgressBar, 100)
+
+EndFunc   ;==>RunSupplementData
+
 Func CreateFactSheetArchive()
 	Local $Archive
 

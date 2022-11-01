@@ -1,4 +1,4 @@
-;===============================================================================
+                  ;===============================================================================
 ;
 ; Name:    			Database Sync
 ; Description:      AutoCharts Drive Database Sync for AutoCharts
@@ -46,7 +46,6 @@ EndFunc   ;==>VerifyDropbox
 ;
 ;===============================================================================
 Func SyncronizeDataFiles()
-
 	SplashImageOn("", @ScriptDir & "\assets\GUI_Menus\loading.jpg", "160", "160", "-1", "-1", 1)
 
 	$source = $DropboxDir & "\Backup Files"
@@ -71,6 +70,7 @@ Func SyncronizeDataFiles()
 
 	_LogaInfo("Downloaded amChart Scripts from Database") ; Write to the logfile
 
+	RunSupplementData()
 
 	SplashOff()
 
